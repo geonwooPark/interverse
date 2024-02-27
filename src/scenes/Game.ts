@@ -1,6 +1,7 @@
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
   private player: any
+  private moveSpeed = 200
 
   constructor() {
     // Scene Key
@@ -48,21 +49,27 @@ export default class Game extends Phaser.Scene {
     // 레이어 추가
     const floorLayer = this.map.createLayer('Ground', FloorAndWall)
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collides 속성을 가진 모들 타일에 충돌 활성화)
+    this.map.setCollisionByProperty({ collides: true })
     floorLayer?.setCollisionByProperty({ collides: true })
 
     this.player = this.physics.add.sprite(100, 100, 'adam')
+    this.player.setBounce(0.2)
+    this.player.setCollideWorldBounds(true)
   }
 
+  // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
     const cursorsKeys = this.input.keyboard?.createCursorKeys()
+    let vx = 0
+    let vy = 0
 
-    if (cursorsKeys?.left.isDown) {
-      console.log('왼쪽 이동')
-      this.player.setVelocityX(-160)
-    }
-    if (cursorsKeys?.right.isDown) {
-      console.log('왼쪽 이동')
-      this.player.setVelocityX(160)
-    }
+    // 화살표 키 입력 감지
+    if (cursorsKeys?.left.isDown) vx -= this.moveSpeed
+
+    if (cursorsKeys?.right.isDown) vx += this.moveSpeed
+    if (cursorsKeys?.up.isDown) vy -= this.moveSpeed
+    if (cursorsKeys?.down.isDown) vy += this.moveSpeed
+
+    this.player.setVelocity(vx, vy)
   }
 }
