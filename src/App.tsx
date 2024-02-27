@@ -1,12 +1,10 @@
-import React from 'react'
+import phaserGame from './PhaserGame'
 
 function App() {
-  return (
-    <div className="font-neodgm">
-      <h1 className="text-4xl font-bold text-red-400 underline">InterBus</h1>
-      <h1 className="text-4xl font-bold text-red-400 underline">InterVerse</h1>
-    </div>
-  )
+  const onClick = () => {
+    const game = phaserGame.scene.keys.game
+  }
+  return <button onClick={onClick}>시작</button>
 }
 
 export default App
