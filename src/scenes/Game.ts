@@ -55,6 +55,8 @@ export default class Game extends Phaser.Scene {
     this.player = this.physics.add.sprite(100, 100, 'adam')
     this.player.setBounce(0.2)
     this.player.setCollideWorldBounds(true)
+
+    this.physics.add.collider(floorLayer!, this.player)
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨

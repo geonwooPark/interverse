@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="207">
+ <editorsettings>
+  <export target="../../map.tmj" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="floorAndWall" tilewidth="32" tileheight="32" tilecount="3400" columns="34">
   <image source="floorAndWall.png" width="1088" height="3200"/>
   <tile id="36">
@@ -18,16 +21,6 @@
    </properties>
   </tile>
   <tile id="39">
-   <properties>
-    <property name="collides" type="bool" value="true"/>
-   </properties>
-  </tile>
-  <tile id="40">
-   <properties>
-    <property name="collides" type="bool" value="true"/>
-   </properties>
-  </tile>
-  <tile id="41">
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
@@ -132,17 +125,7 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="109">
-   <properties>
-    <property name="collides" type="bool" value="true"/>
-   </properties>
-  </tile>
   <tile id="110">
-   <properties>
-    <property name="collides" type="bool" value="true"/>
-   </properties>
-  </tile>
-  <tile id="111">
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
@@ -192,11 +175,6 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="143">
-   <properties>
-    <property name="collides" type="bool" value="true"/>
-   </properties>
-  </tile>
   <tile id="144">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -227,19 +205,102 @@
     <property name="collides" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="529">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2211">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2212">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2213">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2214">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2218">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2219">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2220">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3027">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3028">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3029">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3030">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3034">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3035">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3036">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
- <tileset firstgid="3401" source="interior.tsx"/>
- <tileset firstgid="3557" source="chair.tsx"/>
- <tileset firstgid="3845" source="office.tsx"/>
- <tileset firstgid="4693" source="secretary.tsx"/>
+ <tileset firstgid="3401" name="interior" tilewidth="32" tileheight="32" tilecount="156" columns="4">
+  <image source="interior.png" width="128" height="1264"/>
+ </tileset>
+ <tileset firstgid="3557" name="chair" tilewidth="32" tileheight="32" tilecount="288" columns="4">
+  <image source="chair.png" width="128" height="2304"/>
+ </tileset>
+ <tileset firstgid="3845" name="office" tilewidth="32" tileheight="32" tilecount="848" columns="16">
+  <image source="office.png" width="512" height="1696"/>
+ </tileset>
+ <tileset firstgid="4693" name="secretary" tilewidth="32" tileheight="32" tilecount="45" columns="3">
+  <image source="secretary.png" width="112" height="480"/>
+ </tileset>
  <layer id="1" name="Ground" width="25" height="20">
   <data encoding="csv">
 3221225619,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225618,3221225617,
 37,3033,3033,3033,3033,3033,3033,3033,3033,81,2217,2217,2217,2217,2217,2217,2217,2217,2217,2217,2217,2217,2217,2217,113,
-37,3063,3063,3063,3063,3063,3063,3063,3063,81,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,113,
-37,1204,1205,1205,1205,1205,1205,1205,1205,3031,1804,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,113,
-37,1238,1239,1239,1239,1239,1239,1239,1239,3065,1838,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,113,
-37,1238,1239,1239,1239,1239,1239,1239,1239,1205,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,113,
+37,3063,3063,3063,3063,3063,3063,3063,3063,3031,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,2247,113,
+37,1204,1205,1205,1205,1205,1205,1205,1205,3065,1804,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,1805,113,
+37,1238,1239,1239,1239,1239,1239,1239,1239,1205,1838,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,113,
+37,1238,1239,1239,1239,1239,1239,1239,1239,1239,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,113,
 37,1238,1239,1239,1239,1239,1239,1239,1239,108,1838,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,113,
 37,1238,1239,1239,1239,1239,1239,1239,1239,81,1838,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,1839,113,
 37,3029,2147486676,1239,1239,3028,3029,3029,3029,81,2213,2214,1839,1839,2147485862,2213,2213,2213,2213,2213,2213,2213,2213,2213,113,
@@ -256,7 +317,7 @@
 145,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,146,147
 </data>
  </layer>
- <layer id="3" name="Interior" width="25" height="20" visible="0" opacity="0.9">
+ <layer id="3" name="Interior" width="25" height="20" opacity="0.9">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -280,7 +341,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="Chair" visible="0">
+ <objectgroup id="7" name="Chair">
   <object id="138" gid="4022" x="128" y="576" width="32" height="32"/>
   <object id="139" gid="4006" x="128" y="544" width="32" height="32"/>
   <object id="141" gid="3990" x="448" y="544" width="32" height="32">
@@ -328,7 +389,7 @@
   <object id="205" gid="2147487246" x="241.667" y="471.333" width="32" height="32"/>
   <object id="206" gid="2147487247" x="209.667" y="471.333" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="6" name="Secretary" visible="0">
+ <objectgroup id="6" name="Secretary">
   <object id="168" gid="4712" x="96" y="96" width="32" height="32"/>
   <object id="169" gid="4715" x="96" y="128" width="32" height="32"/>
   <object id="170" gid="4730" x="128" y="128" width="32" height="32"/>
@@ -345,7 +406,7 @@
   <object id="181" gid="2147488381" x="64" y="160" width="32" height="32"/>
   <object id="182" gid="2147488381" x="128" y="160" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="4" name="Objects" visible="0">
+ <objectgroup id="4" name="Objects">
   <object id="34" gid="3466" x="32" y="288" width="32" height="32"/>
   <object id="35" gid="3467" x="64" y="288" width="32" height="32"/>
   <object id="36" gid="3470" x="32" y="320" width="32" height="32"/>
@@ -399,7 +460,7 @@
   <object id="191" gid="4529" x="192" y="96" width="32" height="32"/>
   <object id="192" gid="4530" x="224" y="96" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="5" name="ObjectsOnCollide" visible="0">
+ <objectgroup id="5" name="ObjectsOnCollide">
   <object id="38" gid="3474" x="32" y="352" width="32" height="32"/>
   <object id="39" gid="3475" x="64" y="352" width="32" height="32"/>
   <object id="48" gid="3530" x="160" y="352" width="32" height="32"/>
