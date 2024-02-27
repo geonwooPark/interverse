@@ -27,7 +27,7 @@ export default class Game extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     })
-    this.load.spritesheet('conference', 'assets/builder/conference.png', {
+    this.load.spritesheet('conferenceHall', 'assets/builder/conference.png', {
       frameWidth: 32,
       frameHeight: 32,
     })
@@ -68,7 +68,10 @@ export default class Game extends Phaser.Scene {
     const Classroom = this.map.addTilesetImage('classroom', 'classroom')
     const Bedroom = this.map.addTilesetImage('bedroom', 'bedroom')
     const Halloween = this.map.addTilesetImage('halloween', 'halloween')
-    const Conference = this.map.addTilesetImage('conference', 'conference')
+    const ConferenceHall = this.map.addTilesetImage(
+      'conferenceHall',
+      'conferenceHall',
+    )
 
     // 레이어 추가
     this.map.createLayer('Ground', FloorAndWall!)
@@ -80,12 +83,6 @@ export default class Game extends Phaser.Scene {
       Bedroom!,
     ])
     const itemLayer = this.map.createLayer('Item', [Office!, Halloween!])
-
-    // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
-    wallLayer?.setCollisionByProperty({ collide: true })
-
-    // 아바타 생성
-    this.player = this.physics.add.sprite(200, 200, 'adam')
 
     // // 의자 관련
     // const chairs = this.physics.add.staticGroup()
@@ -112,7 +109,15 @@ export default class Game extends Phaser.Scene {
       )
     })
 
-    //
+    // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
+    wallLayer?.setCollisionByProperty({ collide: true })
+
+    // 아바타 생성
+    this.player = this.physics.add.sprite(100, 100, 'conference')
+    // 애니메이션 추가
+    createAvatarAnims(this.anims)
+    // 첫 랜더링시 플레이어 애니메이션 적용
+    this.player.anims.play('conference_stand_down', true)
     this.physics.add.collider(wallLayer!, this.player)
   }
 
@@ -129,19 +134,6 @@ export default class Game extends Phaser.Scene {
       .get(actualX, actualY, key, object.gid! - firstgid!)
       .setDepth(actualY)
     return obj
-    
-    const floorLayer = this.map.createLayer('Ground', FloorAndWall)
-    // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collides 속성을 가진 모들 타일에 충돌 활성화)
-    this.map.setCollisionByProperty({ collides: true })
-    floorLayer?.setCollisionByProperty({ collides: true })
-    // 플레이어 생성
-    this.player = this.physics.add.sprite(100, 100, 'conference')
-    // 플레이어와 레이어 충돌 방지
-    this.physics.add.collider(floorLayer!, this.player)
-    // 애니메이션 추가
-    createAvatarAnims(this.anims)
-    // 첫 랜더링시 플레이어 애니메이션 적용
-    this.player.anims.play('conference_stand_down', true)
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
