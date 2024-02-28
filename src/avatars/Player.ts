@@ -1,27 +1,32 @@
 export default class Player {
-  player: any
+  avatar: any
   scene: Phaser.Scene
-  avatar: string
+  avatarTexture: string
   nickname: Phaser.GameObjects.Text
   chatBox: Phaser.GameObjects.Container
   timeOut?: number
 
-  constructor(scene: Phaser.Scene, x: number, y: number, avatar: string) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    avatarTexture: string,
+  ) {
     this.scene = scene
-    this.avatar = avatar
+    this.avatarTexture = avatarTexture
     // 플레이어 생성
-    this.player = this.scene.physics.add.sprite(x, y, this.avatar)
+    this.avatar = this.scene.physics.add.sprite(x, y, this.avatarTexture)
     // 플레이어 랜더시 애니메이션 실행
-    this.player.anims.play(`${this.avatar}_stand_down`, true)
-    this.player.setSize(32, 32)
+    this.avatar.anims.play(`${this.avatarTexture}_stand_down`, true)
+    this.avatar.setSize(32, 32)
     // 닉네임 변수 설정
     this.nickname = this.scene.add
-      .text(this.player.x, this.player.y - 35, '')
+      .text(this.avatar.x, this.avatar.y - 35, '')
       .setFontSize(12)
       .setColor('#000000')
       .setOrigin(0.5)
     // 채팅 변수 설정
-    this.chatBox = this.scene.add.container(this.player.x, this.player.y)
+    this.chatBox = this.scene.add.container(this.avatar.x, this.avatar.y)
   }
   // 닉네임 생성
   setNickname(nickname: string) {
@@ -76,28 +81,28 @@ export default class Player {
     // 화살표 키 입력 감지 및 애니메이션 실행
     if (cursorsKeys?.left.isDown) {
       vx -= moveSpeed
-      this.player.anims.play('conference_run_left', true)
+      this.avatar.anims.play('conference_run_left', true)
     } else if (cursorsKeys?.right.isDown) {
       vx += moveSpeed
-      this.player.anims.play('conference_run_right', true)
+      this.avatar.anims.play('conference_run_right', true)
     } else if (cursorsKeys?.up.isDown) {
       vy -= moveSpeed
-      this.player.anims.play('conference_run_up', true)
+      this.avatar.anims.play('conference_run_up', true)
     } else if (cursorsKeys?.down.isDown) {
       vy += moveSpeed
-      this.player.anims.play('conference_run_down', true)
+      this.avatar.anims.play('conference_run_down', true)
     } else {
       // 이동 후 정지시 애니메이션 실행
-      const animParts = this.player.anims.currentAnim.key.split('_')
+      const animParts = this.avatar.anims.currentAnim.key.split('_')
       animParts[1] = 'stand'
-      this.player.anims.play(animParts.join('_'), true)
+      this.avatar.anims.play(animParts.join('_'), true)
     }
-    this.player.setVelocity(vx, vy)
+    this.avatar.setVelocity(vx, vy)
     // 닉네임 이동
-    this.nickname.x = this.player.x
-    this.nickname.y = this.player.y - 35
+    this.nickname.x = this.avatar.x
+    this.nickname.y = this.avatar.y - 35
     // 채팅 이동
-    this.chatBox.x = this.player.x
-    this.chatBox.y = this.player.y
+    this.chatBox.x = this.avatar.x
+    this.chatBox.y = this.avatar.y
   }
 }

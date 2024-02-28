@@ -125,10 +125,10 @@ export default class Game extends Phaser.Scene {
 
     // 애니메이션 추가
     createAvatarAnims(this.anims)
-    // 아바타 생성
+    // 플레이어 생성
     this.player = new Player(this, 500, 150, 'conference')
     this.player.setNickname('player')
-    this.physics.add.collider(wallLayer!, this.player)
+    this.physics.add.collider(wallLayer!, this.player.avatar)
 
     // interiorTop Layer
     const interiorTopLayer = this.map.createLayer('InteriorTop', Office!)
@@ -151,9 +151,9 @@ export default class Game extends Phaser.Scene {
 
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
-      this.physics.add.collider(this.player, secretary)
-      this.physics.add.collider(this.player, table)
-      this.physics.add.collider(this.player, interiorOnCollide)
+      this.physics.add.collider(this.player.avatar, secretary)
+      this.physics.add.collider(this.player.avatar, table)
+      this.physics.add.collider(this.player.avatar, interiorOnCollide)
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
