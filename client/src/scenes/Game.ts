@@ -53,7 +53,7 @@ export default class Game extends Phaser.Scene {
       'floorAndWall',
     )
     const Office = this.map.addTilesetImage('office', 'office')
-    // const Classroom = this.map.addTilesetImage('classroom', 'classroom')
+    const Classroom = this.map.addTilesetImage('classroom', 'classroom')
 
     // Ground Layer
     const groundLayer = this.map.createLayer('Ground', FloorAndWall!)
@@ -114,10 +114,10 @@ export default class Game extends Phaser.Scene {
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
     // interior Layer
-    // const interiorLayer = this.map.createLayer('Interior', [
-    //   Office!,
-    //   Classroom!,
-    // ])
+    const interiorLayer = this.map.createLayer('Interior', [
+      Office!,
+      Classroom!,
+    ])
 
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup()

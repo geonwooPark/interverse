@@ -1,4 +1,4 @@
-import React from 'react'
+import '../PhaserGame'
 
 function Room() {
   return <div>Room</div>

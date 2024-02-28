@@ -1,15 +1,18 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Room from './routes/Room'
 import Home from './routes/Home'
+import Room from './routes/Room'
+import Landing from './components/Landing'
+import Enter from './components/Enter'
 
 function App() {
-  const test: any = 1
-  const a = test
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />}>
+            <Route path="/" element={<Landing />} />
+            <Route path="/enter" element={<Enter />} />
+          </Route>
           <Route path="/:id" element={<Room />} />
         </Routes>
       </Router>
