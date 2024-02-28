@@ -1,5 +1,6 @@
 import { createAvatarAnims } from '../anims/AvatarAnims'
 import Player from '../avatars/Player'
+import Secretary from '../items/Secretary'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -59,7 +60,7 @@ export default class Game extends Phaser.Scene {
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
     // Secretary Layer
-    const secretary = this.physics.add.staticGroup()
+    const secretary = this.physics.add.staticGroup({ classType: Secretary })
     const secretaryLayer = this.map.getObjectLayer('Secretary')
     secretaryLayer?.objects.forEach((object) => {
       const firstgid = this.map.getTileset('classroom')?.firstgid
@@ -71,7 +72,7 @@ export default class Game extends Phaser.Scene {
         'classroom',
         object.gid! - firstgid!,
       )
-      return obj
+      return obj as Secretary
     })
 
     // ChairToDown Layer
@@ -158,6 +159,18 @@ export default class Game extends Phaser.Scene {
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
     wallLayer?.setCollisionByProperty({ collide: true })
+
+    this.physics.add.overlap(
+      this.player.avatar,
+      [secretary],
+      this.handlePlayerOverlap,
+      undefined,
+      this,
+    )
+  }
+
+  handlePlayerOverlap(player: any, interactionItem: any) {
+    interactionItem.onInteractionBox()
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
