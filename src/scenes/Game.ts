@@ -53,11 +53,9 @@ export default class Game extends Phaser.Scene {
     )
     const Office = this.map.addTilesetImage('office', 'office')
     const Classroom = this.map.addTilesetImage('classroom', 'classroom')
-    // Ground Layer
-    this.map.createLayer('Ground', FloorAndWall!)
-    // Wall Layer
-    const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
+    // Ground Layer
+    const groundLayer = this.map.createLayer('Ground', FloorAndWall!)
     // Secretary Layer
     const secretary = this.physics.add.staticGroup()
     const secretaryLayer = this.map.getObjectLayer('Secretary')
@@ -90,12 +88,6 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
-    // interior Layer
-    const interiorLayer = this.map.createLayer('Interior', [
-      Office!,
-      Classroom!,
-    ])
-
     // interiorOnCollide Layer
     const interiorOnCollide = this.physics.add.staticGroup()
     const interiorOnCollideLayer = this.map.getObjectLayer('InteriorOnCollide')
@@ -123,12 +115,19 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
-    // 애니메이션 추가
-    createAvatarAnims(this.anims)
     // 플레이어 생성
+    createAvatarAnims(this.anims)
     this.player = new Player(this, 500, 150, 'conference')
     this.player.setNickname('player')
-    this.physics.add.collider(wallLayer!, this.player.avatar)
+
+    // Wall Layer
+    const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
+
+    // interior Layer
+    const interiorLayer = this.map.createLayer('Interior', [
+      Office!,
+      Classroom!,
+    ])
 
     // interiorTop Layer
     const interiorTopLayer = this.map.createLayer('InteriorTop', Office!)
@@ -157,6 +156,9 @@ export default class Game extends Phaser.Scene {
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
+    this.physics.add.collider(groundLayer!, this.player.avatar)
+    this.physics.add.collider(wallLayer!, this.player.avatar)
+    groundLayer?.setCollisionByProperty({ collide: true })
     wallLayer?.setCollisionByProperty({ collide: true })
   }
 
