@@ -122,14 +122,13 @@ export default class Game extends Phaser.Scene {
       const obj = table.get(actualX, actualY, 'office', object.gid! - firstgid!)
       return obj
     })
-    
+
     // 애니메이션 추가
     createAvatarAnims(this.anims)
     // 아바타 생성
     this.player = new Player(this, 500, 150, 'conference')
     this.player.setNickname('player')
     this.physics.add.collider(wallLayer!, this.player)
-    this.player.setSize(32, 32)
 
     // interiorTop Layer
     const interiorTopLayer = this.map.createLayer('InteriorTop', Office!)
