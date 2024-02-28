@@ -14,11 +14,11 @@
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
+  // "parserOptions": {
+  //   "project": "./tsconfig.json",
+  //   "ecmaVersion": "latest",
+  //   "sourceType": "module"
+  // },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/react-in-jsx-scope": "off", //jsx파일에서 React를 import 하지 않아도 됨.

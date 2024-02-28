@@ -53,7 +53,7 @@ export default class Game extends Phaser.Scene {
       'floorAndWall',
     )
     const Office = this.map.addTilesetImage('office', 'office')
-    const Classroom = this.map.addTilesetImage('classroom', 'classroom')
+    // const Classroom = this.map.addTilesetImage('classroom', 'classroom')
 
     // Ground Layer
     const groundLayer = this.map.createLayer('Ground', FloorAndWall!)
@@ -114,10 +114,10 @@ export default class Game extends Phaser.Scene {
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
     // interior Layer
-    const interiorLayer = this.map.createLayer('Interior', [
-      Office!,
-      Classroom!,
-    ])
+    // const interiorLayer = this.map.createLayer('Interior', [
+    //   Office!,
+    //   Classroom!,
+    // ])
 
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup()
@@ -150,21 +150,21 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(topLayer!, this.player.avatar)
     groundLayer?.setCollisionByProperty({ collide: true })
     wallLayer?.setCollisionByProperty({ collide: true })
-    
+
     topLayer?.setCollisionByProperty({ collide: true })
 
-    this.physics.add.overlap(
-      this.player.avatar,
-      [secretary],
-      this.handlePlayerOverlap,
-      undefined,
-      this,
-    )
+    // this.physics.add.overlap(
+    //   this.player.avatar,
+    //   [secretary],
+    //   this.handlePlayerOverlap,
+    //   undefined,
+    //   this,
+    // )
   }
 
-  handlePlayerOverlap(player: any, interactionItem: any) {
-    interactionItem.onInteractionBox()
-  }
+  // handlePlayerOverlap(player: any, interactionItem: any) {
+  //   interactionItem.onInteractionBox()
+  // }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
