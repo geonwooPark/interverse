@@ -27,19 +27,7 @@ export default class Game extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     })
-    this.load.spritesheet('conferenceHall', 'assets/builder/conference.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    })
-    this.load.spritesheet('livingRoom', 'assets/builder/livingRoom.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    })
-    this.load.spritesheet('bedroom', 'assets/builder/bedroom.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    })
-    this.load.spritesheet('halloween', 'assets/builder/halloween.png', {
+    this.load.spritesheet('chair', 'assets/builder/chair.png', {
       frameWidth: 32,
       frameHeight: 32,
     })
@@ -64,75 +52,113 @@ export default class Game extends Phaser.Scene {
       'floorAndWall',
     )
     const Office = this.map.addTilesetImage('office', 'office')
-    const LivingRoom = this.map.addTilesetImage('livingRoom', 'livingRoom')
     const Classroom = this.map.addTilesetImage('classroom', 'classroom')
-    const Bedroom = this.map.addTilesetImage('bedroom', 'bedroom')
-    const Halloween = this.map.addTilesetImage('halloween', 'halloween')
-    const ConferenceHall = this.map.addTilesetImage(
-      'conferenceHall',
-      'conferenceHall',
-    )
-
-    // 레이어 추가
+    // Ground Layer
     this.map.createLayer('Ground', FloorAndWall!)
+    // Wall Layer
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
-    const interiorLayer = this.map.createLayer('Interior', [
-      Office!,
-      LivingRoom!,
-      Classroom!,
-      Bedroom!,
-    ])
-    const itemLayer = this.map.createLayer('Item', [Office!, Halloween!])
 
-    // // 의자 관련
-    // const chairs = this.physics.add.staticGroup()
-    // // getObjectLayer - Tiled 맵에서 오브젝트 레이어를 가져오는 메서드
-    // const chairLayer = this.map.getObjectLayer('Chair')
-    // // chair레이어의 오브젝트를 반복하여 방향 속성을 가져옴
-    // chairLayer?.objects.forEach((chairObj) => {
-    //   const item = this.addObjectFromTiled(chairs, chairObj, 'chair', 'chair')
-    //   item.itemDirection = chairObj.properties[0].value
-
-    //   console.log(item)
-    // })
-
-    // 비서 관련
+    // Secretary Layer
     const secretary = this.physics.add.staticGroup()
-    // getObjectLayer - Tiled 맵에서 오브젝트 레이어를 가져오는 메서드
     const secretaryLayer = this.map.getObjectLayer('Secretary')
-    secretaryLayer?.objects.forEach((secretaryObj) => {
-      const item = this.addObjectFromTiled(
-        secretary,
-        secretaryObj,
-        'secretary',
-        'secretary',
+    secretaryLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('classroom')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = secretary.get(
+        actualX,
+        actualY,
+        'classroom',
+        object.gid! - firstgid!,
       )
+      return obj
     })
 
-    // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
-    wallLayer?.setCollisionByProperty({ collide: true })
+    // ChairToDown Layer
+    const chairToDown = this.physics.add.staticGroup()
+    const chairToDownLayer = this.map.getObjectLayer('ChairToDown')
+    chairToDownLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('chair')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = chairToDown.get(
+        actualX,
+        actualY,
+        'chair',
+        object.gid! - firstgid!,
+      )
+      return obj
+    })
 
+    // interior Layer
+    const interiorLayer = this.map.createLayer('Interior', [
+      Office!,
+      Classroom!,
+    ])
+
+    // interiorOnCollide Layer
+    const interiorOnCollide = this.physics.add.staticGroup()
+    const interiorOnCollideLayer = this.map.getObjectLayer('InteriorOnCollide')
+    interiorOnCollideLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('office')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = interiorOnCollide.get(
+        actualX,
+        actualY,
+        'office',
+        object.gid! - firstgid!,
+      )
+      return obj
+    })
+
+    // Table Layer
+    const table = this.physics.add.staticGroup()
+    const tableLayer = this.map.getObjectLayer('Table')
+    tableLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('office')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = table.get(actualX, actualY, 'office', object.gid! - firstgid!)
+      return obj
+    })
+    
     // 애니메이션 추가
     createAvatarAnims(this.anims)
     // 아바타 생성
     this.player = new Player(this, 500, 150, 'conference')
     this.player.setNickname('player')
     this.physics.add.collider(wallLayer!, this.player)
-  }
+    this.player.setSize(32, 32)
 
-  private addObjectFromTiled(
-    group: Phaser.Physics.Arcade.StaticGroup,
-    object: Phaser.Types.Tilemaps.TiledObject,
-    key: string,
-    tilesetName: string,
-  ) {
-    const firstgid = this.map.getTileset(tilesetName)?.firstgid
-    const actualX = object.x! + object.width! * 0.5
-    const actualY = object.y! - object.height! * 0.5
-    const obj = group
-      .get(actualX, actualY, key, object.gid! - firstgid!)
-      .setDepth(actualY)
-    return obj
+    // interiorTop Layer
+    const interiorTopLayer = this.map.createLayer('InteriorTop', Office!)
+
+    // chairToUp Layer
+    const chairToUp = this.physics.add.staticGroup()
+    const chairToUpLayer = this.map.getObjectLayer('ChairToUp')
+    chairToUpLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('chair')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = chairToUp.get(
+        actualX,
+        actualY,
+        'chair',
+        object.gid! - firstgid!,
+      )
+      return obj
+    })
+
+    // 플레이어와 물체 간의 충돌처리
+    if (this.player) {
+      this.physics.add.collider(this.player, secretary)
+      this.physics.add.collider(this.player, table)
+      this.physics.add.collider(this.player, interiorOnCollide)
+    }
+
+    // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
+    wallLayer?.setCollisionByProperty({ collide: true })
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
