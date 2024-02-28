@@ -18,7 +18,7 @@ export default class Player {
     this.avatar = this.scene.physics.add.sprite(x, y, this.avatarTexture)
     // 플레이어 랜더시 애니메이션 실행
     this.avatar.anims.play(`${this.avatarTexture}_stand_down`, true)
-    this.avatar.setSize(32, 32)
+    this.avatar.setSize(32, 1)
     // 닉네임 변수 설정
     this.nickname = this.scene.add
       .text(this.avatar.x, this.avatar.y - 35, '')
@@ -26,7 +26,9 @@ export default class Player {
       .setColor('#000000')
       .setOrigin(0.5)
     // 채팅 변수 설정
-    this.chatBox = this.scene.add.container(this.avatar.x, this.avatar.y)
+    this.chatBox = this.scene.add
+      .container(this.avatar.x, this.avatar.y)
+      .setDepth(1000)
   }
   // 닉네임 생성
   setNickname(nickname: string) {
@@ -35,6 +37,7 @@ export default class Player {
       .setFontSize(12)
       .setColor('#000000')
       .setOrigin(0.5)
+      .setDepth(1000)
   }
   // 채팅 생성
   updateChat(content: string) {

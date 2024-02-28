@@ -54,11 +54,9 @@ export default class Game extends Phaser.Scene {
     )
     const Office = this.map.addTilesetImage('office', 'office')
     const Classroom = this.map.addTilesetImage('classroom', 'classroom')
-    // Ground Layer
-    this.map.createLayer('Ground', FloorAndWall!)
-    // Wall Layer
-    const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
+    // Ground Layer
+    const groundLayer = this.map.createLayer('Ground', FloorAndWall!)
     // Secretary Layer
     const secretary = this.physics.add.staticGroup({ classType: Secretary })
     const secretaryLayer = this.map.getObjectLayer('Secretary')
@@ -91,12 +89,6 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
-    // interior Layer
-    const interiorLayer = this.map.createLayer('Interior', [
-      Office!,
-      Classroom!,
-    ])
-
     // interiorOnCollide Layer
     const interiorOnCollide = this.physics.add.staticGroup()
     const interiorOnCollideLayer = this.map.getObjectLayer('InteriorOnCollide')
@@ -113,28 +105,21 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
-    // Table Layer
-    const table = this.physics.add.staticGroup()
-    const tableLayer = this.map.getObjectLayer('Table')
-    tableLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('office')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = table.get(actualX, actualY, 'office', object.gid! - firstgid!)
-      return obj
-    })
-
-    // 애니메이션 추가
-    createAvatarAnims(this.anims)
     // 플레이어 생성
+    createAvatarAnims(this.anims)
     this.player = new Player(this, 500, 150, 'conference')
     this.player.setNickname('player')
-    this.physics.add.collider(wallLayer!, this.player.avatar)
 
-    // interiorTop Layer
-    const interiorTopLayer = this.map.createLayer('InteriorTop', Office!)
+    // Wall Layer
+    const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
-    // chairToUp Layer
+    // interior Layer
+    const interiorLayer = this.map.createLayer('Interior', [
+      Office!,
+      Classroom!,
+    ])
+
+    // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup()
     const chairToUpLayer = this.map.getObjectLayer('ChairToUp')
     chairToUpLayer?.objects.forEach((object) => {
@@ -150,15 +135,23 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
+    // Top Layer
+    const topLayer = this.map.createLayer('Top', Office!)
+
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
       this.physics.add.collider(this.player.avatar, secretary)
-      this.physics.add.collider(this.player.avatar, table)
       this.physics.add.collider(this.player.avatar, interiorOnCollide)
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
+    this.physics.add.collider(groundLayer!, this.player.avatar)
+    this.physics.add.collider(wallLayer!, this.player.avatar)
+    this.physics.add.collider(topLayer!, this.player.avatar)
+    groundLayer?.setCollisionByProperty({ collide: true })
     wallLayer?.setCollisionByProperty({ collide: true })
+    
+    topLayer?.setCollisionByProperty({ collide: true })
 
     this.physics.add.overlap(
       this.player.avatar,

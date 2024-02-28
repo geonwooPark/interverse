@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="339">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="412">
  <editorsettings>
   <export target="interverse.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="office" tilewidth="32" tileheight="32" tilecount="848" columns="16">
   <image source="moderninteriors-win/interverse/office.png" width="512" height="1696"/>
+  <tile id="11">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="65">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="66">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="67">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="849" name="floorAndWall" tilewidth="32" tileheight="32" tilecount="3400" columns="34">
   <image source="moderninteriors-win/interverse/floorAndWall.png" width="1088" height="3200"/>
@@ -175,7 +205,7 @@
   </tile>
   <tile id="107">
    <properties>
-    <property name="collide" type="bool" value="true"/>
+    <property name="collide" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="108">
@@ -343,6 +373,41 @@
     <property name="collide" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="2245">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2246">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2247">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2248">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2252">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2253">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2254">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
   <tile id="3027">
    <properties>
     <property name="collide" type="bool" value="true"/>
@@ -378,6 +443,41 @@
     <property name="collide" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="3061">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3062">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3063">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3064">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3068">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3069">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3070">
+   <properties>
+    <property name="collide" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="4249" name="classroom" tilewidth="32" tileheight="32" tilecount="544" columns="16">
   <image source="moderninteriors-win/interverse/classroom.png" width="512" height="1088"/>
@@ -388,52 +488,45 @@
  <layer id="1" name="Ground" width="25" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,3911,3911,3911,3911,3911,3911,3911,3911,3911,0,3095,3095,3095,3095,3095,3095,3095,3095,3095,3095,3095,3095,0,
-0,0,2052,2053,2053,2053,2053,2053,2053,2053,2053,0,2652,2653,2653,2653,2653,2653,2653,2653,2653,2653,2653,2653,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,2088,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,0,0,2087,2087,0,0,0,0,0,0,0,0,2687,2687,0,0,0,0,0,0,0,0,0,
-0,0,3911,3919,2086,2087,3917,3911,3911,3911,3911,0,3102,3103,2686,2687,3101,3102,3102,3102,3102,3102,3102,3102,0,
-0,0,2052,2053,2054,2087,2053,2053,2053,2053,2053,0,2652,2653,2654,2687,2653,2653,2653,2653,2653,2653,2653,2653,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,2086,2087,2087,2087,2087,2087,2087,2087,2087,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
- <layer id="2" name="Wall" width="25" height="20" visible="0">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,925,3877,3877,3877,3877,3877,3877,3877,3877,3877,895,3061,3061,3061,3061,3061,3061,3061,3061,3061,3061,3061,3061,927,
-0,959,0,0,0,0,0,0,0,0,0,3879,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,3913,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,956,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,3877,3878,0,0,3876,3877,3877,3877,3877,929,3061,3062,0,0,3060,3061,3061,3061,3061,3061,3061,3061,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
-0,959,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,961,
+0,959,3911,3911,3911,3911,3911,3911,3911,3911,3911,3879,3095,3095,3095,3095,3095,3095,3095,3095,3095,3095,3095,3095,961,
+0,959,1984,1985,1985,1985,1985,1985,1985,1985,1985,3913,2652,2653,2653,2653,2653,2653,2653,2653,2653,2653,2653,2653,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,2020,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,0,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,0,0,2019,2019,0,0,0,0,0,929,0,0,2687,2687,0,0,0,0,0,0,0,0,961,
+0,959,3918,3919,2018,2019,3917,3918,3918,3918,3918,929,3102,3103,2686,2687,3101,3102,3102,3102,3102,3102,3102,3102,961,
+0,959,1984,1985,1986,2019,1985,1985,1985,1985,1985,929,2652,2653,2654,2687,2653,2653,2653,2653,2653,2653,2653,2653,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
+0,959,2018,2019,2019,2019,2019,2019,2019,2019,2019,929,2686,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,2687,961,
 0,993,994,994,994,994,994,994,994,994,994,991,994,994,994,994,994,994,994,994,994,994,994,994,995,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="ChairToDown" visible="0">
+ <objectgroup id="11" name="Secretary">
+  <object id="106" gid="4420" x="64" y="96" width="32" height="32"/>
+  <object id="107" gid="4421" x="96" y="96" width="32" height="32"/>
+  <object id="112" gid="4422" x="128" y="96" width="32" height="32"/>
+  <object id="120" gid="4423" x="160" y="96" width="32" height="32"/>
+  <object id="335" gid="4436" x="64" y="128" width="32" height="32"/>
+  <object id="336" gid="4437" x="96" y="128" width="32" height="32"/>
+  <object id="337" gid="4438" x="128" y="128" width="32" height="32"/>
+  <object id="338" gid="4439" x="160" y="128" width="32" height="32"/>
+  <object id="405" gid="4452" x="64" y="160" width="32" height="32"/>
+  <object id="406" gid="4453" x="96" y="160" width="32" height="32"/>
+  <object id="407" gid="4454" x="128" y="160" width="32" height="32"/>
+  <object id="408" gid="4455" x="160" y="160" width="32" height="32"/>
+  <object id="409" gid="4456" x="192" y="160" width="32" height="32"/>
+  <object id="410" gid="4440" x="192" y="128" width="32" height="32"/>
+  <object id="411" gid="4424" x="192" y="96" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="7" name="ChairToDown">
   <object id="231" gid="4793" x="576" y="96" width="32" height="32"/>
   <object id="232" gid="4793" x="672" y="96" width="32" height="32"/>
   <object id="233" gid="4799" x="576" y="128" width="32" height="32"/>
@@ -453,93 +546,107 @@
   <object id="247" gid="4802" x="544" y="416" width="32" height="32"/>
   <object id="248" gid="4802" x="608" y="416" width="32" height="32"/>
  </objectgroup>
- <layer id="3" name="Interior" width="25" height="20">
+ <objectgroup id="10" name="InteriorOnCollide">
+  <object id="347" gid="151" x="64" y="320" width="32" height="32"/>
+  <object id="348" gid="285" x="480" y="128" width="32" height="32"/>
+  <object id="349" gid="231" x="512" y="128" width="32" height="32"/>
+  <object id="350" gid="231" x="736" y="320" width="32" height="32"/>
+  <object id="351" gid="231" x="320" y="128" width="32" height="32"/>
+  <object id="352" gid="232" x="672" y="320" width="32" height="32"/>
+  <object id="353" gid="233" x="704" y="320" width="32" height="32"/>
+  <object id="354" gid="232" x="224" y="320" width="32" height="32"/>
+  <object id="355" gid="233" x="256" y="320" width="32" height="32"/>
+  <object id="356" gid="281" x="320" y="320" width="32" height="32"/>
+  <object id="357" gid="280" x="288" y="320" width="32" height="32"/>
+  <object id="361" gid="82" x="448" y="448" width="32" height="32"/>
+  <object id="362" gid="83" x="480" y="448" width="32" height="32"/>
+  <object id="363" gid="83" x="512" y="448" width="32" height="32"/>
+  <object id="364" gid="83" x="544" y="448" width="32" height="32"/>
+  <object id="365" gid="83" x="576" y="448" width="32" height="32"/>
+  <object id="366" gid="83" x="608" y="448" width="32" height="32"/>
+  <object id="367" gid="84" x="640" y="448" width="32" height="32"/>
+  <object id="368" gid="98" x="448" y="480" width="32" height="32"/>
+  <object id="369" gid="99" x="480" y="480" width="32" height="32"/>
+  <object id="370" gid="99" x="512" y="480" width="32" height="32"/>
+  <object id="371" gid="99" x="544" y="480" width="32" height="32"/>
+  <object id="372" gid="99" x="608" y="480" width="32" height="32"/>
+  <object id="373" gid="99" x="608" y="480" width="32" height="32"/>
+  <object id="374" gid="99" x="576" y="480" width="32" height="32"/>
+  <object id="375" gid="100" x="640" y="480" width="32" height="32"/>
+  <object id="378" gid="358" x="160" y="480" width="32" height="32"/>
+  <object id="387" gid="29" x="128" y="480" width="32" height="32"/>
+  <object id="388" gid="29" x="160" y="480" width="32" height="32"/>
+  <object id="389" gid="29" x="192" y="480" width="32" height="32"/>
+  <object id="390" gid="30" x="224" y="480" width="32" height="32"/>
+  <object id="391" gid="28" x="96" y="480" width="32" height="32"/>
+  <object id="392" gid="44" x="96" y="512" width="32" height="32"/>
+  <object id="393" gid="45" x="128" y="512" width="32" height="32"/>
+  <object id="394" gid="45" x="160" y="512" width="32" height="32"/>
+  <object id="395" gid="45" x="192" y="512" width="32" height="32"/>
+  <object id="396" gid="46" x="224" y="512" width="32" height="32"/>
+  <object id="402" gid="311" x="256" y="128" width="32" height="32"/>
+  <object id="403" gid="312" x="288" y="128" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="15" name="Object Layer 5"/>
+ <layer id="2" name="Wall" width="25" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,4424,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,4440,0,375,376,231,0,0,0,0,285,231,0,0,0,0,0,0,0,0,
-0,0,4452,4453,4454,4455,4456,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,234,235,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,250,251,0,0,0,0,0,0,
-0,0,151,0,0,0,0,232,233,280,281,0,0,0,0,0,0,0,0,0,0,232,233,231,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,956,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,929,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,3877,3878,0,0,3876,3877,3877,3877,3877,0,3061,3062,0,0,3060,3061,3061,3061,3061,3061,3061,3061,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,98,99,99,99,99,99,100,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,375,374,374,374,376,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="11" name="Secretary">
-  <object id="106" gid="4420" x="64" y="96" width="32" height="32"/>
-  <object id="107" gid="4421" x="96" y="96" width="32" height="32"/>
-  <object id="112" gid="4422" x="128" y="96" width="32" height="32"/>
-  <object id="120" gid="4423" x="160" y="96" width="32" height="32"/>
-  <object id="335" gid="4436" x="64" y="128" width="32" height="32"/>
-  <object id="336" gid="4437" x="96" y="128" width="32" height="32"/>
-  <object id="337" gid="4438" x="128" y="128" width="32" height="32"/>
-  <object id="338" gid="4439" x="160" y="128" width="32" height="32"/>
+ <layer id="3" name="Interior" width="25" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,624,199,0,0,0,0,253,199,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,703,704,215,0,0,0,0,269,215,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,119,0,0,0,0,200,201,248,249,0,0,0,0,0,0,234,235,0,0,200,201,199,0,
+0,0,135,0,0,0,0,216,217,264,265,0,0,0,0,0,0,250,251,0,0,216,217,215,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,242,462,463,464,348,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,478,479,480,364,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,167,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="ChairToUp">
+  <object id="249" gid="4797" x="480" y="480" width="32" height="32"/>
+  <object id="251" gid="4797" x="608" y="480" width="32" height="32"/>
+  <object id="252" gid="4803" x="608" y="512" width="32" height="32"/>
+  <object id="253" gid="4803" x="544" y="512" width="32" height="32"/>
+  <object id="254" gid="4803" x="480" y="512" width="32" height="32"/>
+  <object id="264" gid="4797" x="544" y="480" width="32" height="32"/>
+  <object id="400" gid="4797" x="160" y="512" width="32" height="32"/>
+  <object id="401" gid="4803" x="160" y="544" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="5" name="Table" visible="0">
-  <object id="18" gid="83" x="480" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="19" gid="83" x="512" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="20" gid="83" x="544" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="21" gid="83" x="576" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="22" gid="83" x="608" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="23" gid="84" x="640" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="24" gid="82" x="448" y="448" width="32" height="32">
-   <properties>
-    <property name="collide" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="33" gid="51" x="103" y="526" width="32" height="32"/>
-  <object id="34" gid="51" x="128" y="512" width="32" height="32"/>
-  <object id="35" gid="51" x="102" y="540" width="32" height="32"/>
-  <object id="36" gid="51" x="101" y="527" width="32" height="32"/>
-  <object id="37" gid="51" x="107" y="544" width="32" height="32"/>
-  <object id="38" gid="51" x="98" y="523" width="32" height="32"/>
-  <object id="39" gid="51" x="99" y="526" width="32" height="32"/>
-  <object id="40" gid="51" x="99" y="526" width="32" height="32"/>
-  <object id="41" gid="51" x="101" y="527" width="32" height="32"/>
-  <object id="42" gid="51" x="101" y="527" width="32" height="32"/>
-  <object id="259" gid="359" x="96" y="512" width="32" height="32"/>
-  <object id="260" gid="360" x="224" y="512" width="32" height="32"/>
-  <object id="261" gid="358" x="128" y="512" width="32" height="32"/>
-  <object id="262" gid="358" x="160" y="512" width="32" height="32"/>
-  <object id="263" gid="358" x="192" y="512" width="32" height="32"/>
- </objectgroup>
- <layer id="12" name="InteriorTop" width="25" height="20" visible="0">
+ <layer id="12" name="Top" width="25" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -554,51 +661,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,66,67,67,67,67,67,68,0,0,0,0,
+0,0,0,12,13,13,13,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,425,426,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,441,442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="ChairToUp" visible="0">
-  <object id="249" gid="4797" x="480" y="480" width="32" height="32"/>
-  <object id="251" gid="4797" x="608" y="480" width="32" height="32"/>
-  <object id="252" gid="4803" x="608" y="512" width="32" height="32"/>
-  <object id="253" gid="4803" x="544" y="512" width="32" height="32"/>
-  <object id="254" gid="4803" x="480" y="512" width="32" height="32"/>
-  <object id="256" gid="4798" x="160" y="512" width="32" height="32"/>
-  <object id="258" gid="4804" x="160" y="544" width="32" height="32"/>
-  <object id="264" gid="4797" x="544" y="480" width="32" height="32"/>
- </objectgroup>
- <objectgroup id="10" name="InteriorOnCollide">
-  <object id="279" gid="624" x="288" y="64" width="32" height="32"/>
-  <object id="280" gid="639" x="256" y="96" width="32" height="32"/>
-  <object id="281" gid="640" x="288" y="96" width="32" height="32"/>
-  <object id="282" gid="269" x="480" y="96" width="32" height="32"/>
-  <object id="283" gid="253" x="480" y="64" width="32" height="32"/>
-  <object id="284" gid="199" x="512" y="64" width="32" height="32"/>
-  <object id="285" gid="215" x="512" y="96" width="32" height="32"/>
-  <object id="286" gid="199" x="736" y="256" width="32" height="32"/>
-  <object id="287" gid="215" x="736" y="288" width="32" height="32"/>
-  <object id="288" gid="200" x="672" y="256" width="32" height="32"/>
-  <object id="289" gid="201" x="704" y="256" width="32" height="32"/>
-  <object id="290" gid="216" x="672" y="288" width="32" height="32"/>
-  <object id="291" gid="217" x="704" y="288" width="32" height="32"/>
-  <object id="297" gid="199" x="320" y="64" width="32" height="32"/>
-  <object id="298" gid="215" x="320" y="96" width="32" height="32"/>
-  <object id="299" gid="119" x="64" y="256" width="32" height="32"/>
-  <object id="300" gid="135" x="64" y="288" width="32" height="32"/>
-  <object id="301" gid="200" x="224" y="256" width="32" height="32"/>
-  <object id="302" gid="201" x="256" y="256" width="32" height="32"/>
-  <object id="303" gid="201" x="320" y="256" width="32" height="32"/>
-  <object id="304" gid="201" x="320" y="256" width="32" height="32"/>
-  <object id="305" gid="216" x="224" y="288" width="32" height="32"/>
-  <object id="306" gid="217" x="256" y="288" width="32" height="32"/>
-  <object id="309" gid="248" x="288" y="256" width="32" height="32"/>
-  <object id="310" gid="264" x="288" y="288" width="32" height="32"/>
-  <object id="311" gid="265" x="320" y="288" width="32" height="32"/>
- </objectgroup>
 </map>
