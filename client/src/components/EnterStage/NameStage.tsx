@@ -31,7 +31,7 @@ function NameStage({ setStage }: NameStageProps) {
   }
 
   return (
-    <div className="h-fit w-[240px] rounded-md bg-white p-4">
+    <div className="h-fit w-[300px] rounded-md bg-white p-4">
       <p className="mb-4">닉네임을 입력해주세요</p>
       <input
         type="text"
