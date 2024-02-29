@@ -8,6 +8,7 @@ import NameStage from '../components/EnterStage/NameStage'
 import { getCookie } from '../utils/cookie'
 import { useParams, useSearchParams } from 'react-router-dom'
 import RoomTitle from '../components/RoomTitle'
+import ButtonContainer from '../components/ShareButton'
 
 function Room() {
   const params = useParams()
@@ -39,6 +40,7 @@ function Room() {
       {adminCookie?.roomNum !== params.roomId &&
         userCookie?.roomNum !== params.roomId &&
         stage < 2 && <StageContainer>{enterStage[stage].elem}</StageContainer>}
+      <ButtonContainer />
       <Chat />
     </div>
   )
