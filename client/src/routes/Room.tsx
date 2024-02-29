@@ -7,11 +7,13 @@ import PasswordStage from '../components/EnterStage/PasswordStage'
 import NameStage from '../components/EnterStage/NameStage'
 import { getCookie } from '../utils/cookie'
 import { useParams, useSearchParams } from 'react-router-dom'
+import RoomTitle from '../components/RoomTitle'
+import ButtonContainer from '../components/ButtonContainer'
 
 function Room() {
   const params = useParams()
   const [searchParams] = useSearchParams()
-  const title = searchParams.get('title')
+  const title = searchParams.get('title') as string
   const hashedPassword = decodeURIComponent(searchParams.get('hp') as string)
 
   const [stage, setStage] = useState(0)
@@ -34,10 +36,11 @@ function Room() {
 
   return (
     <div>
-      <span>{title}</span>
+      <RoomTitle title={title} />
       {adminCookie?.roomNum !== params.roomId &&
         userCookie?.roomNum !== params.roomId &&
         stage < 2 && <StageContainer>{enterStage[stage].elem}</StageContainer>}
+      <ButtonContainer />
       <Chat />
     </div>
   )

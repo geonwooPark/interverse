@@ -74,7 +74,7 @@ function Enter() {
           />
           <button
             type="submit"
-            className="h-[50px] w-full rounded-md bg-purple-600 text-white hover:bg-purple-700"
+            className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
           >
             방 개설하기
           </button>

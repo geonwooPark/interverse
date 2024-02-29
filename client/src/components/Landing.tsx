@@ -23,7 +23,7 @@ function Start() {
         </div>
         <button
           onClick={() => navigate(adminCookie ? '/my-room' : '/enter')}
-          className="h-[50px] w-full rounded-md bg-purple-600 text-white hover:bg-purple-700"
+          className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
         >
           시작하기
         </button>

@@ -27,7 +27,7 @@ function Chat() {
   }
   return (
     <div className="fixed bottom-5 flex w-full justify-center">
-      <div className="flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-[rgba(255,255,255,0.3)] text-sm shadow-md">
+      <div className="flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-white/30 text-sm shadow-md">
         <ul className="hide-scroll overflow-y-auto p-3">
           {chats.map((chat, i) => (
             <li key={i} className="space-x-2">
