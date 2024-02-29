@@ -82,7 +82,10 @@ export default class Player {
     this.chatBox.removeAll(true)
   }
   // 플레이어,닉네임 및 채팅 이동
-  update(cursorsKeys: any, keySpace: Phaser.Input.Keyboard.Key) {
+  update(
+    cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
+    keySpace: Phaser.Input.Keyboard.Key,
+  ) {
     const moveSpeed = 200
     let vx = 0
     let vy = 0
@@ -93,13 +96,13 @@ export default class Player {
         if (cursorsKeys?.left.isDown) {
           vx -= moveSpeed
           this.avatar.anims.play('conference_run_left', true)
-        } else if (cursorsKeys?.right.isDown) {
+        } else if (cursorsKeys.right.isDown) {
           vx += moveSpeed
           this.avatar.anims.play('conference_run_right', true)
-        } else if (cursorsKeys?.up.isDown) {
+        } else if (cursorsKeys.up.isDown) {
           vy -= moveSpeed
           this.avatar.anims.play('conference_run_up', true)
-        } else if (cursorsKeys?.down.isDown) {
+        } else if (cursorsKeys.down.isDown) {
           vy += moveSpeed
           this.avatar.anims.play('conference_run_down', true)
         } else {
@@ -141,7 +144,12 @@ export default class Player {
         break
       case 'sit':
         // 의자에서 일어나기
-        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+        if (
+          cursorsKeys.left.isDown ||
+          cursorsKeys.right.isDown ||
+          cursorsKeys.up.isDown ||
+          cursorsKeys.down.isDown
+        ) {
           const animParts = this.avatar.anims.currentAnim.key.split('_')
           animParts[1] = 'stand'
           this.avatar.anims.play(animParts.join('_'), true)
