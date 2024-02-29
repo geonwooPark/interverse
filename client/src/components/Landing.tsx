@@ -1,8 +1,10 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getCookie } from '../utils/cookie'
 
 function Start() {
   const navigate = useNavigate()
+  const adminCookie = getCookie('interverse_admin')
+
   return (
     <div className="grid w-[720px] grid-cols-2 gap-4 rounded-3xl bg-gray-300 p-8">
       <div className="aspect-square rounded-2xl bg-black">
@@ -20,7 +22,7 @@ function Start() {
           </p>
         </div>
         <button
-          onClick={() => navigate('/enter')}
+          onClick={() => navigate(adminCookie ? '/my-room' : '/enter')}
           className="h-[50px] w-full rounded-md bg-purple-600 text-white hover:bg-purple-700"
         >
           시작하기
