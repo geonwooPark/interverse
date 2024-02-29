@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="412">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="427">
  <editorsettings>
   <export target="interverse.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="office" tilewidth="32" tileheight="32" tilecount="848" columns="16">
-  <image source="moderninteriors-win/interverse/office.png" width="512" height="1696"/>
+  <image source="office.png" width="512" height="1696"/>
   <tile id="11">
    <properties>
     <property name="collide" type="bool" value="true"/>
@@ -37,7 +37,7 @@
   </tile>
  </tileset>
  <tileset firstgid="849" name="floorAndWall" tilewidth="32" tileheight="32" tilecount="3400" columns="34">
-  <image source="moderninteriors-win/interverse/floorAndWall.png" width="1088" height="3200"/>
+  <image source="floorAndWall.png" width="1088" height="3200"/>
   <tile id="36">
    <properties>
     <property name="collide" type="bool" value="true"/>
@@ -480,10 +480,10 @@
   </tile>
  </tileset>
  <tileset firstgid="4249" name="classroom" tilewidth="32" tileheight="32" tilecount="544" columns="16">
-  <image source="moderninteriors-win/interverse/classroom.png" width="512" height="1088"/>
+  <image source="classroom.png" width="512" height="1088"/>
  </tileset>
- <tileset firstgid="4793" name="chair" tilewidth="32" tileheight="32" tilecount="12" columns="6">
-  <image source="moderninteriors-win/interverse/chair.png" width="192" height="64"/>
+ <tileset firstgid="4793" name="chair" tilewidth="32" tileheight="64" tilecount="6" columns="6">
+  <image source="chair.png" width="192" height="64"/>
  </tileset>
  <layer id="1" name="Ground" width="25" height="20">
   <data encoding="csv">
@@ -520,24 +520,51 @@
   <object id="338" gid="4439" x="160" y="128" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="7" name="ChairToDown">
-  <object id="231" gid="4793" x="576" y="96" width="32" height="32"/>
-  <object id="232" gid="4793" x="672" y="96" width="32" height="32"/>
-  <object id="233" gid="4799" x="576" y="128" width="32" height="32"/>
-  <object id="234" gid="4799" x="672" y="128" width="32" height="32"/>
-  <object id="235" gid="4800" x="608" y="128" width="32" height="32"/>
-  <object id="236" gid="4800" x="704" y="128" width="32" height="32"/>
-  <object id="237" gid="4801" x="736" y="128" width="32" height="32"/>
-  <object id="238" gid="4801" x="640" y="128" width="32" height="32"/>
-  <object id="239" gid="4794" x="608" y="96" width="32" height="32"/>
-  <object id="240" gid="4794" x="704" y="96" width="32" height="32"/>
-  <object id="241" gid="4795" x="640" y="96" width="32" height="32"/>
-  <object id="242" gid="4795" x="736" y="96" width="32" height="32"/>
-  <object id="243" gid="4796" x="480" y="384" width="32" height="32"/>
-  <object id="244" gid="4796" x="544" y="384" width="32" height="32"/>
-  <object id="245" gid="4796" x="608" y="384" width="32" height="32"/>
-  <object id="246" gid="4802" x="480" y="416" width="32" height="32"/>
-  <object id="247" gid="4802" x="544" y="416" width="32" height="32"/>
-  <object id="248" gid="4802" x="608" y="416" width="32" height="32"/>
+  <object id="414" gid="4795" x="736" y="128" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="415" gid="4794" x="704" y="128" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="416" gid="4793" x="672" y="128" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="417" gid="4795" x="640" y="128" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="418" gid="4794" x="608" y="128" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="419" gid="4793" x="576" y="128" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="420" gid="4796" x="608" y="416" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="421" gid="4796" x="544" y="416" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
+  <object id="422" gid="4796" x="480" y="416" width="32" height="64">
+   <properties>
+    <property name="heading" value="down"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="10" name="InteriorOnCollide">
   <object id="347" gid="151" x="64" y="320" width="32" height="32"/>
@@ -630,14 +657,26 @@
 </data>
  </layer>
  <objectgroup id="6" name="ChairToUp">
-  <object id="249" gid="4797" x="480" y="480" width="32" height="32"/>
-  <object id="251" gid="4797" x="608" y="480" width="32" height="32"/>
-  <object id="252" gid="4803" x="608" y="512" width="32" height="32"/>
-  <object id="253" gid="4803" x="544" y="512" width="32" height="32"/>
-  <object id="254" gid="4803" x="480" y="512" width="32" height="32"/>
-  <object id="264" gid="4797" x="544" y="480" width="32" height="32"/>
-  <object id="400" gid="4797" x="160" y="512" width="32" height="32"/>
-  <object id="401" gid="4803" x="160" y="544" width="32" height="32"/>
+  <object id="423" gid="4797" x="480" y="512" width="32" height="64">
+   <properties>
+    <property name="heading" value="up"/>
+   </properties>
+  </object>
+  <object id="424" gid="4797" x="544" y="512" width="32" height="64">
+   <properties>
+    <property name="heading" value="up"/>
+   </properties>
+  </object>
+  <object id="425" gid="4797" x="608" y="512" width="32" height="64">
+   <properties>
+    <property name="heading" value="up"/>
+   </properties>
+  </object>
+  <object id="426" gid="4797" x="160" y="544" width="32" height="64">
+   <properties>
+    <property name="heading" value="up"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="12" name="Top" width="25" height="20">
   <data encoding="csv">
