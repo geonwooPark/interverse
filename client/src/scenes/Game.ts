@@ -6,6 +6,8 @@ import Secretary from '../items/Secretary'
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
   player: any
+  cursur?: Phaser.Types.Input.Keyboard.CursorKeys
+  keySpace?: Phaser.Input.Keyboard.Key
 
   constructor() {
     // Scene Key
@@ -42,6 +44,11 @@ export default class Game extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 48,
     })
+  }
+
+  setupKeys() {
+    this.cursur = this.input.keyboard?.createCursorKeys()
+    this.keySpace = this.input.keyboard?.addKey('space')
   }
 
   // Scene이 로드될 때 한번 호출, 게임 오브젝트 배치
@@ -167,7 +174,7 @@ export default class Game extends Phaser.Scene {
     )
   }
   // 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수
-  handlePlayerOverlap(player: any, interactionItem: any) {
+  private handlePlayerOverlap(player: any, interactionItem: any) {
     if (this.player.selectedInteractionItem) return
     this.player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
@@ -175,8 +182,8 @@ export default class Game extends Phaser.Scene {
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
-    const cursorsKeys = this.input.keyboard?.createCursorKeys()
-    const KeyE = this.input.keyboard?.addKey('e')
-    this.player.update(cursorsKeys, KeyE)
+    if (this.cursur && this.keySpace) {
+      this.player.update(this.cursur, this.keySpace)
+    }
   }
 }

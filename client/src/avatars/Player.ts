@@ -82,7 +82,7 @@ export default class Player {
     this.chatBox.removeAll(true)
   }
   // 플레이어,닉네임 및 채팅 이동
-  update(cursorsKeys: any, KeyE: Phaser.Input.Keyboard.Key) {
+  update(cursorsKeys: any, keySpace: Phaser.Input.Keyboard.Key) {
     const moveSpeed = 200
     let vx = 0
     let vy = 0
@@ -118,7 +118,7 @@ export default class Player {
         this.chatBox.y = this.avatar.y
         // 의자에 앉기
         if (
-          Phaser.Input.Keyboard.JustDown(KeyE) &&
+          Phaser.Input.Keyboard.JustDown(keySpace) &&
           this.selectedInteractionItem?.itemType === 'chair'
         ) {
           const chiar = this.selectedInteractionItem as Chair
@@ -141,7 +141,7 @@ export default class Player {
         break
       case 'sit':
         // 의자에서 일어나기
-        if (Phaser.Input.Keyboard.JustDown(KeyE)) {
+        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
           const animParts = this.avatar.anims.currentAnim.key.split('_')
           animParts[1] = 'stand'
           this.avatar.anims.play(animParts.join('_'), true)
