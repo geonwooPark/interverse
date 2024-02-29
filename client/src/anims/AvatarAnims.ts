@@ -60,4 +60,32 @@ export const createAvatarAnims = (
     frameRate: animsFrameRate,
     repeat: -1,
   })
+
+  anims.create({
+    key: 'conference_sit_right',
+    frames: anims.generateFrameNumbers('conference', { start: 48, end: 48 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'conference_sit_left',
+    frames: anims.generateFrameNumbers('conference', { start: 49, end: 49 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'conference_sit_down',
+    frames: anims.generateFrameNumbers('conference', { start: 50, end: 50 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'conference_sit_up',
+    frames: anims.generateFrameNumbers('conference', { start: 51, end: 51 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
 }

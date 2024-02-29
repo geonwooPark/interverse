@@ -1,6 +1,7 @@
 import Item from './Item'
 
-export default class Secretary extends Item {
+export default class Chair extends Item {
+  heading?: string
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -10,10 +11,10 @@ export default class Secretary extends Item {
   ) {
     super(scene, x, y, texture, frame)
 
-    this.itemType = 'secretary'
+    this.itemType = 'chair'
   }
 
   onInteractionBox() {
-    this.setInteractionBox('Press Key E ')
+    this.setInteractionBox('Press Key E')
   }
 }

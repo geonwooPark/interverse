@@ -1,4 +1,6 @@
 import '../PhaserGame'
+import Chat from '../components/Chat'
+
 import StageContainer from '../components/EnterStage/StageContainer'
 import { useState } from 'react'
 import PasswordStage from '../components/EnterStage/PasswordStage'
@@ -36,6 +38,7 @@ function Room() {
       {adminCookie?.roomNum !== params.roomId &&
         userCookie?.roomNum !== params.roomId &&
         stage < 2 && <StageContainer>{enterStage[stage].elem}</StageContainer>}
+      <Chat />
     </div>
   )
 }
