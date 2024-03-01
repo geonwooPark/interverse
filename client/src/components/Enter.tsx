@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import { setCookie } from '../utils/cookie'
 import { encrypt } from '../utils/crypto'
+import phaserGame from '../PhaserGame'
+import Preload from '../scenes/Preload'
 
 function Enter() {
   const navigate = useNavigate()
@@ -38,6 +40,8 @@ function Enter() {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })
     navigate(`/${roomNum}?title=${title}&hp=${hashedPassword}`)
+    // 게임 실행
+    // preload.startGame()
   }
 
   return (

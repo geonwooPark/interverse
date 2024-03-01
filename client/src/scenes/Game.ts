@@ -14,45 +14,13 @@ export default class Game extends Phaser.Scene {
     super('game')
   }
 
-  // Scene이 로드되기 전에 호출, 사용할 에셋을 로드
-  preload() {
-    // Tiled로 생성된 JSON 형식의 타입맵을 로드
-    this.load.tilemapTiledJSON('tilemap', 'assets/map/interverse.json')
-    // 스프라이트 시트 이미지 파일을 로드
-    this.load.spritesheet('floorAndWall', 'assets/builder/floorAndWall.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    })
-    this.load.spritesheet('office', 'assets/builder/office.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    })
-    this.load.spritesheet('classroom', 'assets/builder/classroom.png', {
-      frameWidth: 32,
-      frameHeight: 32,
-    })
-    this.load.spritesheet('chair', 'assets/builder/chair.png', {
-      frameWidth: 32,
-      frameHeight: 64,
-    })
-
-    this.load.spritesheet('adam', 'assets/character/adam.png', {
-      frameWidth: 48,
-      frameHeight: 96,
-    })
-    this.load.spritesheet('conference', 'assets/character/conference.png', {
-      frameWidth: 32,
-      frameHeight: 48,
-    })
-  }
-
   setupKeys() {
     this.cursur = this.input.keyboard?.createCursorKeys()
     this.keySpace = this.input.keyboard?.addKey('space')
   }
 
   // Scene이 로드될 때 한번 호출, 게임 오브젝트 배치
-  create() {
+  create(data: { nickName: string }) {
     // 타일맵 로드
     this.map = this.make.tilemap({ key: 'tilemap' })
     // 타일셋 이미지를 로드하여 타일맵에 추가
@@ -117,7 +85,7 @@ export default class Game extends Phaser.Scene {
     // 플레이어 생성
     createAvatarAnims(this.anims)
     this.player = new Player(this, 730, 160, 'conference')
-    this.player.setNickname('player')
+    this.player.setNickname(data.nickName)
 
     this.cameras.main.zoom = 1.5
     this.cameras.main.startFollow(this.player.avatar, true)
