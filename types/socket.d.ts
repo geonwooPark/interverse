@@ -1,6 +1,7 @@
 interface SocketData {
   msg: string
-  room: string
+  sender: string
+  roomNum: string
 }
 
 export interface ServerToClientEvents {
@@ -9,4 +10,5 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   clientMsg: (data: SocketData) => void
+  joinRoom: (roomNum: string) => void
 }

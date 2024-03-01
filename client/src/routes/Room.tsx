@@ -1,6 +1,5 @@
 import '../PhaserGame'
-import Chat from '../components/Chat'
-
+import Chat from '../components/Chat/Chat'
 import StageContainer from '../components/EnterStage/StageContainer'
 import { useEffect, useState } from 'react'
 import PasswordStage from '../components/EnterStage/PasswordStage'
@@ -11,8 +10,18 @@ import RoomTitle from '../components/RoomTitle'
 import ButtonContainer from '../components/ButtonContainer'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
+import { Socket, io } from 'socket.io-client'
+import {
+  ServerToClientEvents,
+  ClientToServerEvents,
+} from '../../../types/socket'
+
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+  'http://localhost:3000',
+)
 
 function Room() {
+  console.log('렌더링')
   const params = useParams()
   const [searchParams] = useSearchParams()
   const title = searchParams.get('title') as string
@@ -21,6 +30,15 @@ function Room() {
   const [stage, setStage] = useState(0)
   const adminCookie = getCookie('interverse_admin')
   const userCookie = getCookie('interverse_user')
+  const role = adminCookie?.roomNum === params.roomId ? 'admin' : 'user'
+
+  if (adminCookie?.roomNum === params.roomId) {
+    socket.emit('joinRoom', params.roomId as string)
+  }
+
+  if (userCookie?.roomNum === params.roomId) {
+    socket.emit('joinRoom', params.roomId as string)
+  }
 
   const enterStage = [
     {
@@ -44,11 +62,14 @@ function Room() {
   return (
     <div>
       <RoomTitle title={title} />
-      {adminCookie?.roomNum !== params.roomId &&
-        userCookie?.roomNum !== params.roomId &&
+      {userCookie?.roomNum !== params.roomId &&
+        adminCookie?.roomNum !== params.roomId &&
         stage < 2 && <StageContainer>{enterStage[stage].elem}</StageContainer>}
       <ButtonContainer />
-      <Chat />
+      <Chat
+        cookie={role === 'admin' ? adminCookie : userCookie}
+        socket={socket}
+      />
     </div>
   )
 }

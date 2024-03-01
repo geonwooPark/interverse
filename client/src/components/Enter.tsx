@@ -33,6 +33,7 @@ function Enter() {
       nickName,
       path: `/${roomNum}?title=${title}&hp=${hashedPassword}`,
     }
+
     setCookie('interverse_admin', JSON.stringify(adminCookie), {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })

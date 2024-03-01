@@ -25,13 +25,13 @@ function NameStage({ setStage }: NameStageProps) {
     }
 
     setCookie('interverse_user', JSON.stringify(userCookie), {
-      expires: new Date(Date.now() + 3 * 60 * 1000),
+      expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
     })
     setStage((prev) => prev + 1)
   }
 
   return (
-    <div className="h-fit w-[240px] rounded-md bg-white p-4">
+    <div className="h-fit w-[300px] rounded-md bg-white p-4">
       <p className="mb-4">닉네임을 입력해주세요</p>
       <input
         type="text"
