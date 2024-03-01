@@ -4,10 +4,12 @@ import Room from './routes/Room'
 import Landing from './components/Landing'
 import Enter from './components/Enter'
 import MyRoom from './components/MyRoom'
+import Modal from './components/Modals/Modal'
 
 function App() {
   return (
     <>
+      <Modal />
       <Router>
         <Routes>
           <Route path="/" element={<Home />}>

@@ -25,10 +25,15 @@ io.on(
       // io.sockets.emit('serverMsg', data)
       // 자신을 제외한 모든 사람에게 방송
       // socket.broadcast.emit('serverMsg', data)
+      if (data.roomNum === '') return
+      console.log(data.msg)
+      io.to(data.roomNum).emit('serverMsg', data)
+    })
 
-      if (data.room === '') return
-      socket.join(data.room)
-      io.to(data.room).emit('serverMsg', data)
+    socket.on('joinRoom', (roomNum: string) => {
+      if (roomNum === '') return
+      console.log(roomNum)
+      socket.join(roomNum)
     })
   },
 )

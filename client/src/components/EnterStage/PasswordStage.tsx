@@ -23,7 +23,7 @@ function PasswordStage({ setStage, hashedPassword }: PasswordStageProps) {
   }
 
   return (
-    <div className="h-fit w-[240px] rounded-md bg-white p-4">
+    <div className="h-fit w-[300px] rounded-md bg-white p-4">
       <div className="mb-4">비밀번호를 입력해주세요</div>
       <input
         type="password"
