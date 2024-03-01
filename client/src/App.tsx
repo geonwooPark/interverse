@@ -5,6 +5,7 @@ import Landing from './components/Landing'
 import Enter from './components/Enter'
 import MyRoom from './components/MyRoom'
 import Modal from './components/Modals/Modal'
+import Test from './routes/Test'
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             <Route path="/my-room" element={<MyRoom />} />
             <Route path="/enter" element={<Enter />} />
           </Route>
-          <Route path="/:roomId" element={<Room />} />
+          <Route path="/test/:roomId" element={<Test />} />
+          <Route path="/room/:roomId" element={<Room />} />
         </Routes>
       </Router>
     </>

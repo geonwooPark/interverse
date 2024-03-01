@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { setCookie } from '../../utils/cookie'
 
 interface NameStageProps {
@@ -8,6 +8,7 @@ interface NameStageProps {
 
 function NameStage({ setStage }: NameStageProps) {
   const params = useParams()
+  const navigate = useNavigate()
   const [value, setValue] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +21,7 @@ function NameStage({ setStage }: NameStageProps) {
     // 유저쿠키 설정 (3시간)
     const userCookie = {
       roomNum: params.roomId,
+      path: `/room/${params.roomId}?title=${params.title}}`,
       role: 'user',
       nickName: value,
     }
@@ -28,6 +30,7 @@ function NameStage({ setStage }: NameStageProps) {
       expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
     })
     setStage((prev) => prev + 1)
+    navigate(userCookie.path)
   }
 
   return (
