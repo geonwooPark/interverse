@@ -25,7 +25,7 @@ function NameStage({ setStage }: NameStageProps) {
     }
 
     setCookie('interverse_user', JSON.stringify(userCookie), {
-      expires: new Date(Date.now() + 3 * 60 * 1000),
+      expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
     })
     setStage((prev) => prev + 1)
   }
