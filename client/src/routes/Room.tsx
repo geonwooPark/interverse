@@ -24,27 +24,11 @@ function Room() {
   const params = useParams()
   const [searchParams] = useSearchParams()
   const title = searchParams.get('title') as string
-  const hashedPassword = decodeURIComponent(searchParams.get('hp') as string)
 
   const [preload, setPreload] = useState<Preload | null>(null)
-  const [stage, setStage] = useState(0)
   const adminCookie = getCookie('interverse_admin')
   const userCookie = getCookie('interverse_user')
   const role = adminCookie?.roomNum === params.roomId ? 'admin' : 'user'
-
-  const enterStage = [
-    {
-      id: 101,
-      elem: (
-        <PasswordStage setStage={setStage} hashedPassword={hashedPassword} />
-      ),
-    },
-
-    {
-      id: 102,
-      elem: <NameStage setStage={setStage} />,
-    },
-  ]
 
   useEffect(() => {
     setPreload(phaserGame.scene.keys.preload as Preload)
@@ -113,14 +97,11 @@ function Room() {
   return (
     <div>
       <RoomTitle title={title} />
-      {userCookie?.roomNum !== params.roomId &&
-        adminCookie?.roomNum !== params.roomId &&
-        stage < 2 && <StageContainer>{enterStage[stage].elem}</StageContainer>}
-      <ButtonContainer />
       <Chat
         cookie={role === 'admin' ? adminCookie : userCookie}
         socket={socket}
       />
+      <ButtonContainer />
     </div>
   )
 }

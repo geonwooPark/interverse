@@ -39,9 +39,7 @@ function Enter() {
     setCookie('interverse_admin', JSON.stringify(adminCookie), {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })
-    navigate(`/${roomNum}?title=${title}&hp=${hashedPassword}`)
-    // 게임 실행
-    // preload.startGame()
+    navigate(`/test/${roomNum}?title=${title}&?hp=${hashedPassword}`)
   }
 
   return (
