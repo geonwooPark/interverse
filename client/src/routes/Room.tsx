@@ -1,13 +1,15 @@
 import '../PhaserGame'
 import Chat from '../components/Chat/Chat'
 import StageContainer from '../components/EnterStage/StageContainer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PasswordStage from '../components/EnterStage/PasswordStage'
 import NameStage from '../components/EnterStage/NameStage'
 import { getCookie } from '../utils/cookie'
 import { useParams, useSearchParams } from 'react-router-dom'
 import RoomTitle from '../components/RoomTitle'
 import ButtonContainer from '../components/ButtonContainer'
+import phaserGame from '../PhaserGame'
+import Game from '../scenes/Game'
 import { Socket, io } from 'socket.io-client'
 import {
   ServerToClientEvents,
@@ -51,6 +53,11 @@ function Room() {
       elem: <NameStage setStage={setStage} />,
     },
   ]
+
+  useEffect(() => {
+    const game = phaserGame.scene.keys.game as Game
+    game.setupKeys()
+  }, [])
 
   return (
     <div>
