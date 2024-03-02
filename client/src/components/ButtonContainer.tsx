@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { changeModalContent } from '../store/features/modalContentSlice'
 import { closeModal, openModal } from '../store/features/modalDisplaySlice'
 import { useAppDispatch } from '../store/store'
@@ -6,7 +5,6 @@ import IconLink from '../svgs/IconLink.svg?react'
 import IconOff from '../svgs/IconOff.svg?react'
 
 function ButtonContainer() {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const onOffClick = () => {
@@ -15,7 +13,7 @@ function ButtonContainer() {
         title: '나가기',
         description: '정말 종료하시겠습니까?',
         action: () => {
-          navigate('/')
+          window.location.replace('/')
           dispatch(closeModal())
         },
         actionLabel: '종료',

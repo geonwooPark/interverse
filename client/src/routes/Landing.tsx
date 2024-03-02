@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { getCookie } from '../utils/cookie'
 
-function Start() {
+function Landing() {
   const navigate = useNavigate()
   const adminCookie = getCookie('interverse_admin')
 
@@ -22,7 +22,7 @@ function Start() {
           </p>
         </div>
         <button
-          onClick={() => navigate(adminCookie ? '/my-room' : '/enter')}
+          onClick={() => navigate(adminCookie ? '/my-room' : '/create-room')}
           className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
         >
           시작하기
@@ -32,4 +32,4 @@ function Start() {
   )
 }
 
-export default Start
+export default Landing

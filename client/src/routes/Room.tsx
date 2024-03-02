@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams,  } from 'react-router-dom'
 import { Socket, io } from 'socket.io-client'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
@@ -11,11 +11,12 @@ import NameStage from '../components/EnterStage/NameStage'
 import RoomTitle from '../components/RoomTitle'
 import ButtonContainer from '../components/ButtonContainer'
 import Alert from '../components/Alert/Alert'
-import { getCookie } from '../utils/cookie'
+import { getAuthCookie } from '../utils/cookie'
 import {
   ServerToClientEvents,
   ClientToServerEvents,
 } from '../../../types/socket'
+
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   'http://localhost:3000',
@@ -23,48 +24,26 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
 
 function Room() {
   const params = useParams()
-  const [searchParams] = useSearchParams()
-  const title = searchParams.get('title') as string
-  const hashedPassword = decodeURIComponent(searchParams.get('hp') as string)
+  const authCookie = getAuthCookie(params.roomId as string)
 
   const [preload, setPreload] = useState<Preload | null>(null)
-  const [stage, setStage] = useState(0)
-  const adminCookie = getCookie('interverse_admin')
-  const userCookie = getCookie('interverse_user')
-  const role = adminCookie?.roomNum === params.roomId ? 'admin' : 'user'
-
-  const enterStage = [
-    {
-      id: 101,
-      elem: (
-        <PasswordStage setStage={setStage} hashedPassword={hashedPassword} />
-      ),
-    },
-
-    {
-      id: 102,
-      elem: <NameStage setStage={setStage} />,
-    },
-  ]
 
   useEffect(() => {
+    if (!authCookie) return
     setPreload(phaserGame.scene.keys.preload as Preload)
   }, [])
 
   useEffect(() => {
+    if (!authCookie) return
     if (!preload) return
     // 방을 개설 후 입장 시
     if (preload && !preload.isPreloadComplete) {
-      if (adminCookie?.roomNum === params.roomId) {
+      if (authCookie) {
         // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
         socket.emit('joinRoom', params.roomId as string)
       }
 
-      if (userCookie?.roomNum === params.roomId) {
-        // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
-        socket.emit('joinRoom', params.roomId as string)
-      }
-      preload.startGame(adminCookie?.nickName || userCookie?.nickName || '')
+      preload.startGame(authCookie?.nickName || '')
 
       const game = phaserGame.scene.keys.game as Game
       game.setupKeys()
@@ -74,16 +53,12 @@ function Room() {
       .getScene('preload')
       .events.on('isPreloadComplete', (isLoading: boolean) => {
         if (isLoading) return
-        if (adminCookie?.roomNum === params.roomId) {
+        if (authCookie) {
           // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
           socket.emit('joinRoom', params.roomId as string)
         }
 
-        if (userCookie?.roomNum === params.roomId) {
-          // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
-          socket.emit('joinRoom', params.roomId as string)
-        }
-        preload.startGame(adminCookie?.nickName || userCookie?.nickName || '')
+        preload.startGame(authCookie?.nickName || '')
 
         const game = phaserGame.scene.keys.game as Game
         game.setupKeys()
@@ -94,16 +69,12 @@ function Room() {
         .getScene('preload')
         .events.off('isPreloadComplete', (isLoading: boolean) => {
           if (isLoading) return
-          if (adminCookie?.roomNum === params.roomId) {
+          if (authCookie) {
             // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
             socket.emit('joinRoom', params.roomId as string)
           }
 
-          if (userCookie?.roomNum === params.roomId) {
-            // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
-            socket.emit('joinRoom', params.roomId as string)
-          }
-          preload.startGame(adminCookie?.nickName || userCookie?.nickName || '')
+          preload.startGame(authCookie?.nickName || '')
 
           const game = phaserGame.scene.keys.game as Game
           game.setupKeys()
@@ -113,11 +84,7 @@ function Room() {
 
   return (
     <div>
-      <RoomTitle title={title} />
-      {userCookie?.roomNum !== params.roomId &&
-        adminCookie?.roomNum !== params.roomId &&
-        stage < 2 && <StageContainer>{enterStage[stage].elem}</StageContainer>}
-      <ButtonContainer />
+      <RoomTitle />
       <Chat
         cookie={role === 'admin' ? adminCookie : userCookie}
         socket={socket}
