@@ -1,5 +1,3 @@
-import Player from '../avatars/Player'
-
 export default class Preload extends Phaser.Scene {
   isPreloadComplete: boolean
   constructor() {
