@@ -1,5 +1,5 @@
 import Chair from '../items/Chair'
-import Item from '../items/Item'
+import ObjectItem from '../items/ObjectItem'
 
 export default class Player {
   scene: Phaser.Scene
@@ -8,7 +8,7 @@ export default class Player {
   nickname: Phaser.GameObjects.Text
   chatBox: Phaser.GameObjects.Container
   timeOut?: number
-  selectedInteractionItem?: Item
+  selectedInteractionItem?: ObjectItem
   behavior = 'stand'
 
   constructor(

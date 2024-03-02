@@ -1,6 +1,6 @@
-import Item from './Item'
+import ObjectItem from './ObjectItem'
 
-export default class Printer extends Item {
+export default class Printer extends ObjectItem {
   constructor(
     scene: Phaser.Scene,
     x: number,

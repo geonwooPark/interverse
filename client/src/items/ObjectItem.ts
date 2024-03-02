@@ -5,7 +5,7 @@ import {
 } from '../store/features/alertSlice'
 import { store } from '../store/store'
 
-export default class Item extends Phaser.Physics.Arcade.Sprite {
+export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
   private interacrionBox: Phaser.GameObjects.Container
   itemType!: 'secretary' | 'chair' | 'waterPurifier' | 'printer' | 'ceoDesk'
 

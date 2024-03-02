@@ -1,6 +1,6 @@
-import Item from './Item'
+import ObjectItem from './ObjectItem'
 
-export default class Chair extends Item {
+export default class Chair extends ObjectItem {
   heading?: string
   constructor(
     scene: Phaser.Scene,

@@ -1,6 +1,6 @@
-import Item from './Item'
+import ObjectItem from './ObjectItem'
 
-export default class WaterPurifier extends Item {
+export default class WaterPurifier extends ObjectItem {
   constructor(
     scene: Phaser.Scene,
     x: number,
