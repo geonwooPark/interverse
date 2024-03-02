@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { setCookie } from '../../utils/cookie'
 
-interface NameStageProps {
-  setStage: React.Dispatch<React.SetStateAction<number>>
-}
-
-function NameStage({ setStage }: NameStageProps) {
-  const params = useParams()
+function NickName() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { roomNum, title } = location.state
+
   const [value, setValue] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,18 +16,18 @@ function NameStage({ setStage }: NameStageProps) {
   const onClick = () => {
     if (!value) return alert('닉네임을 확인하세요 쫌! 😑')
 
-    // 유저쿠키 설정 (3시간)
+    const encodedTitle = encodeURIComponent(title)
+
     const userCookie = {
-      roomNum: params.roomId,
-      path: `/room/${params.roomId}?title=${params.title}}`,
+      roomNum,
       role: 'user',
       nickName: value,
+      path: `/${roomNum}/?title=${encodedTitle}`,
     }
 
     setCookie('interverse_user', JSON.stringify(userCookie), {
       expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
     })
-    setStage((prev) => prev + 1)
     navigate(userCookie.path)
   }
 
@@ -41,6 +39,7 @@ function NameStage({ setStage }: NameStageProps) {
         name="name"
         value={value}
         placeholder="닉네임"
+        autoComplete="off"
         className="mb-4 w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
         onChange={handleChange}
       />
@@ -54,4 +53,4 @@ function NameStage({ setStage }: NameStageProps) {
   )
 }
 
-export default NameStage
+export default NickName

@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import { setCookie } from '../utils/cookie'
 import { encrypt } from '../utils/crypto'
-import phaserGame from '../PhaserGame'
-import Preload from '../scenes/Preload'
 
-function Enter() {
+function CreateRoom() {
   const navigate = useNavigate()
   const [values, setValues] = useState({
     title: '',
@@ -27,19 +25,20 @@ function Enter() {
     if (!title || !password || !nickName) return
 
     const roomNum = nanoid(8)
+    const encodedTitle = encodeURIComponent(title)
     const hashedPassword = encodeURIComponent(encrypt(password))
-    // 방장 쿠키 설정 (24시간)
+
     const adminCookie = {
       roomNum,
       role: 'admin',
       nickName,
-      path: `/${roomNum}?title=${title}&hp=${hashedPassword}`,
+      path: `/${roomNum}?title=${encodedTitle}&hp=${hashedPassword}`,
     }
 
     setCookie('interverse_admin', JSON.stringify(adminCookie), {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })
-    navigate(`/test/${roomNum}?title=${title}&?hp=${hashedPassword}`)
+    navigate(adminCookie.path)
   }
 
   return (
@@ -55,6 +54,7 @@ function Enter() {
             name="title"
             value={title}
             placeholder="방 제목"
+            autoComplete="off"
             className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
             onChange={handleChange}
           />
@@ -63,6 +63,7 @@ function Enter() {
             name="password"
             value={password}
             placeholder="방 비밀번호"
+            autoComplete="off"
             className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
             onChange={handleChange}
             maxLength={4}
@@ -72,6 +73,7 @@ function Enter() {
             name="nickName"
             value={nickName}
             placeholder="닉네임"
+            autoComplete="off"
             className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
             onChange={handleChange}
           />
@@ -87,4 +89,4 @@ function Enter() {
   )
 }
 
-export default Enter
+export default CreateRoom

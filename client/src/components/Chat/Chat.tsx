@@ -7,14 +7,10 @@ import {
 } from '../../../../types/socket'
 import ChatList from './ChatList'
 import { Socket } from 'socket.io-client'
+import { CookieType } from '../../utils/cookie'
 
 interface ChatProps {
-  cookie: {
-    roomNum: string
-    nickName: string
-    role: 'admin' | 'user'
-    path?: string
-  }
+  authCookie: CookieType | null
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
 }
 
@@ -23,7 +19,7 @@ export interface ChatItemType {
   content: string
 }
 
-function Chat({ cookie, socket }: ChatProps) {
+function Chat({ authCookie, socket }: ChatProps) {
   const game = phaserGame.scene.keys.game as Game
   const [inputValue, setInputValue] = useState('')
   const [chatList, setChatList] = useState<ChatItemType[]>([])
@@ -38,11 +34,13 @@ function Chat({ cookie, socket }: ChatProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!inputValue) return
+    if (!authCookie) return
+
     game.player.updateChat(inputValue)
     socket.emit('clientMsg', {
       msg: inputValue,
-      sender: cookie.nickName,
-      roomNum: cookie.roomNum,
+      sender: authCookie.nickName,
+      roomNum: authCookie.roomNum,
     })
     setInputValue('')
   }
@@ -61,6 +59,7 @@ function Chat({ cookie, socket }: ChatProps) {
           <input
             type="text"
             placeholder="채팅을 입력해주세요"
+            autoComplete="off"
             className="w-full bg-transparent px-3 py-2 outline-none placeholder:text-black"
             value={inputValue}
             onChange={handleChange}

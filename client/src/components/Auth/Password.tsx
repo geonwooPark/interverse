@@ -1,25 +1,26 @@
 import { useState } from 'react'
 import { decrypt } from '../../utils/crypto'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-interface PasswordStageProps {
-  setStage: React.Dispatch<React.SetStateAction<number>>
-  hashedPassword: string
-}
+function Password() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { password } = location.state
+  const decryptedPassword = decrypt(password)
 
-function PasswordStage({ setStage, hashedPassword }: PasswordStageProps) {
   const [value, setValue] = useState('')
-  const password = decrypt(hashedPassword)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
   }
 
   const onClick = () => {
-    if (!value || password !== value) {
+    if (!value || decryptedPassword !== value) {
       return alert('비밀번호를 확인하세요 쫌! 😑')
     }
-
-    setStage((prev) => prev + 1)
+    navigate(`/auth/nickname`, {
+      state: location.state,
+    })
   }
 
   return (
@@ -30,6 +31,7 @@ function PasswordStage({ setStage, hashedPassword }: PasswordStageProps) {
         name="password"
         value={value}
         placeholder="비밀번호"
+        autoComplete="off"
         className="mb-4 w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
         onChange={handleChange}
         maxLength={4}
@@ -44,4 +46,4 @@ function PasswordStage({ setStage, hashedPassword }: PasswordStageProps) {
   )
 }
 
-export default PasswordStage
+export default Password

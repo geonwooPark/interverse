@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { getCookie } from '../utils/cookie'
 
-function Start() {
+function Landing() {
   const navigate = useNavigate()
   const adminCookie = getCookie('interverse_admin')
 
@@ -32,4 +32,4 @@ function Start() {
   )
 }
 
-export default Start
+export default Landing
