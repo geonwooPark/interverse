@@ -22,7 +22,7 @@ function Landing() {
           </p>
         </div>
         <button
-          onClick={() => navigate(adminCookie ? '/my-room' : '/enter')}
+          onClick={() => navigate(adminCookie ? '/my-room' : '/create-room')}
           className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
         >
           시작하기

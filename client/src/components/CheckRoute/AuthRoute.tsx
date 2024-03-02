@@ -14,11 +14,7 @@ function AuthRoute() {
     password,
   }
 
-  return authCookie ? (
-    <Outlet />
-  ) : (
-    <Navigate to={'/auth/password'} state={state} />
-  )
+  return authCookie ? <Outlet /> : <Navigate to={'/password'} state={state} />
 }
 
 export default AuthRoute
