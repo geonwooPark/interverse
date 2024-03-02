@@ -1,7 +1,6 @@
 import Item from './Item'
 
-export default class Chair extends Item {
-  heading?: string
+export default class WaterPurifier extends Item {
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -11,10 +10,10 @@ export default class Chair extends Item {
   ) {
     super(scene, x, y, texture, frame)
 
-    this.itemType = 'chair'
+    this.itemType = 'waterPurifier'
   }
 
   onInteractionBox() {
-    this.setInteractionBox('스페이스키를 눌러 앉아보세요!')
+    this.setInteractionBox('긴장될 때는 물을 한 잔 마셔보세요!💧')
   }
 }

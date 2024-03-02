@@ -23,7 +23,14 @@ export default class Player {
     this.avatar = this.scene.physics.add.sprite(x, y, this.avatarTexture)
     // 플레이어 랜더시 애니메이션 실행
     this.avatar.anims.play(`${this.avatarTexture}_stand_down`, true)
-    this.avatar.setSize(32, 1)
+
+    const collieScale = [0.5, 0.1]
+    this.avatar.setSize(
+      this.avatar.width * collieScale[0],
+      this.avatar.height * collieScale[1],
+    )
+    // this.avatar.setOffset(8, 32)
+
     // 초기 닉네임 생성
     this.nickname = this.scene.add
       .text(this.avatar.x, this.avatar.y - 35, '')
@@ -127,7 +134,7 @@ export default class Player {
           const chiar = this.selectedInteractionItem as Chair
 
           this.avatar.setVelocity(0, 0)
-          this.avatar.setPosition(chiar.x, chiar.y)
+          this.avatar.setPosition(chiar.x, chiar.y + 5)
           this.nickname.x = this.avatar.x
           this.nickname.y = this.avatar.y - 35
           this.chatBox.x = this.avatar.x

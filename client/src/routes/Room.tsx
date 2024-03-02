@@ -1,16 +1,17 @@
-import Chat from '../components/Chat/Chat'
-import StageContainer from '../components/EnterStage/StageContainer'
 import { useEffect, useState } from 'react'
-import PasswordStage from '../components/EnterStage/PasswordStage'
-import NameStage from '../components/EnterStage/NameStage'
-import { getCookie } from '../utils/cookie'
 import { useParams, useSearchParams } from 'react-router-dom'
-import RoomTitle from '../components/RoomTitle'
-import ButtonContainer from '../components/ButtonContainer'
+import { Socket, io } from 'socket.io-client'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
 import Preload from '../scenes/Preload'
-import { Socket, io } from 'socket.io-client'
+import Chat from '../components/Chat/Chat'
+import StageContainer from '../components/EnterStage/StageContainer'
+import PasswordStage from '../components/EnterStage/PasswordStage'
+import NameStage from '../components/EnterStage/NameStage'
+import RoomTitle from '../components/RoomTitle'
+import ButtonContainer from '../components/ButtonContainer'
+import Alert from '../components/Alert/Alert'
+import { getCookie } from '../utils/cookie'
 import {
   ServerToClientEvents,
   ClientToServerEvents,
@@ -121,6 +122,7 @@ function Room() {
         cookie={role === 'admin' ? adminCookie : userCookie}
         socket={socket}
       />
+      <Alert />
     </div>
   )
 }

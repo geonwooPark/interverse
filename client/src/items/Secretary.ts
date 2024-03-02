@@ -14,6 +14,6 @@ export default class Secretary extends Item {
   }
 
   onInteractionBox() {
-    this.setInteractionBox('Press Key E ')
+    this.setInteractionBox('스페이스키를 눌러 제작자를 확인하세요!')
   }
 }

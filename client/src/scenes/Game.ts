@@ -1,7 +1,9 @@
 import { createAvatarAnims } from '../anims/AvatarAnims'
 import Player from '../avatars/Player'
 import Chair from '../items/Chair'
+import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
+import WaterPurifier from '../items/WaterPurifier'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -33,6 +35,7 @@ export default class Game extends Phaser.Scene {
 
     // Ground Layer
     const groundLayer = this.map.createLayer('Ground', FloorAndWall!)
+
     // Secretary Layer
     const secretary = this.physics.add.staticGroup({ classType: Secretary })
     const secretaryLayer = this.map.getObjectLayer('Secretary')
@@ -66,6 +69,56 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
+    // WaterPurifier Layer
+    const waterPurifier = this.physics.add.staticGroup({
+      classType: WaterPurifier,
+    })
+    const waterPurifierLayer = this.map.getObjectLayer('WaterPurifier')
+    waterPurifierLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('office')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = waterPurifier.get(
+        actualX,
+        actualY,
+        'office',
+        object.gid! - firstgid!,
+      )
+      return obj as WaterPurifier
+    })
+
+    // Printer Layer
+    const printer = this.physics.add.staticGroup({ classType: Printer })
+    const printerLayer = this.map.getObjectLayer('Printer')
+    printerLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('office')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = printer.get(
+        actualX,
+        actualY,
+        'office',
+        object.gid! - firstgid!,
+      )
+      return obj as Printer
+    })
+
+    // CeoDesk Layer
+    const ceoDesk = this.physics.add.staticGroup()
+    const ceoDeskLayer = this.map.getObjectLayer('CeoDesk')
+    ceoDeskLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('office')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = ceoDesk.get(
+        actualX,
+        actualY,
+        'office',
+        object.gid! - firstgid!,
+      )
+      return obj
+    })
+
     // interiorOnCollide Layer
     const interiorOnCollide = this.physics.add.staticGroup()
     const interiorOnCollideLayer = this.map.getObjectLayer('InteriorOnCollide')
@@ -82,11 +135,12 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
-    // 플레이어 생성
+    // Create Player
     createAvatarAnims(this.anims)
     this.player = new Player(this, 730, 160, 'conference')
     this.player.setNickname(data.nickName)
 
+    // Camera Setting
     this.cameras.main.zoom = 1.5
     this.cameras.main.startFollow(this.player.avatar, true)
 
@@ -121,8 +175,9 @@ export default class Game extends Phaser.Scene {
 
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
-      this.physics.add.collider(this.player.avatar, secretary)
+      // this.physics.add.collider(this.player.avatar, secretary)
       this.physics.add.collider(this.player.avatar, interiorOnCollide)
+      this.physics.add.collider(this.player.avatar, ceoDesk)
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
@@ -135,7 +190,7 @@ export default class Game extends Phaser.Scene {
     // 플레이어와 오브젝트 겹침 감지
     this.physics.add.overlap(
       this.player.avatar,
-      [chairToDown, chairToUp],
+      [secretary, chairToDown, chairToUp, waterPurifier, printer],
       this.handlePlayerOverlap,
       undefined,
       this,
