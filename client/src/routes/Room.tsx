@@ -1,17 +1,22 @@
-import Chat from '../components/Chat/Chat'
 import { useEffect, useState } from 'react'
-import { getAuthCookie } from '../utils/cookie'
-import { useParams } from 'react-router-dom'
-import RoomTitle from '../components/RoomTitle'
-import ButtonContainer from '../components/ButtonContainer'
+import { useParams,  } from 'react-router-dom'
+import { Socket, io } from 'socket.io-client'
+import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
 import Preload from '../scenes/Preload'
-import { Socket, io } from 'socket.io-client'
+import Chat from '../components/Chat/Chat'
+import StageContainer from '../components/EnterStage/StageContainer'
+import PasswordStage from '../components/EnterStage/PasswordStage'
+import NameStage from '../components/EnterStage/NameStage'
+import RoomTitle from '../components/RoomTitle'
+import ButtonContainer from '../components/ButtonContainer'
+import Alert from '../components/Alert/Alert'
+import { getAuthCookie } from '../utils/cookie'
 import {
   ServerToClientEvents,
   ClientToServerEvents,
 } from '../../../types/socket'
-import phaserGame from '../PhaserGame'
+
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   'http://localhost:3000',
@@ -80,8 +85,11 @@ function Room() {
   return (
     <div>
       <RoomTitle />
-      <Chat authCookie={authCookie} socket={socket} />
-      <ButtonContainer />
+      <Chat
+        cookie={role === 'admin' ? adminCookie : userCookie}
+        socket={socket}
+      />
+      <Alert />
     </div>
   )
 }
