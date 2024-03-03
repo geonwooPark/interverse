@@ -21,18 +21,27 @@ io.on(
   'connection',
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     socket.on('clientMsg', (data) => {
-      // 자신을 포함한 모든 사람에게 방송
-      // io.sockets.emit('serverMsg', data)
-      // 자신을 제외한 모든 사람에게 방송
-      // socket.broadcast.emit('serverMsg', data)
+      // 메시지를 보낸 사람을 포함한 모든 사람에게 전송
       if (data.roomNum === '') return
-      console.log(data.msg)
       io.to(data.roomNum).emit('serverMsg', data)
     })
 
-    socket.on('joinRoom', (roomNum: string) => {
+    socket.on('joinRoom', ({ roomNum, nickName }) => {
       if (roomNum === '') return
-      console.log(roomNum)
+      // 기존 방의 멤버 정보를 조인한 사람에게 보내기
+      const roomMember = io.sockets.adapter.rooms.get(roomNum)
+      io.to(socket.id).emit(
+        'roomMember',
+        roomMember ? Array.from(roomMember) : [],
+      )
+      // 조인한 사람을 제외한 다른 멤버들에게 조인한 사람의 정보 보내기
+      socket.broadcast.to(roomNum).emit('newMember', socket.id)
+      socket.broadcast.to(roomNum).emit('serverMsg', {
+        sender: '',
+        msg: `${nickName}님이 입장했습니다.`,
+        roomNum,
+      })
+      // 방에 입장시키기
       socket.join(roomNum)
     })
   },

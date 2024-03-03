@@ -12,7 +12,7 @@ function ChatItem({ chatItem }: ChatItemProps) {
   }, [chatItem])
 
   return (
-    <li ref={scrollRef} className="space-x-2">
+    <li ref={scrollRef} className="space-x-2.5">
       <span className="font-bold">{chatItem.sender}</span>
       <span>{chatItem.content}</span>
     </li>

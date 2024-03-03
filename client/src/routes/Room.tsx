@@ -23,6 +23,7 @@ function Room() {
   const authCookie = getAuthCookie(params.roomId as string)
 
   const [preload, setPreload] = useState<Preload | null>(null)
+  const [users, setUsers] = useState<string[]>([])
 
   useEffect(() => {
     if (!authCookie) return
@@ -35,8 +36,10 @@ function Room() {
     // 방을 개설 후 입장 시
     if (preload && !preload.isPreloadComplete) {
       if (authCookie) {
-        // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
-        socket.emit('joinRoom', params.roomId as string)
+        socket.emit('joinRoom', {
+          roomNum: params.roomId as string,
+          nickName: authCookie.nickName,
+        })
       }
 
       preload.startGame(authCookie?.nickName || '')
@@ -50,8 +53,10 @@ function Room() {
       .events.on('isPreloadComplete', (isLoading: boolean) => {
         if (isLoading) return
         if (authCookie) {
-          // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
-          socket.emit('joinRoom', params.roomId as string)
+          socket.emit('joinRoom', {
+            roomNum: params.roomId as string,
+            nickName: authCookie.nickName,
+          })
         }
 
         preload.startGame(authCookie?.nickName || '')
@@ -66,8 +71,10 @@ function Room() {
         .events.off('isPreloadComplete', (isLoading: boolean) => {
           if (isLoading) return
           if (authCookie) {
-            // 서버에서 방에 이미 있다면 리턴시키는거 추가해야함
-            socket.emit('joinRoom', params.roomId as string)
+            socket.emit('joinRoom', {
+              roomNum: params.roomId as string,
+              nickName: authCookie.nickName,
+            })
           }
 
           preload.startGame(authCookie?.nickName || '')
@@ -77,6 +84,18 @@ function Room() {
         })
     }
   }, [preload])
+
+  useEffect(() => {
+    socket.on('roomMember', (members) => {
+      console.log('roomMember :' + members)
+      setUsers((pre) => [...pre, ...members])
+    })
+
+    socket.on('newMember', (member) => {
+      console.log('newMember :' + member)
+      setUsers((pre) => [...pre, member])
+    })
+  }, [socket])
 
   return (
     <div>
