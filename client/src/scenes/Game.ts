@@ -1,4 +1,5 @@
 import { createAvatarAnims } from '../anims/AvatarAnims'
+import OtherPlayer from '../avatars/OtherPlayer'
 import Player from '../avatars/Player'
 import Chair from '../items/Chair'
 import Printer from '../items/Printer'
@@ -10,6 +11,7 @@ export default class Game extends Phaser.Scene {
   player: any
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
+  private otherPlayers!: any
 
   constructor() {
     // Scene Key
@@ -195,12 +197,22 @@ export default class Game extends Phaser.Scene {
       undefined,
       this,
     )
+
+    // create 될 때 OtherPlayers 오브젝트 그룹과 addOtherPlayer 함수를 등록
+    // Room에서 users의 변경이 생길 때 addOtherPlayer가 실행되어 OtherPlayers 그룹에 새로운 유저 추가
+    // OtherUser는 각각의 위치, 아이디, 이미지를 가져야함
   }
   // 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수
   private handlePlayerOverlap(player: any, interactionItem: any) {
     if (this.player.selectedInteractionItem) return
     this.player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
+  }
+
+  // 다른 플레이어가 참가
+  private addOtherPlayer() {
+    const newPlayer = new OtherPlayer(this, 730, 160, 'conference')
+    this.otherPlayers.add(newPlayer)
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
