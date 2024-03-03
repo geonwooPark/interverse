@@ -11,7 +11,7 @@ export default class Game extends Phaser.Scene {
   player: any
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
-  private otherPlayers!: any
+  private otherPlayers!: Phaser.Physics.Arcade.Group
 
   constructor() {
     // Scene Key
@@ -137,10 +137,13 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
-    // Create Player
+    // Player Layer
     createAvatarAnims(this.anims)
     this.player = new Player(this, 730, 160, 'conference')
     this.player.setNickname(data.nickName)
+
+    // OtherPlayers Layer
+    this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
 
     // Camera Setting
     this.cameras.main.zoom = 1.5
@@ -210,9 +213,11 @@ export default class Game extends Phaser.Scene {
   }
 
   // 다른 플레이어가 참가
-  private addOtherPlayer() {
+  addOtherPlayer() {
     const newPlayer = new OtherPlayer(this, 730, 160, 'conference')
-    this.otherPlayers.add(newPlayer)
+    console.log(this.otherPlayers)
+    this.otherPlayers.add(newPlayer.avatar)
+    console.log('안녕')
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨

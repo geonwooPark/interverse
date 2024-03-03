@@ -25,6 +25,8 @@ function Room() {
   const [preload, setPreload] = useState<Preload | null>(null)
   const [users, setUsers] = useState<string[]>([])
 
+  const [isGameStart, setIsGameStart] = useState(false)
+
   useEffect(() => {
     if (!authCookie) return
     setPreload(phaserGame.scene.keys.preload as Preload)
@@ -46,6 +48,7 @@ function Room() {
 
       const game = phaserGame.scene.keys.game as Game
       game.setupKeys()
+      setIsGameStart(true)
     }
     // 새로고침 후 입장 시
     phaserGame.scene
@@ -63,6 +66,7 @@ function Room() {
 
         const game = phaserGame.scene.keys.game as Game
         game.setupKeys()
+        setIsGameStart(true)
       })
 
     return () => {
@@ -81,6 +85,7 @@ function Room() {
 
           const game = phaserGame.scene.keys.game as Game
           game.setupKeys()
+          setIsGameStart(true)
         })
     }
   }, [preload])
@@ -88,14 +93,23 @@ function Room() {
   useEffect(() => {
     socket.on('roomMember', (members) => {
       console.log('roomMember :' + members)
+      // otherPlayer에 기존 방의 멤버들을 추가해줘
       setUsers((pre) => [...pre, ...members])
     })
 
     socket.on('newMember', (member) => {
       console.log('newMember :' + member)
+      // otherPlayer에 새로운 멤버를 추가해줘
       setUsers((pre) => [...pre, member])
     })
   }, [socket])
+
+  useEffect(() => {
+    if (!isGameStart) return
+    if (users.length === 0) return
+    const game = phaserGame.scene.keys.game as Game
+    game.addOtherPlayer()
+  }, [isGameStart, users])
 
   return (
     <div>

@@ -120,6 +120,10 @@ export default class Player {
         }
         // 플레이어 이동
         this.avatar.setVelocity(vx, vy)
+        this.scene.events.emit('playerPosition', {
+          x: this.avatar.x,
+          y: this.avatar.y,
+        })
         // 닉네임 이동
         this.nickname.x = this.avatar.x
         this.nickname.y = this.avatar.y - 35
