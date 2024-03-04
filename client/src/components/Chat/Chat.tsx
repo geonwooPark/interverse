@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
 import ChatList from './ChatList'
-import { CookieType } from '../../utils/cookie'
 import { useAppSelector } from '../../store/store'
+import { CookieType } from '../../types/client'
 
 interface ChatProps {
   authCookie: CookieType | null
@@ -28,7 +28,7 @@ function Chat({ authCookie }: ChatProps) {
 
     game.player.updateChat(inputValue)
     game.sendMessage({
-      msg: inputValue,
+      message: inputValue,
       sender: authCookie.nickName,
       roomNum: authCookie.roomNum,
     })
