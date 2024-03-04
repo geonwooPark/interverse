@@ -19,8 +19,25 @@ export default class Game extends Phaser.Scene {
   }
 
   setupKeys() {
-    this.cursur = this.input.keyboard?.createCursorKeys()
-    this.keySpace = this.input.keyboard?.addKey('space')
+    if (!this.input.keyboard) return
+    this.cursur = this.input.keyboard.createCursorKeys()
+    this.keySpace = this.input.keyboard.addKey('space')
+    this.input.keyboard.disableGlobalCapture()
+    this.input.keyboard.on('keydown-ENTER', () => {
+      this.events.emit('onFocusChat')
+    })
+  }
+
+  enalbeKeys() {
+    console.log('able')
+    if (!this.input.keyboard) return
+    this.input.keyboard.enabled = true
+  }
+
+  disableKeys() {
+    console.log('disable')
+    if (!this.input.keyboard) return
+    this.input.keyboard.enabled = false
   }
 
   // Scene이 로드될 때 한번 호출, 게임 오브젝트 배치

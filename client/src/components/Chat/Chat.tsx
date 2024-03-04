@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
 import {
@@ -21,6 +21,7 @@ export interface ChatItemType {
 
 function Chat({ authCookie, socket }: ChatProps) {
   const game = phaserGame.scene.keys.game as Game
+  const inputRef = useRef<HTMLInputElement>(null)
   const [inputValue, setInputValue] = useState('')
   const [chatList, setChatList] = useState<ChatItemType[]>([])
 
@@ -33,16 +34,21 @@ function Chat({ authCookie, socket }: ChatProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!inputValue) return
     if (!authCookie) return
-
-    game.player.updateChat(inputValue)
-    socket.emit('clientMsg', {
-      msg: inputValue,
-      sender: authCookie.nickName,
-      roomNum: authCookie.roomNum,
-    })
-    setInputValue('')
+    if (!inputValue) {
+      inputRef.current?.blur()
+      game.enalbeKeys()
+    } else {
+      game.player.updateChat(inputValue)
+      socket.emit('clientMsg', {
+        msg: inputValue,
+        sender: authCookie.nickName,
+        roomNum: authCookie.roomNum,
+      })
+      setInputValue('')
+      inputRef.current?.blur()
+      game.enalbeKeys()
+    }
   }
 
   useEffect(() => {
@@ -50,6 +56,22 @@ function Chat({ authCookie, socket }: ChatProps) {
       setChatList((pre) => [...pre, { sender: data.sender, content: data.msg }])
     })
   }, [socket])
+
+  useEffect(() => {
+    if (!game) return
+    phaserGame.scene.getScene('game').events.on('onFocusChat', () => {
+      inputRef.current?.focus()
+      event.preventDefault()
+      game.disableKeys()
+    })
+    return () => {
+      phaserGame.scene.getScene('game').events.off('onFocusChat', () => {
+        inputRef.current?.focus()
+        event.preventDefault()
+        game.disableKeys()
+      })
+    }
+  }, [inputRef, game])
 
   return (
     <div className="fixed bottom-5 flex w-full justify-center">
@@ -61,6 +83,7 @@ function Chat({ authCookie, socket }: ChatProps) {
             placeholder="채팅을 입력해주세요"
             autoComplete="off"
             className="w-full bg-transparent px-3 py-2 outline-none placeholder:text-black"
+            ref={inputRef}
             value={inputValue}
             onChange={handleChange}
           />
