@@ -3,6 +3,7 @@ import {
   ClientToServerEvents,
   JoinMember,
   MessageData,
+  PlayerInfo,
   ServerToClientEvents,
 } from '../../../types/socket'
 import { store } from '../store/store'
@@ -28,6 +29,15 @@ export default class SocketIO {
       console.log('newMember :' + member)
       // otherPlayer에 새로운 멤버를 추가해줘
       // setUsers((pre) => [...pre, member])
+    })
+  }
+
+  sendPlayerInfo({ x, y, nickName, texture }: PlayerInfo) {
+    this.socket.emit('sendPlayerInfo', {
+      x,
+      y,
+      nickName,
+      texture,
     })
   }
 

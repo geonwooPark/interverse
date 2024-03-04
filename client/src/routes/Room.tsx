@@ -32,7 +32,6 @@ function Room() {
         roomNum: params.roomId as string,
         authCookie,
       })
-      game.setupKeys()
     }
     // 새로고침 후 입장 시
     phaserGame.scene
@@ -46,7 +45,6 @@ function Room() {
           roomNum: params.roomId as string,
           authCookie,
         })
-        game.setupKeys()
       })
 
     return () => {
@@ -61,7 +59,6 @@ function Room() {
             roomNum: params.roomId as string,
             authCookie,
           })
-          game.setupKeys()
         })
     }
   }, [preload])

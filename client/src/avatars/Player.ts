@@ -1,24 +1,29 @@
 import Chair from '../items/Chair'
 import ObjectItem from '../items/ObjectItem'
+import SocketIO from '../lib/SocketIO'
 
 export default class Player {
   scene: Phaser.Scene
   avatar: any
   avatarTexture: string
+  nickNameContent: string
   nickname: Phaser.GameObjects.Text
   chatBox: Phaser.GameObjects.Container
   timeOut?: number
   selectedInteractionItem?: ObjectItem
   behavior = 'stand'
+  socketIO: SocketIO
 
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
     avatarTexture: string,
+    socketIO: SocketIO,
   ) {
     this.scene = scene
-    this.avatarTexture = avatarTexture
+    this.socketIO = socketIO
+    this.nickNameContent = this.avatarTexture = avatarTexture
     // 플레이어 생성
     this.avatar = this.scene.physics.add.sprite(x, y, this.avatarTexture)
     // 플레이어 랜더시 애니메이션 실행
@@ -44,6 +49,7 @@ export default class Player {
   }
   // 닉네임 생성
   setNickname(nickname: string) {
+    this.nickNameContent = nickname
     this.nickname = this.scene.add
       .text(this.avatar.x, this.avatar.y - 35, nickname)
       .setFontSize(12)
@@ -88,6 +94,16 @@ export default class Player {
     clearTimeout(this.timeOut)
     this.chatBox.removeAll(true)
   }
+
+  sendPlayerInfo() {
+    this.socketIO.sendPlayerInfo({
+      x: this.avatar.x,
+      y: this.avatar.y,
+      nickName: this.nickNameContent,
+      texture: this.avatarTexture,
+    })
+  }
+
   // 플레이어,닉네임 및 채팅 이동
   update(
     cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,

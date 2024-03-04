@@ -22,11 +22,6 @@ export default class Game extends Phaser.Scene {
     this.socketIO = new SocketIO()
   }
 
-  setupKeys() {
-    this.cursur = this.input.keyboard?.createCursorKeys()
-    this.keySpace = this.input.keyboard?.addKey('space')
-  }
-
   // Scene이 로드될 때 한번 호출, 게임 오브젝트 배치
   create(data: { nickName: string }) {
     // 타일맵 로드
@@ -143,8 +138,8 @@ export default class Game extends Phaser.Scene {
 
     // Player Layer
     createAvatarAnims(this.anims)
-    this.player = new Player(this, 730, 160, 'conference')
-    this.player.setNickname(data.nickName)
+    this.player = new Player(this, 730, 160, 'conference', this.socketIO)
+    this.player.setNickname('')
 
     // OtherPlayers Layer
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
@@ -218,13 +213,23 @@ export default class Game extends Phaser.Scene {
 
   joinRoom({ roomNum, authCookie }: JoinMember) {
     this.socketIO.joinRoom({ roomNum, authCookie })
-
+    this.createPlayer(authCookie.nickName)
+    console.log(this.player)
+    this.player.sendPlayerInfo()
     // 1. 내 아바타 생성
     // 2. 다른 이들의 아바타를 authCookie의 role에 따라 생성
+
+    this.cursur = this.input.keyboard?.createCursorKeys()
+    this.keySpace = this.input.keyboard?.addKey('space')
   }
 
   sendMessage({ msg, sender, roomNum }: MessageData) {
     this.socketIO.sendMessage({ msg, sender, roomNum })
+  }
+
+  createPlayer(nickName: string) {
+    this.player = new Player(this, 730, 160, 'conference', this.socketIO)
+    this.player.setNickname(nickName)
   }
 
   // 다른 플레이어가 참가
