@@ -16,9 +16,11 @@ export default class OtherPlayer {
     x: number,
     y: number,
     avatarTexture: string,
+    nickname: string,
   ) {
     this.scene = scene
     this.avatarTexture = avatarTexture
+
     // 플레이어 생성
     this.avatar = this.scene.physics.add.sprite(x, y, this.avatarTexture)
     // 플레이어 랜더시 애니메이션 실행
@@ -29,11 +31,10 @@ export default class OtherPlayer {
       this.avatar.width * collieScale[0],
       this.avatar.height * collieScale[1],
     )
-    // this.avatar.setOffset(8, 32)
 
     // 초기 닉네임 생성
     this.nickname = this.scene.add
-      .text(this.avatar.x, this.avatar.y - 35, '')
+      .text(this.avatar.x, this.avatar.y - 35, nickname)
       .setFontSize(12)
       .setColor('#000000')
       .setOrigin(0.5)
@@ -42,15 +43,7 @@ export default class OtherPlayer {
       .container(this.avatar.x, this.avatar.y)
       .setDepth(1000)
   }
-  // 닉네임 생성
-  setNickname(nickname: string) {
-    this.nickname = this.scene.add
-      .text(this.avatar.x, this.avatar.y - 35, nickname)
-      .setFontSize(12)
-      .setColor('#000000')
-      .setOrigin(0.5)
-      .setDepth(1000)
-  }
+
   // 채팅 생성
   updateChat(content: string) {
     this.clearChat()

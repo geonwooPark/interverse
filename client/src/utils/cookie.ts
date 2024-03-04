@@ -1,11 +1,5 @@
 import { Cookies } from 'react-cookie'
-
-export interface CookieType {
-  roomNum: string
-  role: 'admin' | 'user'
-  nickName: string
-  path: string
-}
+import { CookieType } from '../types/client'
 
 const cookies = new Cookies()
 

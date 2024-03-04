@@ -14,6 +14,6 @@ export default class WaterPurifier extends ObjectItem {
   }
 
   onInteractionBox() {
-    this.setInteractionBox('긴장될 때는 물을 한 잔 마셔보세요!💧')
+    this.setInteractionBox('긴장될 때는 물을 한 잔 마셔보세요!')
   }
 }

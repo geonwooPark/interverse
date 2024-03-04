@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
-import {
-  ServerToClientEvents,
-  ClientToServerEvents,
-} from '../../../../types/socket'
 import ChatList from './ChatList'
-import { Socket } from 'socket.io-client'
-import { CookieType } from '../../utils/cookie'
+import { useAppSelector } from '../../store/store'
+import { CookieType } from '../../types/client'
 
 interface ChatProps {
   authCookie: CookieType | null
-  socket: Socket<ServerToClientEvents, ClientToServerEvents>
 }
 
-export interface ChatItemType {
-  sender: string
-  content: string
-}
-
-function Chat({ authCookie, socket }: ChatProps) {
+function Chat({ authCookie }: ChatProps) {
   const game = phaserGame.scene.keys.game as Game
   const [inputValue, setInputValue] = useState('')
-  const [chatList, setChatList] = useState<ChatItemType[]>([])
+  const chatList = useAppSelector((state) => state.chatList)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -37,19 +27,14 @@ function Chat({ authCookie, socket }: ChatProps) {
     if (!authCookie) return
 
     game.player.updateChat(inputValue)
-    socket.emit('clientMsg', {
-      msg: inputValue,
+    game.sendMessage({
+      message: inputValue,
       sender: authCookie.nickName,
       roomNum: authCookie.roomNum,
     })
+
     setInputValue('')
   }
-
-  useEffect(() => {
-    socket.on('serverMsg', (data) => {
-      setChatList((pre) => [...pre, { sender: data.sender, content: data.msg }])
-    })
-  }, [socket])
 
   return (
     <div className="fixed bottom-5 flex w-full justify-center">
