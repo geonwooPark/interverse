@@ -19,6 +19,13 @@ interface NewMember {
   member: string
 }
 
+interface PlayerInfo {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+}
+
 export interface ServerToClientEvents {
   serverMsg: (data: MessageData) => void
   roomMember: (members: string[]) => void
@@ -28,4 +35,5 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   clientMsg: (data: MessageData) => void
   joinRoom: ({ roomNum, nickName }: JoinMember) => void
+  sendPlayerInfo: ({ x, y, nickName, texture }: PlayerInfo) => void
 }

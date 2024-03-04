@@ -41,6 +41,10 @@ io.on(
       // 방에 입장시키기
       socket.join(roomNum)
     })
+
+    socket.on('sendPlayerInfo', (data) => {
+      console.log(data)
+    })
   },
 )
 
