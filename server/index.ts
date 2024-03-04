@@ -26,7 +26,7 @@ io.on(
       io.to(data.roomNum).emit('serverMsg', data)
     })
 
-    socket.on('joinRoom', ({ roomNum, authCookie }) => {
+    socket.on('joinRoom', ({ roomNum }) => {
       if (roomNum === '') return
       // 기존 방의 멤버 정보를 조인한 사람에게 보내기
       const roomMember = io.sockets.adapter.rooms.get(roomNum)
@@ -34,16 +34,29 @@ io.on(
         'roomMember',
         roomMember ? Array.from(roomMember) : [],
       )
-      // 조인한 사람을 제외한 다른 멤버들에게 조인한 사람의 정보 보내기
-      socket.broadcast
-        .to(roomNum)
-        .emit('newMember', { ...authCookie, member: socket.id })
       // 방에 입장시키기
       socket.join(roomNum)
     })
 
-    socket.on('sendPlayerInfo', (data) => {
-      console.log(data)
+    socket.on('sendPlayerInfo', (playerInfo) => {
+      socket.broadcast.to(playerInfo.roomNum).emit('serverMsg', {
+        sender: '',
+        message: `${playerInfo.nickName}님이 입장했습니다.`,
+        roomNum: playerInfo.roomNum,
+      })
+
+      socket.broadcast
+        .to(playerInfo.roomNum)
+        .emit('receivePlayerInfo', { ...playerInfo, socketId: socket.id })
+    })
+
+    socket.on('sendAvatarPosition', (avatarPosition) => {
+      socket.broadcast
+        .to(avatarPosition.roomNum)
+        .emit('receiveAvatarPosition', {
+          ...avatarPosition,
+          socketId: socket.id,
+        })
     })
   },
 )
