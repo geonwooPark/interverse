@@ -5,6 +5,8 @@ import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
+import SocketIO from '../lib/SocketIO'
+import { JoinMember, MessageData } from '../../../types/socket'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -12,10 +14,12 @@ export default class Game extends Phaser.Scene {
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
   private otherPlayers!: Phaser.Physics.Arcade.Group
+  socketIO!: SocketIO
 
   constructor() {
     // Scene Key
     super('game')
+    this.socketIO = new SocketIO()
   }
 
   setupKeys() {
@@ -212,13 +216,24 @@ export default class Game extends Phaser.Scene {
     interactionItem.onInteractionBox()
   }
 
-  // 다른 플레이어가 참가
-  addOtherPlayer() {
-    const newPlayer = new OtherPlayer(this, 730, 160, 'conference')
-    console.log(this.otherPlayers)
-    this.otherPlayers.add(newPlayer.avatar)
-    console.log('안녕')
+  joinRoom({ roomNum, authCookie }: JoinMember) {
+    this.socketIO.joinRoom({ roomNum, authCookie })
+
+    // 1. 내 아바타 생성
+    // 2. 다른 이들의 아바타를 authCookie의 role에 따라 생성
   }
+
+  sendMessage({ msg, sender, roomNum }: MessageData) {
+    this.socketIO.sendMessage({ msg, sender, roomNum })
+  }
+
+  // 다른 플레이어가 참가
+  // addOtherPlayer() {
+  //   const newPlayer = new OtherPlayer(this, 730, 160, 'conference')
+  //   console.log(this.otherPlayers)
+  //   this.otherPlayers.add(newPlayer.avatar)
+  //   console.log('안녕')
+  // }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {

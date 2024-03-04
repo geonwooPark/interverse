@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { ChatItemType } from './Chat'
+import { MessageData } from '../../../../types/socket'
 
 interface ChatItemProps {
-  chatItem: ChatItemType
+  chatItem: MessageData
 }
 function ChatItem({ chatItem }: ChatItemProps) {
   const scrollRef = useRef<HTMLLIElement | null>(null)
@@ -14,7 +14,7 @@ function ChatItem({ chatItem }: ChatItemProps) {
   return (
     <li ref={scrollRef} className="space-x-2.5">
       <span className="font-bold">{chatItem.sender}</span>
-      <span>{chatItem.content}</span>
+      <span>{chatItem.msg}</span>
     </li>
   )
 }

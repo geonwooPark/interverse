@@ -1,8 +1,8 @@
-import { ChatItemType } from './Chat'
+import { MessageData } from '../../../../types/socket'
 import ChatMessage from './ChatItem'
 
 interface ChatListProps {
-  chatList: ChatItemType[]
+  chatList: MessageData[]
 }
 
 function ChatList({ chatList }: ChatListProps) {
