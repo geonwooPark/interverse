@@ -1,9 +1,7 @@
 export default class Preload extends Phaser.Scene {
-  isPreloadComplete: boolean
   constructor() {
     // Scene Key
     super('preload')
-    this.isPreloadComplete = true
   }
 
   // Scene이 로드되기 전에 호출, 사용할 에셋을 로드
@@ -37,13 +35,11 @@ export default class Preload extends Phaser.Scene {
       frameHeight: 48,
     })
     this.load.on('complete', () => {
-      this.isPreloadComplete = false
-      this.events.emit('isPreloadComplete', this.isPreloadComplete)
+      this.startGame()
     })
   }
 
-  startGame(nickName: string) {
-    if (this.isPreloadComplete) return
-    this.scene.launch('game', { nickName })
+  startGame() {
+    this.scene.launch('game')
   }
 }

@@ -9,20 +9,18 @@ export default class Player {
   nickNameContent: string
   nickname: Phaser.GameObjects.Text
   chatBox: Phaser.GameObjects.Container
+  behavior: 'stand' | 'sit'
   timeOut?: number
   selectedInteractionItem?: ObjectItem
-  behavior = 'stand'
-  socketIO: SocketIO
 
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
     avatarTexture: string,
-    socketIO: SocketIO,
   ) {
     this.scene = scene
-    this.socketIO = socketIO
+    this.behavior = 'stand'
     this.nickNameContent = this.avatarTexture = avatarTexture
     // 플레이어 생성
     this.avatar = this.scene.physics.add.sprite(x, y, this.avatarTexture)
@@ -34,7 +32,6 @@ export default class Player {
       this.avatar.width * collieScale[0],
       this.avatar.height * collieScale[1],
     )
-    // this.avatar.setOffset(8, 32)
 
     // 초기 닉네임 생성
     this.nickname = this.scene.add
@@ -95,12 +92,13 @@ export default class Player {
     this.chatBox.removeAll(true)
   }
 
-  sendPlayerInfo() {
-    this.socketIO.sendPlayerInfo({
+  sendPlayerInfo(socketIO: SocketIO, roomNum: string) {
+    socketIO.sendPlayerInfo({
       x: this.avatar.x,
       y: this.avatar.y,
       nickName: this.nickNameContent,
       texture: this.avatarTexture,
+      roomNum,
     })
   }
 
@@ -108,6 +106,8 @@ export default class Player {
   update(
     cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
     keySpace: Phaser.Input.Keyboard.Key,
+    socketIO: SocketIO,
+    roomNum: string,
   ) {
     const moveSpeed = 200
     let vx = 0
@@ -136,10 +136,14 @@ export default class Player {
         }
         // 플레이어 이동
         this.avatar.setVelocity(vx, vy)
-        this.scene.events.emit('playerPosition', {
+        socketIO.sendAvatarPosition({
           x: this.avatar.x,
           y: this.avatar.y,
+          socketId: '',
+          roomNum,
+          animation: this.avatar.anims.currentAnim.key,
         })
+
         // 닉네임 이동
         this.nickname.x = this.avatar.x
         this.nickname.y = this.avatar.y - 35
@@ -151,21 +155,21 @@ export default class Player {
           Phaser.Input.Keyboard.JustDown(keySpace) &&
           this.selectedInteractionItem?.itemType === 'chair'
         ) {
-          const chiar = this.selectedInteractionItem as Chair
+          const chair = this.selectedInteractionItem as Chair
 
           this.avatar.setVelocity(0, 0)
-          this.avatar.setPosition(chiar.x, chiar.y + 5)
+          this.avatar.setPosition(chair.x, chair.y + 5)
           this.nickname.x = this.avatar.x
           this.nickname.y = this.avatar.y - 35
           this.chatBox.x = this.avatar.x
           this.chatBox.y = this.avatar.y
 
           this.avatar.anims.play(
-            `${this.avatarTexture}_sit_${chiar.heading}`,
+            `${this.avatarTexture}_sit_${chair.heading}`,
             true,
           )
 
-          chiar.clearInteractionBox()
+          chair.clearInteractionBox()
           this.behavior = 'sit'
         }
         break
@@ -184,7 +188,7 @@ export default class Player {
         }
         break
     }
-    // 플레이어와 오브젝트 겹침이 끝닐 시
+    // 플레이어와 오브젝트 겹침이 끝날 시
     if (this.selectedInteractionItem) {
       if (
         !this.scene.physics.overlap(this.avatar, this.selectedInteractionItem)

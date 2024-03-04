@@ -1,13 +1,18 @@
 import { Socket, io } from 'socket.io-client'
 import {
   ClientToServerEvents,
-  JoinMember,
-  MessageData,
-  PlayerInfo,
   ServerToClientEvents,
 } from '../../../types/socket'
 import { store } from '../store/store'
 import { addMessage } from '../store/features/chatListSlice'
+import phaserGame from '../PhaserGame'
+import Game from '../scenes/Game'
+import {
+  JoinRoomType,
+  SendAvatarPositionType,
+  SendMessageType,
+  SendPlayerInfoType,
+} from '../types/game'
 
 export default class SocketIO {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
@@ -15,42 +20,63 @@ export default class SocketIO {
     this.socket = io('http://localhost:3000')
   }
 
-  joinRoom({ roomNum, authCookie }: JoinMember) {
+  joinRoom({ roomNum, authCookie }: JoinRoomType) {
     this.socket.emit('joinRoom', {
       roomNum,
       authCookie,
     })
-    this.socket.on('roomMember', (members) => {
-      console.log('roomMember :' + members)
-      // otherPlayer에 기존 방의 멤버들을 추가해줘
-      // setUsers((pre) => [...pre, ...members])
-    })
-    this.socket.on('newMember', (member) => {
-      console.log('newMember :' + member)
-      // otherPlayer에 새로운 멤버를 추가해줘
-      // setUsers((pre) => [...pre, member])
-    })
   }
 
-  sendPlayerInfo({ x, y, nickName, texture }: PlayerInfo) {
+  sendPlayerInfo({ x, y, nickName, texture, roomNum }: SendPlayerInfoType) {
     this.socket.emit('sendPlayerInfo', {
       x,
       y,
       nickName,
       texture,
-    })
-  }
-
-  sendMessage({ msg, sender, roomNum }: MessageData) {
-    this.socket.emit('clientMsg', {
-      msg,
-      sender,
       roomNum,
     })
 
-    this.socket.off('serverMsg')
+    this.socket.on('receivePlayerInfo', (data) => {
+      const game = phaserGame.scene.keys.game as Game
+      game.addOtherPlayer(data)
+    })
     this.socket.on('serverMsg', (data) => {
       store.dispatch(addMessage(data))
+    })
+  }
+
+  sendMessage({ message, sender, roomNum }: SendMessageType) {
+    this.socket.emit('clientMsg', {
+      message,
+      sender,
+      roomNum,
+    })
+  }
+
+  sendAvatarPosition({
+    x,
+    y,
+    socketId,
+    roomNum,
+    animation,
+  }: SendAvatarPositionType) {
+    this.socket.emit('sendAvatarPosition', {
+      x,
+      y,
+      socketId,
+      roomNum,
+      animation,
+    })
+
+    this.socket.on('receiveAvatarPosition', (avatarPosition) => {
+      // console.log(avatarPosition.direction)
+      const game = phaserGame.scene.keys.game as Game
+      game.updateOtherPlayer({
+        x: avatarPosition.x,
+        y: avatarPosition.y,
+        socketId: avatarPosition.socketId as string,
+        animation: avatarPosition.animation,
+      })
     })
   }
 }

@@ -6,15 +6,23 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import SocketIO from '../lib/SocketIO'
-import { JoinMember, MessageData } from '../../../types/socket'
+import {
+  AddOtherPlayerType,
+  JoinRoomType,
+  SendMessageType,
+  UpdateOtherPlayerType,
+} from '../types/game'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
-  player: any
+  private otherPlayers!: Phaser.Physics.Arcade.Group
+  private otherPlayersMap = new Map<string, OtherPlayer>()
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
-  private otherPlayers!: Phaser.Physics.Arcade.Group
+  player!: Player
   socketIO!: SocketIO
+  roomNum!: string
+  isCreate = false
 
   constructor() {
     // Scene Key
@@ -23,7 +31,7 @@ export default class Game extends Phaser.Scene {
   }
 
   // Scene이 로드될 때 한번 호출, 게임 오브젝트 배치
-  create(data: { nickName: string }) {
+  create() {
     // 타일맵 로드
     this.map = this.make.tilemap({ key: 'tilemap' })
     // 타일셋 이미지를 로드하여 타일맵에 추가
@@ -136,13 +144,14 @@ export default class Game extends Phaser.Scene {
       return obj
     })
 
+    // OtherPlayers Layer
+    this.otherPlayers = this.physics.add
+      .group({ classType: OtherPlayer })
+      .setDepth(10)
+
     // Player Layer
     createAvatarAnims(this.anims)
-    this.player = new Player(this, 730, 160, 'conference', this.socketIO)
-    this.player.setNickname('')
-
-    // OtherPlayers Layer
-    this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
+    this.player = new Player(this, 730, 160, 'conference')
 
     // Camera Setting
     this.cameras.main.zoom = 1.5
@@ -152,10 +161,7 @@ export default class Game extends Phaser.Scene {
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
 
     // interior Layer
-    const interiorLayer = this.map.createLayer('Interior', [
-      Office!,
-      Classroom!,
-    ])
+    this.map.createLayer('Interior', [Office!, Classroom!])
 
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup({ classType: Chair })
@@ -200,50 +206,65 @@ export default class Game extends Phaser.Scene {
       this,
     )
 
-    // create 될 때 OtherPlayers 오브젝트 그룹과 addOtherPlayer 함수를 등록
-    // Room에서 users의 변경이 생길 때 addOtherPlayer가 실행되어 OtherPlayers 그룹에 새로운 유저 추가
-    // OtherUser는 각각의 위치, 아이디, 이미지를 가져야함
+    this.events.once('update', () => {
+      this.isCreate = true
+      this.events.emit('createGame', this.isCreate)
+    })
   }
   // 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수
   private handlePlayerOverlap(player: any, interactionItem: any) {
+    if (!this.player) return
     if (this.player.selectedInteractionItem) return
+
     this.player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
   }
 
-  joinRoom({ roomNum, authCookie }: JoinMember) {
+  // 방에 입장
+  joinRoom({ roomNum, authCookie }: JoinRoomType) {
+    if (!this.player) return
+
     this.socketIO.joinRoom({ roomNum, authCookie })
-    this.createPlayer(authCookie.nickName)
-    console.log(this.player)
-    this.player.sendPlayerInfo()
-    // 1. 내 아바타 생성
-    // 2. 다른 이들의 아바타를 authCookie의 role에 따라 생성
+    this.player.setNickname(authCookie.nickName)
+    this.player.sendPlayerInfo(this.socketIO, roomNum)
+    this.roomNum = roomNum
 
     this.cursur = this.input.keyboard?.createCursorKeys()
     this.keySpace = this.input.keyboard?.addKey('space')
   }
 
-  sendMessage({ msg, sender, roomNum }: MessageData) {
-    this.socketIO.sendMessage({ msg, sender, roomNum })
-  }
-
-  createPlayer(nickName: string) {
-    this.player = new Player(this, 730, 160, 'conference', this.socketIO)
-    this.player.setNickname(nickName)
+  // 메시지 보내기
+  sendMessage({ message, sender, roomNum }: SendMessageType) {
+    this.socketIO.sendMessage({ message, sender, roomNum })
   }
 
   // 다른 플레이어가 참가
-  // addOtherPlayer() {
-  //   const newPlayer = new OtherPlayer(this, 730, 160, 'conference')
-  //   console.log(this.otherPlayers)
-  //   this.otherPlayers.add(newPlayer.avatar)
-  //   console.log('안녕')
-  // }
+  addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
+    if (!socketId) return
+
+    const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
+    this.otherPlayers.add(newPlayer.avatar)
+    this.otherPlayersMap.set(socketId, newPlayer)
+  }
+
+  // 다른 플레이어 이동
+  updateOtherPlayer({ x, y, socketId, animation }: UpdateOtherPlayerType) {
+    const otherPlayer = this.otherPlayersMap.get(socketId)
+    if (!otherPlayer) return
+    otherPlayer.avatar.x = x
+    otherPlayer.avatar.y = y
+    otherPlayer.avatar.anims.play(animation, true)
+  }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
-    if (this.cursur && this.keySpace) {
-      this.player.update(this.cursur, this.keySpace)
+    if (this.player && this.cursur && this.keySpace && this.roomNum) {
+      this.player.update(
+        this.cursur,
+        this.keySpace,
+        this.socketIO,
+        this.roomNum,
+      )
     }
   }
 }

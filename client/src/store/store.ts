@@ -4,6 +4,7 @@ import { ModalDisplaySlice } from './features/modalDisplaySlice'
 import { ModalContentSlice } from './features/modalContentSlice'
 import { AlertSlice } from './features/alertSlice'
 import { ChatListSlice } from './features/chatListSlice'
+import { userListSlice } from './features/userListSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     modalContent: ModalContentSlice.reducer,
     alert: AlertSlice.reducer,
     chatList: ChatListSlice.reducer,
+    userList: userListSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
