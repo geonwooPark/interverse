@@ -46,14 +46,20 @@ export default class OtherPlayer {
 
   // 채팅 생성
   updateChat(content: string) {
+    const limitedText =
+      content.length <= 60 ? content : content.substring(0, 60).concat('...')
+
     this.clearChat()
     // 채팅 텍스트 생성
     const chat = this.scene.add
-      .text(0, 0, content)
+      .text(0, 0, limitedText, {
+        wordWrap: { width: 150, useAdvancedWrap: true },
+      })
       .setFontSize(12)
       .setColor('#000000')
       .setOrigin(0.5)
-    chat.setY(-55)
+      .setFontFamily('neodgm')
+    chat.setY(-60).setDepth(10001)
     // 채팅 박스 크기 및 위치 계산
     const chatWidth = chat.width
     const chatHeight = chat.height
@@ -63,12 +69,22 @@ export default class OtherPlayer {
     const chatBoxX = chat.x - chatWidth / 2 - 4
     const chatBoxY = chat.y - chatHeight / 2 - 2
     // 채팅 박스 생성
-    this.chatBox.add(
-      this.scene.add
-        .graphics()
-        .fillStyle(0xffffff, 1)
-        .fillRoundedRect(chatBoxX, chatBoxY, chatBoxWidth, chatBoxHeight, 5),
-    )
+    this.chatBox
+      .add(
+        this.scene.add
+          .graphics()
+          .fillStyle(0xffffff, 1)
+          .fillRoundedRect(chatBoxX, chatBoxY, chatBoxWidth, chatBoxHeight, 5)
+          .lineStyle(1.5, 0x7c3aed, 1)
+          .strokeRoundedRect(
+            chatBoxX,
+            chatBoxY,
+            chatBoxWidth,
+            chatBoxHeight,
+            5,
+          ),
+      )
+      .setDepth(10000)
     // 채팅 박스에 텍스트를 담습니다.
     this.chatBox.add(chat)
     // 5초 후 채팅 박스를 삭제합니다.

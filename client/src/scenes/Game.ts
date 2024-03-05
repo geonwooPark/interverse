@@ -9,8 +9,7 @@ import SocketIO from '../lib/SocketIO'
 import {
   AddOtherPlayerType,
   JoinRoomType,
-  SendMessageType,
-  SendPlayerInfoToNewPlayerType,
+  DisplayOtherPlayerChatType,
   UpdateOtherPlayerType,
 } from '../types/game'
 
@@ -271,7 +270,16 @@ export default class Game extends Phaser.Scene {
     if (!otherPlayer) return
     otherPlayer.avatar.x = x
     otherPlayer.avatar.y = y
+    otherPlayer.nickname.x = x
+    otherPlayer.nickname.y = y - 35
+    otherPlayer.chatBox.x = x
+    otherPlayer.chatBox.y = y
     otherPlayer.avatar.anims.play(animation, true)
+  }
+
+  displayOtherPlayerChat({ message, socketId }: DisplayOtherPlayerChatType) {
+    const otherPlayer = this.otherPlayersMap.get(socketId)
+    otherPlayer?.updateChat(message)
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨

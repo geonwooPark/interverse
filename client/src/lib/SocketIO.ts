@@ -49,6 +49,10 @@ export default class SocketIO {
     this.socket.on('serverMsg', (messageData) => {
       const game = phaserGame.scene.keys.game as Game
       store.dispatch(addMessage(messageData))
+      game.displayOtherPlayerChat({
+        message: messageData.message,
+        socketId: messageData.senderId,
+      })
 
       // 새로운 유저 입장 시 실행되는 함수
       game.player.sendPlayerInfoToNewPlayer({
@@ -79,8 +83,7 @@ export default class SocketIO {
     // 서버에서 방에 있던 기존 유저 정보 받기
     this.socket.on('receivePlayerInfoFromExistingPlayer', (playerInfo) => {
       const game = phaserGame.scene.keys.game as Game
-      console.log(playerInfo)
-      // game.addOtherPlayer(playerInfo)
+      game.addOtherPlayer(playerInfo)
     })
   }
 

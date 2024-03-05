@@ -23,7 +23,7 @@ io.on(
     socket.on('clientMsg', (data) => {
       // 메시지를 나를 포함한 모든 사람에게 전송
       if (data.roomNum === '') return
-      io.to(data.roomNum).emit('serverMsg', data)
+      io.to(data.roomNum).emit('serverMsg', { ...data, senderId: socket.id })
     })
 
     socket.on('joinRoom', ({ roomNum }) => {

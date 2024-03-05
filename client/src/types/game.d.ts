@@ -51,3 +51,8 @@ interface SendPlayerInfoToNewPlayerType {
   roomNum: string
   newPlayerId: string
 }
+
+interface DisplayOtherPlayerChatType {
+  message: string
+  socketId: string
+}
