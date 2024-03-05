@@ -1,6 +1,12 @@
 import Chair from '../items/Chair'
 import ObjectItem from '../items/ObjectItem'
+import Secretary from '../items/Secretary'
 import SocketIO from '../lib/SocketIO'
+import {
+  closeCreatorModal,
+  openCreatorModal,
+} from '../store/features/creatorModalDisplaySlice'
+import { store } from '../store/store'
 
 export default class Player {
   scene: Phaser.Scene
@@ -195,28 +201,34 @@ export default class Player {
         // 채팅 이동
         this.chatBox.x = this.avatar.x
         this.chatBox.y = this.avatar.y
+
         // 의자에 앉기
-        if (
-          Phaser.Input.Keyboard.JustDown(keySpace) &&
-          this.selectedInteractionItem?.itemType === 'chair'
-        ) {
+        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+          if (!this.selectedInteractionItem) return
           const chair = this.selectedInteractionItem as Chair
 
-          this.avatar.setVelocity(0, 0)
-          this.avatar.setPosition(chair.x, chair.y + 5)
-          this.nickname.x = this.avatar.x
-          this.nickname.y = this.avatar.y - 35
-          this.chatBox.x = this.avatar.x
-          this.chatBox.y = this.avatar.y
+          switch (this.selectedInteractionItem.itemType) {
+            case 'chair':
+              this.avatar.setVelocity(0, 0)
+              this.avatar.setPosition(chair.x, chair.y + 5)
+              this.nickname.x = this.avatar.x
+              this.nickname.y = this.avatar.y - 35
+              this.chatBox.x = this.avatar.x
+              this.chatBox.y = this.avatar.y
 
-          this.avatar.anims.play(
-            `${this.avatarTexture}_sit_${chair.heading}`,
-            true,
-          )
+              this.avatar.anims.play(
+                `${this.avatarTexture}_sit_${chair.heading}`,
+                true,
+              )
 
-          chair.clearInteractionBox()
-          this.behavior = 'sit'
+              chair.clearInteractionBox()
+              this.behavior = 'sit'
+              break
+            case 'secretary':
+              store.dispatch(openCreatorModal())
+          }
         }
+
         break
       case 'sit':
         // 의자에서 일어나기
@@ -234,13 +246,16 @@ export default class Player {
         break
     }
     // 플레이어와 오브젝트 겹침이 끝날 시
-    if (this.selectedInteractionItem) {
-      if (
-        !this.scene.physics.overlap(this.avatar, this.selectedInteractionItem)
-      ) {
-        this.selectedInteractionItem.clearInteractionBox()
-        this.selectedInteractionItem = undefined
+    if (
+      this.selectedInteractionItem &&
+      !this.scene.physics.overlap(this.avatar, this.selectedInteractionItem)
+    ) {
+      switch (this.selectedInteractionItem.itemType) {
+        case 'secretary':
+          store.dispatch(closeCreatorModal())
       }
+      this.selectedInteractionItem.clearInteractionBox()
+      this.selectedInteractionItem = undefined
     }
   }
 }
