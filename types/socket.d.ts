@@ -1,7 +1,9 @@
 interface MessageData {
   message: string
-  sender: string
+  nickName: string
   roomNum: string
+  senderId: string
+  newPlayerId?: string
 }
 
 interface JoinMember {
@@ -39,6 +41,16 @@ interface PlayerPosition {
   animation: any
 }
 
+interface PlayerInfoFromExistingPlayerToNewPlayer {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+  roomNum: string
+  socketId?: string
+  newPlayerId: string
+}
+
 export interface ServerToClientEvents {
   serverMsg: (data: MessageData) => void
   roomMember: (members: string[]) => void
@@ -57,6 +69,15 @@ export interface ServerToClientEvents {
     roomNum,
     socketId,
   }: PlayerPosition) => void
+  receivePlayerInfoFromExistingPlayer: ({
+    x,
+    y,
+    nickName,
+    texture,
+    roomNum,
+    socketId,
+    newPlayerId,
+  }: PlayerInfoFromExistingPlayerToNewPlayer) => void
 }
 
 export interface ClientToServerEvents {
@@ -70,4 +91,12 @@ export interface ClientToServerEvents {
     roomNum,
     animation,
   }: PlayerPosition) => void
+  sendPlayerInfoToNewPlayer: ({
+    x,
+    y,
+    nickName,
+    texture,
+    roomNum,
+    newPlayerId,
+  }: PlayerInfoFromExistingPlayerToNewPlayer) => void
 }

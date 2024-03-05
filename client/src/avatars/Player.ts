@@ -91,7 +91,7 @@ export default class Player {
     clearTimeout(this.timeOut)
     this.chatBox.removeAll(true)
   }
-
+  // 서버로 나의 아바타 정보 전달
   sendPlayerInfo(socketIO: SocketIO, roomNum: string) {
     socketIO.sendPlayerInfo({
       x: this.avatar.x,
@@ -99,6 +99,21 @@ export default class Player {
       nickName: this.nickNameContent,
       texture: this.avatarTexture,
       roomNum,
+    })
+  }
+  // 새로운 유저에세 나의 아바타 정보 전달
+  sendPlayerInfoToNewPlayer(
+    socketIO: SocketIO,
+    roomNum: string,
+    newPlayerId: string,
+  ) {
+    socketIO.sendPlayerInfoToNewPlayer({
+      x: this.avatar.x,
+      y: this.avatar.y,
+      nickName: this.nickNameContent,
+      texture: this.avatarTexture,
+      roomNum,
+      newPlayerId,
     })
   }
 

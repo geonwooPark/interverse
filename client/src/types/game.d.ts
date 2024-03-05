@@ -7,7 +7,8 @@ interface JoinRoomType {
 
 interface SendMessageType {
   message: string
-  sender: string
+  senderId?: string
+  nickName: string
   roomNum: string
 }
 
@@ -40,4 +41,13 @@ interface SendAvatarPositionType {
   socketId: string
   animation: any
   roomNum: string
+}
+
+interface SendPlayerInfoToNewPlayerType {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+  roomNum: string
+  newPlayerId: string
 }

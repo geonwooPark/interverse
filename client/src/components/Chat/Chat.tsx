@@ -32,7 +32,8 @@ function Chat({ authCookie }: ChatProps) {
       game.player.updateChat(inputValue)
       game.sendMessage({
         message: inputValue,
-        sender: authCookie.nickName,
+        senderId: '',
+        nickName: authCookie.nickName,
         roomNum: authCookie.roomNum,
       })
 

@@ -10,6 +10,7 @@ import {
   AddOtherPlayerType,
   JoinRoomType,
   SendMessageType,
+  SendPlayerInfoToNewPlayerType,
   UpdateOtherPlayerType,
 } from '../types/game'
 
@@ -30,14 +31,23 @@ export default class Game extends Phaser.Scene {
     this.socketIO = new SocketIO()
   }
 
+  setUpKeys() {
+    this.cursur = this.input.keyboard?.createCursorKeys()
+    this.keySpace = this.input.keyboard?.addKey('space')
+    if (this.input.keyboard) {
+      this.input.keyboard.disableGlobalCapture()
+      this.input.keyboard.on('keydown-ENTER', () => {
+        this.events.emit('onFocusChat')
+      })
+    }
+  }
+
   enalbeKeys() {
-    console.log('able')
     if (!this.input.keyboard) return
     this.input.keyboard.enabled = true
   }
 
   disableKeys() {
-    console.log('disable')
     if (!this.input.keyboard) return
     this.input.keyboard.enabled = false
   }
@@ -242,22 +252,15 @@ export default class Game extends Phaser.Scene {
     this.player.sendPlayerInfo(this.socketIO, roomNum)
     this.roomNum = roomNum
 
-    this.cursur = this.input.keyboard?.createCursorKeys()
-    this.keySpace = this.input.keyboard?.addKey('space')
-    if (this.input.keyboard) {
-      this.input.keyboard.disableGlobalCapture()
-      this.input.keyboard.on('keydown-ENTER', () => {
-        this.events.emit('onFocusChat')
-      })
-    }
+    this.setUpKeys()
   }
 
   // 메시지 보내기
-  sendMessage({ message, sender, roomNum }: SendMessageType) {
-    this.socketIO.sendMessage({ message, sender, roomNum })
+  sendMessage({ message, senderId, nickName, roomNum }: SendMessageType) {
+    this.socketIO.sendMessage({ message, senderId, nickName, roomNum })
   }
 
-  // 다른 플레이어가 참가
+  // 다른 플레이어 참여
   addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
     if (!socketId) return
 
@@ -266,7 +269,18 @@ export default class Game extends Phaser.Scene {
     this.otherPlayersMap.set(socketId, newPlayer)
   }
 
-  // 다른 플레이어 이동
+  // 새로운 플레이어에게 나의 아바타 정보 제공
+  sendPlayerInfoToNewPlayer({
+    roomNum,
+    newPlayerId,
+  }: {
+    roomNum: string
+    newPlayerId: string
+  }) {
+    this.player.sendPlayerInfoToNewPlayer(this.socketIO, roomNum, newPlayerId)
+  }
+
+  // 다른 유저들 위치 정보 업데이트
   updateOtherPlayer({ x, y, socketId, animation }: UpdateOtherPlayerType) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
     if (!otherPlayer) return

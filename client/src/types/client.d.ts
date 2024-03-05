@@ -1,6 +1,7 @@
 export interface ChatItemType {
   message: string
-  sender: string
+  senderId?: string
+  nickName: string
   roomNum: string
 }
 

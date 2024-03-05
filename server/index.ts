@@ -21,35 +21,33 @@ io.on(
   'connection',
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     socket.on('clientMsg', (data) => {
-      // 메시지를 보낸 사람을 포함한 모든 사람에게 전송
+      // 메시지를 나를 포함한 모든 사람에게 전송
       if (data.roomNum === '') return
       io.to(data.roomNum).emit('serverMsg', data)
     })
 
     socket.on('joinRoom', ({ roomNum }) => {
       if (roomNum === '') return
-      // 기존 방의 멤버 정보를 조인한 사람에게 보내기
-      const roomMember = io.sockets.adapter.rooms.get(roomNum)
-      io.to(socket.id).emit(
-        'roomMember',
-        roomMember ? Array.from(roomMember) : [],
-      )
       // 방에 입장시키기
       socket.join(roomNum)
     })
 
+    // 입장 메시지 보내기
     socket.on('sendPlayerInfo', (playerInfo) => {
-      socket.broadcast.to(playerInfo.roomNum).emit('serverMsg', {
-        sender: '',
+      io.to(playerInfo.roomNum).emit('serverMsg', {
+        senderId: socket.id,
+        nickName: '',
         message: `${playerInfo.nickName}님이 입장했습니다.`,
         roomNum: playerInfo.roomNum,
+        newPlayerId: socket.id,
       })
-
+      // 입장한 유저 정보 나를 제외한 모든 사람에게 전송
       socket.broadcast
         .to(playerInfo.roomNum)
         .emit('receivePlayerInfo', { ...playerInfo, socketId: socket.id })
     })
 
+    // 매순간 나를 제외한 모든 사람에게 위치 정보 전송
     socket.on('sendAvatarPosition', (avatarPosition) => {
       socket.broadcast
         .to(avatarPosition.roomNum)
@@ -57,6 +55,18 @@ io.on(
           ...avatarPosition,
           socketId: socket.id,
         })
+    })
+
+    // 새로운 유저에게 나의 위치 정보 전송
+    socket.on('sendPlayerInfoToNewPlayer', (playerInfo) => {
+      if (socket.id === playerInfo.newPlayerId) return
+      io.to(playerInfo.newPlayerId).emit(
+        'receivePlayerInfoFromExistingPlayer',
+        {
+          ...playerInfo,
+          socketId: socket.id,
+        },
+      )
     })
   },
 )
