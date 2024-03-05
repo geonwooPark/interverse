@@ -18,6 +18,7 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
   scene: [Preload, Game],
+  backgroundColor: '#1F3131',
 }
 
 const phaserGame = new Phaser.Game(config)
