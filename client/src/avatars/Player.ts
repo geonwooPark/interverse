@@ -81,10 +81,10 @@ export default class Player {
       .text(0, 0, limitedText, {
         wordWrap: { width: 150, useAdvancedWrap: true },
       })
-      .setFontSize(12)
+      .setFontSize(14)
       .setColor('#000000')
       .setOrigin(0.5)
-      .setFontFamily('neodgm')
+    // .setFontFamily('neodgm')
     chat.setY(-60).setDepth(10001)
     // 채팅 박스 크기 및 위치 계산
     const chatWidth = chat.width
@@ -101,7 +101,7 @@ export default class Player {
           .graphics()
           .fillStyle(0xffffff, 1)
           .fillRoundedRect(chatBoxX, chatBoxY, chatBoxWidth, chatBoxHeight, 5)
-          .lineStyle(1.5, 0x7c3aed, 1)
+          .lineStyle(1.5, 0x000000, 1)
           .strokeRoundedRect(
             chatBoxX,
             chatBoxY,
