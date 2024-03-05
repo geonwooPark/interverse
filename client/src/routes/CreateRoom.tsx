@@ -42,17 +42,11 @@ function CreateRoom() {
   }
 
   return (
-    <>
-      <div className="mb-5">
-        <img src="/images/logo.png" alt="logo" width={400} />
-      </div>
-      <div className="grid w-[720px] grid-cols-2 gap-4 rounded-3xl bg-gray-300 p-8">
-        <div className="aspect-square rounded-2xl bg-black">
-          gif 이미지 들어가는곳
-        </div>
+    <div className="relative">
+      <div className="relative z-10 w-[420px] rounded-3xl bg-gray-300 p-8">
         <div className="flex flex-col items-center justify-between p-2">
           <form onSubmit={onSubmit} className="space-y-4 text-center">
-            <div>쉽고 재밌는 메타버스, Interverse</div>
+            <div>쉽고 빠르게 즐기는 메타버스, Interverse</div>
             <input
               type="text"
               name="title"
@@ -90,7 +84,11 @@ function CreateRoom() {
           </form>
         </div>
       </div>
-    </>
+      <div className="absolute left-7 top-[-50px] flex w-full">
+        <img src="/images/avatar_1.png" alt="avatar_1" />
+        <img src="/images/avatar_2.png" alt="avatar_2" />
+      </div>
+    </div>
   )
 }
 
