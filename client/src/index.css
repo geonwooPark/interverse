@@ -16,3 +16,7 @@
     display: none;
   }
 }
+
+#phaser canvas {
+  width: 100%;
+}
