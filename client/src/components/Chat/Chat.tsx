@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
 import ChatList from './ChatList'
@@ -11,6 +11,7 @@ interface ChatProps {
 
 function Chat({ authCookie }: ChatProps) {
   const game = phaserGame.scene.keys.game as Game
+  const inputRef = useRef<HTMLInputElement>(null)
   const [inputValue, setInputValue] = useState('')
   const chatList = useAppSelector((state) => state.chatList)
 
@@ -23,9 +24,11 @@ function Chat({ authCookie }: ChatProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!inputValue) return
     if (!authCookie) return
-
+    if (!inputValue) {
+      inputRef.current?.blur()
+      game.enalbeKeys()
+    } else {
     game.player.updateChat(inputValue)
     game.sendMessage({
       message: inputValue,
@@ -33,8 +36,33 @@ function Chat({ authCookie }: ChatProps) {
       roomNum: authCookie.roomNum,
     })
 
-    setInputValue('')
+      setInputValue('')
+      inputRef.current?.blur()
+      game.enalbeKeys()
+    }
   }
+
+  useEffect(() => {
+    socket.on('serverMsg', (data) => {
+      setChatList((pre) => [...pre, { sender: data.sender, content: data.msg }])
+    })
+  }, [socket])
+
+  useEffect(() => {
+    if (!game) return
+    phaserGame.scene.getScene('game').events.on('onFocusChat', () => {
+      inputRef.current?.focus()
+      event.preventDefault()
+      game.disableKeys()
+    })
+    return () => {
+      phaserGame.scene.getScene('game').events.off('onFocusChat', () => {
+        inputRef.current?.focus()
+        event.preventDefault()
+        game.disableKeys()
+      })
+    }
+  }, [inputRef, game])
 
   return (
     <div className="fixed bottom-5 flex w-full justify-center">
@@ -46,6 +74,7 @@ function Chat({ authCookie }: ChatProps) {
             placeholder="채팅을 입력해주세요"
             autoComplete="off"
             className="w-full bg-transparent px-3 py-2 outline-none placeholder:text-black"
+            ref={inputRef}
             value={inputValue}
             onChange={handleChange}
           />
