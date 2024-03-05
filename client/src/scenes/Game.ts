@@ -27,6 +27,7 @@ export default class Game extends Phaser.Scene {
   constructor() {
     // Scene Key
     super('game')
+    this.socketIO = new SocketIO()
   }
 
   enalbeKeys() {
@@ -39,9 +40,6 @@ export default class Game extends Phaser.Scene {
     console.log('disable')
     if (!this.input.keyboard) return
     this.input.keyboard.enabled = false
-
-    this.socketIO = new SocketIO()
-
   }
 
   // Scene이 로드될 때 한번 호출, 게임 오브젝트 배치
@@ -237,6 +235,7 @@ export default class Game extends Phaser.Scene {
   // 방에 입장
   joinRoom({ roomNum, authCookie }: JoinRoomType) {
     if (!this.player) return
+    if (!this.socketIO) return
 
     this.socketIO.joinRoom({ roomNum, authCookie })
     this.player.setNickname(authCookie.nickName)
@@ -245,10 +244,12 @@ export default class Game extends Phaser.Scene {
 
     this.cursur = this.input.keyboard?.createCursorKeys()
     this.keySpace = this.input.keyboard?.addKey('space')
-    this.input.keyboard.disableGlobalCapture()
-    this.input.keyboard.on('keydown-ENTER', () => {
-    this.events.emit('onFocusChat')
-    })
+    if (this.input.keyboard) {
+      this.input.keyboard.disableGlobalCapture()
+      this.input.keyboard.on('keydown-ENTER', () => {
+        this.events.emit('onFocusChat')
+      })
+    }
   }
 
   // 메시지 보내기

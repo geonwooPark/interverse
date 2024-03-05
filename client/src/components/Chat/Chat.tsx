@@ -29,12 +29,12 @@ function Chat({ authCookie }: ChatProps) {
       inputRef.current?.blur()
       game.enalbeKeys()
     } else {
-    game.player.updateChat(inputValue)
-    game.sendMessage({
-      message: inputValue,
-      sender: authCookie.nickName,
-      roomNum: authCookie.roomNum,
-    })
+      game.player.updateChat(inputValue)
+      game.sendMessage({
+        message: inputValue,
+        sender: authCookie.nickName,
+        roomNum: authCookie.roomNum,
+      })
 
       setInputValue('')
       inputRef.current?.blur()
@@ -43,22 +43,16 @@ function Chat({ authCookie }: ChatProps) {
   }
 
   useEffect(() => {
-    socket.on('serverMsg', (data) => {
-      setChatList((pre) => [...pre, { sender: data.sender, content: data.msg }])
-    })
-  }, [socket])
-
-  useEffect(() => {
     if (!game) return
     phaserGame.scene.getScene('game').events.on('onFocusChat', () => {
       inputRef.current?.focus()
-      event.preventDefault()
+      event?.preventDefault()
       game.disableKeys()
     })
     return () => {
       phaserGame.scene.getScene('game').events.off('onFocusChat', () => {
         inputRef.current?.focus()
-        event.preventDefault()
+        event?.preventDefault()
         game.disableKeys()
       })
     }
