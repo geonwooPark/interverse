@@ -17,7 +17,7 @@ function Modal() {
   return (
     <div
       onClick={onClick}
-      className="fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70 font-neodgm"
+      className="font-neodgm fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center bg-black/70"
     >
       <div
         onClick={(e) => e.stopPropagation()}
