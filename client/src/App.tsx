@@ -9,27 +9,32 @@ import Password from './routes/Password'
 import NickName from './routes/NickName'
 import AdminRoute from './components/CheckRoute/AdminRoute'
 import AuthRoute from './components/CheckRoute/AuthRoute'
+import UIContainer from './components/UIContainer'
+import CreatorModal from './components/Modals/CreatorModal/CreatorModal'
 
 function App() {
   return (
     <>
       <Modal />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route path="/" element={<Landing />} />
-            <Route element={<AdminRoute />}>
-              <Route path="/my-room" element={<MyRoom />} />
+      <CreatorModal />
+      <UIContainer>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />}>
+              <Route path="/" element={<Landing />} />
+              <Route element={<AdminRoute />}>
+                <Route path="/my-room" element={<MyRoom />} />
+              </Route>
+              <Route path="/create-room" element={<CreateRoom />} />
             </Route>
-            <Route path="/create-room" element={<CreateRoom />} />
-          </Route>
-          <Route path="/password" element={<Password />} />
-          <Route path="/nickname" element={<NickName />} />
-          <Route element={<AuthRoute />}>
-            <Route path="/:roomId" element={<Room />} />
-          </Route>
-        </Routes>
-      </Router>
+            <Route path="/password" element={<Password />} />
+            <Route path="/nickname" element={<NickName />} />
+            <Route element={<AuthRoute />}>
+              <Route path="/:roomId" element={<Room />} />
+            </Route>
+          </Routes>
+        </Router>
+      </UIContainer>
     </>
   )
 }
