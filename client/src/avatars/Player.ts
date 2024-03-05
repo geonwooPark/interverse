@@ -10,6 +10,7 @@ export default class Player {
   nickname: Phaser.GameObjects.Text
   chatBox: Phaser.GameObjects.Container
   behavior: 'stand' | 'sit'
+  socketIO: SocketIO
   timeOut?: number
   selectedInteractionItem?: ObjectItem
 
@@ -18,8 +19,10 @@ export default class Player {
     x: number,
     y: number,
     avatarTexture: string,
+    socketIO: SocketIO,
   ) {
     this.scene = scene
+    this.socketIO = socketIO
     this.behavior = 'stand'
     this.nickNameContent = this.avatarTexture = avatarTexture
     // 플레이어 생성
@@ -55,7 +58,14 @@ export default class Player {
       .setDepth(1000)
   }
   // 채팅 생성
-  updateChat(content: string) {
+  updateChat(content: string, roomNum: string) {
+    // 서버로 메세지 보내기
+    this.socketIO.sendMessage({
+      message: content,
+      nickName: this.nickNameContent,
+      roomNum,
+    })
+
     this.clearChat()
     // 채팅 텍스트 생성
     const chat = this.scene.add
@@ -92,8 +102,8 @@ export default class Player {
     this.chatBox.removeAll(true)
   }
   // 서버로 나의 아바타 정보 전달
-  sendPlayerInfo(socketIO: SocketIO, roomNum: string) {
-    socketIO.sendPlayerInfo({
+  sendPlayerInfo(roomNum: string) {
+    this.socketIO.sendPlayerInfo({
       x: this.avatar.x,
       y: this.avatar.y,
       nickName: this.nickNameContent,
@@ -102,12 +112,14 @@ export default class Player {
     })
   }
   // 새로운 유저에세 나의 아바타 정보 전달
-  sendPlayerInfoToNewPlayer(
-    socketIO: SocketIO,
-    roomNum: string,
-    newPlayerId: string,
-  ) {
-    socketIO.sendPlayerInfoToNewPlayer({
+  sendPlayerInfoToNewPlayer({
+    roomNum,
+    newPlayerId,
+  }: {
+    roomNum: string
+    newPlayerId: string
+  }) {
+    this.socketIO.sendPlayerInfoToNewPlayer({
       x: this.avatar.x,
       y: this.avatar.y,
       nickName: this.nickNameContent,

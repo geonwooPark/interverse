@@ -29,17 +29,10 @@ function Chat({ authCookie }: ChatProps) {
       inputRef.current?.blur()
       game.enalbeKeys()
     } else {
-      game.player.updateChat(inputValue)
-      game.sendMessage({
-        message: inputValue,
-        senderId: '',
-        nickName: authCookie.nickName,
-        roomNum: authCookie.roomNum,
-      })
-
-      setInputValue('')
+      game.player.updateChat(inputValue, authCookie.roomNum)
       inputRef.current?.blur()
       game.enalbeKeys()
+      setInputValue('')
     }
   }
 

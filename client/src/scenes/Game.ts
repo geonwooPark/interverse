@@ -172,8 +172,9 @@ export default class Game extends Phaser.Scene {
       .setDepth(10)
 
     // Player Layer
+    // 플레이어 생성
     createAvatarAnims(this.anims)
-    this.player = new Player(this, 730, 160, 'conference')
+    this.player = new Player(this, 730, 160, 'conference', this.socketIO)
 
     // Camera Setting
     this.cameras.main.zoom = 1.5
@@ -249,15 +250,10 @@ export default class Game extends Phaser.Scene {
 
     this.socketIO.joinRoom({ roomNum, authCookie })
     this.player.setNickname(authCookie.nickName)
-    this.player.sendPlayerInfo(this.socketIO, roomNum)
+    this.player.sendPlayerInfo(roomNum)
     this.roomNum = roomNum
 
     this.setUpKeys()
-  }
-
-  // 메시지 보내기
-  sendMessage({ message, senderId, nickName, roomNum }: SendMessageType) {
-    this.socketIO.sendMessage({ message, senderId, nickName, roomNum })
   }
 
   // 다른 플레이어 참여
@@ -267,17 +263,6 @@ export default class Game extends Phaser.Scene {
     const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
     this.otherPlayers.add(newPlayer.avatar)
     this.otherPlayersMap.set(socketId, newPlayer)
-  }
-
-  // 새로운 플레이어에게 나의 아바타 정보 제공
-  sendPlayerInfoToNewPlayer({
-    roomNum,
-    newPlayerId,
-  }: {
-    roomNum: string
-    newPlayerId: string
-  }) {
-    this.player.sendPlayerInfoToNewPlayer(this.socketIO, roomNum, newPlayerId)
   }
 
   // 다른 유저들 위치 정보 업데이트

@@ -51,7 +51,7 @@ export default class SocketIO {
       store.dispatch(addMessage(messageData))
 
       // 새로운 유저 입장 시 실행되는 함수
-      game.sendPlayerInfoToNewPlayer({
+      game.player.sendPlayerInfoToNewPlayer({
         roomNum: messageData.roomNum,
         newPlayerId: messageData.newPlayerId || '',
       })
