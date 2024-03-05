@@ -12,9 +12,15 @@ function ChatItem({ chatItem }: ChatItemProps) {
   }, [chatItem])
 
   return (
-    <li ref={scrollRef} className="flex w-full space-x-2.5">
-      <span className="font-bold">{chatItem.nickName}</span>
-      <span className="flex w-fit">{chatItem.message}</span>
+    <li ref={scrollRef} className="flex w-full gap-2">
+      <span className={`font-bold ${chatItem.nickName ? 'block' : 'hidden'}`}>
+        {chatItem.nickName}
+      </span>
+      <span
+        className={`flex w-fit ${chatItem.nickName ? 'text-black' : 'font-bold text-purple-600'}`}
+      >
+        {chatItem.message}
+      </span>
     </li>
   )
 }
