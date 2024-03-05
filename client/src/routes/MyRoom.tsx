@@ -3,6 +3,7 @@ import { getCookie, removeCookie } from '../utils/cookie'
 import { useAppDispatch } from '../store/store'
 import { changeModalContent } from '../store/features/modalContentSlice'
 import { closeModal, openModal } from '../store/features/modalDisplaySlice'
+import gifAvatarRun from '/gif/avatar_run.gif'
 
 function MyRoom() {
   const navigate = useNavigate()
@@ -30,9 +31,12 @@ function MyRoom() {
   }
 
   return (
-    <div className="flex w-[360px] flex-col gap-4 rounded-3xl bg-gray-300 p-8">
-      <div className="aspect-square rounded-2xl bg-black">
-        gif 이미지 들어가는곳
+    <div className="flex w-[360px] flex-col items-center gap-4 rounded-3xl bg-gray-300 p-8">
+      <div className="relative w-full overflow-hidden rounded-md bg-black">
+        <div className='h-[180px] w-[2000px] bg-[url("/images/background.png")] bg-right bg-repeat-x' />
+        <div className="absolute bottom-3 flex w-full items-center justify-evenly">
+          <img src={gifAvatarRun} alt="GIF" width={70} />
+        </div>
       </div>
       <button
         onClick={onEnter}

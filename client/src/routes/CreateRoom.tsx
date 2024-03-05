@@ -42,50 +42,55 @@ function CreateRoom() {
   }
 
   return (
-    <div className="grid w-[720px] grid-cols-2 gap-4 rounded-3xl bg-gray-300 p-8">
-      <div className="aspect-square rounded-2xl bg-black">
-        gif 이미지 들어가는곳
+    <>
+      <div className="mb-5">
+        <img src="/images/logo.png" alt="logo" width={400} />
       </div>
-      <div className="flex flex-col items-center justify-between p-2">
-        <form onSubmit={onSubmit} className="space-y-4 text-center">
-          <div>쉽고 재밌는 메타버스, Interverse</div>
-          <input
-            type="text"
-            name="title"
-            value={title}
-            placeholder="방 제목"
-            autoComplete="off"
-            className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            name="password"
-            value={password}
-            placeholder="방 비밀번호"
-            autoComplete="off"
-            className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
-            onChange={handleChange}
-            maxLength={4}
-          />
-          <input
-            type="text"
-            name="nickName"
-            value={nickName}
-            placeholder="닉네임"
-            autoComplete="off"
-            className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
-            onChange={handleChange}
-          />
-          <button
-            type="submit"
-            className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
-          >
-            방 개설하기
-          </button>
-        </form>
+      <div className="grid w-[720px] grid-cols-2 gap-4 rounded-3xl bg-gray-300 p-8">
+        <div className="aspect-square rounded-2xl bg-black">
+          gif 이미지 들어가는곳
+        </div>
+        <div className="flex flex-col items-center justify-between p-2">
+          <form onSubmit={onSubmit} className="space-y-4 text-center">
+            <div>쉽고 재밌는 메타버스, Interverse</div>
+            <input
+              type="text"
+              name="title"
+              value={title}
+              placeholder="방 제목"
+              autoComplete="off"
+              className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              name="password"
+              value={password}
+              placeholder="방 비밀번호"
+              autoComplete="off"
+              className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+              onChange={handleChange}
+              maxLength={4}
+            />
+            <input
+              type="text"
+              name="nickName"
+              value={nickName}
+              placeholder="닉네임"
+              autoComplete="off"
+              className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+              onChange={handleChange}
+            />
+            <button
+              type="submit"
+              className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
+            >
+              방 개설하기
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
