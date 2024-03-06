@@ -23,6 +23,7 @@ export default class Game extends Phaser.Scene {
   socketIO!: SocketIO
   roomNum!: string
   isCreate = false
+  test: any
 
   constructor() {
     // Scene Key
@@ -166,18 +167,17 @@ export default class Game extends Phaser.Scene {
     })
 
     // OtherPlayers Layer
-    this.otherPlayers = this.physics.add
-      .group({ classType: OtherPlayer })
-      .setDepth(10)
+    this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
 
     // Player Layer
     // 플레이어 생성
     createAvatarAnims(this.anims)
     this.player = new Player(this, 730, 160, 'conference', this.socketIO)
+    this.add.existing(this.player)
 
     // Camera Setting
     this.cameras.main.zoom = 1.5
-    this.cameras.main.startFollow(this.player.avatar, true)
+    this.cameras.main.startFollow(this.player, true)
 
     // Wall Layer
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
@@ -208,20 +208,20 @@ export default class Game extends Phaser.Scene {
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
       // this.physics.add.collider(this.player.avatar, secretary)
-      this.physics.add.collider(this.player.avatar, interiorOnCollide)
-      this.physics.add.collider(this.player.avatar, ceoDesk)
+      this.physics.add.collider(this.player, interiorOnCollide)
+      this.physics.add.collider(this.player, ceoDesk)
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
-    this.physics.add.collider(groundLayer!, this.player.avatar)
-    this.physics.add.collider(wallLayer!, this.player.avatar)
-    this.physics.add.collider(topLayer!, this.player.avatar)
+    this.physics.add.collider(groundLayer!, this.player)
+    this.physics.add.collider(wallLayer!, this.player)
+    this.physics.add.collider(topLayer!, this.player)
     groundLayer?.setCollisionByProperty({ collide: true })
     wallLayer?.setCollisionByProperty({ collide: true })
     topLayer?.setCollisionByProperty({ collide: true })
     // 플레이어와 오브젝트 겹침 감지
     this.physics.add.overlap(
-      this.player.avatar,
+      this.player,
       [secretary, chairToDown, chairToUp, waterPurifier, printer],
       this.handlePlayerOverlap,
       undefined,
@@ -259,8 +259,17 @@ export default class Game extends Phaser.Scene {
   addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
     if (!socketId) return
 
-    const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
-    this.otherPlayers.add(newPlayer.avatar)
+    const newPlayer = new OtherPlayer(
+      this,
+      x,
+      y,
+      texture,
+      this.socketIO,
+      nickName,
+    )
+    this.add.existing(newPlayer)
+
+    this.otherPlayers.add(newPlayer)
     this.otherPlayersMap.set(socketId, newPlayer)
   }
 
@@ -272,10 +281,7 @@ export default class Game extends Phaser.Scene {
     if (!this.otherPlayersMap.has(socketId)) return
     if (!otherPlayer) return
 
-    // ############# 닉네임이 지워지지않는 이슈 ##################
-    // Player 타입을 Game에서 받아서 otherPlayer가 통채로 삭제되야 할 듯 합니다~
-    this.otherPlayers.remove(otherPlayer.avatar, true, true)
-    // delete otherPlayer.nickname
+    this.otherPlayers.remove(otherPlayer, true, true)
     this.otherPlayersMap.delete(socketId)
   }
 
@@ -283,13 +289,7 @@ export default class Game extends Phaser.Scene {
   updateOtherPlayer({ x, y, socketId, animation }: UpdateOtherPlayerType) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
     if (!otherPlayer) return
-    otherPlayer.avatar.x = x
-    otherPlayer.avatar.y = y
-    otherPlayer.nickname.x = x
-    otherPlayer.nickname.y = y - 35
-    otherPlayer.chatBox.x = x
-    otherPlayer.chatBox.y = y
-    otherPlayer.avatar.anims.play(animation, true)
+    otherPlayer?.updatePosition({ x, y, animation })
   }
 
   displayOtherPlayerChat({ message, socketId }: DisplayOtherPlayerChatType) {
