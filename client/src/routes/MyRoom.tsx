@@ -33,7 +33,7 @@ function MyRoom() {
   return (
     <div className="flex w-[360px] flex-col items-center gap-4 rounded-3xl bg-gray-300 p-8">
       <div className="relative w-full overflow-hidden rounded-md bg-black">
-        <div className='h-[180px] w-[2000px] bg-[url("/images/background.png")] bg-right bg-repeat-x' />
+        <div className='h-[180px] w-[2000px] animate-myRoomBg bg-[url("/images/background.png")]' />
         <div className="absolute bottom-3 flex w-full items-center justify-evenly">
           <img src={gifAvatarRun} alt="GIF" width={70} />
         </div>

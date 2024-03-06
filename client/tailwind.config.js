@@ -6,6 +6,15 @@ module.exports = {
       fontFamily: {
         neodgm: ['neodgm'],
       },
+      keyframes: {
+        myRoomBgKeyframes: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(calc(-100% + 360px))' },
+        },
+      },
+      animation: {
+        myRoomBg: 'myRoomBgKeyframes 5s linear infinite',
+      },
     },
   },
   plugins: [],
