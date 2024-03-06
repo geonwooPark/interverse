@@ -1,6 +1,5 @@
 import Chair from '../items/Chair'
 import ObjectItem from '../items/ObjectItem'
-import Secretary from '../items/Secretary'
 import SocketIO from '../lib/SocketIO'
 import {
   closeCreatorModal,

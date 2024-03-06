@@ -53,6 +53,7 @@ interface PlayerInfoFromExistingPlayerToNewPlayer {
 
 export interface ServerToClientEvents {
   serverMsg: (data: MessageData) => void
+  leaveRoom: (sockerId: string) => void
   roomMember: (members: string[]) => void
   receivePlayerInfo: ({
     x,
