@@ -68,6 +68,13 @@ io.on(
         },
       )
     })
+
+    socket.on('disconnecting', () => {
+      const rooms = Array.from(socket.rooms)
+      if (rooms.length === 1) return
+
+      io.to(rooms[1]).emit('leaveRoom', socket.id)
+    })
   },
 )
 
