@@ -255,13 +255,28 @@ export default class Game extends Phaser.Scene {
     this.setUpKeys()
   }
 
-  // 다른 플레이어 참여
+  // 다른 플레이어 입장
   addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
     if (!socketId) return
 
     const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
     this.otherPlayers.add(newPlayer.avatar)
     this.otherPlayersMap.set(socketId, newPlayer)
+  }
+
+  // 다른 플레이어 퇴장
+  removeOtherPlayer(socketId: string) {
+    if (!socketId) return
+    const otherPlayer = this.otherPlayersMap.get(socketId)
+
+    if (!this.otherPlayersMap.has(socketId)) return
+    if (!otherPlayer) return
+
+    // ############# 닉네임이 지워지지않는 이슈 ##################
+    // Player 타입을 Game에서 받아서 otherPlayer가 통채로 삭제되야 할 듯 합니다~
+    this.otherPlayers.remove(otherPlayer.avatar, true, true)
+    // delete otherPlayer.nickname
+    this.otherPlayersMap.delete(socketId)
   }
 
   // 다른 유저들 위치 정보 업데이트

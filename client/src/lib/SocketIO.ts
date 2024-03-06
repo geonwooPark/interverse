@@ -27,6 +27,12 @@ export default class SocketIO {
       roomNum,
       authCookie,
     })
+
+    // 서버에서 방에서 나간 유저 정보 받기
+    this.socket.on('leaveRoom', (sockerId) => {
+      const game = phaserGame.scene.keys.game as Game
+      game.removeOtherPlayer(sockerId)
+    })
   }
 
   sendPlayerInfo({ x, y, nickName, texture, roomNum }: SendPlayerInfoType) {
