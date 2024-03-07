@@ -75,6 +75,13 @@ io.on(
 
       io.to(rooms[1]).emit('leaveRoom', socket.id)
     })
+
+    socket.on('joinVideoRoom', ({ roomNum, nickName }) => {
+      socket.join(`${roomNum}_video`)
+      socket.broadcast
+        .to(`${roomNum}_video`)
+        .emit('joinVideoRoom', { socketId: socket.id, nickName })
+    })
   },
 )
 
