@@ -5,13 +5,13 @@ import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
-import SocketIO from '../lib/SocketIO'
 import {
   AddOtherPlayerType,
   JoinRoomType,
   DisplayOtherPlayerChatType,
   UpdateOtherPlayerType,
 } from '../types/game'
+import { joinRoom } from '../lib/ws'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -20,7 +20,7 @@ export default class Game extends Phaser.Scene {
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
   player!: Player
-  socketIO!: SocketIO
+  // socketIO!: SocketIO
   roomNum!: string
   isCreate = false
   test: any
@@ -28,7 +28,7 @@ export default class Game extends Phaser.Scene {
   constructor() {
     // Scene Key
     super('game')
-    this.socketIO = new SocketIO()
+    // this.socketIO = new SocketIO()
   }
 
   setUpKeys() {
@@ -172,7 +172,7 @@ export default class Game extends Phaser.Scene {
     // Player Layer
     // 플레이어 생성
     createAvatarAnims(this.anims)
-    this.player = new Player(this, 730, 160, 'conference', this.socketIO)
+    this.player = new Player(this, 730, 160, 'conference')
     this.add.existing(this.player)
 
     // Camera Setting
@@ -245,9 +245,8 @@ export default class Game extends Phaser.Scene {
   // 방에 입장
   joinRoom({ roomNum, authCookie }: JoinRoomType) {
     if (!this.player) return
-    if (!this.socketIO) return
 
-    this.socketIO.joinRoom({ roomNum, authCookie })
+    joinRoom({ roomNum, authCookie })
     this.player.setNickname(authCookie.nickName)
     this.player.sendPlayerInfo(roomNum)
     this.roomNum = roomNum
@@ -259,14 +258,7 @@ export default class Game extends Phaser.Scene {
   addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
     if (!socketId) return
 
-    const newPlayer = new OtherPlayer(
-      this,
-      x,
-      y,
-      texture,
-      this.socketIO,
-      nickName,
-    )
+    const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
     this.add.existing(newPlayer)
 
     this.otherPlayers.add(newPlayer)
@@ -300,12 +292,7 @@ export default class Game extends Phaser.Scene {
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
     if (this.player && this.cursur && this.keySpace && this.roomNum) {
-      this.player.update(
-        this.cursur,
-        this.keySpace,
-        this.socketIO,
-        this.roomNum,
-      )
+      this.player.update(this.cursur, this.keySpace, this.roomNum)
     }
   }
 }

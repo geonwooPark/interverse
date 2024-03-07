@@ -1,5 +1,4 @@
 import Avatar from './Avatar'
-import SocketIO from '../lib/SocketIO'
 
 export default class OtherPlayer extends Avatar {
   constructor(
@@ -7,11 +6,10 @@ export default class OtherPlayer extends Avatar {
     x: number,
     y: number,
     texture: string,
-    socketIO: SocketIO,
     nickName: string,
     frame?: string | number,
   ) {
-    super(scene, x, y, texture, socketIO, frame)
+    super(scene, x, y, texture, frame)
     this.setNickname(nickName)
   }
 

@@ -1,5 +1,9 @@
 import Chair from '../items/Chair'
-import SocketIO from '../lib/SocketIO'
+import {
+  sendAvatarPosition,
+  sendPlayerInfo,
+  sendPlayerInfoToNewPlayer,
+} from '../lib/ws'
 import {
   closeCreatorModal,
   openCreatorModal,
@@ -13,15 +17,14 @@ export default class Player extends Avatar {
     x: number,
     y: number,
     texture: string,
-    socketIO: SocketIO,
     frame?: string | number,
   ) {
-    super(scene, x, y, texture, socketIO, frame)
+    super(scene, x, y, texture, frame)
   }
 
   // 서버로 나의 아바타 정보 전달
   sendPlayerInfo(roomNum: string) {
-    this.socketIO.sendPlayerInfo({
+    sendPlayerInfo({
       x: this.x,
       y: this.y,
       nickName: this.nickname.text,
@@ -37,7 +40,7 @@ export default class Player extends Avatar {
     roomNum: string
     newPlayerId: string
   }) {
-    this.socketIO.sendPlayerInfoToNewPlayer({
+    sendPlayerInfoToNewPlayer({
       x: this.x,
       y: this.y,
       nickName: this.nickname.text,
@@ -51,7 +54,6 @@ export default class Player extends Avatar {
   update(
     cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
     keySpace: Phaser.Input.Keyboard.Key,
-    socketIO: SocketIO,
     roomNum: string,
   ) {
     const avatarContainerBody = this.avatarContainer
@@ -93,7 +95,7 @@ export default class Player extends Avatar {
         this.setVelocity(vx, vy)
         this.avatarContainer.setPosition(this.x, this.y - 35)
 
-        socketIO.sendAvatarPosition({
+        sendAvatarPosition({
           x: this.x,
           y: this.y,
           socketId: '',
