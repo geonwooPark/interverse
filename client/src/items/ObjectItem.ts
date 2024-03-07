@@ -6,7 +6,6 @@ import {
 import { store } from '../store/store'
 
 export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
-  private interacrionBox: Phaser.GameObjects.Container
   itemType!: 'secretary' | 'chair' | 'waterPurifier' | 'printer' | 'ceoDesk'
 
   constructor(
@@ -18,7 +17,6 @@ export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
   ) {
     super(scene, x, y, texture, frame)
     // 텍스트를 담을 박스입니다.
-    this.interacrionBox = this.scene.add.container().setDepth(2000)
   }
 
   setInteractionBox(content: string) {
@@ -27,7 +25,6 @@ export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
   }
 
   clearInteractionBox() {
-    this.interacrionBox.removeAll(true)
     store.dispatch(changeAlertContent(''))
     store.dispatch(closeAlert())
   }
