@@ -25,6 +25,7 @@ export const joinRoom = ({ roomNum, authCookie }: JoinRoomType) => {
     roomNum,
     authCookie,
   })
+
   // 서버에서 방에서 나간 유저 정보 받기
   socket.on('leaveRoom', (sockerId) => {
     const game = phaserGame.scene.keys.game as Game

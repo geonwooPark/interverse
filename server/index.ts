@@ -17,6 +17,12 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   },
 })
 
+const videoRoom: Record<string, Record<string, IUser>> = {}
+interface IUser {
+  socketId: string
+  nickName: string
+}
+
 io.on(
   'connection',
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
@@ -69,18 +75,35 @@ io.on(
       )
     })
 
-    socket.on('disconnecting', () => {
-      const rooms = Array.from(socket.rooms)
-      if (rooms.length === 1) return
-
-      io.to(rooms[1]).emit('leaveRoom', socket.id)
+    socket.on('createVideoRoom', (roomNum) => {
+      videoRoom[roomNum] = videoRoom[roomNum] || {}
+      socket.emit('createdRoom', roomNum)
     })
 
     socket.on('joinVideoRoom', ({ roomNum, nickName }) => {
+      if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
+
+      const id = socket.id.toString()
+      videoRoom[roomNum][id] = {
+        socketId: socket.id,
+        nickName,
+      }
       socket.join(`${roomNum}_video`)
+
+      console.log(videoRoom)
+
       socket.broadcast
         .to(`${roomNum}_video`)
-        .emit('joinVideoRoom', { socketId: socket.id, nickName })
+        .emit('joinedUsers', { socketId: socket.id, nickName })
+      io.to(`${roomNum}_video`).emit('getUsers', {
+        socketId: socket.id,
+        members: videoRoom[roomNum],
+      })
+    })
+
+    socket.on('disconnecting', () => {
+      const rooms = Array.from(socket.rooms)
+      if (rooms.length === 1) return
     })
   },
 )

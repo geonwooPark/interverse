@@ -79,13 +79,27 @@ export interface ServerToClientEvents {
     socketId,
     newPlayerId,
   }: PlayerInfoFromExistingPlayerToNewPlayer) => void
-  joinVideoRoom: ({
+  getUsers: ({
+    socketId,
+    members,
+  }: {
+    socketId: string
+    members: Record<
+      string,
+      {
+        socketId: string
+        nickName: string
+      }
+    >
+  }) => void
+  joinedUsers: ({
     socketId,
     nickName,
   }: {
     socketId: string
     nickName: string
   }) => void
+  createdRoom: (roomNum: string) => void
 }
 
 export interface ClientToServerEvents {
@@ -114,4 +128,5 @@ export interface ClientToServerEvents {
     roomNum: string
     nickName: string
   }) => void
+  createVideoRoom: (roomNum: string) => void
 }

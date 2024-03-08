@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import VideoPlayer from './VideoPlayer'
 import { socket as ws } from '../../../lib/ws'
 import { CookieType } from '../../../types/client'
@@ -15,72 +15,93 @@ interface PeerStreamType {
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
-  console.log('렌더링')
   const [me, setMe] = useState<Peer>()
-  const [stream, setStream] = useState<MediaStream>()
-  const peerStreamsRef = useRef<PeerStreamType[]>([])
   const [peerStreams, setPeerStreams] = useState<MediaStream[]>([])
+  const [stream, setStream] = useState<MediaStream>()
+  const [users, setUsers] = useState<string[]>([])
 
   useEffect(() => {
     if (!ws.id) return
 
-    const peer = new Peer(ws.id)
+    // 서버 따로 만들기
+    const peer = new Peer(ws.id, {
+      host: 'localhost',
+      port: 9000,
+      path: '/myapp',
+    })
     setMe(peer)
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        setStream(stream)
-      })
-
+    try {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          setStream(stream)
+        })
+    } catch (error) {
+      console.error(error)
+    }
+    // 비디오룸 만들기
+    ws.emit('createVideoRoom', authCookie.roomNum)
     ws.emit('joinVideoRoom', {
       roomNum: authCookie.roomNum,
       nickName: authCookie.nickName,
     })
+
+    ws.on('createdRoom', () => {
+      console.log('비디오 방 생성')
+    })
+    ws.on('getUsers', (users) => {
+      console.log(users)
+    })
+
+    return () => {
+      ws.off('createdRoom')
+      ws.off('getUsers')
+    }
   }, [])
 
   useEffect(() => {
     if (!me) return
     if (!stream) return
 
-    ws.on('joinVideoRoom', (data) => {
-      const call = me.call(data.socketId, stream, {
+    ws.on('joinedUsers', (user) => {
+      console.log(user)
+      console.log(typeof user.socketId)
+      const call = me.call(user.socketId, stream, {
         metadata: {
-          id: data.socketId,
-          nickName: authCookie.nickName,
+          nickName: user.nickName,
         },
       })
-
-      // call.on('stream', (peerStream) => {
-      //   setPeerStream(peerStream)
-      // })
-
-      me.on('call', (call) => {
-        const { id, nickName } = call.metadata
-        console.log(`전화 건 사람 ${nickName}`)
-        call.answer(stream)
-        call.on('stream', (peerStream) => {
-          const peerStreams: MediaStream[] = []
-          if (peerStreams.includes(peerStream)) return
-          peerStreams.push(peerStream)
-          setPeerStreams(peerStreams)
-          peerStreamsRef.current.push({ id, nickName, stream: peerStream })
-        })
+      call.on('stream', (peerStream) => {
+        setPeerStreams((prev) => [...prev, peerStream])
       })
     })
-  }, [me, ws, stream])
+
+    me.on('call', (call) => {
+      const { nickName } = call.metadata
+      console.log(nickName)
+      call.answer(stream)
+      call.on('stream', (peerStream) => {
+        setPeerStreams((prev) => [...prev, peerStream])
+      })
+    })
+
+    return () => {
+      ws.off('joinedUsers')
+    }
+  }, [me, stream])
+
+  useEffect(() => {
+    console.log(stream)
+    console.log(peerStreams)
+  }, [peerStreams])
 
   return (
     <div>
       {stream && <VideoPlayer stream={stream} />}
       <div className="flex gap-4">
         {peerStreams.map((peerStream, i) => {
-          return (
-            <div key={i}>
-              <VideoPlayer stream={peerStream} />
-              {/* <p className="text-white">{peerStream.nickName}</p> */}
-            </div>
-          )
+          return <VideoPlayer key={i} stream={peerStream} />
         })}
       </div>
     </div>
