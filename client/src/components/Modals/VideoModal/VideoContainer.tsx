@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import VideoPlayer from './VideoPlayer'
 import { socket as ws } from '../../../lib/ws'
 import { CookieType } from '../../../types/client'
@@ -9,16 +9,26 @@ interface VideoContainerProps {
 }
 
 interface PeerStreamType {
-  id: string
-  nickName: string
+  peerId: string
   stream: MediaStream
+}
+
+interface PeerNameType {
+  peerId: string
+  nickName: string
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
   const [me, setMe] = useState<Peer>()
-  const [peerStreams, setPeerStreams] = useState<MediaStream[]>([])
+  const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
+  const peerNameRef = useRef<PeerNameType[]>([])
   const [stream, setStream] = useState<MediaStream>()
-  const [users, setUsers] = useState<string[]>([])
+  const [users, setUsers] = useState<
+    {
+      peerId: string
+      nickName: string
+    }[]
+  >([])
 
   useEffect(() => {
     // 서버 따로 만들기
@@ -29,26 +39,27 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
     setMe(peer)
 
-    try {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-          setStream(stream)
-        })
-    } catch (error) {
-      console.error(error)
-    }
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream)
+      })
 
-    ws.on('createdRoom', () => {
-      console.log('비디오 방 생성')
+    ws.on('createVideoRoom', () => {
+      // console.log('비디오 방 생성')
     })
     ws.on('getUsers', (users) => {
       console.log(users)
     })
+    ws.on('leaveVideoRoom', (peerId: string) => {
+      console.log('유저 나감')
+      setPeerStreams((prev) => prev.filter((r) => r.peerId !== peerId))
+    })
 
     return () => {
-      ws.off('createdRoom')
+      ws.off('createVideoRoom')
       ws.off('getUsers')
+      ws.off('leaveVideoRoom')
     }
   }, [])
 
@@ -64,23 +75,42 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
 
     ws.on('joinedUsers', (user) => {
-      console.log(user)
+      const { peerId, nickName } = user
       const call = me.call(user.peerId, stream, {
         metadata: {
-          nickName: user.nickName,
+          nickName,
         },
       })
+      // 기존 멤버
       call.on('stream', (peerStream) => {
-        setPeerStreams((prev) => [...prev, peerStream])
+        setPeerStreams((prev) => [
+          ...prev,
+          {
+            peerId: user.peerId,
+            stream: peerStream,
+          },
+        ])
       })
+      peerNameRef.current = [...peerNameRef.current, { peerId, nickName }]
     })
 
     me.on('call', (call) => {
       const { nickName } = call.metadata
-      console.log(nickName)
+      peerNameRef.current = [
+        ...peerNameRef.current,
+        { peerId: call.peer, nickName },
+      ]
+      console.log(peerNameRef.current)
       call.answer(stream)
+      // 새로운 멤버
       call.on('stream', (peerStream) => {
-        setPeerStreams((prev) => [...prev, peerStream])
+        setPeerStreams((prev) => [
+          ...prev,
+          {
+            peerId: call.peer,
+            stream: peerStream,
+          },
+        ])
       })
     })
 
@@ -89,18 +119,19 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     }
   }, [me, stream])
 
-  useEffect(() => {
-    console.log(stream)
-    console.log(peerStreams)
-  }, [peerStreams])
+  // useEffect(() => {
+  //   console.log(peerStreams)
+  // }, [peerStreams])
 
   return (
     <div>
-      {stream && <VideoPlayer stream={stream} />}
       <div className="flex gap-4">
-        {peerStreams.map((peerStream, i) => {
-          return <VideoPlayer key={i} stream={peerStream} />
-        })}
+        {stream && <VideoPlayer stream={stream} />}
+        {peerStreams.map((peerStream, i) => (
+          <div key={i}>
+            <VideoPlayer stream={peerStream.stream} />
+          </div>
+        ))}
       </div>
     </div>
   )

@@ -51,6 +51,12 @@ interface PlayerInfoFromExistingPlayerToNewPlayer {
   newPlayerId: string
 }
 
+interface IUser {
+  peerId: string
+  socketId: string
+  nickName: string
+}
+
 export interface ServerToClientEvents {
   serverMsg: (data: MessageData) => void
   leaveRoom: (sockerId: string) => void
@@ -63,13 +69,7 @@ export interface ServerToClientEvents {
     roomNum,
     socketId,
   }: PlayerInfo) => void
-  receiveAvatarPosition: ({
-    x,
-    y,
-    id,
-    roomNum,
-    socketId,
-  }: PlayerPosition) => void
+  receiveAvatarPosition: ({ x, y, roomNum, socketId }: PlayerPosition) => void
   receivePlayerInfoFromExistingPlayer: ({
     x,
     y,
@@ -84,24 +84,24 @@ export interface ServerToClientEvents {
     members,
   }: {
     socketId: string
-    members: {
-      peerId: string
-      nickName: string
-    }[]
+    members: Record<string, IUser>
   }) => void
   joinedUsers: ({
     peerId,
+    socketId,
     nickName,
   }: {
     peerId: string
+    socketId: string
     nickName: string
   }) => void
-  createdRoom: (roomNum: string) => void
+  createVideoRoom: (roomNum: string) => void
+  leaveVideoRoom: (peerId: string) => void
 }
 
 export interface ClientToServerEvents {
   clientMsg: (data: MessageData) => void
-  joinRoom: ({ roomNum, nickName }: JoinMember) => void
+  joinRoom: ({ roomNum }: JoinMember) => void
   sendPlayerInfo: ({ x, y, nickName, texture, roomNum }: PlayerInfo) => void
   sendAvatarPosition: ({
     x,
@@ -128,4 +128,5 @@ export interface ClientToServerEvents {
     nickName: string
   }) => void
   createVideoRoom: (roomNum: string) => void
+  leaveVideoRoom: () => void
 }
