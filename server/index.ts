@@ -17,9 +17,9 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   },
 })
 
-const videoRoom: Record<string, Record<string, IUser>> = {}
+const videoRoom: Record<string, IUser[]> = {}
 interface IUser {
-  socketId: string
+  peerId: string
   nickName: string
 }
 
@@ -76,25 +76,24 @@ io.on(
     })
 
     socket.on('createVideoRoom', (roomNum) => {
-      videoRoom[roomNum] = videoRoom[roomNum] || {}
+      videoRoom[roomNum] = videoRoom[roomNum] || []
       socket.emit('createdRoom', roomNum)
     })
 
-    socket.on('joinVideoRoom', ({ roomNum, nickName }) => {
-      if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
+    socket.on('joinVideoRoom', ({ roomNum, peerId, nickName }) => {
+      if (!videoRoom[roomNum]) videoRoom[roomNum] = []
 
-      const id = socket.id.toString()
-      videoRoom[roomNum][id] = {
-        socketId: socket.id,
+      videoRoom[roomNum].push({
+        peerId,
         nickName,
-      }
+      })
       socket.join(`${roomNum}_video`)
 
-      console.log(videoRoom)
+      console.log(videoRoom[roomNum])
 
       socket.broadcast
         .to(`${roomNum}_video`)
-        .emit('joinedUsers', { socketId: socket.id, nickName })
+        .emit('joinedUsers', { peerId, nickName })
       io.to(`${roomNum}_video`).emit('getUsers', {
         socketId: socket.id,
         members: videoRoom[roomNum],

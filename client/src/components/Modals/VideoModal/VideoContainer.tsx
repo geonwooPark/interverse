@@ -21,10 +21,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   const [users, setUsers] = useState<string[]>([])
 
   useEffect(() => {
-    if (!ws.id) return
-
     // 서버 따로 만들기
-    const peer = new Peer(ws.id, {
+    const peer = new Peer({
       host: 'localhost',
       port: 9000,
       path: '/myapp',
@@ -40,12 +38,6 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     } catch (error) {
       console.error(error)
     }
-    // 비디오룸 만들기
-    ws.emit('createVideoRoom', authCookie.roomNum)
-    ws.emit('joinVideoRoom', {
-      roomNum: authCookie.roomNum,
-      nickName: authCookie.nickName,
-    })
 
     ws.on('createdRoom', () => {
       console.log('비디오 방 생성')
@@ -64,10 +56,16 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!me) return
     if (!stream) return
 
+    ws.emit('createVideoRoom', authCookie.roomNum)
+    ws.emit('joinVideoRoom', {
+      roomNum: authCookie.roomNum,
+      peerId: me.id,
+      nickName: authCookie.nickName,
+    })
+
     ws.on('joinedUsers', (user) => {
       console.log(user)
-      console.log(typeof user.socketId)
-      const call = me.call(user.socketId, stream, {
+      const call = me.call(user.peerId, stream, {
         metadata: {
           nickName: user.nickName,
         },
