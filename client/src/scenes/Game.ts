@@ -40,6 +40,10 @@ export default class Game extends Phaser.Scene {
     if (this.input.keyboard) {
       this.input.keyboard.disableGlobalCapture()
       this.input.keyboard.on('keydown-ENTER', () => {
+        this.cursur?.left.reset()
+        this.cursur?.right.reset()
+        this.cursur?.up.reset()
+        this.cursur?.down.reset()
         this.events.emit('onFocusChat')
       })
     }
