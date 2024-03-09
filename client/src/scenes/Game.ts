@@ -244,10 +244,6 @@ export default class Game extends Phaser.Scene {
       interactionItem.y === 512
     ) {
       player.isFrontOfCeoDesk = true
-      store.dispatch(
-        changeAlertContent('스페이스키를 눌러 조작법을 확인하세요!'),
-      )
-      store.dispatch(openAlert())
     }
 
     if (this.player.selectedInteractionItem) return

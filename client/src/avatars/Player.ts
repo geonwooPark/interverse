@@ -150,7 +150,7 @@ export default class Player extends Avatar {
           this.anims.play(animParts.join('_'), true)
           this.behavior = 'stand'
         }
-        if (this.isFrontOfCeoDesk && Phaser.Input.Keyboard.JustDown(keySpace)) {
+        if (this.isFrontOfCeoDesk) {
           store.dispatch(openManualModal())
         }
 
