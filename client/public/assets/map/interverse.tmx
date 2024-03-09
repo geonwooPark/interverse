@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="647">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="23" nextobjectid="649">
  <editorsettings>
   <export target="interverse_2.json" format="json"/>
  </editorsettings>
@@ -509,50 +509,50 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="7" name="ChairToDown" visible="0">
+ <objectgroup id="7" name="ChairToDown">
   <object id="414" gid="4795" x="704" y="128" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="waiting"/>
    </properties>
   </object>
   <object id="415" gid="4794" x="672" y="128" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="waiting"/>
    </properties>
   </object>
   <object id="416" gid="4793" x="640" y="128" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="waiting"/>
    </properties>
   </object>
   <object id="417" gid="4795" x="608" y="128" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="waiting"/>
    </properties>
   </object>
   <object id="418" gid="4794" x="576" y="128" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="waiting"/>
    </properties>
   </object>
   <object id="419" gid="4793" x="544" y="128" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="waiting"/>
    </properties>
   </object>
   <object id="420" gid="4796" x="576" y="416" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="interview"/>
    </properties>
   </object>
   <object id="421" gid="4796" x="512" y="416" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="interview"/>
    </properties>
   </object>
   <object id="422" gid="4796" x="448" y="416" width="32" height="64">
    <properties>
-    <property name="heading" value="down"/>
+    <property name="interaction" value="interview"/>
    </properties>
   </object>
  </objectgroup>
@@ -585,10 +585,7 @@
   <object id="451" gid="269" x="447" y="97" width="32" height="32"/>
   <object id="452" gid="253" x="447" y="65" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="18" name="CeoDesk" visible="0">
-  <object id="465" gid="476" x="128" y="512" width="32" height="32"/>
- </objectgroup>
- <objectgroup id="22" name="InteriorOnCollide">
+ <objectgroup id="22" name="InteriorOnCollide" visible="0">
   <object id="610" gid="98" x="416" y="480" width="32" height="32"/>
   <object id="612" gid="99" x="448" y="480" width="32" height="32"/>
   <object id="613" gid="99" x="480" y="480" width="32" height="32"/>
@@ -624,6 +621,7 @@
   <object id="644" gid="30" x="192" y="480" width="32" height="32"/>
   <object id="645" gid="100" x="608" y="480" width="32" height="32"/>
   <object id="646" gid="84" x="608" y="448" width="32" height="32"/>
+  <object id="647" gid="45" x="128" y="512" width="32" height="32"/>
  </objectgroup>
  <layer id="2" name="Wall" width="25" height="20" visible="0">
   <data encoding="csv">
@@ -673,25 +671,25 @@
 121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121,121
 </data>
  </layer>
- <objectgroup id="6" name="ChairToUp" visible="0">
+ <objectgroup id="6" name="ChairToUp">
   <object id="423" gid="4797" x="448" y="512" width="32" height="64">
    <properties>
-    <property name="heading" value="up"/>
+    <property name="interaction" value="interview"/>
    </properties>
   </object>
   <object id="424" gid="4797" x="512" y="512" width="32" height="64">
    <properties>
-    <property name="heading" value="up"/>
+    <property name="interaction" value="interview"/>
    </properties>
   </object>
   <object id="425" gid="4797" x="576" y="512" width="32" height="64">
    <properties>
-    <property name="heading" value="up"/>
+    <property name="interaction" value="interview"/>
    </properties>
   </object>
   <object id="426" gid="4797" x="128" y="544" width="32" height="64">
    <properties>
-    <property name="heading" value="up"/>
+    <property name="interaction" value="menual"/>
    </properties>
   </object>
  </objectgroup>
