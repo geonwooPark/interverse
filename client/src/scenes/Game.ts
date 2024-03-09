@@ -1,7 +1,6 @@
 import { createAvatarAnims } from '../anims/AvatarAnims'
 import OtherPlayer from '../avatars/OtherPlayer'
 import Player from '../avatars/Player'
-import CeoDesk from '../items/CeoDesk'
 import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
@@ -9,8 +8,6 @@ import WaterPurifier from '../items/WaterPurifier'
 import { joinRoom } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
 import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
-import { changeAlertContent, openAlert } from '../store/features/alertSlice'
-import { store } from '../store/store'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap

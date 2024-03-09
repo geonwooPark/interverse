@@ -94,11 +94,16 @@ export const sendPlayerInfoToNewPlayer = ({
   })
 }
 
-export const sendMessage = ({ message, nickName, roomNum }: ClientMessage) => {
+export const sendMessage = ({
+  message,
+  nickName,
+  senderId,
+  roomNum,
+}: ClientMessage) => {
   // 서버로 메시지 보내기
   socket.emit('clientMsg', {
     message,
-    senderId: '',
+    senderId,
     nickName,
     roomNum,
   })

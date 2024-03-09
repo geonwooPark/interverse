@@ -63,6 +63,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
       sendMessage({
         message: content,
         nickName: this.nickname.text,
+        senderId: '',
         roomNum,
       })
     }
