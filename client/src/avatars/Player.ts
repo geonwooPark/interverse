@@ -12,11 +12,13 @@ import {
   closeManualModal,
   openManualModal,
 } from '../store/features/manualModalDisplaySlice'
+import { showVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
 
 export default class Player extends Avatar {
   isFrontOfCeoDesk = false
+  isFrontOfInterviewDesk = false
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -153,6 +155,9 @@ export default class Player extends Avatar {
         if (this.isFrontOfCeoDesk) {
           store.dispatch(openManualModal())
         }
+        if (this.isFrontOfInterviewDesk) {
+          store.dispatch(showVideoModal(true))
+        }
 
         break
     }
@@ -170,6 +175,12 @@ export default class Player extends Avatar {
         case true:
           this.isFrontOfCeoDesk = false
           store.dispatch(closeManualModal())
+          break
+      }
+      switch (this.isFrontOfInterviewDesk) {
+        case true:
+          this.isFrontOfInterviewDesk = false
+          store.dispatch(showVideoModal(false))
           break
       }
       this.selectedInteractionItem.clearInteractionBox()

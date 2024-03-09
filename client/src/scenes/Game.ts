@@ -100,6 +100,7 @@ export default class Game extends Phaser.Scene {
         object.gid! - firstgid!,
       )
       obj.heading = 'down'
+      obj.interaction = object.properties[0].value
       return obj
     })
 
@@ -135,22 +136,6 @@ export default class Game extends Phaser.Scene {
         object.gid! - firstgid!,
       )
       return obj as Printer
-    })
-
-    // CeoDesk Layer
-    const ceoDesk = this.physics.add.staticGroup({ classType: CeoDesk })
-    const ceoDeskLayer = this.map.getObjectLayer('CeoDesk')
-    ceoDeskLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('office')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = ceoDesk.get(
-        actualX,
-        actualY,
-        'office',
-        object.gid! - firstgid!,
-      )
-      return obj
     })
 
     // interiorOnCollide Layer
@@ -202,6 +187,7 @@ export default class Game extends Phaser.Scene {
         object.gid! - firstgid!,
       )
       obj.heading = 'up'
+      obj.interaction = object.properties[0].value
       return obj
     })
 
@@ -212,7 +198,6 @@ export default class Game extends Phaser.Scene {
     if (this.player) {
       // this.physics.add.collider(this.player.avatar, secretary)
       this.physics.add.collider(this.player, interiorOnCollide)
-      // this.physics.add.collider(this.player, ceoDesk)
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
@@ -225,7 +210,7 @@ export default class Game extends Phaser.Scene {
     // 플레이어와 오브젝트 겹침 감지
     this.physics.add.overlap(
       this.player,
-      [secretary, chairToDown, chairToUp, waterPurifier, printer, ceoDesk],
+      [secretary, chairToDown, chairToUp, waterPurifier, printer],
       this.handlePlayerOverlap,
       undefined,
       this,
@@ -240,10 +225,14 @@ export default class Game extends Phaser.Scene {
   private handlePlayerOverlap(player: any, interactionItem: any) {
     if (
       this.player.behavior === 'sit' &&
-      interactionItem.x === 144 &&
-      interactionItem.y === 512
+      interactionItem.interaction === 'menual'
     ) {
       player.isFrontOfCeoDesk = true
+    } else if (
+      this.player.behavior === 'sit' &&
+      interactionItem.interaction === 'interview'
+    ) {
+      player.isFrontOfInterviewDesk = true
     }
 
     if (this.player.selectedInteractionItem) return

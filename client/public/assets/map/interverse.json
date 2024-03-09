@@ -45,9 +45,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"waiting"
                         }],
                  "rotation":0,
                  "type":"",
@@ -63,9 +63,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"waiting"
                         }],
                  "rotation":0,
                  "type":"",
@@ -81,9 +81,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"waiting"
                         }],
                  "rotation":0,
                  "type":"",
@@ -99,9 +99,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"waiting"
                         }],
                  "rotation":0,
                  "type":"",
@@ -117,9 +117,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"waiting"
                         }],
                  "rotation":0,
                  "type":"",
@@ -135,9 +135,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"waiting"
                         }],
                  "rotation":0,
                  "type":"",
@@ -153,9 +153,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"interview"
                         }],
                  "rotation":0,
                  "type":"",
@@ -171,9 +171,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"interview"
                         }],
                  "rotation":0,
                  "type":"",
@@ -189,9 +189,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"down"
+                         "value":"interview"
                         }],
                  "rotation":0,
                  "type":"",
@@ -202,7 +202,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -508,29 +508,6 @@
                  "width":32,
                  "x":447,
                  "y":65
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":false,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":18,
-         "name":"CeoDesk",
-         "objects":[
-                {
-                 "gid":476,
-                 "height":32,
-                 "id":465,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":128,
-                 "y":512
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -963,10 +940,22 @@
                  "width":32,
                  "x":608,
                  "y":448
+                }, 
+                {
+                 "gid":45,
+                 "height":32,
+                 "id":647,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":128,
+                 "y":512
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -1044,9 +1033,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"up"
+                         "value":"interview"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1062,9 +1051,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"up"
+                         "value":"interview"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1080,9 +1069,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"up"
+                         "value":"interview"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1098,9 +1087,9 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"heading",
+                         "name":"interaction",
                          "type":"string",
-                         "value":"up"
+                         "value":"menual"
                         }],
                  "rotation":0,
                  "type":"",
@@ -1111,7 +1100,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -1147,7 +1136,7 @@
          "y":0
         }],
  "nextlayerid":23,
- "nextobjectid":647,
+ "nextobjectid":649,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
