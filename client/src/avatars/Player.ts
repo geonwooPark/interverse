@@ -124,10 +124,9 @@ export default class Player extends Avatar {
               chair.clearInteractionBox()
               this.behavior = 'sit'
 
-              socketIO.sendAvatarPosition({
+              sendAvatarPosition({
                 x: this.x,
                 y: this.y,
-                socketId: '',
                 roomNum,
                 animation: this.anims.currentAnim!.key,
               })
