@@ -1,9 +1,16 @@
-interface MessageData {
+interface ServerMessage {
   message: string
   nickName: string
   roomNum: string
   senderId: string
   newPlayerId?: string
+}
+
+interface ClientMessage {
+  message: string
+  senderId?: string
+  nickName: string
+  roomNum: string
 }
 
 interface ClientJoinRoom {
@@ -14,14 +21,6 @@ interface ClientJoinRoom {
     nickName: string
     path: string
   }
-}
-
-interface NewMember {
-  roomNum: string
-  role: 'admin' | 'user'
-  nickName: string
-  path: string
-  member: string
 }
 
 interface ServerPlayerInfo {
@@ -45,7 +44,6 @@ interface ServerAvatarPosition {
   x: number
   y: number
   socketId: string
-  roomNum: string
   animation: any
 }
 
@@ -83,7 +81,7 @@ interface IUser {
 
 export interface ServerToClientEvents {
   leaveRoom: (sockerId: string) => void
-  serverMsg: (message: MessageData) => void
+  serverMsg: (message: ServerMessage) => void
   roomMember: (members: string[]) => void
   serverPlayerInfo: ({
     x,

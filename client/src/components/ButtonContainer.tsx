@@ -47,6 +47,12 @@ function ButtonContainer() {
         onClick={onVideoClick}
         className="flex size-[50px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
       >
+        스크린
+      </button>
+      <button
+        onClick={onVideoClick}
+        className="flex size-[50px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
+      >
         비디오
       </button>
       <button

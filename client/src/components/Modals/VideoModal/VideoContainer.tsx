@@ -52,7 +52,6 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       console.log(users)
     })
     ws.on('leaveVideoRoom', (peerId: string) => {
-      console.log('유저 나감')
       setPeerStreams((prev) => prev.filter((r) => r.peerId !== peerId))
     })
 
@@ -118,10 +117,6 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       ws.off('joinedUsers')
     }
   }, [me, stream])
-
-  // useEffect(() => {
-  //   console.log(peerStreams)
-  // }, [peerStreams])
 
   return (
     <div>

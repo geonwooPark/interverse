@@ -2,6 +2,7 @@ import { Socket, io } from 'socket.io-client'
 import {
   ClientAvatarPosition,
   ClientJoinRoom,
+  ClientMessage,
   ClientOtherAvatarPosition,
   ClientPlayerInfo,
   ClientToServerEvents,
@@ -11,7 +12,6 @@ import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
 import { store } from '../store/store'
 import { addMessage } from '../store/features/chatListSlice'
-import { SendMessageType } from '../types/game'
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   'http://localhost:3000',
@@ -88,18 +88,13 @@ export const sendPlayerInfoToNewPlayer = ({
   })
 
   // 서버에서 방에 있던 기존 유저 정보 받기
-  socket.on('serverOtherAvatarPosition', (playerInfo) => {
+  socket.on('serverOtherAvatarPosition', (otherAvatarPosition) => {
     const game = phaserGame.scene.keys.game as Game
-    game.addOtherPlayer(playerInfo)
+    game.addOtherPlayer(otherAvatarPosition)
   })
 }
 
-export const sendMessage = ({
-  message,
-  senderId,
-  nickName,
-  roomNum,
-}: SendMessageType) => {
+export const sendMessage = ({ message, nickName, roomNum }: ClientMessage) => {
   // 서버로 메시지 보내기
   socket.emit('clientMsg', {
     message,
@@ -126,11 +121,6 @@ export const sendAvatarPosition = ({
   // 서버로부터 다른 모든 유저들 위치 정보 받기
   socket.on('serverAvatarPosition', (avatarPosition) => {
     const game = phaserGame.scene.keys.game as Game
-    game.updateOtherPlayer({
-      x: avatarPosition.x,
-      y: avatarPosition.y,
-      socketId: avatarPosition.socketId as string,
-      animation: avatarPosition.animation,
-    })
+    game.updateOtherPlayer(avatarPosition)
   })
 }

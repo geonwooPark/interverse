@@ -5,13 +5,9 @@ import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
-import {
-  AddOtherPlayerType,
-  JoinRoomType,
-  DisplayOtherPlayerChatType,
-  UpdateOtherPlayerType,
-} from '../types/game'
 import { joinRoom } from '../lib/ws'
+import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
+import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -243,7 +239,7 @@ export default class Game extends Phaser.Scene {
   }
 
   // 방에 입장
-  joinRoom({ roomNum, authCookie }: JoinRoomType) {
+  joinRoom({ roomNum, authCookie }: ClientJoinRoom) {
     if (!this.player) return
 
     joinRoom({ roomNum, authCookie })
@@ -278,7 +274,7 @@ export default class Game extends Phaser.Scene {
   }
 
   // 다른 유저들 위치 정보 업데이트
-  updateOtherPlayer({ x, y, socketId, animation }: UpdateOtherPlayerType) {
+  updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
     if (!otherPlayer) return
     otherPlayer?.updatePosition({ x, y, animation })
