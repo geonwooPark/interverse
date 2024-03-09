@@ -6,6 +6,8 @@ import { AlertSlice } from './features/alertSlice'
 import { ChatListSlice } from './features/chatListSlice'
 import { CreatorModalDisplaySlice } from './features/creatorModalDisplaySlice'
 import { ManualModalDisplaySlice } from './features/manualModalDisplaySlice'
+import { VideoModalSlice } from './features/videoModalSlice'
+import { ScreenStreamerSlice } from './features/screenStreamerSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
     chatList: ChatListSlice.reducer,
     creatorModalDisplay: CreatorModalDisplaySlice.reducer,
     manualModalDisplay: ManualModalDisplaySlice.reducer,
+    videoModal: VideoModalSlice.reducer,
+    screenStreamer: ScreenStreamerSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>

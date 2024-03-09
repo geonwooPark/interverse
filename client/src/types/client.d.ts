@@ -11,3 +11,16 @@ export interface CookieType {
   nickName: string
   path: string
 }
+
+export interface AddOtherPlayerType {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+  socketId?: string
+}
+
+export interface DisplayOtherPlayerChatType {
+  message: string
+  socketId: string
+}

@@ -1,8 +1,7 @@
 import ObjectItem from '../items/ObjectItem'
-import SocketIO from '../lib/SocketIO'
+import { sendMessage } from '../lib/ws'
 
 export default class Avatar extends Phaser.Physics.Arcade.Sprite {
-  socketIO: SocketIO
   avatarTexture: string
   avatarContainer: Phaser.GameObjects.Container
   nickname: Phaser.GameObjects.Text
@@ -16,12 +15,10 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
     x: number,
     y: number,
     texture: string,
-    socketIO: SocketIO,
     frame?: string | number,
   ) {
     super(scene, x, y, texture, frame)
 
-    this.socketIO = socketIO
     this.avatarTexture = texture
     this.anims.play(`${texture}_stand_down`, true)
     this.avatarContainer = this.scene.add.container(x, y - 35).setDepth(10000)
@@ -63,7 +60,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
 
     // 서버로 메세지 보내기
     if (roomNum) {
-      this.socketIO.sendMessage({
+      sendMessage({
         message: content,
         nickName: this.nickname.text,
         roomNum,
