@@ -3,6 +3,7 @@ import VideoPlayer from './VideoPlayer'
 import { socket as ws } from '../../../lib/ws'
 import { CookieType } from '../../../types/client'
 import Peer from 'peerjs'
+import { useAppSelector } from '../../../store/store'
 
 interface VideoContainerProps {
   authCookie: CookieType
@@ -23,12 +24,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
   const peerNameRef = useRef<PeerNameType[]>([])
   const [stream, setStream] = useState<MediaStream>()
-  const [users, setUsers] = useState<
-    {
-      peerId: string
-      nickName: string
-    }[]
-  >([])
+  const [screenStream, setScreenStream] = useState<MediaStream>()
+  const { isStreaming } = useAppSelector((state) => state.screenStreamer)
 
   useEffect(() => {
     // 서버 따로 만들기
@@ -39,11 +36,23 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
     setMe(peer)
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        setStream(stream)
-      })
+    if (isStreaming) {
+      navigator.mediaDevices
+        .getDisplayMedia({
+          video: true,
+          audio: false,
+        })
+        .then((screenStream) => {
+          setStream(screenStream)
+          setScreenStream(screenStream)
+        })
+    } else {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          setStream(stream)
+        })
+    }
 
     ws.on('createVideoRoom', () => {
       // console.log('비디오 방 생성')
@@ -81,7 +90,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
         },
       })
       // 기존 멤버
-      call.on('stream', (peerStream) => {
+      call.once('stream', (peerStream) => {
         setPeerStreams((prev) => [
           ...prev,
           {
@@ -93,16 +102,16 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       peerNameRef.current = [...peerNameRef.current, { peerId, nickName }]
     })
 
+    // 전화를 걸 때 발생
     me.on('call', (call) => {
       const { nickName } = call.metadata
       peerNameRef.current = [
         ...peerNameRef.current,
         { peerId: call.peer, nickName },
       ]
-      console.log(peerNameRef.current)
       call.answer(stream)
       // 새로운 멤버
-      call.on('stream', (peerStream) => {
+      call.once('stream', (peerStream) => {
         setPeerStreams((prev) => [
           ...prev,
           {
@@ -121,10 +130,16 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   return (
     <div>
       <div className="flex gap-4">
-        {stream && <VideoPlayer stream={stream} />}
+        {stream && (
+          <div>
+            <VideoPlayer stream={stream} />
+            <p className="text-white">내화면</p>
+          </div>
+        )}
         {peerStreams.map((peerStream, i) => (
           <div key={i}>
             <VideoPlayer stream={peerStream.stream} />
+            <p className="text-white">{peerStream.peerId}</p>
           </div>
         ))}
       </div>

@@ -40,7 +40,7 @@ io.on(
       if (rooms.length === 2) {
         io.to(rooms[1]).emit('leaveRoom', socket.id)
       }
-      // 새로고침 시 간헐적 에러
+      // ######## 새로고침 시 간헐적 에러 ########
       if (rooms.length === 3) {
         io.to(rooms[1]).emit('leaveRoom', socket.id)
         socket

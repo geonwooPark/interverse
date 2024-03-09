@@ -5,6 +5,7 @@ import {
 } from '../store/features/alertSlice'
 import { changeModalContent } from '../store/features/modalContentSlice'
 import { closeModal, openModal } from '../store/features/modalDisplaySlice'
+import { handleStreaming } from '../store/features/screenStreamerSlice'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import { useAppDispatch } from '../store/store'
 import IconLink from '../svgs/IconLink.svg?react'
@@ -12,6 +13,11 @@ import IconOff from '../svgs/IconOff.svg?react'
 
 function ButtonContainer() {
   const dispatch = useAppDispatch()
+
+  const onScreenClick = () => {
+    dispatch(showVideoModal(true))
+    dispatch(handleStreaming(true))
+  }
 
   const onVideoClick = () => {
     dispatch(showVideoModal(true))
@@ -44,7 +50,7 @@ function ButtonContainer() {
   return (
     <div className="fixed right-8 top-4 flex gap-3">
       <button
-        onClick={onVideoClick}
+        onClick={onScreenClick}
         className="flex size-[50px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
       >
         스크린
