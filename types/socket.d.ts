@@ -21,6 +21,7 @@ interface ClientJoinRoom {
     nickName: string
     path: string
   }
+  avatarTexture?: string
 }
 
 interface ServerPlayerInfo {

@@ -9,6 +9,8 @@ import WaterPurifier from '../items/WaterPurifier'
 import { joinRoom } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
 import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
+import { changeAlertContent, openAlert } from '../store/features/alertSlice'
+import { store } from '../store/store'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -255,7 +257,7 @@ export default class Game extends Phaser.Scene {
   }
 
   // 방에 입장
-  joinRoom({ roomNum, authCookie }: ClientJoinRoom) {
+  joinRoom({ roomNum, authCookie, avatarTexture }: ClientJoinRoom) {
     if (!this.player) return
 
     joinRoom({ roomNum, authCookie })
