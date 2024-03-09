@@ -1,25 +1,23 @@
 import { Socket, io } from 'socket.io-client'
 import {
+  ClientAvatarPosition,
+  ClientJoinRoom,
+  ClientOtherAvatarPosition,
+  ClientPlayerInfo,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../../types/socket'
-import {
-  JoinRoomType,
-  SendAvatarPositionType,
-  SendMessageType,
-  SendPlayerInfoToNewPlayerType,
-  SendPlayerInfoType,
-} from '../types/game'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
 import { store } from '../store/store'
 import { addMessage } from '../store/features/chatListSlice'
+import { SendMessageType } from '../types/game'
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   'http://localhost:3000',
 )
 
-export const joinRoom = ({ roomNum, authCookie }: JoinRoomType) => {
+export const joinRoom = ({ roomNum, authCookie }: ClientJoinRoom) => {
   // 서버로 방 번호와 쿠키 전달
   socket.emit('joinRoom', {
     roomNum,
@@ -39,9 +37,9 @@ export const sendPlayerInfo = ({
   nickName,
   texture,
   roomNum,
-}: SendPlayerInfoType) => {
+}: ClientPlayerInfo) => {
   // 서버로 나의 아바타 정보 전달
-  socket.emit('sendPlayerInfo', {
+  socket.emit('clientPlayerInfo', {
     x,
     y,
     nickName,
@@ -49,7 +47,7 @@ export const sendPlayerInfo = ({
     roomNum,
   })
   // 서버에서 새로운 유저 정보 받기
-  socket.on('receivePlayerInfo', (playerInfo) => {
+  socket.on('serverPlayerInfo', (playerInfo) => {
     const game = phaserGame.scene.keys.game as Game
     game.addOtherPlayer(playerInfo)
   })
@@ -78,9 +76,9 @@ export const sendPlayerInfoToNewPlayer = ({
   texture,
   roomNum,
   newPlayerId,
-}: SendPlayerInfoToNewPlayerType) => {
+}: ClientOtherAvatarPosition) => {
   // 새로운 유저에게 나의 정보 전달
-  socket.emit('sendPlayerInfoToNewPlayer', {
+  socket.emit('clientOtherAvatarPosition', {
     x,
     y,
     nickName,
@@ -90,7 +88,7 @@ export const sendPlayerInfoToNewPlayer = ({
   })
 
   // 서버에서 방에 있던 기존 유저 정보 받기
-  socket.on('receivePlayerInfoFromExistingPlayer', (playerInfo) => {
+  socket.on('serverOtherAvatarPosition', (playerInfo) => {
     const game = phaserGame.scene.keys.game as Game
     game.addOtherPlayer(playerInfo)
   })
@@ -114,21 +112,19 @@ export const sendMessage = ({
 export const sendAvatarPosition = ({
   x,
   y,
-  socketId,
   roomNum,
   animation,
-}: SendAvatarPositionType) => {
+}: ClientAvatarPosition) => {
   // 서버로 실시간 나의 위치 정보 보내기
-  socket.emit('sendAvatarPosition', {
+  socket.emit('clientAvatarPosition', {
     x,
     y,
-    socketId,
     roomNum,
     animation,
   })
 
   // 서버로부터 다른 모든 유저들 위치 정보 받기
-  socket.on('receiveAvatarPosition', (avatarPosition) => {
+  socket.on('serverAvatarPosition', (avatarPosition) => {
     const game = phaserGame.scene.keys.game as Game
     game.updateOtherPlayer({
       x: avatarPosition.x,

@@ -36,9 +36,11 @@ io.on(
     // 연결 끊어질 시
     socket.on('disconnecting', () => {
       const rooms = Array.from(socket.rooms)
+      if (rooms.length === 1) return
       if (rooms.length === 2) {
         io.to(rooms[1]).emit('leaveRoom', socket.id)
       }
+      // 새로고침 시 간헐적 에러
       if (rooms.length === 3) {
         io.to(rooms[1]).emit('leaveRoom', socket.id)
         socket

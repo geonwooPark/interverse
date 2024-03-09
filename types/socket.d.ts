@@ -6,7 +6,7 @@ interface MessageData {
   newPlayerId?: string
 }
 
-interface JoinMember {
+interface ClientJoinRoom {
   roomNum: string
   authCookie: {
     roomNum: string
@@ -24,16 +24,24 @@ interface NewMember {
   member: string
 }
 
-interface PlayerInfo {
+interface ServerPlayerInfo {
   x: number
   y: number
   nickName: string
   texture: string
   roomNum: string
-  socketId?: string
+  socketId: string
 }
 
-interface PlayerPosition {
+interface ClientPlayerInfo {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+  roomNum: string
+}
+
+interface ServerAvatarPosition {
   x: number
   y: number
   socketId: string
@@ -41,13 +49,29 @@ interface PlayerPosition {
   animation: any
 }
 
-interface PlayerInfoFromExistingPlayerToNewPlayer {
+interface ClientAvatarPosition {
+  x: number
+  y: number
+  roomNum: string
+  animation: any
+}
+
+interface ServerOtherAvatarPosition {
   x: number
   y: number
   nickName: string
   texture: string
   roomNum: string
-  socketId?: string
+  newPlayerId: string
+  socketId: string
+}
+
+interface ClientOtherAvatarPosition {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+  roomNum: string
   newPlayerId: string
 }
 
@@ -58,19 +82,24 @@ interface IUser {
 }
 
 export interface ServerToClientEvents {
-  serverMsg: (data: MessageData) => void
   leaveRoom: (sockerId: string) => void
+  serverMsg: (message: MessageData) => void
   roomMember: (members: string[]) => void
-  receivePlayerInfo: ({
+  serverPlayerInfo: ({
     x,
     y,
     nickName,
     texture,
     roomNum,
     socketId,
-  }: PlayerInfo) => void
-  receiveAvatarPosition: ({ x, y, roomNum, socketId }: PlayerPosition) => void
-  receivePlayerInfoFromExistingPlayer: ({
+  }: ServerPlayerInfo) => void
+  serverAvatarPosition: ({
+    x,
+    y,
+    roomNum,
+    socketId,
+  }: ServerAvatarPosition) => void
+  serverOtherAvatarPosition: ({
     x,
     y,
     nickName,
@@ -78,7 +107,7 @@ export interface ServerToClientEvents {
     roomNum,
     socketId,
     newPlayerId,
-  }: PlayerInfoFromExistingPlayerToNewPlayer) => void
+  }: ServerOtherAvatarPosition) => void
   getUsers: ({
     socketId,
     members,
@@ -100,24 +129,30 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  clientMsg: (data: MessageData) => void
-  joinRoom: ({ roomNum }: JoinMember) => void
-  sendPlayerInfo: ({ x, y, nickName, texture, roomNum }: PlayerInfo) => void
-  sendAvatarPosition: ({
+  joinRoom: ({ roomNum }: ClientJoinRoom) => void
+  clientMsg: (message: MessageData) => void
+  clientPlayerInfo: ({
+    x,
+    y,
+    nickName,
+    texture,
+    roomNum,
+  }: ClientPlayerInfo) => void
+  clientAvatarPosition: ({
     x,
     y,
     socketId,
     roomNum,
     animation,
-  }: PlayerPosition) => void
-  sendPlayerInfoToNewPlayer: ({
+  }: ClientAvatarPosition) => void
+  clientOtherAvatarPosition: ({
     x,
     y,
     nickName,
     texture,
     roomNum,
     newPlayerId,
-  }: PlayerInfoFromExistingPlayerToNewPlayer) => void
+  }: ClientOtherAvatarPosition) => void
   joinVideoRoom: ({
     roomNum,
     peerId,

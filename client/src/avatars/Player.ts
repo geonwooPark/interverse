@@ -98,7 +98,6 @@ export default class Player extends Avatar {
         sendAvatarPosition({
           x: this.x,
           y: this.y,
-          socketId: '',
           roomNum,
           animation: this.anims.currentAnim!.key,
         })

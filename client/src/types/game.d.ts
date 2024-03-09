@@ -38,7 +38,6 @@ interface UpdateOtherPlayerType {
 interface SendAvatarPositionType {
   x: number
   y: number
-  socketId: string
   animation: any
   roomNum: string
 }
