@@ -1,11 +1,14 @@
 import { createAvatarAnims } from '../anims/AvatarAnims'
 import OtherPlayer from '../avatars/OtherPlayer'
 import Player from '../avatars/Player'
+import CeoDesk from '../items/CeoDesk'
 import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import SocketIO from '../lib/SocketIO'
+import { changeAlertContent, openAlert } from '../store/features/alertSlice'
+import { store } from '../store/store'
 import {
   AddOtherPlayerType,
   JoinRoomType,
@@ -37,6 +40,10 @@ export default class Game extends Phaser.Scene {
     if (this.input.keyboard) {
       this.input.keyboard.disableGlobalCapture()
       this.input.keyboard.on('keydown-ENTER', () => {
+        this.cursur?.left.reset()
+        this.cursur?.right.reset()
+        this.cursur?.up.reset()
+        this.cursur?.down.reset()
         this.events.emit('onFocusChat')
       })
     }
@@ -135,7 +142,7 @@ export default class Game extends Phaser.Scene {
     })
 
     // CeoDesk Layer
-    const ceoDesk = this.physics.add.staticGroup()
+    const ceoDesk = this.physics.add.staticGroup({ classType: CeoDesk })
     const ceoDeskLayer = this.map.getObjectLayer('CeoDesk')
     ceoDeskLayer?.objects.forEach((object) => {
       const firstgid = this.map.getTileset('office')?.firstgid
@@ -209,7 +216,7 @@ export default class Game extends Phaser.Scene {
     if (this.player) {
       // this.physics.add.collider(this.player.avatar, secretary)
       this.physics.add.collider(this.player, interiorOnCollide)
-      this.physics.add.collider(this.player, ceoDesk)
+      // this.physics.add.collider(this.player, ceoDesk)
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
@@ -222,7 +229,7 @@ export default class Game extends Phaser.Scene {
     // 플레이어와 오브젝트 겹침 감지
     this.physics.add.overlap(
       this.player,
-      [secretary, chairToDown, chairToUp, waterPurifier, printer],
+      [secretary, chairToDown, chairToUp, waterPurifier, printer, ceoDesk],
       this.handlePlayerOverlap,
       undefined,
       this,
@@ -235,20 +242,32 @@ export default class Game extends Phaser.Scene {
   }
   // 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수
   private handlePlayerOverlap(player: any, interactionItem: any) {
-    if (!this.player) return
+    if (
+      this.player.behavior === 'sit' &&
+      interactionItem.x === 144 &&
+      interactionItem.y === 512
+    ) {
+      player.isFrontOfCeoDesk = true
+      store.dispatch(
+        changeAlertContent('스페이스키를 눌러 조작법을 확인하세요!'),
+      )
+      store.dispatch(openAlert())
+    }
+
     if (this.player.selectedInteractionItem) return
 
-    this.player.selectedInteractionItem = interactionItem
+    player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
   }
 
   // 방에 입장
-  joinRoom({ roomNum, authCookie }: JoinRoomType) {
+  joinRoom({ roomNum, authCookie, avatarTexture }: JoinRoomType) {
     if (!this.player) return
     if (!this.socketIO) return
 
     this.socketIO.joinRoom({ roomNum, authCookie })
     this.player.setNickname(authCookie.nickName)
+    this.player.setAvatarTexture(avatarTexture || 'bob')
     this.player.sendPlayerInfo(roomNum)
     this.roomNum = roomNum
 

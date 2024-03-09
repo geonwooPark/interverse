@@ -3,6 +3,7 @@ import { CookieType } from './client'
 interface JoinRoomType {
   roomNum: string
   authCookie: CookieType
+  avatarTexture?: string
 }
 
 interface SendMessageType {

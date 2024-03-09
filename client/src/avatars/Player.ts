@@ -4,10 +4,15 @@ import {
   closeCreatorModal,
   openCreatorModal,
 } from '../store/features/creatorModalDisplaySlice'
+import {
+  closeManualModal,
+  openManualModal,
+} from '../store/features/manualModalDisplaySlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
 
 export default class Player extends Avatar {
+  isFrontOfCeoDesk = false
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -54,8 +59,6 @@ export default class Player extends Avatar {
     socketIO: SocketIO,
     roomNum: string,
   ) {
-    const avatarContainerBody = this.avatarContainer
-      .body as Phaser.Physics.Arcade.Body
     const moveSpeed = 200
     let vx = 0
     let vy = 0
@@ -119,6 +122,14 @@ export default class Player extends Avatar {
 
               chair.clearInteractionBox()
               this.behavior = 'sit'
+
+              socketIO.sendAvatarPosition({
+                x: this.x,
+                y: this.y,
+                socketId: '',
+                roomNum,
+                animation: this.anims.currentAnim!.key,
+              })
               break
             case 'secretary':
               store.dispatch(openCreatorModal())
@@ -139,6 +150,10 @@ export default class Player extends Avatar {
           this.anims.play(animParts.join('_'), true)
           this.behavior = 'stand'
         }
+        if (this.isFrontOfCeoDesk && Phaser.Input.Keyboard.JustDown(keySpace)) {
+          store.dispatch(openManualModal())
+        }
+
         break
     }
     // 플레이어와 오브젝트 겹침이 끝날 시
@@ -149,6 +164,13 @@ export default class Player extends Avatar {
       switch (this.selectedInteractionItem.itemType) {
         case 'secretary':
           store.dispatch(closeCreatorModal())
+          break
+      }
+      switch (this.isFrontOfCeoDesk) {
+        case true:
+          this.isFrontOfCeoDesk = false
+          store.dispatch(closeManualModal())
+          break
       }
       this.selectedInteractionItem.clearInteractionBox()
       this.selectedInteractionItem = undefined
