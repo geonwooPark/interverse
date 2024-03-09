@@ -5,7 +5,6 @@ import {
   ClientOtherAvatarPosition,
   ClientPlayerInfo,
   ClientToServerEvents,
-  ServerMessage,
   ServerToClientEvents,
 } from '../../types/socket'
 
