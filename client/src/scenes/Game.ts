@@ -261,12 +261,13 @@ export default class Game extends Phaser.Scene {
   }
 
   // 방에 입장
-  joinRoom({ roomNum, authCookie }: JoinRoomType) {
+  joinRoom({ roomNum, authCookie, avatarTexture }: JoinRoomType) {
     if (!this.player) return
     if (!this.socketIO) return
 
     this.socketIO.joinRoom({ roomNum, authCookie })
     this.player.setNickname(authCookie.nickName)
+    this.player.setAvatarTexture(avatarTexture || 'bob')
     this.player.sendPlayerInfo(roomNum)
     this.roomNum = roomNum
 

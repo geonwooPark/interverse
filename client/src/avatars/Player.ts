@@ -59,8 +59,6 @@ export default class Player extends Avatar {
     socketIO: SocketIO,
     roomNum: string,
   ) {
-    const avatarContainerBody = this.avatarContainer
-      .body as Phaser.Physics.Arcade.Body
     const moveSpeed = 200
     let vx = 0
     let vy = 0
