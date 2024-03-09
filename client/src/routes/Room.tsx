@@ -8,6 +8,8 @@ import Alert from '../components/Alert/Alert'
 import { getAuthCookie } from '../utils/cookie'
 import ButtonContainer from '../components/ButtonContainer'
 import VideoModal from '../components/Modals/VideoModal/VideoModal'
+import CreatorModal from '../components/Modals/CreatorModal/CreatorModal'
+import ManualModal from '../components/Modals/ManualModal/ManualModal'
 
 function Room() {
   const params = useParams()
@@ -51,6 +53,8 @@ function Room() {
       <Chat authCookie={authCookie} />
       <ButtonContainer />
       <Alert />
+      <CreatorModal />
+      <ManualModal />
       {authCookie && <VideoModal authCookie={authCookie} />}
     </div>
   )
