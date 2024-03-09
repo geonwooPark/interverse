@@ -26,6 +26,7 @@ function Room() {
       game.joinRoom({
         roomNum: params.roomId as string,
         authCookie,
+        avatarTexture: authCookie.role === 'admin' ? 'conference' : 'bob',
       })
     }
 

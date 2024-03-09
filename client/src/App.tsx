@@ -11,12 +11,14 @@ import AdminRoute from './components/CheckRoute/AdminRoute'
 import AuthRoute from './components/CheckRoute/AuthRoute'
 import UIContainer from './components/UIContainer'
 import CreatorModal from './components/Modals/CreatorModal/CreatorModal'
+import ManualModal from './components/Modals/ManualModal/ManualModal'
 
 function App() {
   return (
     <>
       <Modal />
       <CreatorModal />
+      <ManualModal />
       <UIContainer>
         <Router>
           <Routes>

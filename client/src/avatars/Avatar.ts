@@ -48,6 +48,11 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
     this.nickname.setText(nickname)
   }
 
+  setAvatarTexture(avatarTexture: string) {
+    this.avatarTexture = avatarTexture
+    this.anims.play(`${avatarTexture}_stand_down`, true)
+  }
+
   // 채팅 생성
   updateChat(content: string, roomNum?: string) {
     const limitedText =
