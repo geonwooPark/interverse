@@ -1,19 +1,13 @@
 import { Socket } from 'socket.io'
 import {
   ClientAvatarPosition,
+  ClientMessage,
   ClientOtherAvatarPosition,
   ClientPlayerInfo,
   ClientToServerEvents,
+  ServerMessage,
   ServerToClientEvents,
 } from '../../types/socket'
-
-interface MessageData {
-  message: string
-  nickName: string
-  roomNum: string
-  senderId: string
-  newPlayerId?: string
-}
 
 export const roomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
@@ -25,7 +19,7 @@ export const roomHandler = (
     socket.join(roomNum)
   }
 
-  const sendMessage = (message: MessageData) => {
+  const sendMessage = (message: ClientMessage) => {
     if (message.roomNum === '') return
     io.to(message.roomNum).emit('serverMsg', {
       ...message,

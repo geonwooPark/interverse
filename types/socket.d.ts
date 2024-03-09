@@ -8,9 +8,10 @@ interface ServerMessage {
 
 interface ClientMessage {
   message: string
-  senderId?: string
   nickName: string
   roomNum: string
+  senderId: string
+  newPlayerId?: string
 }
 
 interface ClientJoinRoom {
@@ -95,7 +96,7 @@ export interface ServerToClientEvents {
   serverAvatarPosition: ({
     x,
     y,
-    roomNum,
+    animation,
     socketId,
   }: ServerAvatarPosition) => void
   serverOtherAvatarPosition: ({
@@ -129,7 +130,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   joinRoom: ({ roomNum }: ClientJoinRoom) => void
-  clientMsg: (message: MessageData) => void
+  clientMsg: (message: ClientMessage) => void
   clientPlayerInfo: ({
     x,
     y,
@@ -140,7 +141,6 @@ export interface ClientToServerEvents {
   clientAvatarPosition: ({
     x,
     y,
-    socketId,
     roomNum,
     animation,
   }: ClientAvatarPosition) => void
