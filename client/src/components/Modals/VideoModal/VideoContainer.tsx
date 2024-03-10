@@ -1,31 +1,25 @@
-import { useEffect, useRef, useState } from 'react'
-import VideoPlayer from './VideoPlayer'
+import { useEffect, useState } from 'react'
 import { socket as ws } from '../../../lib/ws'
-import { CookieType } from '../../../types/client'
+import {
+  CookieType,
+  CurrentStream,
+  PeerStreamType,
+} from '../../../types/client'
 import Peer from 'peerjs'
 import { useAppSelector } from '../../../store/store'
+import VideoPlayerList from './VideoPlayerList'
+import CurrentStreamScreen from './CurrentStreamScreen'
 
 interface VideoContainerProps {
   authCookie: CookieType
 }
 
-interface PeerStreamType {
-  peerId: string
-  stream: MediaStream
-}
-
-interface PeerNameType {
-  peerId: string
-  nickName: string
-}
-
 function VideoContainer({ authCookie }: VideoContainerProps) {
+  const { isStreaming } = useAppSelector((state) => state.screenStreamer)
   const [me, setMe] = useState<Peer>()
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
-  const peerNameRef = useRef<PeerNameType[]>([])
   const [stream, setStream] = useState<MediaStream>()
-  const [screenStream, setScreenStream] = useState<MediaStream>()
-  const { isStreaming } = useAppSelector((state) => state.screenStreamer)
+  const [currentStream, setCurrentStream] = useState<CurrentStream>()
 
   useEffect(() => {
     // 서버 따로 만들기
@@ -44,13 +38,38 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
         })
         .then((screenStream) => {
           setStream(screenStream)
-          setScreenStream(screenStream)
+          setCurrentStream({
+            peerId: peer.id,
+            stream: screenStream,
+          })
+          setPeerStreams((prev) => [
+            ...prev,
+            {
+              peerId: peer.id,
+              nickName: authCookie.nickName,
+              socketId: ws.id as string,
+              stream: screenStream,
+            },
+          ])
         })
     } else {
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {
           setStream(stream)
+          setCurrentStream({
+            peerId: peer.id,
+            stream: stream,
+          })
+          setPeerStreams((prev) => [
+            ...prev,
+            {
+              peerId: peer.id,
+              nickName: authCookie.nickName,
+              socketId: ws.id as string,
+              stream,
+            },
+          ])
         })
     }
 
@@ -60,8 +79,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     ws.on('getUsers', (users) => {
       console.log(users)
     })
-    ws.on('leaveVideoRoom', (peerId: string) => {
-      setPeerStreams((prev) => prev.filter((r) => r.peerId !== peerId))
+    ws.on('leaveVideoRoom', (socketId: string) => {
+      setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
     })
 
     return () => {
@@ -83,39 +102,40 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
 
     ws.on('joinedUsers', (user) => {
-      const { peerId, nickName } = user
+      const { peerId, nickName, socketId } = user
+      // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
         metadata: {
-          nickName,
+          nickName: authCookie.nickName,
+          socketId: ws.id,
         },
       })
-      // 기존 멤버
+      // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
         setPeerStreams((prev) => [
           ...prev,
           {
-            peerId: user.peerId,
+            peerId,
+            nickName,
+            socketId,
             stream: peerStream,
           },
         ])
       })
-      peerNameRef.current = [...peerNameRef.current, { peerId, nickName }]
     })
 
     // 전화를 걸 때 발생
     me.on('call', (call) => {
-      const { nickName } = call.metadata
-      peerNameRef.current = [
-        ...peerNameRef.current,
-        { peerId: call.peer, nickName },
-      ]
+      const { nickName, socketId } = call.metadata
       call.answer(stream)
-      // 새로운 멤버
+      // 새로운 멤버에서 실행
       call.once('stream', (peerStream) => {
         setPeerStreams((prev) => [
           ...prev,
           {
             peerId: call.peer,
+            nickName,
+            socketId,
             stream: peerStream,
           },
         ])
@@ -129,20 +149,12 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
   return (
     <div>
-      <div className="flex gap-4">
-        {stream && (
-          <div>
-            <VideoPlayer stream={stream} />
-            <p className="text-white">내화면</p>
-          </div>
-        )}
-        {peerStreams.map((peerStream, i) => (
-          <div key={i}>
-            <VideoPlayer stream={peerStream.stream} />
-            <p className="text-white">{peerStream.peerId}</p>
-          </div>
-        ))}
-      </div>
+      <CurrentStreamScreen currentStream={currentStream} stream={stream} />
+      <VideoPlayerList
+        peerStreams={peerStreams}
+        currentStream={currentStream}
+        setCurrentStream={setCurrentStream}
+      />
     </div>
   )
 }
