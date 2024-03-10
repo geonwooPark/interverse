@@ -11,20 +11,14 @@ interface VideoContainerProps {
 
 interface PeerStreamType {
   peerId: string
-  stream: MediaStream
-}
-
-interface PeerNameType {
-  peerId: string
   nickName: string
+  stream: MediaStream
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
   const [me, setMe] = useState<Peer>()
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
-  const peerNameRef = useRef<PeerNameType[]>([])
   const [stream, setStream] = useState<MediaStream>()
-  const [screenStream, setScreenStream] = useState<MediaStream>()
   const { isStreaming } = useAppSelector((state) => state.screenStreamer)
 
   useEffect(() => {
@@ -44,7 +38,6 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
         })
         .then((screenStream) => {
           setStream(screenStream)
-          setScreenStream(screenStream)
         })
     } else {
       navigator.mediaDevices
@@ -84,38 +77,36 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
     ws.on('joinedUsers', (user) => {
       const { peerId, nickName } = user
+      // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
         metadata: {
-          nickName,
+          nickName: authCookie.nickName,
         },
       })
-      // 기존 멤버
+      // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
         setPeerStreams((prev) => [
           ...prev,
           {
-            peerId: user.peerId,
+            peerId,
+            nickName,
             stream: peerStream,
           },
         ])
       })
-      peerNameRef.current = [...peerNameRef.current, { peerId, nickName }]
     })
 
     // 전화를 걸 때 발생
     me.on('call', (call) => {
       const { nickName } = call.metadata
-      peerNameRef.current = [
-        ...peerNameRef.current,
-        { peerId: call.peer, nickName },
-      ]
       call.answer(stream)
-      // 새로운 멤버
+      // 새로운 멤버에서 실행
       call.once('stream', (peerStream) => {
         setPeerStreams((prev) => [
           ...prev,
           {
             peerId: call.peer,
+            nickName,
             stream: peerStream,
           },
         ])
@@ -139,7 +130,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
         {peerStreams.map((peerStream, i) => (
           <div key={i}>
             <VideoPlayer stream={peerStream.stream} />
-            <p className="text-white">{peerStream.peerId}</p>
+            <p className="text-white">{peerStream.nickName}</p>
           </div>
         ))}
       </div>
