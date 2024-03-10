@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import VideoPlayer from './VideoPlayer'
 import { socket as ws } from '../../../lib/ws'
 import { CookieType } from '../../../types/client'
@@ -11,6 +11,7 @@ interface VideoContainerProps {
 
 interface PeerStreamType {
   peerId: string
+  socketId: string
   nickName: string
   stream: MediaStream
 }
@@ -53,8 +54,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     ws.on('getUsers', (users) => {
       console.log(users)
     })
-    ws.on('leaveVideoRoom', (peerId: string) => {
-      setPeerStreams((prev) => prev.filter((r) => r.peerId !== peerId))
+    ws.on('leaveVideoRoom', (socketId: string) => {
+      setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
     })
 
     return () => {
@@ -76,11 +77,12 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
 
     ws.on('joinedUsers', (user) => {
-      const { peerId, nickName } = user
+      const { peerId, nickName, socketId } = user
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
         metadata: {
           nickName: authCookie.nickName,
+          socketId: ws.id,
         },
       })
       // 기존 멤버에서 실행
@@ -90,6 +92,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
           {
             peerId,
             nickName,
+            socketId,
             stream: peerStream,
           },
         ])
@@ -98,7 +101,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
     // 전화를 걸 때 발생
     me.on('call', (call) => {
-      const { nickName } = call.metadata
+      const { nickName, socketId } = call.metadata
       call.answer(stream)
       // 새로운 멤버에서 실행
       call.once('stream', (peerStream) => {
@@ -107,6 +110,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
           {
             peerId: call.peer,
             nickName,
+            socketId,
             stream: peerStream,
           },
         ])

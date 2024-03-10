@@ -42,11 +42,12 @@ export const videoRoomHandler = (
   const leaveVideoRoom = () => {
     const rooms = Array.from(socket.rooms)
     if (rooms.length === 3) {
-      socket
-        .to(`${rooms[1]}_video`)
-        .emit('leaveVideoRoom', videoRoom[rooms[1]][socket.id].peerId)
+      socket.to(rooms[1]).emit('leaveVideoRoom', socket.id)
+
       delete videoRoom[rooms[1]][socket.id]
     }
+
+    console.log(videoRoom[rooms[1]])
   }
 
   socket.on('createVideoRoom', createVideoRoom)
