@@ -24,3 +24,15 @@ export interface DisplayOtherPlayerChatType {
   message: string
   socketId: string
 }
+
+export interface PeerStreamType {
+  peerId: string
+  socketId: string
+  nickName: string
+  stream: MediaStream
+}
+
+export interface CurrentStream {
+  peerId: string
+  stream: MediaStream
+}

@@ -1,26 +1,25 @@
 import { useEffect, useState } from 'react'
-import VideoPlayer from './VideoPlayer'
 import { socket as ws } from '../../../lib/ws'
-import { CookieType } from '../../../types/client'
+import {
+  CookieType,
+  CurrentStream,
+  PeerStreamType,
+} from '../../../types/client'
 import Peer from 'peerjs'
 import { useAppSelector } from '../../../store/store'
+import VideoPlayerList from './VideoPlayerList'
+import CurrentStreamScreen from './CurrentStreamScreen'
 
 interface VideoContainerProps {
   authCookie: CookieType
 }
 
-interface PeerStreamType {
-  peerId: string
-  socketId: string
-  nickName: string
-  stream: MediaStream
-}
-
 function VideoContainer({ authCookie }: VideoContainerProps) {
+  const { isStreaming } = useAppSelector((state) => state.screenStreamer)
   const [me, setMe] = useState<Peer>()
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
   const [stream, setStream] = useState<MediaStream>()
-  const { isStreaming } = useAppSelector((state) => state.screenStreamer)
+  const [currentStream, setCurrentStream] = useState<CurrentStream>()
 
   useEffect(() => {
     // 서버 따로 만들기
@@ -39,12 +38,38 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
         })
         .then((screenStream) => {
           setStream(screenStream)
+          setCurrentStream({
+            peerId: peer.id,
+            stream: screenStream,
+          })
+          setPeerStreams((prev) => [
+            ...prev,
+            {
+              peerId: peer.id,
+              nickName: authCookie.nickName,
+              socketId: ws.id as string,
+              stream: screenStream,
+            },
+          ])
         })
     } else {
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {
           setStream(stream)
+          setCurrentStream({
+            peerId: peer.id,
+            stream: stream,
+          })
+          setPeerStreams((prev) => [
+            ...prev,
+            {
+              peerId: peer.id,
+              nickName: authCookie.nickName,
+              socketId: ws.id as string,
+              stream,
+            },
+          ])
         })
     }
 
@@ -124,20 +149,12 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
   return (
     <div>
-      <div className="flex gap-4">
-        {stream && (
-          <div>
-            <VideoPlayer stream={stream} />
-            <p className="text-white">내화면</p>
-          </div>
-        )}
-        {peerStreams.map((peerStream, i) => (
-          <div key={i}>
-            <VideoPlayer stream={peerStream.stream} />
-            <p className="text-white">{peerStream.nickName}</p>
-          </div>
-        ))}
-      </div>
+      <CurrentStreamScreen currentStream={currentStream} stream={stream} />
+      <VideoPlayerList
+        peerStreams={peerStreams}
+        currentStream={currentStream}
+        setCurrentStream={setCurrentStream}
+      />
     </div>
   )
 }

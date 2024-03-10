@@ -9,12 +9,7 @@ function VideoPlayer({ stream }: { stream: MediaStream }) {
   }, [stream])
 
   return (
-    <video
-      ref={videoRef}
-      autoPlay
-      muted
-      className="h-[160px] w-[240px] rounded-md"
-    />
+    <video ref={videoRef} autoPlay muted className="size-full object-cover" />
   )
 }
 

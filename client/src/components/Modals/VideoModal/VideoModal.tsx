@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { socket as ws } from '../../../lib/ws'
 import { CookieType } from '../../../types/client'
 import VideoContainer from './VideoContainer'
+import { handleStreaming } from '../../../store/features/screenStreamerSlice'
 
 interface VideoModalProps {
   authCookie: CookieType
@@ -14,6 +15,7 @@ function VideoModal({ authCookie }: VideoModalProps) {
 
   const onClick = () => {
     dispatch(showVideoModal(false))
+    dispatch(handleStreaming(false))
     ws.emit('leaveVideoRoom')
   }
 
