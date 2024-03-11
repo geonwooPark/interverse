@@ -10,6 +10,7 @@ interface JoinVideoRoomType {
 
 export const videoRoomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+  io: any,
 ) => {
   const createVideoRoom = (roomNum: string) => {
     videoRoom[roomNum] = videoRoom[roomNum] || {}
@@ -20,6 +21,7 @@ export const videoRoomHandler = (
     if (!peerId) return
     if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
     if (videoRoom[roomNum][socket.id]) return
+    if (Object.keys(videoRoom[roomNum]).length >= 6) return
 
     videoRoom[roomNum][socket.id] = {
       peerId,
@@ -28,29 +30,22 @@ export const videoRoomHandler = (
     }
     socket.join(`${roomNum}_video`)
 
-    console.log(videoRoom[roomNum])
-
     socket.broadcast
       .to(`${roomNum}_video`)
-      .emit('joinedUsers', { peerId, socketId: socket.id, nickName })
-    socket.to(`${roomNum}_video`).emit('getUsers', {
-      socketId: socket.id,
-      members: videoRoom[roomNum],
-    })
+      .emit('serverJoinVideoRoom', { peerId, socketId: socket.id, nickName })
   }
 
   const leaveVideoRoom = () => {
     const rooms = Array.from(socket.rooms)
     if (rooms.length === 3) {
-      socket.to(rooms[1]).emit('leaveVideoRoom', socket.id)
+      io.to(socket.id).emit('leaveVideoRoom')
+      socket.broadcast.to(rooms[1]).emit('updateVideoRoom', socket.id)
 
       delete videoRoom[rooms[1]][socket.id]
     }
-
-    console.log(videoRoom[rooms[1]])
   }
 
   socket.on('createVideoRoom', createVideoRoom)
-  socket.on('joinVideoRoom', joinVideoRoom)
+  socket.on('clientJoinVideoRoom', joinVideoRoom)
   socket.on('leaveVideoRoom', leaveVideoRoom)
 }

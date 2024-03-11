@@ -31,7 +31,7 @@ io.on(
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     // 방 관리
     roomHandler(socket, io)
-    videoRoomHandler(socket)
+    videoRoomHandler(socket, io)
 
     // 연결 끊어질 시
     socket.on('disconnecting', () => {
@@ -42,12 +42,10 @@ io.on(
       }
       if (rooms.length === 3) {
         io.to(rooms[1]).emit('leaveRoom', socket.id)
-        io.to(rooms[1]).emit('leaveVideoRoom', socket.id)
+        io.to(rooms[1]).emit('updateVideoRoom', socket.id)
 
         delete videoRoom[rooms[1]][socket.id]
       }
-
-      console.log(videoRoom[rooms[1]])
     })
   },
 )
