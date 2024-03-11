@@ -15,6 +15,7 @@ export default class Game extends Phaser.Scene {
   private otherPlayersMap = new Map<string, OtherPlayer>()
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
+  keyEscape?: Phaser.Input.Keyboard.Key
   player!: Player
   // socketIO!: SocketIO
   roomNum!: string
@@ -30,6 +31,9 @@ export default class Game extends Phaser.Scene {
   setUpKeys() {
     this.cursur = this.input.keyboard?.createCursorKeys()
     this.keySpace = this.input.keyboard?.addKey('space')
+    this.keyEscape = this.input.keyboard?.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ESC,
+    )
     if (this.input.keyboard) {
       this.input.keyboard.disableGlobalCapture()
       this.input.keyboard.on('keydown-ENTER', () => {
@@ -288,8 +292,19 @@ export default class Game extends Phaser.Scene {
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
-    if (this.player && this.cursur && this.keySpace && this.roomNum) {
-      this.player.update(this.cursur, this.keySpace, this.roomNum)
+    if (
+      this.player &&
+      this.cursur &&
+      this.keySpace &&
+      this.keyEscape &&
+      this.roomNum
+    ) {
+      this.player.update(
+        this.cursur,
+        this.keySpace,
+        this.keyEscape,
+        this.roomNum,
+      )
     }
   }
 }

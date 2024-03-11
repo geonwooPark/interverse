@@ -5,6 +5,11 @@ import {
   sendPlayerInfoToNewPlayer,
 } from '../lib/ws'
 import {
+  changeAlertContent,
+  closeAlert,
+  openAlert,
+} from '../store/features/alertSlice'
+import {
   closeCreatorModal,
   openCreatorModal,
 } from '../store/features/creatorModalDisplaySlice'
@@ -61,6 +66,7 @@ export default class Player extends Avatar {
   update(
     cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
     keySpace: Phaser.Input.Keyboard.Key,
+    keyEscape: Phaser.Input.Keyboard.Key,
     roomNum: string,
   ) {
     const moveSpeed = 200
@@ -132,6 +138,30 @@ export default class Player extends Avatar {
                 roomNum,
                 animation: this.anims.currentAnim!.key,
               })
+
+              if (chair.interaction === 'menual') {
+                store.dispatch(openManualModal())
+                store.dispatch(
+                  changeAlertContent(
+                    'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
+                  ),
+                )
+              } else if (chair.interaction === 'interview') {
+                store.dispatch(showVideoModal(true))
+                store.dispatch(
+                  changeAlertContent(
+                    'ESC 키를 눌러 화면공유를 중지할 수 있습니다.',
+                  ),
+                )
+              } else {
+                store.dispatch(
+                  changeAlertContent(
+                    'ESC 키를 눌러 의자에서 일어날 수 있습니다.',
+                  ),
+                )
+              }
+
+              store.dispatch(openAlert())
               break
             case 'secretary':
               store.dispatch(openCreatorModal())
@@ -141,24 +171,24 @@ export default class Player extends Avatar {
         break
       case 'sit':
         // 의자에서 일어나기
-        if (
-          cursorsKeys.left.isDown ||
-          cursorsKeys.right.isDown ||
-          cursorsKeys.up.isDown ||
-          cursorsKeys.down.isDown
-        ) {
+        if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
+          switch (this.isFrontOfCeoDesk) {
+            case true:
+              store.dispatch(closeManualModal())
+              break
+          }
+          switch (this.isFrontOfInterviewDesk) {
+            case true:
+              store.dispatch(showVideoModal(false))
+              break
+          }
           const animParts = this.anims.currentAnim!.key.split('_')
           animParts[1] = 'stand'
           this.anims.play(animParts.join('_'), true)
           this.behavior = 'stand'
-        }
-        if (this.isFrontOfCeoDesk) {
-          store.dispatch(openManualModal())
-        }
-        if (this.isFrontOfInterviewDesk) {
-          store.dispatch(showVideoModal(true))
-        }
 
+          store.dispatch(closeAlert())
+        }
         break
     }
     // 플레이어와 오브젝트 겹침이 끝날 시
@@ -174,13 +204,11 @@ export default class Player extends Avatar {
       switch (this.isFrontOfCeoDesk) {
         case true:
           this.isFrontOfCeoDesk = false
-          store.dispatch(closeManualModal())
           break
       }
       switch (this.isFrontOfInterviewDesk) {
         case true:
           this.isFrontOfInterviewDesk = false
-          store.dispatch(showVideoModal(false))
           break
       }
       this.selectedInteractionItem.clearInteractionBox()
