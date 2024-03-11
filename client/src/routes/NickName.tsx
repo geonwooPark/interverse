@@ -11,8 +11,6 @@ function NickName() {
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
 
-  const textureImage = `bg-[url("/assets/character/${texture}.png")]`
-
   const onTextureArrowClick = () => {
     switch (texture) {
       case 'bob':
@@ -59,7 +57,10 @@ function NickName() {
               〈
             </div>
             <div
-              className={`h-[48px] w-[32px] scale-150 bg-[64px] ${textureImage}`}
+              className={`h-[48px] w-[32px] scale-150 bg-[url("/assets/character/bob.png")] bg-[64px] ${texture === 'bob' ? 'block' : 'hidden'}`}
+            ></div>
+            <div
+              className={`h-[48px] w-[32px] scale-150 bg-[url("/assets/character/emma.png")] bg-[64px] ${texture === 'emma' ? 'block' : 'hidden'}`}
             ></div>
             <div className="cursor-pointer" onClick={onTextureArrowClick}>
               〉
