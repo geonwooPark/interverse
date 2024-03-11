@@ -12,6 +12,7 @@ import CreatorModal from '../components/Modals/CreatorModal/CreatorModal'
 import ManualModal from '../components/Modals/ManualModal/ManualModal'
 
 function Room() {
+  const a: any = 0
   const params = useParams()
   const authCookie = getAuthCookie(params.roomId as string)
   const [game, setGame] = useState<Game | null>(null)
