@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface ScreenStreamerType {
-  isStreaming: boolean
+  isScreenStreaming: boolean
 }
 
 const initialState: ScreenStreamerType = {
-  isStreaming: false,
+  isScreenStreaming: false,
 }
 
 export const ScreenStreamerSlice = createSlice({
@@ -16,7 +16,7 @@ export const ScreenStreamerSlice = createSlice({
   // 처리하고자 하는 메서드
   reducers: {
     handleStreaming: (state, action) => {
-      state.isStreaming = action.payload
+      state.isScreenStreaming = action.payload
     },
   },
 })

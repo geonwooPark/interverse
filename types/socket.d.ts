@@ -81,6 +81,18 @@ interface IUser {
   nickName: string
 }
 
+interface ClientJoinVideoRoom {
+  roomNum: string
+  peerId: string
+  nickName: string
+}
+
+interface ServerJoinVideoRoom {
+  socketId: string
+  peerId: string
+  nickName: string
+}
+
 export interface ServerToClientEvents {
   leaveRoom: (sockerId: string) => void
   serverMsg: (message: ServerMessage) => void
@@ -108,24 +120,14 @@ export interface ServerToClientEvents {
     socketId,
     newPlayerId,
   }: ServerOtherAvatarPosition) => void
-  getUsers: ({
-    socketId,
-    members,
-  }: {
-    socketId: string
-    members: Record<string, IUser>
-  }) => void
-  joinedUsers: ({
+  serverJoinVideoRoom: ({
     peerId,
     socketId,
     nickName,
-  }: {
-    peerId: string
-    socketId: string
-    nickName: string
-  }) => void
+  }: ServerJoinVideoRoom) => void
   createVideoRoom: (roomNum: string) => void
-  leaveVideoRoom: (peerId: string) => void
+  leaveVideoRoom: () => void
+  updateVideoRoom: (socketId: string) => void
 }
 
 export interface ClientToServerEvents {
@@ -152,15 +154,11 @@ export interface ClientToServerEvents {
     roomNum,
     newPlayerId,
   }: ClientOtherAvatarPosition) => void
-  joinVideoRoom: ({
+  clientJoinVideoRoom: ({
     roomNum,
     peerId,
     nickName,
-  }: {
-    roomNum: string
-    peerId: string
-    nickName: string
-  }) => void
+  }: ClientJoinVideoRoom) => void
   createVideoRoom: (roomNum: string) => void
   leaveVideoRoom: () => void
 }

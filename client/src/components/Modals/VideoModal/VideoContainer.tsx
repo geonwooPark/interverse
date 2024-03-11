@@ -5,88 +5,59 @@ import {
   CurrentStream,
   PeerStreamType,
 } from '../../../types/client'
-import Peer from 'peerjs'
-import { useAppSelector } from '../../../store/store'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
+import { getMedia, peer as me } from '../../../lib/peer'
+import { showVideoModal } from '../../../store/features/videoModalSlice'
+import { handleStreaming } from '../../../store/features/screenStreamerSlice'
 
 interface VideoContainerProps {
   authCookie: CookieType
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
-  const { isStreaming } = useAppSelector((state) => state.screenStreamer)
-  const [me, setMe] = useState<Peer>()
+  const dispatch = useAppDispatch()
+
+  const { isScreenStreaming } = useAppSelector((state) => state.screenStreamer)
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
   const [stream, setStream] = useState<MediaStream>()
   const [currentStream, setCurrentStream] = useState<CurrentStream>()
 
   useEffect(() => {
-    // 서버 따로 만들기
-    const peer = new Peer({
-      host: 'localhost',
-      port: 9000,
-      path: '/myapp',
+    getMedia(isScreenStreaming).then((screenStream) => {
+      setStream(screenStream)
+      setCurrentStream({
+        peerId: me.id,
+        stream: screenStream,
+      })
+      setPeerStreams((prev) => [
+        ...prev,
+        {
+          peerId: me.id,
+          nickName: authCookie.nickName,
+          socketId: ws.id as string,
+          stream: screenStream,
+        },
+      ])
     })
-    setMe(peer)
 
-    if (isStreaming) {
-      navigator.mediaDevices
-        .getDisplayMedia({
-          video: true,
-          audio: false,
-        })
-        .then((screenStream) => {
-          setStream(screenStream)
-          setCurrentStream({
-            peerId: peer.id,
-            stream: screenStream,
-          })
-          setPeerStreams((prev) => [
-            ...prev,
-            {
-              peerId: peer.id,
-              nickName: authCookie.nickName,
-              socketId: ws.id as string,
-              stream: screenStream,
-            },
-          ])
-        })
-    } else {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-          setStream(stream)
-          setCurrentStream({
-            peerId: peer.id,
-            stream: stream,
-          })
-          setPeerStreams((prev) => [
-            ...prev,
-            {
-              peerId: peer.id,
-              nickName: authCookie.nickName,
-              socketId: ws.id as string,
-              stream,
-            },
-          ])
-        })
-    }
-
-    ws.on('createVideoRoom', () => {
-      // console.log('비디오 방 생성')
+    ws.on('createVideoRoom', (roomNum) => {
+      console.log(`비디오 방 ${roomNum} 생성`)
     })
-    ws.on('getUsers', (users) => {
-      console.log(users)
-    })
-    ws.on('leaveVideoRoom', (socketId: string) => {
+    ws.on('updateVideoRoom', (socketId: string) => {
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
+    })
+    ws.on('leaveVideoRoom', () => {
+      me.disconnect()
+      dispatch(showVideoModal(false))
+      dispatch(handleStreaming(false))
     })
 
     return () => {
       ws.off('createVideoRoom')
-      ws.off('getUsers')
       ws.off('leaveVideoRoom')
+      ws.off('updateVideoRoom')
     }
   }, [])
 
@@ -95,13 +66,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!stream) return
 
     ws.emit('createVideoRoom', authCookie.roomNum)
-    ws.emit('joinVideoRoom', {
+    ws.emit('clientJoinVideoRoom', {
       roomNum: authCookie.roomNum,
       peerId: me.id,
       nickName: authCookie.nickName,
     })
 
-    ws.on('joinedUsers', (user) => {
+    ws.on('serverJoinVideoRoom', (user) => {
       const { peerId, nickName, socketId } = user
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
@@ -143,7 +114,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
 
     return () => {
-      ws.off('joinedUsers')
+      ws.off('serverJoinVideoRoom')
     }
   }, [me, stream])
 

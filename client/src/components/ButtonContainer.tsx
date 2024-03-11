@@ -1,3 +1,4 @@
+import { peer as me } from '../lib/peer'
 import {
   changeAlertContent,
   closeAlert,
@@ -15,11 +16,17 @@ function ButtonContainer() {
   const dispatch = useAppDispatch()
 
   const onScreenClick = () => {
+    if (me.disconnected) {
+      me.reconnect()
+    }
     dispatch(showVideoModal(true))
     dispatch(handleStreaming(true))
   }
 
   const onVideoClick = () => {
+    if (me.disconnected) {
+      me.reconnect()
+    }
     dispatch(showVideoModal(true))
   }
 
