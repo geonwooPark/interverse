@@ -21,8 +21,8 @@ interface ClientJoinRoom {
     role: 'admin' | 'user'
     nickName: string
     path: string
+    texture: string
   }
-  avatarTexture?: string
 }
 
 interface ServerPlayerInfo {

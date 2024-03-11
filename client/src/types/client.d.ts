@@ -10,6 +10,7 @@ export interface CookieType {
   role: 'admin' | 'user'
   nickName: string
   path: string
+  texture: string
 }
 
 export interface AddOtherPlayerType {

@@ -60,6 +60,14 @@ export default class Preload extends Phaser.Scene {
         frameHeight: 48,
       },
     )
+    this.load.spritesheet(
+      'emma',
+      'http://localhost:5173/assets/character/emma.png',
+      {
+        frameWidth: 32,
+        frameHeight: 48,
+      },
+    )
     this.load.on('complete', () => {
       this.startGame()
     })
