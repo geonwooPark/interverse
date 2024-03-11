@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { setCookie } from '../utils/cookie'
 
+interface TextureImageType {
+  [key: string]: string
+}
+
+const textureImage: TextureImageType = {
+  bob: `bg-[url("/assets/character/bob.png")]`,
+  emma: `bg-[url("/assets/character/emma.png")]`,
+}
+
 function NickName() {
   const navigate = useNavigate()
   const location = useLocation()
@@ -48,7 +57,7 @@ function NickName() {
   }, [value])
 
   return (
-    <div className="font-neodgm fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70">
+    <div className="fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70 font-neodgm">
       <div className="h-fit w-[300px] rounded-md bg-white p-4">
         <div className="mb-6">
           <p className="mb-4">캐릭터를 선택해주세요</p>
@@ -57,10 +66,7 @@ function NickName() {
               〈
             </div>
             <div
-              className={`h-[48px] w-[32px] scale-150 bg-[url("/assets/character/bob.png")] bg-[64px] ${texture === 'bob' ? 'block' : 'hidden'}`}
-            ></div>
-            <div
-              className={`h-[48px] w-[32px] scale-150 bg-[url("/assets/character/emma.png")] bg-[64px] ${texture === 'emma' ? 'block' : 'hidden'}`}
+              className={`h-[48px] w-[32px] scale-150 bg-[64px] ${textureImage[texture]}`}
             ></div>
             <div className="cursor-pointer" onClick={onTextureArrowClick}>
               〉
