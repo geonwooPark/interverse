@@ -172,4 +172,88 @@ export const createAvatarAnims = (
     frameRate: animsFrameRate,
     repeat: 0,
   })
+
+  anims.create({
+    key: 'emma_stand_right',
+    frames: anims.generateFrameNumbers('emma', { start: 0, end: 5 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_stand_up',
+    frames: anims.generateFrameNumbers('emma', { start: 6, end: 11 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_stand_left',
+    frames: anims.generateFrameNumbers('emma', { start: 12, end: 17 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_stand_down',
+    frames: anims.generateFrameNumbers('emma', { start: 18, end: 23 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_run_right',
+    frames: anims.generateFrameNumbers('emma', { start: 24, end: 29 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_run_up',
+    frames: anims.generateFrameNumbers('emma', { start: 30, end: 35 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_run_left',
+    frames: anims.generateFrameNumbers('emma', { start: 36, end: 41 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_run_down',
+    frames: anims.generateFrameNumbers('emma', { start: 42, end: 47 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'emma_sit_right',
+    frames: anims.generateFrameNumbers('emma', { start: 48, end: 48 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'emma_sit_left',
+    frames: anims.generateFrameNumbers('emma', { start: 49, end: 49 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'emma_sit_down',
+    frames: anims.generateFrameNumbers('emma', { start: 50, end: 50 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'emma_sit_up',
+    frames: anims.generateFrameNumbers('emma', { start: 51, end: 51 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
 }

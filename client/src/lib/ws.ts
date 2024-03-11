@@ -74,6 +74,7 @@ export const sendPlayerInfoToNewPlayer = ({
   y,
   nickName,
   texture,
+  animation,
   roomNum,
   newPlayerId,
 }: ClientOtherAvatarPosition) => {
@@ -83,6 +84,7 @@ export const sendPlayerInfoToNewPlayer = ({
     y,
     nickName,
     texture,
+    animation,
     roomNum,
     newPlayerId,
   })

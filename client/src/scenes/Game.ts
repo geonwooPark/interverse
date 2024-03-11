@@ -15,6 +15,7 @@ export default class Game extends Phaser.Scene {
   private otherPlayersMap = new Map<string, OtherPlayer>()
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
+  keyEscape?: Phaser.Input.Keyboard.Key
   player!: Player
   // socketIO!: SocketIO
   roomNum!: string
@@ -30,6 +31,9 @@ export default class Game extends Phaser.Scene {
   setUpKeys() {
     this.cursur = this.input.keyboard?.createCursorKeys()
     this.keySpace = this.input.keyboard?.addKey('space')
+    this.keyEscape = this.input.keyboard?.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ESC,
+    )
     if (this.input.keyboard) {
       this.input.keyboard.disableGlobalCapture()
       this.input.keyboard.on('keydown-ENTER', () => {
@@ -153,6 +157,7 @@ export default class Game extends Phaser.Scene {
 
     // OtherPlayers Layer
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
+    // this.otherPlayers.setDepth(0)
 
     // Player Layer
     // 플레이어 생성
@@ -166,9 +171,14 @@ export default class Game extends Phaser.Scene {
 
     // Wall Layer
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
+    wallLayer?.setDepth(2000)
 
     // interior Layer
-    this.map.createLayer('Interior', [Office!, Classroom!])
+    const interiorLayer = this.map.createLayer('Interior', [
+      Office!,
+      Classroom!,
+    ])
+    interiorLayer?.setDepth(2000)
 
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup({ classType: Chair })
@@ -185,11 +195,13 @@ export default class Game extends Phaser.Scene {
       )
       obj.heading = 'up'
       obj.interaction = object.properties[0].value
+      obj.setDepth(2000)
       return obj
     })
 
     // Top Layer
     const topLayer = this.map.createLayer('Top', Office!)
+    topLayer?.setDepth(2000)
 
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
@@ -239,12 +251,12 @@ export default class Game extends Phaser.Scene {
   }
 
   // 방에 입장
-  joinRoom({ roomNum, authCookie, avatarTexture }: ClientJoinRoom) {
+  joinRoom({ roomNum, authCookie }: ClientJoinRoom) {
     if (!this.player) return
 
     joinRoom({ roomNum, authCookie })
     this.player.setNickname(authCookie.nickName)
-    this.player.setAvatarTexture(avatarTexture || 'bob')
+    this.player.setAvatarTexture(authCookie.texture)
     this.player.sendPlayerInfo(roomNum)
     this.roomNum = roomNum
 
@@ -252,10 +264,19 @@ export default class Game extends Phaser.Scene {
   }
 
   // 다른 플레이어 입장
-  addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
+  addOtherPlayer({
+    x,
+    y,
+    nickName,
+    texture,
+    animation,
+    socketId,
+  }: AddOtherPlayerType) {
     if (!socketId) return
 
     const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
+    newPlayer.anims.play(animation || `${texture}_stand_down`, true)
+    newPlayer.setDepth(900)
     this.add.existing(newPlayer)
 
     this.otherPlayers.add(newPlayer)
@@ -288,8 +309,19 @@ export default class Game extends Phaser.Scene {
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
-    if (this.player && this.cursur && this.keySpace && this.roomNum) {
-      this.player.update(this.cursur, this.keySpace, this.roomNum)
+    if (
+      this.player &&
+      this.cursur &&
+      this.keySpace &&
+      this.keyEscape &&
+      this.roomNum
+    ) {
+      this.player.update(
+        this.cursur,
+        this.keySpace,
+        this.keyEscape,
+        this.roomNum,
+      )
     }
   }
 }

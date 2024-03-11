@@ -33,6 +33,7 @@ function CreateRoom() {
       role: 'admin',
       nickName,
       path: `/${roomNum}?title=${encodedTitle}&hp=${hashedPassword}`,
+      texture: 'conference',
     }
 
     setCookie('interverse_admin', JSON.stringify(adminCookie), {
