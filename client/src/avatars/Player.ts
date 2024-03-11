@@ -57,6 +57,7 @@ export default class Player extends Avatar {
       y: this.y,
       nickName: this.nickname.text,
       texture: this.avatarTexture,
+      animation: this.anims.currentAnim!.key,
       roomNum,
       newPlayerId,
     })

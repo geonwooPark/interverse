@@ -71,6 +71,7 @@ interface ClientOtherAvatarPosition {
   y: number
   nickName: string
   texture: string
+  animation: string
   roomNum: string
   newPlayerId: string
 }
@@ -149,6 +150,7 @@ export interface ClientToServerEvents {
     y,
     nickName,
     texture,
+    behavior,
     roomNum,
     newPlayerId,
   }: ClientOtherAvatarPosition) => void

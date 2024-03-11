@@ -256,10 +256,18 @@ export default class Game extends Phaser.Scene {
   }
 
   // 다른 플레이어 입장
-  addOtherPlayer({ x, y, nickName, texture, socketId }: AddOtherPlayerType) {
+  addOtherPlayer({
+    x,
+    y,
+    nickName,
+    texture,
+    animation,
+    socketId,
+  }: AddOtherPlayerType) {
     if (!socketId) return
 
     const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
+    newPlayer.anims.play(animation || `${texture}_stand_down`, true)
     this.add.existing(newPlayer)
 
     this.otherPlayers.add(newPlayer)
