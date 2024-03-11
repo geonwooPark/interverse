@@ -157,6 +157,7 @@ export default class Game extends Phaser.Scene {
 
     // OtherPlayers Layer
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
+    // this.otherPlayers.setDepth(0)
 
     // Player Layer
     // 플레이어 생성
@@ -170,9 +171,14 @@ export default class Game extends Phaser.Scene {
 
     // Wall Layer
     const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
+    wallLayer?.setDepth(2000)
 
     // interior Layer
-    this.map.createLayer('Interior', [Office!, Classroom!])
+    const interiorLayer = this.map.createLayer('Interior', [
+      Office!,
+      Classroom!,
+    ])
+    interiorLayer?.setDepth(2000)
 
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup({ classType: Chair })
@@ -189,11 +195,13 @@ export default class Game extends Phaser.Scene {
       )
       obj.heading = 'up'
       obj.interaction = object.properties[0].value
+      obj.setDepth(2000)
       return obj
     })
 
     // Top Layer
     const topLayer = this.map.createLayer('Top', Office!)
+    topLayer?.setDepth(2000)
 
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
@@ -268,6 +276,7 @@ export default class Game extends Phaser.Scene {
 
     const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
     newPlayer.anims.play(animation || `${texture}_stand_down`, true)
+    newPlayer.setDepth(900)
     this.add.existing(newPlayer)
 
     this.otherPlayers.add(newPlayer)
