@@ -38,7 +38,7 @@ function AvatarInfo() {
       texture: textureImageName[texture],
     }
 
-    setCookie('interverse_user', JSON.stringify(userCookie), {
+    setCookie('interverse_guest', JSON.stringify(userCookie), {
       expires: new Date(Date.now() + 3 * 60 * 60 * 1000),
     })
     navigate(userCookie.path)

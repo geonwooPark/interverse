@@ -7,12 +7,7 @@ import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import { joinRoom, receiveChairId, seatedChair } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
-import {
-  AddOtherPlayerType,
-  CookieType,
-  DisplayOtherPlayerChatType,
-} from '../types/client'
-import { getCookie } from '../utils/cookie'
+import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -23,14 +18,11 @@ export default class Game extends Phaser.Scene {
   keyEscape?: Phaser.Input.Keyboard.Key
   player!: Player
   roomNum!: string
-  playerCookie: CookieType
   isCreate = false
 
   constructor() {
     // Scene Key
     super('game')
-    this.playerCookie =
-      getCookie('interverse_admin') || getCookie('interverse_user')
   }
 
   setUpKeys() {
@@ -168,12 +160,7 @@ export default class Game extends Phaser.Scene {
     // Player Layer
     // 플레이어 생성
     createAvatarAnims(this.anims)
-    this.player = new Player(
-      this,
-      this.playerCookie && this.playerCookie.role === 'admin' ? 250 : 730,
-      this.playerCookie && this.playerCookie.role === 'admin' ? 500 : 160,
-      'conference',
-    )
+    this.player = new Player(this, -1000, -1000, 'conference')
     this.add.existing(this.player)
 
     // Camera Setting
@@ -276,6 +263,11 @@ export default class Game extends Phaser.Scene {
     this.player.setAvatarTexture(authCookie.texture)
     this.player.sendPlayerInfo(roomNum)
     this.roomNum = roomNum
+
+    this.player.setPosition(
+      authCookie.role === 'host' ? 240 : 720,
+      authCookie.role === 'host' ? 520 : 170,
+    )
 
     this.setUpKeys()
 

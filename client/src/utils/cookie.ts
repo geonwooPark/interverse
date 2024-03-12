@@ -16,10 +16,10 @@ export const removeCookie = (name: string) => {
 }
 
 export const getAuthCookie = (roomId: string): CookieType | null => {
-  const adminCookie = getCookie('interverse_admin')
-  const userCookie = getCookie('interverse_user')
+  const hostCookie = getCookie('interverse_host')
+  const guestCookie = getCookie('interverse_guest')
 
-  if (adminCookie?.roomNum === roomId) return adminCookie
-  if (userCookie?.roomNum === roomId) return userCookie
+  if (hostCookie?.roomNum === roomId) return hostCookie
+  if (guestCookie?.roomNum === roomId) return guestCookie
   return null
 }

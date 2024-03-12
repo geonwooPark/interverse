@@ -7,7 +7,7 @@ import Modal from './components/Modals/Modal'
 import CreateRoom from './routes/CreateRoom'
 import Password from './routes/Password'
 import AvatarInfo from './routes/AvatarInfo'
-import AdminRoute from './components/CheckRoute/AdminRoute'
+import PrivateRoute from './components/CheckRoute/PrivateRoute'
 import AuthRoute from './components/CheckRoute/AuthRoute'
 import UIContainer from './components/UIContainer'
 
@@ -20,7 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}>
               <Route path="/" element={<Landing />} />
-              <Route element={<AdminRoute />}>
+              <Route element={<PrivateRoute />}>
                 <Route path="/my-room" element={<MyRoom />} />
               </Route>
               <Route path="/create-room" element={<CreateRoom />} />

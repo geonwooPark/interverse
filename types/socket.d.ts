@@ -18,7 +18,7 @@ interface ClientJoinRoom {
   roomNum: string
   authCookie: {
     roomNum: string
-    role: 'admin' | 'user'
+    role: 'host' | 'guest'
     nickName: string
     path: string
     texture: string

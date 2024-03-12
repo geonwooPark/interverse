@@ -10,7 +10,7 @@ interface UserStatusProps {
 }
 
 function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
-  const role = authCookie?.role === 'admin' ? '호스트' : '게스트'
+  const role = authCookie?.role === 'host' ? '호스트' : '게스트'
 
   const onChatClick = () => {
     setShowChat((prev) => !prev)

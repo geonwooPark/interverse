@@ -7,11 +7,11 @@ import gifAvatarRun from '/gif/avatar_run.gif'
 
 function MyRoom() {
   const navigate = useNavigate()
-  const adminCookie = getCookie('interverse_admin')
+  const hostCookie = getCookie('interverse_host')
   const dispatch = useAppDispatch()
 
   const onEnter = () => {
-    navigate(adminCookie.path)
+    navigate(hostCookie.path)
   }
 
   const onDelete = () => {
@@ -20,7 +20,7 @@ function MyRoom() {
         title: '삭제하기',
         description: '정말 방을 삭제하시겠습니까?',
         action: () => {
-          removeCookie('interverse_admin')
+          removeCookie('interverse_host')
           dispatch(closeModal())
           navigate('/')
         },

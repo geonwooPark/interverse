@@ -28,18 +28,18 @@ function CreateRoom() {
     const encodedTitle = encodeURIComponent(title)
     const hashedPassword = encodeURIComponent(encrypt(password))
 
-    const adminCookie = {
+    const hostCookie = {
       roomNum,
-      role: 'admin',
+      role: 'host',
       nickName,
       path: `/${roomNum}?title=${encodedTitle}&hp=${hashedPassword}`,
       texture: 'conference',
     }
 
-    setCookie('interverse_admin', JSON.stringify(adminCookie), {
+    setCookie('interverse_host', JSON.stringify(hostCookie), {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })
-    navigate(adminCookie.path)
+    navigate(hostCookie.path)
   }
 
   return (

@@ -4,7 +4,7 @@ import gifImage from '/gif/interverse.gif'
 
 function Landing() {
   const navigate = useNavigate()
-  const adminCookie = getCookie('interverse_admin')
+  const hostCookie = getCookie('interverse_host')
 
   return (
     <>
@@ -24,9 +24,7 @@ function Landing() {
           <div className="space-y-2">
             <img src={'/images/avatars.png'} alt="landing-image" width={265} />
             <button
-              onClick={() =>
-                navigate(adminCookie ? '/my-room' : '/create-room')
-              }
+              onClick={() => navigate(hostCookie ? '/my-room' : '/create-room')}
               className="primary-button"
             >
               시작하기
