@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
-import Chat from '../components/Chat/Chat'
 import RoomTitle from '../components/RoomTitle'
 import Alert from '../components/Alert/Alert'
 import { getAuthCookie } from '../utils/cookie'
@@ -11,10 +10,15 @@ import VideoModal from '../components/Modals/VideoModal/VideoModal'
 import CreatorModal from '../components/Modals/CreatorModal/CreatorModal'
 import ManualModal from '../components/Modals/ManualModal/ManualModal'
 import SurveyModal from '../components/Modals/SurveyModal/SurveyModal'
+import { useAppDispatch } from '../store/store'
+import { closeModal } from '../store/features/modalDisplaySlice'
+import { useGoBack } from '../hooks/useGoBack'
+import Controller from '../components/Controller'
 
 function Room() {
   const params = useParams()
   const authCookie = getAuthCookie(params.roomId as string)
+  const dispatch = useAppDispatch()
   const [game, setGame] = useState<Game | null>(null)
 
   useEffect(() => {
@@ -47,11 +51,21 @@ function Room() {
     }
   }, [game])
 
+  useGoBack({
+    title: '나가기',
+    description: '정말 종료하시겠습니까?',
+    action: () => {
+      window.location.replace('/')
+      dispatch(closeModal())
+    },
+    actionLabel: '종료',
+  })
+
   return (
     <div>
       <RoomTitle />
-      <Chat authCookie={authCookie} />
       <ButtonContainer />
+      <Controller authCookie={authCookie} />
       <Alert />
       <CreatorModal />
       <ManualModal />

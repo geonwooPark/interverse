@@ -53,21 +53,19 @@ function Chat({ authCookie }: ChatProps) {
   }, [inputRef, game])
 
   return (
-    <div className="fixed bottom-5 flex w-full justify-center">
-      <div className="flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-white/30 text-sm shadow-md">
-        <ChatList chatList={chatList} />
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="채팅을 입력해주세요"
-            autoComplete="off"
-            className="w-full bg-transparent px-3 py-2 outline-none placeholder:text-black"
-            ref={inputRef}
-            value={inputValue}
-            onChange={handleChange}
-          />
-        </form>
-      </div>
+    <div className="flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-white/30 text-sm shadow-md">
+      <ChatList chatList={chatList} />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="채팅을 입력해주세요"
+          autoComplete="off"
+          className="w-full bg-transparent px-4 py-2 outline-none placeholder:text-black"
+          ref={inputRef}
+          value={inputValue}
+          onChange={handleChange}
+        />
+      </form>
     </div>
   )
 }

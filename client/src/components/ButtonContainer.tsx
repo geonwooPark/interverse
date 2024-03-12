@@ -56,7 +56,7 @@ function ButtonContainer() {
 
   return (
     <div className="fixed right-8 top-4 flex gap-3">
-      <button
+      {/* <button
         onClick={onScreenClick}
         className="flex size-[50px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
       >
@@ -67,18 +67,18 @@ function ButtonContainer() {
         className="flex size-[50px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
       >
         비디오
-      </button>
+      </button> */}
       <button
         onClick={onLinkClick}
-        className="flex size-[50px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
+        className="flex size-[40px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
       >
-        <IconLink />
+        <IconLink className="size-5" />
       </button>
       <button
         onClick={onOffClick}
-        className="flex size-[50px] items-center justify-center rounded-full bg-white text-red-600"
+        className="flex size-[40px] items-center justify-center rounded-full bg-white text-red-600"
       >
-        <IconOff />
+        <IconOff className="size-5" />
       </button>
     </div>
   )

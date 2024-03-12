@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface ModalContentType {
+export interface ModalContentType {
   title: string
   description: string
   action: any
