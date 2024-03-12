@@ -33,15 +33,12 @@ function MyRoom() {
   return (
     <div className="flex w-[360px] flex-col items-center gap-4 rounded-3xl bg-gray-300 p-8">
       <div className="relative w-full overflow-hidden rounded-md bg-black">
-        <div className='h-[180px] w-[2000px] animate-myRoomBg bg-[url("/images/background.png")]' />
+        <div className='animate-myRoomBg h-[180px] w-[2000px] bg-[url("/images/background.png")]' />
         <div className="absolute bottom-3 flex w-full items-center justify-evenly">
           <img src={gifAvatarRun} alt="GIF" width={70} />
         </div>
       </div>
-      <button
-        onClick={onEnter}
-        className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
-      >
+      <button onClick={onEnter} className="primary-button">
         입장하기
       </button>
       <button

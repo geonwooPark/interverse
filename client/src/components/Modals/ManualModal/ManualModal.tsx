@@ -1,9 +1,9 @@
-import { closeManualModal } from '../../../store/features/manualModalDisplaySlice'
+import { closeManualModal } from '../../../store/features/manualModalSlice'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import ManualCard from './ManualCard'
 
 function ManualModal() {
-  const { isOpen } = useAppSelector((state) => state.manualModalDisplay)
+  const { isOpen } = useAppSelector((state) => state.manualModal)
   const dispatch = useAppDispatch()
 
   const onClick = () => {

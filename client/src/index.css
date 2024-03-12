@@ -7,6 +7,28 @@
   src: url('./fonts/neodgm.woff2');
 }
 
+@layer components {
+  .title {
+    @apply text-lg;
+  }
+
+  .description {
+    @apply text-sm;
+  }
+
+  .primary-button {
+    @apply flex h-[50px] w-full items-center justify-center rounded-md bg-purple-600 text-white hover:bg-purple-700;
+  }
+
+  .secondary-button {
+    @apply flex h-[50px] items-center justify-center w-full rounded-md border-2 border-purple-600 text-purple-600;
+  }
+
+  .input {
+    @apply w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none;
+  }
+}
+
 @layer utilities {
   .hide-scroll {
     -ms-overflow-style: none;

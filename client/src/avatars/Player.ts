@@ -12,11 +12,15 @@ import {
 import {
   closeCreatorModal,
   openCreatorModal,
-} from '../store/features/creatorModalDisplaySlice'
+} from '../store/features/creatorModalSlice'
 import {
   closeManualModal,
   openManualModal,
-} from '../store/features/manualModalDisplaySlice'
+} from '../store/features/manualModalSlice'
+import {
+  closeSurveyModal,
+  openSurveyModal,
+} from '../store/features/surveyModalSlice'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
@@ -167,6 +171,11 @@ export default class Player extends Avatar {
             case 'secretary':
               store.dispatch(openManualModal())
               store.dispatch(closeAlert())
+              break
+            case 'printer':
+              store.dispatch(openSurveyModal())
+              store.dispatch(closeAlert())
+              break
           }
         }
 
@@ -201,6 +210,9 @@ export default class Player extends Avatar {
       switch (this.selectedInteractionItem.itemType) {
         case 'secretary':
           store.dispatch(closeManualModal())
+          break
+        case 'printer':
+          store.dispatch(closeSurveyModal())
           break
       }
       switch (this.isFrontOfCeoDesk) {

@@ -6,21 +6,20 @@ interface ModalType {
 
 const initialState: ModalType = { isOpen: false }
 
-export const ManualModalDisplaySlice = createSlice({
+export const CreatorModalSlice = createSlice({
   // store의 이름
-  name: 'manual-modal-display',
+  name: 'creator-modal',
   // 초기값
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    openManualModal: (state) => {
+    openCreatorModal: (state) => {
       state.isOpen = true
     },
-    closeManualModal: (state) => {
+    closeCreatorModal: (state) => {
       state.isOpen = false
     },
   },
 })
 
-export const { openManualModal, closeManualModal } =
-  ManualModalDisplaySlice.actions
+export const { openCreatorModal, closeCreatorModal } = CreatorModalSlice.actions

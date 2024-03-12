@@ -29,29 +29,26 @@ function Password() {
   }, [value])
 
   return (
-    <div className="fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70 font-neodgm">
+    <div className="font-neodgm fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70">
       <div className="h-fit w-[300px] rounded-md bg-white p-4">
-        <div className="mb-4">비밀번호를 입력해주세요</div>
+        <div className="title mb-4">비밀번호를 입력해주세요</div>
         <input
           type="password"
           name="password"
           value={value}
           placeholder="비밀번호"
           autoComplete="off"
-          className="mb-2 w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+          className="input mb-2"
           onChange={handleChange}
           maxLength={4}
         />
         {error && (
-          <p className="mb-2 flex items-center text-sm text-red-600">
+          <p className="description mb-2 flex items-center text-red-600">
             <span className="mr-1">{error}</span>
             <span className="translate-y-[2px] text-lg">🥲</span>
           </p>
         )}
-        <button
-          onClick={onClick}
-          className="h-[50px] w-full rounded-md bg-purple-600 text-white hover:bg-purple-700"
-        >
+        <button onClick={onClick} className="primary-button">
           다음
         </button>
       </div>

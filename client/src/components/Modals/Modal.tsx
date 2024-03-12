@@ -23,19 +23,13 @@ function Modal() {
         onClick={(e) => e.stopPropagation()}
         className={`${isOpen ? 'opacity-100' : 'opacity-0'} flex h-fit w-[300px] flex-col rounded-md bg-white p-4`}
       >
-        <div className="mb-2 text-lg">{title}</div>
-        <p className="mb-4">{description}</p>
+        <div className="title mb-2">{title}</div>
+        <p className="description mb-4">{description}</p>
         <div className="flex gap-2">
-          <button
-            onClick={onClick}
-            className="h-[50px] w-full rounded-md border-2 border-purple-600 text-purple-600"
-          >
+          <button onClick={onClick} className="secondary-button">
             취소
           </button>
-          <button
-            onClick={action}
-            className="h-[50px] w-full rounded-md bg-purple-600 text-white hover:bg-purple-700"
-          >
+          <button onClick={action} className="primary-button">
             {actionLabel}
           </button>
         </div>

@@ -17,9 +17,9 @@ function Landing() {
         </div>
         <div className="flex flex-col items-center justify-center gap-8 p-2 text-center">
           <div className="flex flex-col justify-between">
-            <h4 className="mb-2 text-lg">쉽고 빠르게 즐기는, Interverse</h4>
-            <p className="">지금 바로 로그인 없이</p>
-            <p>Interverse 공간을 체험해보세요!</p>
+            <h4 className="title mb-2">쉽고 빠르게 즐기는, Interverse</h4>
+            <p className="description">로그인 없이 지금 바로</p>
+            <p className="description">Interverse 공간을 체험해보세요!</p>
           </div>
           <div className="space-y-2">
             <img src={'/images/avatars.png'} alt="landing-image" width={265} />
@@ -27,7 +27,7 @@ function Landing() {
               onClick={() =>
                 navigate(adminCookie ? '/my-room' : '/create-room')
               }
-              className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
+              className="primary-button"
             >
               시작하기
             </button>

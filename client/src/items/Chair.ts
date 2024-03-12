@@ -17,7 +17,7 @@ export default class Chair extends ObjectItem {
 
   onInteractionBox() {
     if (this.interaction === 'menual') {
-      this.setInteractionBox('스페이스키를 눌러 조작법을 확인하세요!')
+      this.setInteractionBox('스페이스키를 눌러 제작자를 확인하세요!')
     } else {
       this.setInteractionBox('스페이스키를 눌러 앉아보세요!')
     }

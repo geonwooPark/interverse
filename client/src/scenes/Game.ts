@@ -19,7 +19,6 @@ export default class Game extends Phaser.Scene {
   player!: Player
   roomNum!: string
   isCreate = false
-  test: any
 
   constructor() {
     // Scene Key
@@ -228,7 +227,7 @@ export default class Game extends Phaser.Scene {
       this.events.emit('createGame', this.isCreate)
     })
   }
-  // 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수
+  /** 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수 */
   private handlePlayerOverlap(player: any, interactionItem: any) {
     if (
       this.player.behavior === 'sit' &&
@@ -248,7 +247,7 @@ export default class Game extends Phaser.Scene {
     interactionItem.onInteractionBox()
   }
 
-  // 방에 입장
+  /** 방에 입장 */
   joinRoom({ roomNum, authCookie }: ClientJoinRoom) {
     if (!this.player) return
 
@@ -261,7 +260,7 @@ export default class Game extends Phaser.Scene {
     this.setUpKeys()
   }
 
-  // 다른 플레이어 입장
+  /** 다른 플레이어 입장 */
   addOtherPlayer({
     x,
     y,
@@ -281,7 +280,7 @@ export default class Game extends Phaser.Scene {
     this.otherPlayersMap.set(socketId, newPlayer)
   }
 
-  // 다른 플레이어 퇴장
+  /** 다른 플레이어 퇴장 */
   removeOtherPlayer(socketId: string) {
     if (!socketId) return
     const otherPlayer = this.otherPlayersMap.get(socketId)
@@ -293,13 +292,14 @@ export default class Game extends Phaser.Scene {
     this.otherPlayersMap.delete(socketId)
   }
 
-  // 다른 유저들 위치 정보 업데이트
+  /** 다른 유저들 위치 정보 업데이트 */
   updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
     if (!otherPlayer) return
     otherPlayer?.updatePosition({ x, y, animation })
   }
 
+  /** 다른 유저 채팅을 화면에 표시  */
   displayOtherPlayerChat({ message, socketId }: DisplayOtherPlayerChatType) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
     otherPlayer?.updateChat(message)

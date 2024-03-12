@@ -16,7 +16,7 @@ function CreatorCard({ image, name, job, email, link }: CreatorCardProps) {
         <div className="flex items-end gap-1">
           <span className="text-2xl">{name}</span>
           <span className="opacity-30">|</span>
-          <span className="opacity-70">{job}</span>
+          <span className="opacity-30">{job}</span>
         </div>
         <span className="text-lg">{email}</span>
       </div>
@@ -24,7 +24,7 @@ function CreatorCard({ image, name, job, email, link }: CreatorCardProps) {
         href={link}
         target="_blank"
         rel="noreferrer"
-        className="flex h-[50px] w-full items-center justify-center rounded-md bg-purple-600 text-white hover:bg-purple-700"
+        className="primary-button"
       >
         <span>GITHUB</span>
       </a>

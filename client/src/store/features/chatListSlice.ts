@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { MessageData } from '../../../../types/socket'
+import { ServerMessage } from '../../../../types/socket'
 
-type ChatListType = MessageData[]
+type ChatListType = ServerMessage[]
 
 const initialState: ChatListType = []
 

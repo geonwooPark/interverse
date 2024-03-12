@@ -44,17 +44,17 @@ function CreateRoom() {
 
   return (
     <div className="relative">
-      <div className="relative z-10 w-[420px] rounded-3xl bg-gray-300 p-8">
+      <div className="relative z-10 w-[480px] rounded-3xl bg-gray-300 p-8">
         <div className="flex flex-col items-center justify-between p-2">
           <form onSubmit={onSubmit} className="space-y-4 text-center">
-            <div>쉽고 빠르게 즐기는 메타버스, Interverse</div>
+            <div className="title">쉽고 빠르게 즐기는 메타버스, Interverse</div>
             <input
               type="text"
               name="title"
               value={title}
               placeholder="방 제목"
               autoComplete="off"
-              className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+              className="input"
               onChange={handleChange}
             />
             <input
@@ -63,7 +63,7 @@ function CreateRoom() {
               value={password}
               placeholder="방 비밀번호"
               autoComplete="off"
-              className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+              className="input"
               onChange={handleChange}
               maxLength={4}
             />
@@ -73,13 +73,10 @@ function CreateRoom() {
               value={nickName}
               placeholder="닉네임"
               autoComplete="off"
-              className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+              className="input"
               onChange={handleChange}
             />
-            <button
-              type="submit"
-              className="h-[50px] w-full rounded-md bg-purple-600 text-white duration-200 hover:bg-purple-700"
-            >
+            <button type="submit" className="primary-button">
               방 개설하기
             </button>
           </form>

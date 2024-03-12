@@ -24,8 +24,8 @@ function AvatarSelector({ texture, setTexture }: AvatarSelectorProps) {
   }
 
   return (
-    <div className="mb-6">
-      <p className="mb-6">캐릭터를 선택해주세요</p>
+    <div className="mb-8">
+      <p className="title mb-6">캐릭터를 선택해주세요</p>
       <div className="flex items-center justify-center gap-10">
         <div className="cursor-pointer" onClick={onTextureLeftArrowClick}>
           〈
