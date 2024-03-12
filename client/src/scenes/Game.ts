@@ -246,9 +246,6 @@ export default class Game extends Phaser.Scene {
 
     if (this.player.selectedInteractionItem) return
 
-    console.log(interactionItem.id)
-    console.log(seatedChair)
-    console.log(seatedChair.includes(interactionItem.id.toString()))
     if (
       interactionItem.id &&
       seatedChair.includes(interactionItem.id.toString())
