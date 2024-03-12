@@ -1,6 +1,8 @@
 import Chair from '../items/Chair'
 import {
+  앉았다일어나기,
   sendAvatarPosition,
+  sendChairId,
   sendPlayerInfo,
   sendPlayerInfoToNewPlayer,
 } from '../lib/ws'
@@ -23,6 +25,7 @@ import {
 } from '../store/features/surveyModalSlice'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
+import { getCookie } from '../utils/cookie'
 import Avatar from './Avatar'
 
 export default class Player extends Avatar {
@@ -74,6 +77,7 @@ export default class Player extends Avatar {
     keyEscape: Phaser.Input.Keyboard.Key,
     roomNum: string,
   ) {
+    const cookie = getCookie('interverse_admin') || getCookie('interverse_user')
     const moveSpeed = 200
     let vx = 0
     let vy = 0
@@ -137,6 +141,12 @@ export default class Player extends Avatar {
               chair.clearInteractionBox()
               this.behavior = 'sit'
 
+              // 소켓에 의자의 넘버를 보냄
+              sendChairId({
+                roomNum: cookie.roomNum,
+                chairId: chair.id?.toString() || '',
+              })
+
               sendAvatarPosition({
                 x: this.x,
                 y: this.y,
@@ -183,6 +193,16 @@ export default class Player extends Avatar {
       case 'sit':
         // 의자에서 일어나기
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
+          const chair = this.selectedInteractionItem as Chair
+          if (!this.selectedInteractionItem) return
+          switch (this.selectedInteractionItem.itemType) {
+            case 'chair':
+              앉았다일어나기({
+                roomNum: cookie.roomNum,
+                chairId: chair.id?.toString() || '',
+              })
+              break
+          }
           switch (this.isFrontOfCeoDesk) {
             case true:
               store.dispatch(closeCreatorModal())

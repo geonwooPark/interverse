@@ -26,12 +26,42 @@ interface IUser {
   nickName: string
 }
 
+export const seated: Record<string, string[]> = {}
+
 io.on(
   'connection',
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     // 방 관리
     roomHandler(socket, io)
     videoRoomHandler(socket, io)
+
+    const checkChairId = ({
+      roomNum,
+      chairId,
+    }: {
+      roomNum: string
+      chairId: string
+    }) => {
+      if (!seated[roomNum]) seated[roomNum] = []
+      seated[roomNum].push(chairId)
+      console.log(seated)
+      socket.broadcast.to(roomNum).emit('serverChairId', chairId)
+    }
+
+    const 앉았다일어나기 = ({
+      roomNum,
+      chairId,
+    }: {
+      roomNum: string
+      chairId: string
+    }) => {
+      seated[roomNum] = seated[roomNum].filter((r) => r !== chairId)
+      socket.broadcast.to(roomNum).emit('serverStandUp', chairId)
+      console.log(seated)
+    }
+
+    socket.on('clientChairId', checkChairId)
+    socket.on('clientStandUp', 앉았다일어나기)
 
     // 연결 끊어질 시
     socket.on('disconnecting', () => {

@@ -13,6 +13,8 @@ import Game from '../scenes/Game'
 import { store } from '../store/store'
 import { addMessage } from '../store/features/chatListSlice'
 
+export let seatedChair: string[] = []
+
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   'http://localhost:3000',
 )
@@ -28,6 +30,11 @@ export const joinRoom = ({ roomNum, authCookie }: ClientJoinRoom) => {
   socket.on('leaveRoom', (sockerId) => {
     const game = phaserGame.scene.keys.game as Game
     game.removeOtherPlayer(sockerId)
+  })
+
+  socket.on('serverSeatedList', (seated) => {
+    if (!seated) return
+    seatedChair = [...seated]
   })
 }
 
@@ -129,5 +136,35 @@ export const sendAvatarPosition = ({
   socket.on('serverAvatarPosition', (avatarPosition) => {
     const game = phaserGame.scene.keys.game as Game
     game.updateOtherPlayer(avatarPosition)
+  })
+}
+
+export const sendChairId = ({
+  roomNum,
+  chairId,
+}: {
+  roomNum: string
+  chairId: string
+}) => {
+  socket.emit('clientChairId', { roomNum, chairId })
+}
+
+export const 앉았다일어나기 = ({
+  roomNum,
+  chairId,
+}: {
+  roomNum: string
+  chairId: string
+}) => {
+  socket.emit('clientStandUp', { roomNum, chairId })
+}
+
+export const receiveChairId = () => {
+  socket.on('serverChairId', (chairId: string) => {
+    seatedChair.push(chairId)
+  })
+
+  socket.on('serverStandUp', (chairId: string) => {
+    seatedChair = seatedChair.filter((r) => r !== chairId)
   })
 }

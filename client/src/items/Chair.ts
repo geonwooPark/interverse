@@ -3,6 +3,7 @@ import ObjectItem from './ObjectItem'
 export default class Chair extends ObjectItem {
   heading?: string
   interaction?: string
+  id?: number
   constructor(
     scene: Phaser.Scene,
     x: number,

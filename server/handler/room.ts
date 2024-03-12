@@ -7,6 +7,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../types/socket'
+import { seated } from '..'
 
 export const roomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
@@ -16,6 +17,7 @@ export const roomHandler = (
     if (roomNum === '') return
     // 방에 입장시키기
     socket.join(roomNum)
+    io.to(socket.id).emit('serverSeatedList', seated[roomNum])
   }
 
   const sendMessage = (message: ClientMessage) => {

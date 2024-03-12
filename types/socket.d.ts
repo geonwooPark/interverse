@@ -129,6 +129,9 @@ export interface ServerToClientEvents {
   createVideoRoom: (roomNum: string) => void
   leaveVideoRoom: () => void
   updateVideoRoom: (socketId: string) => void
+  serverChairId: (chairId: string) => void
+  serverSeatedList: (seated: string[]) => void
+  serverStandUp: (chairId: string) => void
 }
 
 export interface ClientToServerEvents {
@@ -163,4 +166,18 @@ export interface ClientToServerEvents {
   }: ClientJoinVideoRoom) => void
   createVideoRoom: (roomNum: string) => void
   leaveVideoRoom: () => void
+  clientChairId: ({
+    roomNum,
+    chairId,
+  }: {
+    roomNum: string
+    chairId: string
+  }) => void
+  clientStandUp: ({
+    roomNum,
+    chairId,
+  }: {
+    roomNum: string
+    chairId: string
+  }) => void
 }

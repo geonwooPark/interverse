@@ -5,7 +5,7 @@ import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
-import { joinRoom } from '../lib/ws'
+import { joinRoom, receiveChairId, seatedChair } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
 import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
 
@@ -19,6 +19,7 @@ export default class Game extends Phaser.Scene {
   player!: Player
   roomNum!: string
   isCreate = false
+  seatArray = []
 
   constructor() {
     // Scene Key
@@ -99,6 +100,7 @@ export default class Game extends Phaser.Scene {
       )
       obj.heading = 'down'
       obj.interaction = object.properties[0].value
+      obj.id = object.id
       return obj
     })
 
@@ -192,6 +194,7 @@ export default class Game extends Phaser.Scene {
       )
       obj.heading = 'up'
       obj.interaction = object.properties[0].value
+      obj.id = object.id
       obj.setDepth(2000)
       return obj
     })
@@ -243,6 +246,14 @@ export default class Game extends Phaser.Scene {
 
     if (this.player.selectedInteractionItem) return
 
+    console.log(interactionItem.id)
+    console.log(seatedChair)
+    console.log(seatedChair.includes(interactionItem.id.toString()))
+    if (
+      interactionItem.id &&
+      seatedChair.includes(interactionItem.id.toString())
+    )
+      return
     player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
   }
@@ -258,6 +269,8 @@ export default class Game extends Phaser.Scene {
     this.roomNum = roomNum
 
     this.setUpKeys()
+
+    receiveChairId()
   }
 
   /** 다른 플레이어 입장 */
