@@ -1,8 +1,8 @@
-import React from 'react'
-
 function ManualCard() {
   return (
-    <div className="flex h-[360px] w-[260px] flex-col items-center justify-between rounded-md bg-white p-6"></div>
+    <div className="mx-auto flex w-[80%] max-w-[1200px] items-center justify-between ">
+      <img src="/images/manual.png" />
+    </div>
   )
 }
 

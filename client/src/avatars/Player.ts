@@ -141,7 +141,7 @@ export default class Player extends Avatar {
               })
 
               if (chair.interaction === 'menual') {
-                store.dispatch(openManualModal())
+                store.dispatch(openCreatorModal())
                 store.dispatch(
                   changeAlertContent(
                     'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
@@ -165,7 +165,8 @@ export default class Player extends Avatar {
               store.dispatch(openAlert())
               break
             case 'secretary':
-              store.dispatch(openCreatorModal())
+              store.dispatch(openManualModal())
+              store.dispatch(closeAlert())
           }
         }
 
@@ -175,7 +176,7 @@ export default class Player extends Avatar {
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
           switch (this.isFrontOfCeoDesk) {
             case true:
-              store.dispatch(closeManualModal())
+              store.dispatch(closeCreatorModal())
               break
           }
           switch (this.isFrontOfInterviewDesk) {
@@ -199,7 +200,7 @@ export default class Player extends Avatar {
     ) {
       switch (this.selectedInteractionItem.itemType) {
         case 'secretary':
-          store.dispatch(closeCreatorModal())
+          store.dispatch(closeManualModal())
           break
       }
       switch (this.isFrontOfCeoDesk) {

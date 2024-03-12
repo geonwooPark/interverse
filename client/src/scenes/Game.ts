@@ -17,7 +17,6 @@ export default class Game extends Phaser.Scene {
   keySpace?: Phaser.Input.Keyboard.Key
   keyEscape?: Phaser.Input.Keyboard.Key
   player!: Player
-  // socketIO!: SocketIO
   roomNum!: string
   isCreate = false
   test: any
@@ -25,7 +24,6 @@ export default class Game extends Phaser.Scene {
   constructor() {
     // Scene Key
     super('game')
-    // this.socketIO = new SocketIO()
   }
 
   setUpKeys() {

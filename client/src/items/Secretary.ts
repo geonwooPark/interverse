@@ -14,6 +14,6 @@ export default class Secretary extends ObjectItem {
   }
 
   onInteractionBox() {
-    this.setInteractionBox('스페이스키를 눌러 제작자를 확인하세요!')
+    this.setInteractionBox('스페이스키를 눌러 안내서를 확인하세요!')
   }
 }
