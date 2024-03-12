@@ -4,10 +4,11 @@ import { ModalDisplaySlice } from './features/modalDisplaySlice'
 import { ModalContentSlice } from './features/modalContentSlice'
 import { AlertSlice } from './features/alertSlice'
 import { ChatListSlice } from './features/chatListSlice'
-import { CreatorModalDisplaySlice } from './features/creatorModalDisplaySlice'
-import { ManualModalDisplaySlice } from './features/manualModalDisplaySlice'
+import { CreatorModalSlice } from './features/creatorModalSlice'
+import { ManualModalSlice } from './features/manualModalSlice'
 import { VideoModalSlice } from './features/videoModalSlice'
 import { ScreenStreamerSlice } from './features/screenStreamerSlice'
+import { SurveyModalSlice } from './features/surveyModalSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,8 +16,9 @@ export const store = configureStore({
     modalContent: ModalContentSlice.reducer,
     alert: AlertSlice.reducer,
     chatList: ChatListSlice.reducer,
-    creatorModalDisplay: CreatorModalDisplaySlice.reducer,
-    manualModalDisplay: ManualModalDisplaySlice.reducer,
+    creatorModal: CreatorModalSlice.reducer,
+    manualModal: ManualModalSlice.reducer,
+    surveyModal: SurveyModalSlice.reducer,
     videoModal: VideoModalSlice.reducer,
     screenStreamer: ScreenStreamerSlice.reducer,
   },
