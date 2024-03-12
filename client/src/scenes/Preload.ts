@@ -45,6 +45,14 @@ export default class Preload extends Phaser.Scene {
       },
     )
     this.load.spritesheet(
+      'screenBoard',
+      'http://localhost:5173/assets/builder/screenBoard.png',
+      {
+        frameWidth: 64,
+        frameHeight: 48,
+      },
+    )
+    this.load.spritesheet(
       'conference',
       'http://localhost:5173/assets/character/conference.png',
       {

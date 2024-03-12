@@ -5,6 +5,7 @@ import Chair from '../items/Chair'
 import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
+import ScreenBoard from '../items/ScreenBoard'
 import { joinRoom, receiveChairId, seatedChair } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
 import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
@@ -134,6 +135,7 @@ export default class Game extends Phaser.Scene {
         'office',
         object.gid! - firstgid!,
       )
+      console.log(obj)
       return obj as Printer
     })
 
@@ -178,6 +180,24 @@ export default class Game extends Phaser.Scene {
     ])
     interiorLayer?.setDepth(2000)
 
+    // ScreenBoard Layer
+    const screenBoard = this.physics.add.staticGroup({ classType: ScreenBoard })
+    const screenBoardLayer = this.map.getObjectLayer('ScreenBoard')
+    screenBoardLayer?.objects.forEach((object) => {
+      const firstgid = this.map.getTileset('screenBoard')?.firstgid
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+      const obj = screenBoard.get(
+        actualX,
+        actualY,
+        'screenBoard',
+        object.gid! - firstgid!,
+      )
+      console.log(obj)
+      // obj.setDepth(2000)
+      return obj as ScreenBoard
+    })
+
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup({ classType: Chair })
     const chairToUpLayer = this.map.getObjectLayer('ChairToUp')
@@ -218,7 +238,7 @@ export default class Game extends Phaser.Scene {
     // 플레이어와 오브젝트 겹침 감지
     this.physics.add.overlap(
       this.player,
-      [secretary, chairToDown, chairToUp, waterPurifier, printer],
+      [secretary, chairToDown, chairToUp, waterPurifier, printer, screenBoard],
       this.handlePlayerOverlap,
       undefined,
       this,
@@ -231,6 +251,7 @@ export default class Game extends Phaser.Scene {
   }
   /** 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수 */
   private handlePlayerOverlap(player: any, interactionItem: any) {
+    console.log('overlap')
     if (
       this.player.behavior === 'sit' &&
       interactionItem.interaction === 'menual'
