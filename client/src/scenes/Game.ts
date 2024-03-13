@@ -73,7 +73,7 @@ export default class Game extends Phaser.Scene {
     // ChairToDown Layer
     const chairToDown = this.physics.add.staticGroup({ classType: Chair })
     const chairToDownLayer = this.map.getObjectLayer('ChairToDown')
-    this.createObjectLayer(chairToDown, chairToDownLayer, 900)
+    this.createObjectLayer(chairToDown, chairToDownLayer, 700)
 
     // Secretary Layer
     const secretary = this.physics.add.staticGroup({ classType: Secretary })
@@ -156,7 +156,7 @@ export default class Game extends Phaser.Scene {
       this.player,
       [overlap],
       (player: any, overlapItem: any) => {
-        this.player.setDepth(0)
+        this.player.setDepth(800)
         this.player.setOffset(0, 50)
       },
       undefined,
@@ -172,18 +172,6 @@ export default class Game extends Phaser.Scene {
   /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */
   private handlePlayerCollider(player: any, interactionItem: any) {
     if (this.player.selectedInteractionItem) return
-
-    if (
-      this.player.behavior === 'sit' &&
-      interactionItem.interaction === 'menual'
-    ) {
-      player.isFrontOfCeoDesk = true
-    } else if (
-      this.player.behavior === 'sit' &&
-      interactionItem.interaction === 'interview'
-    ) {
-      player.isFrontOfInterviewDesk = true
-    }
 
     if (
       interactionItem.id &&
