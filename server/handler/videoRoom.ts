@@ -33,18 +33,18 @@ export const videoRoomHandler = (
     socket.broadcast
       .to(`${roomNum}_video`)
       .emit('serverJoinVideoRoom', { peerId, socketId: socket.id, nickName })
+
+    socket.on('disconnect', () => {
+      console.log('비디오룸에서 나감')
+      leaveVideoRoom(roomNum)
+    })
   }
 
-  const leaveVideoRoom = () => {
-    const rooms = Array.from(socket.rooms)
-    if (rooms.length === 3) {
-      io.to(socket.id).emit('serverLeaveVideoRoom')
-      socket.broadcast
-        .to(rooms[1])
-        .emit('serverUpdateVideoRoomMember', socket.id)
+  const leaveVideoRoom = (roomNum: string) => {
+    io.to(socket.id).emit('serverLeaveVideoRoom')
+    socket.broadcast.to(roomNum).emit('serverUpdateVideoRoomMember', socket.id)
 
-      delete videoRoom[rooms[1]][socket.id]
-    }
+    delete videoRoom[roomNum][socket.id]
   }
 
   socket.on('clientCreateVideoRoom', createVideoRoom)
