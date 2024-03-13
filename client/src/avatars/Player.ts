@@ -29,7 +29,10 @@ import Avatar from './Avatar'
 
 export default class Player extends Avatar {
   isCollide = false
-
+  prevVx = 0
+  prevVy = 0
+  preX = 0
+  preY = 0
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -79,8 +82,6 @@ export default class Player extends Avatar {
     const moveSpeed = 200
     let vx = 0
     let vy = 0
-    let prevVx = 0
-    let prevVy = 0
 
     switch (this.behavior) {
       case 'stand':
@@ -116,10 +117,13 @@ export default class Player extends Avatar {
         this.avatarContainer.setPosition(this.x, this.y - 35)
 
         // 충돌 상태 해지
-        if (vx !== prevVx || vy !== prevVy) {
+        if (
+          (vx !== this.prevVx || vy !== this.prevVy) &&
+          !(vx === 0 && vy === 0)
+        ) {
           this.isCollide = false
-          prevVx = vx
-          prevVy = vy
+          this.prevVx = vx
+          this.prevVy = vy
         }
 
         sendAvatarPosition({
@@ -136,6 +140,8 @@ export default class Player extends Avatar {
 
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
+              this.preX = this.x
+              this.preY = this.y
               this.setVelocity(0, 0)
               this.setPosition(chair.x, chair.y + 5)
               this.avatarContainer.setPosition(this.x, this.y - 35)
@@ -215,13 +221,7 @@ export default class Player extends Avatar {
             store.dispatch(showVideoModal(false))
           }
 
-          if (chair.heading === 'up') {
-            this.setPosition(chair.x, chair.y + 10)
-          }
-          if (chair.heading === 'down' && chair.interaction === 'interview') {
-            this.setPosition(chair.x, chair.y - 10)
-          }
-
+          this.setPosition(this.preX, this.preY)
           const animParts = this.anims.currentAnim!.key.split('_')
           animParts[1] = 'stand'
           this.anims.play(animParts.join('_'), true)
