@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install",
-    "format": "prettier --cache --write .",
-    "lint": "eslint --cache ."
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
