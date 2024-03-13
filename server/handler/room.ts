@@ -7,7 +7,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../types/socket'
-import { seated } from '..'
+import { occupiedChairs } from '..'
 
 export const roomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
@@ -17,7 +17,13 @@ export const roomHandler = (
     if (roomNum === '') return
     // 방에 입장시키기
     socket.join(roomNum)
-    io.to(socket.id).emit('serverSeatedList', seated[roomNum])
+    // 누군가 앉아있는 의자들 목록 알려주기
+    if (occupiedChairs[roomNum]) {
+      io.to(socket.id).emit(
+        'serverOccupiedChairs',
+        Array.from(occupiedChairs[roomNum]?.values()),
+      )
+    }
   }
 
   const sendMessage = (message: ClientMessage) => {
@@ -56,9 +62,22 @@ export const roomHandler = (
     })
   }
 
-  socket.on('joinRoom', joinRoom)
+  const leaveRoom = () => {
+    const rooms = Array.from(socket.rooms)
+    if (rooms.length === 3) {
+      io.to(rooms[1]).emit('serverLeaveRoom', socket.id)
+      io.to(rooms[1]).emit(
+        'serverChairId',
+        occupiedChairs[rooms[1]].get(socket.id) as any,
+      )
+      occupiedChairs[rooms[1]].delete(socket.id)
+    }
+  }
+
+  socket.on('clientJoinRoom', joinRoom)
   socket.on('clientMsg', sendMessage)
   socket.on('clientPlayerInfo', sendPlayerInfo)
   socket.on('clientAvatarPosition', sendAvatarPosition)
   socket.on('clientOtherAvatarPosition', sendOtherAvatarPosition)
+  socket.on('clientLeaveRoom', leaveRoom)
 }
