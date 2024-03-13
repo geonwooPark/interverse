@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+*:before,
+*:after {
+  @apply cursor-default;
+}
+
+button,
+a,
+a > span,
+svg,
+svg > path {
+  @apply cursor-pointer;
+}
+
 @font-face {
   font-family: 'neodgm';
   src: url('./fonts/neodgm.woff2');

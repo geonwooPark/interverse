@@ -15,6 +15,10 @@ module.exports = {
       animation: {
         myRoomBg: 'myRoomBgKeyframes 5s linear infinite',
       },
+      cursor: {
+        default: 'url(/assets/cursor/Point.png), default',
+        pointer: 'url(/assets/cursor/hand.png), pointer',
+      },
     },
   },
   plugins: [],
