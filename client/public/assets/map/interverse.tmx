@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="32" nextobjectid="773">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="34" nextobjectid="796">
  <editorsettings>
   <export target="interverse.json" format="json"/>
  </editorsettings>
@@ -482,23 +482,32 @@
  <tileset firstgid="4249" name="chair" tilewidth="32" tileheight="64" tilecount="6" columns="6">
   <image source="chair.png" width="192" height="64"/>
  </tileset>
- <tileset firstgid="4255" name="screenboard" tilewidth="60" tileheight="46" tilecount="1" columns="1">
-  <image source="screenboard.png" width="60" height="46"/>
- </tileset>
- <tileset firstgid="4256" name="printer" tilewidth="52" tileheight="54" tilecount="1" columns="1">
+ <tileset firstgid="4255" name="printer" tilewidth="52" tileheight="54" tilecount="1" columns="1">
   <image source="printer.png" width="52" height="54"/>
  </tileset>
- <tileset firstgid="4257" name="secretary" tilewidth="116" tileheight="74" tilecount="1" columns="1">
+ <tileset firstgid="4256" name="secretary" tilewidth="116" tileheight="74" tilecount="1" columns="1">
   <image source="secretary.png" width="116" height="74"/>
  </tileset>
- <tileset firstgid="4258" name="waterPurifier" tilewidth="26" tileheight="60" tilecount="1" columns="1">
+ <tileset firstgid="4257" name="waterPurifier" tilewidth="26" tileheight="60" tilecount="1" columns="1">
   <image source="waterPurifier.png" width="26" height="60"/>
  </tileset>
- <tileset firstgid="4259" name="bookcase" tilewidth="64" tileheight="66" tilecount="4" columns="4">
-  <image source="bookcase.png" width="256" height="66"/>
+ <tileset firstgid="4258" name="bookcase_top" tilewidth="64" tileheight="46" tilecount="4" columns="4">
+  <image source="bookcase_top.png" width="256" height="46"/>
  </tileset>
- <tileset firstgid="4263" name="flowerpot" tilewidth="44" tileheight="60" tilecount="5" columns="5">
-  <image source="flowerpot.png" width="220" height="60"/>
+ <tileset firstgid="4262" name="bookcase_bottom" tilewidth="64" tileheight="20" tilecount="4" columns="4">
+  <image source="bookcase_bottom.png" width="256" height="20"/>
+ </tileset>
+ <tileset firstgid="4266" name="flowerpot_top" tilewidth="44" tileheight="40" tilecount="5" columns="5">
+  <image source="flowerpot_top.png" width="220" height="40"/>
+ </tileset>
+ <tileset firstgid="4271" name="flowerpot_bottom" tilewidth="44" tileheight="20" tilecount="5" columns="5">
+  <image source="flowerpot_bottom.png" width="220" height="20"/>
+ </tileset>
+ <tileset firstgid="4276" name="screenboard_top" tilewidth="60" tileheight="26" tilecount="1" columns="1">
+  <image source="screenboard_top.png" width="60" height="26"/>
+ </tileset>
+ <tileset firstgid="4277" name="screenboard_bottom" tilewidth="60" tileheight="20" tilecount="1" columns="1">
+  <image source="screenboard_bottom.png" width="60" height="20"/>
  </tileset>
  <layer id="1" name="Ground" width="25" height="20">
   <data encoding="csv">
@@ -527,432 +536,474 @@
  <objectgroup id="7" name="ChairToDown">
   <object id="414" gid="4251" x="704" y="128" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="waiting"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="415" gid="4250" x="672" y="128" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="waiting"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="416" gid="4249" x="640" y="128" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="waiting"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="417" gid="4251" x="608" y="128" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="waiting"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="418" gid="4250" x="576" y="128" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="waiting"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="419" gid="4249" x="544" y="128" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="waiting"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="420" gid="4252" x="578" y="416" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="interview"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="421" gid="4252" x="514" y="416" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="interview"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="422" gid="4252" x="450" y="416" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="down"/>
     <property name="interaction" value="interview"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="11" name="Secretary">
-  <object id="659" gid="4257" x="56" y="130" width="116" height="74">
+  <object id="659" gid="4256" x="56" y="130" width="116" height="74">
    <properties>
-    <property name="type" value="secretary"/>
+    <property name="asset" value="secretary"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="17" name="Printer">
-  <object id="656" gid="4256" x="231" y="110" width="52" height="54">
+  <object id="656" gid="4255" x="231" y="110" width="52" height="54">
    <properties>
-    <property name="type" value="printer"/>
+    <property name="asset" value="printer"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="16" name="WaterPurifier">
-  <object id="664" gid="4258" x="451" y="109" width="26" height="60">
+  <object id="664" gid="4257" x="451" y="109" width="26" height="60">
    <properties>
-    <property name="type" value="waterPurifier"/>
+    <property name="asset" value="waterPurifier"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="6" name="ChairToUp">
   <object id="423" gid="4253" x="450" y="509" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="up"/>
     <property name="interaction" value="interview"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="424" gid="4253" x="514" y="509" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="up"/>
     <property name="interaction" value="interview"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="425" gid="4253" x="578" y="509" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="up"/>
     <property name="interaction" value="interview"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
   <object id="733" gid="4253" x="127" y="543" width="32" height="64">
    <properties>
+    <property name="asset" value="chair"/>
     <property name="heading" value="up"/>
     <property name="interaction" value="menual"/>
-    <property name="type" value="chair"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="30" name="Overlap">
   <object id="700" gid="12" x="64" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="701" gid="13" x="96" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="702" gid="13" x="128" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="703" gid="13" x="160" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="704" gid="14" x="192" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="725" gid="68" x="608" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="726" gid="67" x="576" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="727" gid="67" x="544" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="728" gid="67" x="480" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="729" gid="67" x="512" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="730" gid="67" x="448" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="731" gid="66" x="416" y="416" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="752" gid="3877" x="32" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="753" gid="3878" x="64" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="754" gid="3876" x="160" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="755" gid="3877" x="192" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="756" gid="3877" x="224" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="757" gid="3877" x="256" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="758" gid="3877" x="288" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="759" gid="3061" x="352" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="760" gid="3062" x="384" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="761" gid="3060" x="480" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="762" gid="3061" x="512" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="763" gid="3061" x="544" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="764" gid="3061" x="576" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="765" gid="3061" x="608" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="766" gid="3061" x="640" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="767" gid="3061" x="672" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="768" gid="3061" x="704" y="256" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
   <object id="769" gid="956" x="320" y="192" width="32" height="32">
    <properties>
-    <property name="type" value="floorAndWall"/>
+    <property name="asset" value="floorAndWall"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="24" name="ScreenBoard">
-  <object id="651" gid="4255" x="512.5" y="289.5" width="60" height="46">
+  <object id="795" gid="4277" x="533.5" y="288.5" width="60" height="20">
    <properties>
-    <property name="type" value="screenBoard"/>
+    <property name="asset" value="screenboard_bottom"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="29" name="InteriorCollide">
   <object id="690" gid="28" x="64" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="691" gid="44" x="64" y="512" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="692" gid="29" x="96" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="693" gid="29" x="128" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="694" gid="29" x="160" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="695" gid="30" x="192" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="696" gid="45" x="96" y="512" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="697" gid="45" x="160" y="512" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="698" gid="45" x="128" y="512" width="31" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="699" gid="46" x="192" y="512" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="705" gid="82" x="416" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="706" gid="98" x="416" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="707" gid="83" x="448" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="708" gid="83" x="512" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="709" gid="83" x="480" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="710" gid="83" x="544" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="711" gid="83" x="576" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="712" gid="84" x="608" y="448" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="713" gid="99" x="448" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="714" gid="99" x="480" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="715" gid="99" x="512" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="716" gid="99" x="544" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="717" gid="99" x="576" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
   <object id="718" gid="100" x="608" y="480" width="32" height="32">
    <properties>
-    <property name="type" value="office"/>
+    <property name="asset" value="office"/>
    </properties>
   </object>
-  <object id="744" gid="4263" x="698" y="301" width="44" height="60">
+  <object id="774" gid="4264" x="638" y="308" width="64" height="20">
    <properties>
-    <property name="type" value="flowerpot"/>
+    <property name="asset" value="bookcase_bottom"/>
    </properties>
   </object>
-  <object id="745" gid="4264" x="474" y="110" width="44" height="60">
+  <object id="779" gid="4264" x="192" y="305.5" width="64" height="20">
    <properties>
-    <property name="type" value="flowerpot"/>
+    <property name="asset" value="bookcase_bottom"/>
    </properties>
   </object>
-  <object id="746" gid="4261" x="638" y="302" width="64" height="66">
+  <object id="780" gid="4265" x="256" y="305.5" width="65.0909" height="20">
    <properties>
-    <property name="type" value="bookcase"/>
+    <property name="asset" value="bookcase_bottom"/>
    </properties>
   </object>
-  <object id="747" gid="4262" x="257" y="306" width="64" height="66">
+  <object id="789" gid="4272" x="701.25" y="308" width="44" height="20">
    <properties>
-    <property name="type" value="bookcase"/>
+    <property name="asset" value="flowerpot_bottom"/>
    </properties>
   </object>
-  <object id="748" gid="4261" x="192" y="306" width="64" height="66">
+  <object id="791" gid="4271" x="473.455" y="108.909" width="44" height="20">
    <properties>
-    <property name="type" value="bookcase"/>
+    <property name="asset" value="flowerpot_bottom"/>
    </properties>
   </object>
-  <object id="749" gid="4267" x="281" y="109" width="44" height="60">
+  <object id="792" gid="4273" x="280.727" y="110.182" width="44" height="20">
    <properties>
-    <property name="type" value="flowerpot"/>
+    <property name="asset" value="flowerpot_bottom"/>
    </properties>
   </object>
-  <object id="751" gid="4266" x="33" y="303" width="44" height="60">
+  <object id="793" gid="4274" x="36.25" y="305" width="44" height="20">
    <properties>
-    <property name="type" value="flowerpot"/>
+    <property name="asset" value="flowerpot_bottom"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="33" name="Interior">
+  <object id="773" gid="4260" x="638" y="288" width="64" height="46">
+   <properties>
+    <property name="asset" value="bookcase_top"/>
+   </properties>
+  </object>
+  <object id="776" gid="4261" x="256" y="285.667" width="64" height="46">
+   <properties>
+    <property name="asset" value="bookcase_top"/>
+   </properties>
+  </object>
+  <object id="777" gid="4260" x="192" y="285.667" width="64" height="46">
+   <properties>
+    <property name="asset" value="bookcase_top"/>
+   </properties>
+  </object>
+  <object id="782" gid="4266" x="699.25" y="287.625" width="44" height="40">
+   <properties>
+    <property name="asset" value="flowerpot_top"/>
+   </properties>
+  </object>
+  <object id="783" gid="4267" x="474.636" y="89" width="44" height="40">
+   <properties>
+    <property name="asset" value="flowerpot_top"/>
+   </properties>
+  </object>
+  <object id="785" gid="4270" x="280.364" y="90.5455" width="44" height="40">
+   <properties>
+    <property name="asset" value="flowerpot_top"/>
+   </properties>
+  </object>
+  <object id="786" gid="4269" x="36.5" y="285" width="44" height="40">
+   <properties>
+    <property name="asset" value="flowerpot_top"/>
+   </properties>
+  </object>
+  <object id="794" gid="4276" x="533.5" y="269" width="60" height="26">
+   <properties>
+    <property name="asset" value="screenboard_top"/>
    </properties>
   </object>
  </objectgroup>

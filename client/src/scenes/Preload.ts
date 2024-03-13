@@ -61,27 +61,51 @@ export default class Preload extends Phaser.Scene {
       },
     )
     this.load.spritesheet(
-      'screenBoard',
-      'http://localhost:5173/assets/builder/screenboard.png',
+      'screenboard_top',
+      'http://localhost:5173/assets/builder/screenboard_top.png',
       {
         frameWidth: 60,
+        frameHeight: 26,
+      },
+    )
+    this.load.spritesheet(
+      'screenboard_bottom',
+      'http://localhost:5173/assets/builder/screenboard_bottom.png',
+      {
+        frameWidth: 60,
+        frameHeight: 20,
+      },
+    )
+    this.load.spritesheet(
+      'bookcase_top',
+      'http://localhost:5173/assets/builder/bookcase_top.png',
+      {
+        frameWidth: 64,
         frameHeight: 46,
       },
     )
     this.load.spritesheet(
-      'bookcase',
-      'http://localhost:5173/assets/builder/bookcase.png',
+      'bookcase_bottom',
+      'http://localhost:5173/assets/builder/bookcase_bottom.png',
       {
         frameWidth: 64,
-        frameHeight: 66,
+        frameHeight: 20,
       },
     )
     this.load.spritesheet(
-      'flowerpot',
-      'http://localhost:5173/assets/builder/flowerpot.png',
+      'flowerpot_top',
+      'http://localhost:5173/assets/builder/flowerpot_top.png',
       {
         frameWidth: 44,
-        frameHeight: 60,
+        frameHeight: 40,
+      },
+    )
+    this.load.spritesheet(
+      'flowerpot_bottom',
+      'http://localhost:5173/assets/builder/flowerpot_bottom.png',
+      {
+        frameWidth: 44,
+        frameHeight: 20,
       },
     )
     this.load.spritesheet(

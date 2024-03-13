@@ -120,14 +120,19 @@ export default class Game extends Phaser.Scene {
     const screenBoardLayer = this.map.getObjectLayer('ScreenBoard')
     this.createObjectLayer(screenBoard, screenBoardLayer, 900)
 
+    // Interior Layer
+    const interior = this.physics.add.staticGroup()
+    const interiorLayer = this.map.getObjectLayer('Interior')
+    this.createObjectLayer(interior, interiorLayer, 900)
+
     // InteriorCollide Layer
     const interiorCollide = this.physics.add.staticGroup()
     const interiorCollideLayer = this.map.getObjectLayer('InteriorCollide')
     this.createObjectLayer(interiorCollide, interiorCollideLayer, 900)
 
     // Etc Layer
-    const interiorLayer = this.map.createLayer('Etc', [Office!])
-    interiorLayer?.setDepth(1000)
+    const etcLayer = this.map.createLayer('Etc', [Office!])
+    etcLayer?.setDepth(1000)
 
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
@@ -151,7 +156,8 @@ export default class Game extends Phaser.Scene {
       this.player,
       [overlap],
       (player: any, overlapItem: any) => {
-        this.player.setDepth(500)
+        this.player.setDepth(0)
+        this.player.setOffset(0, 50)
       },
       undefined,
       this,
@@ -165,8 +171,6 @@ export default class Game extends Phaser.Scene {
 
   /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */
   private handlePlayerCollider(player: any, interactionItem: any) {
-    console.log('충돌!!')
-
     if (this.player.selectedInteractionItem) return
 
     if (
@@ -189,9 +193,6 @@ export default class Game extends Phaser.Scene {
     player.isCollide = true
     player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
-
-    console.log(player.isCollide)
-    console.log('끝')
   }
 
   /** 레이어 생성하기 위한 함수로 Group, Layer, Depth를 인수로 받음 */
@@ -202,9 +203,7 @@ export default class Game extends Phaser.Scene {
   ) {
     layer?.objects.forEach((object) => {
       // Tiled Map에서 Object properties에 꼭 type = '사용에셋' 추가하세요..
-      const properties =
-        (object.properties[2] && object.properties[2].value) ||
-        object.properties[0].value
+      const properties = object.properties[0].value
       const actualX = object.x! + object.width! * 0.5
       const actualY = object.y! - object.height! * 0.5
 
@@ -216,6 +215,13 @@ export default class Game extends Phaser.Scene {
         object.gid! - firstgid!,
       )
 
+      if (object.properties[0].value === 'chair') {
+        obj.heading = object.properties[1].value
+        obj.interaction = object.properties[2].value
+        console.log(obj)
+      }
+
+      obj.id = object.id
       obj.setDepth(depth)
       return obj
     })
@@ -304,6 +310,7 @@ export default class Game extends Phaser.Scene {
     }
     if (!this.physics.overlap(this.player, this.overlap)) {
       this.player.setDepth(1000)
+      this.player.setOffset(0, 20)
     }
   }
 }
