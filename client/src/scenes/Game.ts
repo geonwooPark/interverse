@@ -46,7 +46,7 @@ export default class Game extends Phaser.Scene {
     }
   }
 
-  enalbeKeys() {
+  enableKeys() {
     if (!this.input.keyboard) return
     this.input.keyboard.enabled = true
   }

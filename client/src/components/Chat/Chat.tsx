@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
 import ChatList from './ChatList'
@@ -7,13 +7,14 @@ import { CookieType } from '../../types/client'
 
 interface ChatProps {
   authCookie: CookieType | null
+  inputRef: React.RefObject<HTMLInputElement>
 }
 
-function Chat({ authCookie }: ChatProps) {
+function Chat({ authCookie, inputRef }: ChatProps) {
   const game = phaserGame.scene.keys.game as Game
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [inputValue, setInputValue] = useState('')
   const chatList = useAppSelector((state) => state.chatList)
+
+  const [inputValue, setInputValue] = useState('')
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -27,30 +28,18 @@ function Chat({ authCookie }: ChatProps) {
     if (!authCookie) return
     if (!inputValue) {
       inputRef.current?.blur()
-      game.enalbeKeys()
+      game.enableKeys()
     } else {
       game.player.updateChat(inputValue, authCookie.roomNum)
       inputRef.current?.blur()
-      game.enalbeKeys()
+      game.enableKeys()
       setInputValue('')
     }
   }
 
   useEffect(() => {
-    if (!game) return
-    phaserGame.scene.getScene('game').events.on('onFocusChat', () => {
-      inputRef.current?.focus()
-      event?.preventDefault()
-      game.disableKeys()
-    })
-    return () => {
-      phaserGame.scene.getScene('game').events.off('onFocusChat', () => {
-        inputRef.current?.focus()
-        event?.preventDefault()
-        game.disableKeys()
-      })
-    }
-  }, [inputRef, game])
+    inputRef.current?.focus()
+  }, [])
 
   return (
     <div className="flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-white/30 text-sm shadow-md">
