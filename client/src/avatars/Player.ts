@@ -28,6 +28,7 @@ import { store } from '../store/store'
 import Avatar from './Avatar'
 
 export default class Player extends Avatar {
+  isCollide = false
   isFrontOfCeoDesk = false
   isFrontOfInterviewDesk = false
   constructor(
@@ -79,6 +80,8 @@ export default class Player extends Avatar {
     const moveSpeed = 200
     let vx = 0
     let vy = 0
+    let prevVx = 0
+    let prevVy = 0
 
     switch (this.behavior) {
       case 'stand':
@@ -112,6 +115,12 @@ export default class Player extends Avatar {
         // 플레이어 이동
         this.setVelocity(vx, vy)
         this.avatarContainer.setPosition(this.x, this.y - 35)
+
+        if (vx !== prevVx || vy !== prevVy) {
+          this.isCollide = false
+          prevVx = vx
+          prevVy = vy
+        }
 
         sendAvatarPosition({
           x: this.x,
@@ -220,11 +229,13 @@ export default class Player extends Avatar {
         }
         break
     }
-    // 플레이어와 오브젝트 겹침이 끝날 시
+
     if (
       this.selectedInteractionItem &&
-      !this.scene.physics.overlap(this, this.selectedInteractionItem)
+      !this.isCollide
+      // !this.scene.physics.overlap(this, this.selectedInteractionItem)
     ) {
+      // 플레이어와 오브젝트 겹침이 끝날 시
       switch (this.selectedInteractionItem.itemType) {
         case 'secretary':
           store.dispatch(closeManualModal())

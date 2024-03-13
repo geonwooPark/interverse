@@ -22,7 +22,6 @@ export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
     frame?: string | number,
   ) {
     super(scene, x, y, texture, frame)
-    // 텍스트를 담을 박스입니다.
   }
 
   setInteractionBox(content: string) {

@@ -29,14 +29,6 @@ export default class Preload extends Phaser.Scene {
       },
     )
     this.load.spritesheet(
-      'classroom',
-      'http://localhost:5173/assets/builder/classroom.png',
-      {
-        frameWidth: 32,
-        frameHeight: 32,
-      },
-    )
-    this.load.spritesheet(
       'chair',
       'http://localhost:5173/assets/builder/chair.png',
       {
@@ -45,11 +37,51 @@ export default class Preload extends Phaser.Scene {
       },
     )
     this.load.spritesheet(
+      'waterPurifier',
+      'http://localhost:5173/assets/builder/waterPurifier.png',
+      {
+        frameWidth: 28,
+        frameHeight: 60,
+      },
+    )
+    this.load.spritesheet(
+      'printer',
+      'http://localhost:5173/assets/builder/printer.png',
+      {
+        frameWidth: 52,
+        frameHeight: 54,
+      },
+    )
+    this.load.spritesheet(
+      'secretary',
+      'http://localhost:5173/assets/builder/secretary.png',
+      {
+        frameWidth: 116,
+        frameHeight: 74,
+      },
+    )
+    this.load.spritesheet(
       'screenBoard',
-      'http://localhost:5173/assets/builder/screenBoard.png',
+      'http://localhost:5173/assets/builder/screenboard.png',
+      {
+        frameWidth: 60,
+        frameHeight: 46,
+      },
+    )
+    this.load.spritesheet(
+      'bookcase',
+      'http://localhost:5173/assets/builder/bookcase.png',
       {
         frameWidth: 64,
-        frameHeight: 48,
+        frameHeight: 66,
+      },
+    )
+    this.load.spritesheet(
+      'flowerpot',
+      'http://localhost:5173/assets/builder/flowerpot.png',
+      {
+        frameWidth: 44,
+        frameHeight: 60,
       },
     )
     this.load.spritesheet(

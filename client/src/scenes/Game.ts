@@ -17,9 +17,11 @@ export default class Game extends Phaser.Scene {
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
   keyEscape?: Phaser.Input.Keyboard.Key
+  overlap?: Phaser.Physics.Arcade.StaticGroup
   player!: Player
   roomNum!: string
   isCreate = false
+  isColliding = false
 
   constructor() {
     // Scene Key
@@ -64,103 +66,36 @@ export default class Game extends Phaser.Scene {
       'floorAndWall',
     )
     const Office = this.map.addTilesetImage('office', 'office')
-    const Classroom = this.map.addTilesetImage('classroom', 'classroom')
 
     // Ground Layer
     const groundLayer = this.map.createLayer('Ground', FloorAndWall!)
 
-    // Secretary Layer
-    const secretary = this.physics.add.staticGroup({ classType: Secretary })
-    const secretaryLayer = this.map.getObjectLayer('Secretary')
-    secretaryLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('classroom')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = secretary.get(
-        actualX,
-        actualY,
-        'classroom',
-        object.gid! - firstgid!,
-      )
-      return obj as Secretary
-    })
-
     // ChairToDown Layer
     const chairToDown = this.physics.add.staticGroup({ classType: Chair })
     const chairToDownLayer = this.map.getObjectLayer('ChairToDown')
-    chairToDownLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('chair')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = chairToDown.get(
-        actualX,
-        actualY,
-        'chair',
-        object.gid! - firstgid!,
-      )
-      obj.heading = 'down'
-      obj.interaction = object.properties[0].value
-      obj.id = object.id
-      return obj
-    })
+    this.createObjectLayer(chairToDown, chairToDownLayer, 900)
+
+    // Secretary Layer
+    const secretary = this.physics.add.staticGroup({ classType: Secretary })
+    const secretaryLayer = this.map.getObjectLayer('Secretary')
+    this.createObjectLayer(secretary, secretaryLayer, 900)
 
     // WaterPurifier Layer
     const waterPurifier = this.physics.add.staticGroup({
       classType: WaterPurifier,
     })
     const waterPurifierLayer = this.map.getObjectLayer('WaterPurifier')
-    waterPurifierLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('office')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = waterPurifier.get(
-        actualX,
-        actualY,
-        'office',
-        object.gid! - firstgid!,
-      )
-      return obj as WaterPurifier
-    })
+    this.createObjectLayer(waterPurifier, waterPurifierLayer, 900)
 
     // Printer Layer
     const printer = this.physics.add.staticGroup({ classType: Printer })
     const printerLayer = this.map.getObjectLayer('Printer')
-    printerLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('office')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = printer.get(
-        actualX,
-        actualY,
-        'office',
-        object.gid! - firstgid!,
-      )
-      console.log(obj)
-      return obj as Printer
-    })
-
-    // interiorOnCollide Layer
-    const interiorOnCollide = this.physics.add.staticGroup()
-    const interiorOnCollideLayer = this.map.getObjectLayer('InteriorOnCollide')
-    interiorOnCollideLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('office')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = interiorOnCollide.get(
-        actualX,
-        actualY,
-        'office',
-        object.gid! - firstgid!,
-      )
-      return obj
-    })
+    this.createObjectLayer(printer, printerLayer, 900)
 
     // OtherPlayers Layer
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
-    // this.otherPlayers.setDepth(0)
 
-    // Player Layer
-    // 플레이어 생성
+    // Player Layer + 플레이어 생성
     createAvatarAnims(this.anims)
     this.player = new Player(this, -1000, -1000, 'conference')
     this.add.existing(this.player)
@@ -169,77 +104,55 @@ export default class Game extends Phaser.Scene {
     this.cameras.main.zoom = 1.4
     this.cameras.main.startFollow(this.player, true)
 
-    // Wall Layer
-    const wallLayer = this.map.createLayer('Wall', FloorAndWall!)
-    wallLayer?.setDepth(2000)
+    // ChairToUp Layer
+    const chairToUp = this.physics.add.staticGroup({ classType: Chair })
+    const chairToUpLayer = this.map.getObjectLayer('ChairToUp')
+    this.createObjectLayer(chairToUp, chairToUpLayer, 2000)
 
-    // interior Layer
-    const interiorLayer = this.map.createLayer('Interior', [
-      Office!,
-      Classroom!,
-    ])
-    interiorLayer?.setDepth(2000)
+    // Overlap Layer
+    const overlap = this.physics.add.staticGroup()
+    const overlapLayer = this.map.getObjectLayer('Overlap')
+    this.createObjectLayer(overlap, overlapLayer, 900)
+    this.overlap = overlap
 
     // ScreenBoard Layer
     const screenBoard = this.physics.add.staticGroup({ classType: ScreenBoard })
     const screenBoardLayer = this.map.getObjectLayer('ScreenBoard')
-    screenBoardLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('screenBoard')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = screenBoard.get(
-        actualX,
-        actualY,
-        'screenBoard',
-        object.gid! - firstgid!,
-      )
-      console.log(obj)
-      // obj.setDepth(2000)
-      return obj as ScreenBoard
-    })
+    this.createObjectLayer(screenBoard, screenBoardLayer, 900)
 
-    // ChairToUp Layer
-    const chairToUp = this.physics.add.staticGroup({ classType: Chair })
-    const chairToUpLayer = this.map.getObjectLayer('ChairToUp')
-    chairToUpLayer?.objects.forEach((object) => {
-      const firstgid = this.map.getTileset('chair')?.firstgid
-      const actualX = object.x! + object.width! * 0.5
-      const actualY = object.y! - object.height! * 0.5
-      const obj = chairToUp.get(
-        actualX,
-        actualY,
-        'chair',
-        object.gid! - firstgid!,
-      )
-      obj.heading = 'up'
-      obj.interaction = object.properties[0].value
-      obj.id = object.id
-      obj.setDepth(2000)
-      return obj
-    })
+    // InteriorCollide Layer
+    const interiorCollide = this.physics.add.staticGroup()
+    const interiorCollideLayer = this.map.getObjectLayer('InteriorCollide')
+    this.createObjectLayer(interiorCollide, interiorCollideLayer, 900)
 
-    // Top Layer
-    const topLayer = this.map.createLayer('Top', Office!)
-    topLayer?.setDepth(2000)
+    // Etc Layer
+    const interiorLayer = this.map.createLayer('Etc', [Office!])
+    interiorLayer?.setDepth(1000)
 
     // 플레이어와 물체 간의 충돌처리
     if (this.player) {
       // this.physics.add.collider(this.player.avatar, secretary)
-      this.physics.add.collider(this.player, interiorOnCollide)
+      this.physics.add.collider(this.player, [interiorCollide])
     }
 
     // 타일맵 레이어에서 특정 속성을 가진 타일들에 대해 충돌처리 활성화 (collide 속성을 가진 모들 타일에 충돌 활성화)
     this.physics.add.collider(groundLayer!, this.player)
-    this.physics.add.collider(wallLayer!, this.player)
-    this.physics.add.collider(topLayer!, this.player)
     groundLayer?.setCollisionByProperty({ collide: true })
-    wallLayer?.setCollisionByProperty({ collide: true })
-    topLayer?.setCollisionByProperty({ collide: true })
-    // 플레이어와 오브젝트 겹침 감지
-    this.physics.add.overlap(
+
+    this.physics.add.collider(
       this.player,
       [secretary, chairToDown, chairToUp, waterPurifier, printer, screenBoard],
-      this.handlePlayerOverlap,
+      this.handlePlayerCollider,
+      undefined,
+      this,
+    )
+
+    this.physics.add.overlap(
+      this.player,
+      [overlap],
+      (player: any, overlapItem: any) => {
+        this.player.setDepth(500)
+      },
       undefined,
       this,
     )
@@ -249,9 +162,13 @@ export default class Game extends Phaser.Scene {
       this.events.emit('createGame', this.isCreate)
     })
   }
-  /** 플레이어와 오브젝트가 겹쳤을때 발생하는 콜백 함수 */
-  private handlePlayerOverlap(player: any, interactionItem: any) {
-    console.log('overlap')
+
+  /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */
+  private handlePlayerCollider(player: any, interactionItem: any) {
+    console.log('충돌!!')
+
+    if (this.player.selectedInteractionItem) return
+
     if (
       this.player.behavior === 'sit' &&
       interactionItem.interaction === 'menual'
@@ -264,15 +181,44 @@ export default class Game extends Phaser.Scene {
       player.isFrontOfInterviewDesk = true
     }
 
-    if (this.player.selectedInteractionItem) return
-
     if (
       interactionItem.id &&
       seatedChair.includes(interactionItem.id.toString())
     )
       return
+    player.isCollide = true
     player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
+
+    console.log(player.isCollide)
+    console.log('끝')
+  }
+
+  /** 레이어 생성하기 위한 함수로 Group, Layer, Depth를 인수로 받음 */
+  private createObjectLayer(
+    group: Phaser.Physics.Arcade.StaticGroup,
+    layer: Phaser.Tilemaps.ObjectLayer | null,
+    depth: number,
+  ) {
+    layer?.objects.forEach((object) => {
+      // Tiled Map에서 Object properties에 꼭 type = '사용에셋' 추가하세요..
+      const properties =
+        (object.properties[2] && object.properties[2].value) ||
+        object.properties[0].value
+      const actualX = object.x! + object.width! * 0.5
+      const actualY = object.y! - object.height! * 0.5
+
+      const firstgid = this.map.getTileset(properties)?.firstgid
+      const obj = group.get(
+        actualX,
+        actualY,
+        properties,
+        object.gid! - firstgid!,
+      )
+
+      obj.setDepth(depth)
+      return obj
+    })
   }
 
   /** 방에 입장 */
@@ -286,7 +232,7 @@ export default class Game extends Phaser.Scene {
     this.roomNum = roomNum
 
     this.player.setPosition(
-      authCookie.role === 'host' ? 240 : 720,
+      authCookie.role === 'host' ? 260 : 720,
       authCookie.role === 'host' ? 520 : 170,
     )
 
@@ -355,6 +301,9 @@ export default class Game extends Phaser.Scene {
         this.keyEscape,
         this.roomNum,
       )
+    }
+    if (!this.physics.overlap(this.player, this.overlap)) {
+      this.player.setDepth(1000)
     }
   }
 }
