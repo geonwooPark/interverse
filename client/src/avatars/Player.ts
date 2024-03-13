@@ -29,8 +29,7 @@ import Avatar from './Avatar'
 
 export default class Player extends Avatar {
   isCollide = false
-  isFrontOfCeoDesk = false
-  isFrontOfInterviewDesk = false
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -116,6 +115,7 @@ export default class Player extends Avatar {
         this.setVelocity(vx, vy)
         this.avatarContainer.setPosition(this.x, this.y - 35)
 
+        // 충돌 상태 해지
         if (vx !== prevVx || vy !== prevVy) {
           this.isCollide = false
           prevVx = vx
@@ -202,28 +202,31 @@ export default class Player extends Avatar {
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
           const chair = this.selectedInteractionItem as Chair
           if (!this.selectedInteractionItem) return
-          switch (this.selectedInteractionItem.itemType) {
-            case 'chair':
-              앉았다일어나기({
-                roomNum,
-                chairId: chair.id?.toString() || '',
-              })
-              break
+
+          앉았다일어나기({
+            roomNum,
+            chairId: chair.id?.toString() || '',
+          })
+
+          if (chair.interaction === 'menual') {
+            store.dispatch(closeCreatorModal())
           }
-          switch (this.isFrontOfCeoDesk) {
-            case true:
-              store.dispatch(closeCreatorModal())
-              break
+          if (chair.interaction === 'interview') {
+            store.dispatch(showVideoModal(false))
           }
-          switch (this.isFrontOfInterviewDesk) {
-            case true:
-              store.dispatch(showVideoModal(false))
-              break
+
+          if (chair.heading === 'up') {
+            this.setPosition(chair.x, chair.y + 10)
           }
+          if (chair.heading === 'down' && chair.interaction === 'interview') {
+            this.setPosition(chair.x, chair.y - 10)
+          }
+
           const animParts = this.anims.currentAnim!.key.split('_')
           animParts[1] = 'stand'
           this.anims.play(animParts.join('_'), true)
           this.behavior = 'stand'
+          this.setDepth(1000)
 
           store.dispatch(closeAlert())
         }
@@ -244,16 +247,7 @@ export default class Player extends Avatar {
           store.dispatch(closeSurveyModal())
           break
       }
-      switch (this.isFrontOfCeoDesk) {
-        case true:
-          this.isFrontOfCeoDesk = false
-          break
-      }
-      switch (this.isFrontOfInterviewDesk) {
-        case true:
-          this.isFrontOfInterviewDesk = false
-          break
-      }
+
       this.selectedInteractionItem.clearInteractionBox()
       this.selectedInteractionItem = undefined
     }
