@@ -35,7 +35,6 @@ export const videoRoomHandler = (
       .emit('serverJoinVideoRoom', { peerId, socketId: socket.id, nickName })
 
     socket.on('disconnect', () => {
-      console.log('비디오룸에서 나감')
       leaveVideoRoom(roomNum)
     })
   }

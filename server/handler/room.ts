@@ -26,7 +26,6 @@ export const roomHandler = (
     }
 
     socket.on('disconnect', () => {
-      console.log('방에서 나감')
       io.to(roomNum).emit('serverLeaveRoom', socket.id)
     })
   }

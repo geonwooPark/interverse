@@ -15,25 +15,19 @@ export const chairHandler = (
 
     if (occupiedChairs[roomNum].has(socket.id)) {
       occupiedChairs[roomNum].delete(socket.id)
-      socket.leave(`${roomNum}_chair`)
     } else {
       occupiedChairs[roomNum].set(socket.id, chairId)
-      socket.join(`${roomNum}_chair`)
     }
 
     socket.broadcast.to(roomNum).emit('serverChairId', chairId)
 
     socket.on('disconnect', () => {
-      console.log('의자에서 나감')
       leaveChair(roomNum)
     })
   }
 
   const leaveChair = (roomNum: string) => {
-    io.to(roomNum).emit(
-      'serverChairId',
-      occupiedChairs[roomNum].get(socket.id) as any,
-    )
+    io.to(roomNum).emit('serverChairId', occupiedChairs[roomNum].get(socket.id))
     occupiedChairs[roomNum].delete(socket.id)
   }
 
