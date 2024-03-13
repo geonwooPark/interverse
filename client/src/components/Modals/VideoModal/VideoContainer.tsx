@@ -42,22 +42,22 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       ])
     })
 
-    ws.on('createVideoRoom', (roomNum) => {
+    ws.on('serverCreateVideoRoom', (roomNum) => {
       console.log(`비디오 방 ${roomNum} 생성`)
     })
-    ws.on('updateVideoRoom', (socketId: string) => {
+    ws.on('serverUpdateVideoRoomMember', (socketId: string) => {
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
     })
-    ws.on('leaveVideoRoom', () => {
+    ws.on('serverLeaveVideoRoom', () => {
       me.disconnect()
       dispatch(showVideoModal(false))
       dispatch(handleStreaming(false))
     })
 
     return () => {
-      ws.off('createVideoRoom')
-      ws.off('leaveVideoRoom')
-      ws.off('updateVideoRoom')
+      ws.off('serverCreateVideoRoom')
+      ws.off('serverLeaveVideoRoom')
+      ws.off('serverUpdateVideoRoomMember')
     }
   }, [])
 
@@ -65,7 +65,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!me) return
     if (!stream) return
 
-    ws.emit('createVideoRoom', authCookie.roomNum)
+    ws.emit('clientCreateVideoRoom', authCookie.roomNum)
     ws.emit('clientJoinVideoRoom', {
       roomNum: authCookie.roomNum,
       peerId: me.id,

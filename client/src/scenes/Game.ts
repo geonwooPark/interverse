@@ -6,7 +6,7 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import { joinRoom, receiveChairId, seatedChair } from '../lib/ws'
+import { joinRoom, occupiedChairs, receiveChairId } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
 import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
 
@@ -187,7 +187,7 @@ export default class Game extends Phaser.Scene {
 
     if (
       interactionItem.id &&
-      seatedChair.includes(interactionItem.id.toString())
+      occupiedChairs.includes(interactionItem.id.toString())
     )
       return
     player.isCollide = true
@@ -218,7 +218,6 @@ export default class Game extends Phaser.Scene {
       if (object.properties[0].value === 'chair') {
         obj.heading = object.properties[1].value
         obj.interaction = object.properties[2].value
-        console.log(obj)
       }
 
       obj.id = object.id

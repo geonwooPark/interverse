@@ -1,6 +1,5 @@
 import Chair from '../items/Chair'
 import {
-  앉았다일어나기,
   sendAvatarPosition,
   sendChairId,
   sendPlayerInfo,
@@ -148,7 +147,7 @@ export default class Player extends Avatar {
               chair.clearInteractionBox()
               this.behavior = 'sit'
 
-              // 소켓에 의자의 넘버를 보냄
+              // 의자에 앉으면 서버로 의자의 넘버를 보냄
               sendChairId({
                 roomNum,
                 chairId: chair.id?.toString() || '',
@@ -204,7 +203,7 @@ export default class Player extends Avatar {
           if (!this.selectedInteractionItem) return
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
-              앉았다일어나기({
+              sendChairId({
                 roomNum,
                 chairId: chair.id?.toString() || '',
               })

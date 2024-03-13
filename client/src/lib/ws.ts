@@ -1,6 +1,7 @@
 import { Socket, io } from 'socket.io-client'
 import {
   ClientAvatarPosition,
+  ClientChairId,
   ClientJoinRoom,
   ClientMessage,
   ClientOtherAvatarPosition,
@@ -13,7 +14,7 @@ import Game from '../scenes/Game'
 import { store } from '../store/store'
 import { addMessage } from '../store/features/chatListSlice'
 
-export let seatedChair: string[] = []
+export let occupiedChairs: string[] = []
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   'http://localhost:3000',
@@ -21,20 +22,21 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
 
 export const joinRoom = ({ roomNum, authCookie }: ClientJoinRoom) => {
   // 서버로 방 번호와 쿠키 전달
-  socket.emit('joinRoom', {
+  socket.emit('clientJoinRoom', {
     roomNum,
     authCookie,
   })
 
   // 서버에서 방에서 나간 유저 정보 받기
-  socket.on('leaveRoom', (sockerId) => {
+  socket.on('serverLeaveRoom', (sockerId) => {
     const game = phaserGame.scene.keys.game as Game
     game.removeOtherPlayer(sockerId)
   })
 
-  socket.on('serverSeatedList', (seated) => {
-    if (!seated) return
-    seatedChair = [...seated]
+  // 방에 입장했을 때 이미 누군가 앉아있는 의자들
+  socket.on('serverOccupiedChairs', (chairs) => {
+    if (!chairs) return
+    occupiedChairs = [...chairs]
   })
 }
 
@@ -139,32 +141,16 @@ export const sendAvatarPosition = ({
   })
 }
 
-export const sendChairId = ({
-  roomNum,
-  chairId,
-}: {
-  roomNum: string
-  chairId: string
-}) => {
+/** 의자에 앉으면 다른 사람들에게 앉은 의자 번호를 알려주는 함수 */
+export const sendChairId = ({ roomNum, chairId }: ClientChairId) => {
   socket.emit('clientChairId', { roomNum, chairId })
 }
 
-export const 앉았다일어나기 = ({
-  roomNum,
-  chairId,
-}: {
-  roomNum: string
-  chairId: string
-}) => {
-  socket.emit('clientStandUp', { roomNum, chairId })
-}
-
+/** 다른 사람이 의자에 앉거나 일어나서 의자 번호를 보내주면 그 번호를 받아서 저장하는 함수 */
 export const receiveChairId = () => {
   socket.on('serverChairId', (chairId: string) => {
-    seatedChair.push(chairId)
-  })
-
-  socket.on('serverStandUp', (chairId: string) => {
-    seatedChair = seatedChair.filter((r) => r !== chairId)
+    occupiedChairs.includes(chairId)
+      ? (occupiedChairs = occupiedChairs.filter((r) => r !== chairId))
+      : occupiedChairs.push(chairId)
   })
 }
