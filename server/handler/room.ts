@@ -24,6 +24,11 @@ export const roomHandler = (
         Array.from(occupiedChairs[roomNum]?.values()),
       )
     }
+
+    socket.on('disconnect', () => {
+      console.log('방에서 나감')
+      io.to(roomNum).emit('serverLeaveRoom', socket.id)
+    })
   }
 
   const sendMessage = (message: ClientMessage) => {
@@ -62,22 +67,9 @@ export const roomHandler = (
     })
   }
 
-  const leaveRoom = () => {
-    const rooms = Array.from(socket.rooms)
-    if (rooms.length === 3) {
-      io.to(rooms[1]).emit('serverLeaveRoom', socket.id)
-      io.to(rooms[1]).emit(
-        'serverChairId',
-        occupiedChairs[rooms[1]].get(socket.id) as any,
-      )
-      occupiedChairs[rooms[1]].delete(socket.id)
-    }
-  }
-
   socket.on('clientJoinRoom', joinRoom)
   socket.on('clientMsg', sendMessage)
   socket.on('clientPlayerInfo', sendPlayerInfo)
   socket.on('clientAvatarPosition', sendAvatarPosition)
   socket.on('clientOtherAvatarPosition', sendOtherAvatarPosition)
-  socket.on('clientLeaveRoom', leaveRoom)
 }

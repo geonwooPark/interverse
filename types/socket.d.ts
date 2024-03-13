@@ -169,6 +169,6 @@ export interface ClientToServerEvents {
     nickName,
   }: ClientJoinVideoRoom) => void
   clientCreateVideoRoom: (roomNum: string) => void
-  clientLeaveVideoRoom: () => void
+  clientLeaveVideoRoom: (roomNum: string) => void
   clientChairId: ({ roomNum, chairId }: ClientChairId) => void
 }
