@@ -112,7 +112,7 @@ export default class Game extends Phaser.Scene {
     // Overlap Layer
     const overlap = this.physics.add.staticGroup()
     const overlapLayer = this.map.getObjectLayer('Overlap')
-    this.createObjectLayer(overlap, overlapLayer, 900)
+    this.createObjectLayer(overlap, overlapLayer, 1100)
     this.overlap = overlap
 
     // ScreenBoard Layer
@@ -123,7 +123,7 @@ export default class Game extends Phaser.Scene {
     // Interior Layer
     const interior = this.physics.add.staticGroup()
     const interiorLayer = this.map.getObjectLayer('Interior')
-    this.createObjectLayer(interior, interiorLayer, 900)
+    this.createObjectLayer(interior, interiorLayer, 2000)
 
     // InteriorCollide Layer
     const interiorCollide = this.physics.add.staticGroup()
@@ -155,8 +155,7 @@ export default class Game extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       [overlap],
-      (player: any, overlapItem: any) => {
-        this.player.setDepth(800)
+      () => {
         this.player.setOffset(0, 50)
       },
       undefined,
@@ -296,7 +295,6 @@ export default class Game extends Phaser.Scene {
       )
     }
     if (!this.physics.overlap(this.player, this.overlap)) {
-      this.player.setDepth(1000)
       this.player.setOffset(0, 20)
     }
   }
