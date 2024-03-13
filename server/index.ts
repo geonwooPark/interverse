@@ -6,6 +6,7 @@ import { ClientToServerEvents, ServerToClientEvents } from '../types/socket'
 import { instrument } from '@socket.io/admin-ui'
 import { videoRoomHandler } from './handler/videoRoom'
 import { roomHandler } from './handler/room'
+import { chairHandler } from './handler/chair'
 
 const app = express()
 app.use(cors())
@@ -26,56 +27,40 @@ interface IUser {
   nickName: string
 }
 
-export const seated: Record<string, string[]> = {}
+export const occupiedChairs: Record<string, Map<string, string>> = {}
 
 io.on(
   'connection',
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
-    // 방 관리
     roomHandler(socket, io)
     videoRoomHandler(socket, io)
+    chairHandler(socket)
 
-    const checkChairId = ({
-      roomNum,
-      chairId,
-    }: {
-      roomNum: string
-      chairId: string
-    }) => {
-      if (!seated[roomNum]) seated[roomNum] = []
-      seated[roomNum].push(chairId)
-      console.log(seated)
-      socket.broadcast.to(roomNum).emit('serverChairId', chairId)
-    }
-
-    const 앉았다일어나기 = ({
-      roomNum,
-      chairId,
-    }: {
-      roomNum: string
-      chairId: string
-    }) => {
-      seated[roomNum] = seated[roomNum].filter((r) => r !== chairId)
-      socket.broadcast.to(roomNum).emit('serverStandUp', chairId)
-      console.log(seated)
-    }
-
-    socket.on('clientChairId', checkChairId)
-    socket.on('clientStandUp', 앉았다일어나기)
-
-    // 연결 끊어질 시
     socket.on('disconnecting', () => {
       const rooms = Array.from(socket.rooms)
       if (rooms.length === 1) return
+      // 방에서 비정상적인 종료
       if (rooms.length === 2) {
-        io.to(rooms[1]).emit('leaveRoom', socket.id)
+        io.to(rooms[1]).emit('serverLeaveRoom', socket.id)
       }
       if (rooms.length === 3) {
-        io.to(rooms[1]).emit('leaveRoom', socket.id)
-        io.to(rooms[1]).emit('updateVideoRoom', socket.id)
-
-        delete videoRoom[rooms[1]][socket.id]
+        // 비디오룸에서 비정상적인 종료
+        if (rooms[2].endsWith('video')) {
+          io.to(rooms[1]).emit('serverLeaveRoom', socket.id)
+          io.to(rooms[1]).emit('serverUpdateVideoRoomMember', socket.id)
+          delete videoRoom[rooms[1]][socket.id]
+        }
+        // 의자에 앉아있다가 비정상적인 종료
+        else if (rooms[2].endsWith('chair')) {
+          io.to(rooms[1]).emit('serverLeaveRoom', socket.id)
+          io.to(rooms[1]).emit(
+            'serverChairId',
+            occupiedChairs[rooms[1]].get(socket.id) as any,
+          )
+          occupiedChairs[rooms[1]].delete(socket.id)
+        }
       }
+      console.log(rooms)
     })
   },
 )

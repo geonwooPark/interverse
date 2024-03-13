@@ -11,7 +11,7 @@ function VideoModal({ authCookie }: VideoModalProps) {
   const { isOpen } = useAppSelector((state) => state.videoModal)
 
   const onClick = () => {
-    ws.emit('leaveVideoRoom')
+    ws.emit('clientLeaveVideoRoom')
   }
 
   if (!isOpen) return

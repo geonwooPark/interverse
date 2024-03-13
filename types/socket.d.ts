@@ -94,10 +94,14 @@ interface ServerJoinVideoRoom {
   nickName: string
 }
 
+interface ClientChairId {
+  roomNum: string
+  chairId: string
+}
+
 export interface ServerToClientEvents {
-  leaveRoom: (sockerId: string) => void
+  serverLeaveRoom: (sockerId: string) => void
   serverMsg: (message: ServerMessage) => void
-  roomMember: (members: string[]) => void
   serverPlayerInfo: ({
     x,
     y,
@@ -126,16 +130,16 @@ export interface ServerToClientEvents {
     socketId,
     nickName,
   }: ServerJoinVideoRoom) => void
-  createVideoRoom: (roomNum: string) => void
-  leaveVideoRoom: () => void
-  updateVideoRoom: (socketId: string) => void
+  serverCreateVideoRoom: (roomNum: string) => void
+  serverLeaveVideoRoom: () => void
+  serverUpdateVideoRoomMember: (socketId: string) => void
+  serverOccupiedChairs: (chairs: string[]) => void
   serverChairId: (chairId: string) => void
-  serverSeatedList: (seated: string[]) => void
-  serverStandUp: (chairId: string) => void
 }
 
 export interface ClientToServerEvents {
-  joinRoom: ({ roomNum }: ClientJoinRoom) => void
+  clientJoinRoom: ({ roomNum }: ClientJoinRoom) => void
+  clientLeaveRoom: () => void
   clientMsg: (message: ClientMessage) => void
   clientPlayerInfo: ({
     x,
@@ -155,7 +159,7 @@ export interface ClientToServerEvents {
     y,
     nickName,
     texture,
-    behavior,
+    animation,
     roomNum,
     newPlayerId,
   }: ClientOtherAvatarPosition) => void
@@ -164,20 +168,7 @@ export interface ClientToServerEvents {
     peerId,
     nickName,
   }: ClientJoinVideoRoom) => void
-  createVideoRoom: (roomNum: string) => void
-  leaveVideoRoom: () => void
-  clientChairId: ({
-    roomNum,
-    chairId,
-  }: {
-    roomNum: string
-    chairId: string
-  }) => void
-  clientStandUp: ({
-    roomNum,
-    chairId,
-  }: {
-    roomNum: string
-    chairId: string
-  }) => void
+  clientCreateVideoRoom: (roomNum: string) => void
+  clientLeaveVideoRoom: () => void
+  clientChairId: ({ roomNum, chairId }: ClientChairId) => void
 }

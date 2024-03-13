@@ -1,4 +1,5 @@
 import { peer as me } from '../lib/peer'
+import { socket } from '../lib/ws'
 import {
   changeAlertContent,
   closeAlert,
@@ -52,6 +53,7 @@ function ButtonContainer() {
       }),
     )
     dispatch(openModal())
+    socket.emit('clientLeaveRoom')
   }
 
   return (
