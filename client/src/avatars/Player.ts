@@ -4,6 +4,7 @@ import {
   sendChairId,
   sendPlayerInfo,
   sendPlayerInfoToNewPlayer,
+  socket,
 } from '../lib/ws'
 import {
   changeAlertContent,
@@ -25,6 +26,8 @@ import {
 import { showVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
+import { peer as me } from '../lib/peer'
+import { handleStreaming } from '../store/features/screenStreamerSlice'
 
 export default class Player extends Avatar {
   isCollide = false
@@ -174,6 +177,9 @@ export default class Player extends Avatar {
                   ),
                 )
               } else if (chair.interaction === 'interview') {
+                if (me.disconnected) {
+                  me.reconnect()
+                }
                 store.dispatch(showVideoModal(true))
                 store.dispatch(
                   changeAlertContent(
@@ -198,6 +204,18 @@ export default class Player extends Avatar {
               store.dispatch(openSurveyModal())
               store.dispatch(closeAlert())
               break
+            case 'screenBoard':
+              if (me.disconnected) {
+                me.reconnect()
+              }
+              store.dispatch(showVideoModal(true))
+              store.dispatch(handleStreaming(true))
+              store.dispatch(
+                changeAlertContent(
+                  'ESC 키를 눌러 화면공유를 중지할 수 있습니다.',
+                ),
+              )
+              break
           }
         }
 
@@ -217,7 +235,7 @@ export default class Player extends Avatar {
             store.dispatch(closeCreatorModal())
           }
           if (chair.interaction === 'interview') {
-            store.dispatch(showVideoModal(false))
+            socket.emit('clientLeaveVideoRoom', roomNum)
           }
 
           this.setPosition(this.preX, this.preY)
@@ -244,6 +262,9 @@ export default class Player extends Avatar {
           break
         case 'printer':
           store.dispatch(closeSurveyModal())
+          break
+        case 'screenBoard':
+          socket.emit('clientLeaveVideoRoom', roomNum)
           break
       }
 
