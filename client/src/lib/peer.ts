@@ -1,9 +1,9 @@
 import Peer from 'peerjs'
 
 export const peer = new Peer({
-  host: 'localhost',
-  path: `${import.meta.env.VITE_PEER}`,
-  port: 9001,
+  host: import.meta.env.VITE_PEER,
+  secure: true,
+  port: 443,
 })
 export const getMedia = (isScreenStreaming: boolean) => {
   if (isScreenStreaming) {
