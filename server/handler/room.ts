@@ -4,13 +4,14 @@ import {
   ClientMessage,
   ClientOtherAvatarPosition,
   ClientPlayerInfo,
-  ClientToServerEvents,
-  ServerToClientEvents,
+  // ClientToServerEvents,
+  // ServerToClientEvents,
 } from '../../types/socket'
 import { occupiedChairs } from '..'
 
 export const roomHandler = (
-  socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+  socket: Socket,
+  // socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
   const joinRoom = ({ roomNum }: { roomNum: string }) => {

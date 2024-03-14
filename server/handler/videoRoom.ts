@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io'
 import { videoRoom } from '..'
-import { ClientToServerEvents, ServerToClientEvents } from '../../types/socket'
+// import { ClientToServerEvents, ServerToClientEvents } from '../../types/socket'
 
 interface JoinVideoRoomType {
   roomNum: string
@@ -9,7 +9,8 @@ interface JoinVideoRoomType {
 }
 
 export const videoRoomHandler = (
-  socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+  socket: Socket,
+  // socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
   const createVideoRoom = (roomNum: string) => {

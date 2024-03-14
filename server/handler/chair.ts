@@ -1,13 +1,14 @@
 import { Socket } from 'socket.io'
 import {
   ClientChairId,
-  ClientToServerEvents,
-  ServerToClientEvents,
+  // ClientToServerEvents,
+  // ServerToClientEvents,
 } from '../../types/socket'
 import { occupiedChairs } from '..'
 
 export const chairHandler = (
-  socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+  socket: Socket,
+  // socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
   const sendChairId = ({ roomNum, chairId }: ClientChairId) => {
