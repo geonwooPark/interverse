@@ -1,4 +1,4 @@
-import { createAvatarAnims } from '../anims/AvatarAnims'
+import { createAvatarAnims } from '../animation/AvatarAnims'
 import OtherPlayer from '../avatars/OtherPlayer'
 import Player from '../avatars/Player'
 import Chair from '../items/Chair'

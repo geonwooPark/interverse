@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { getCookie, removeCookie } from '../utils/cookie'
+import { getCookie, removeCookie } from '../lib/cookie'
 import { useAppDispatch } from '../store/store'
 import { changeModalContent } from '../store/features/modalContentSlice'
 import { closeModal, openModal } from '../store/features/modalDisplaySlice'

@@ -5,7 +5,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router-dom'
-import { getAuthCookie } from '../../utils/cookie'
+import { getAuthCookie } from '../../lib/cookie'
 
 function AuthRoute() {
   const location = useLocation()
