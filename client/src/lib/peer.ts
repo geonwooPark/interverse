@@ -2,8 +2,8 @@ import Peer from 'peerjs'
 
 export const peer = new Peer({
   host: 'localhost',
-  port: 9000,
-  path: '/myapp',
+  path: '/',
+  port: 9001,
 })
 export const getMedia = (isScreenStreaming: boolean) => {
   if (isScreenStreaming) {
