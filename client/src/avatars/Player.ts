@@ -205,6 +205,16 @@ export default class Player extends Avatar {
               store.dispatch(closeAlert())
               break
             case 'screenBoard':
+              this.anims.play(`${this.avatarTexture}_stand_down`, true)
+              this.behavior = 'share'
+
+              sendAvatarPosition({
+                x: this.x,
+                y: this.y,
+                roomNum,
+                animation: this.anims.currentAnim!.key,
+              })
+
               if (me.disconnected) {
                 me.reconnect()
               }
@@ -248,6 +258,13 @@ export default class Player extends Avatar {
           store.dispatch(closeAlert())
         }
         break
+      case 'share':
+        if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
+          if (!this.selectedInteractionItem) return
+          this.behavior = 'stand'
+          socket.emit('clientLeaveVideoRoom', roomNum)
+        }
+        break
     }
 
     if (
@@ -262,9 +279,6 @@ export default class Player extends Avatar {
           break
         case 'printer':
           store.dispatch(closeSurveyModal())
-          break
-        case 'screenBoard':
-          socket.emit('clientLeaveVideoRoom', roomNum)
           break
       }
 
