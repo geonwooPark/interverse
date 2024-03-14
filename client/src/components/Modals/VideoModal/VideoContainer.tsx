@@ -25,22 +25,29 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   const [currentStream, setCurrentStream] = useState<CurrentStream>()
 
   useEffect(() => {
-    getMedia(isScreenStreaming).then((screenStream) => {
-      setStream(screenStream)
-      setCurrentStream({
-        peerId: me.id,
-        stream: screenStream,
-      })
-      setPeerStreams((prev) => [
-        ...prev,
-        {
+    try {
+      getMedia(isScreenStreaming).then((stream) => {
+        setStream(stream)
+        setCurrentStream({
           peerId: me.id,
-          nickName: authCookie.nickName,
-          socketId: ws.id as string,
-          stream: screenStream,
-        },
-      ])
-    })
+          stream,
+        })
+        setPeerStreams((prev) => [
+          ...prev,
+          {
+            peerId: me.id,
+            nickName: authCookie.nickName,
+            socketId: ws.id as string,
+            stream,
+            audio: true,
+          },
+        ])
+      })
+    } catch (error) {
+      if (error instanceof Error) {
+        alert('카메라와 마이크를 찾을 수 없거나 권한이 차단 되어있어요!')
+      }
+    }
 
     ws.on('serverCreateVideoRoom', (roomNum) => {
       console.log(`비디오 방 ${roomNum} 생성`)
@@ -90,6 +97,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             nickName,
             socketId,
             stream: peerStream,
+            audio: true,
           },
         ])
       })
@@ -108,6 +116,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             nickName,
             socketId,
             stream: peerStream,
+            audio: true,
           },
         ])
       })
@@ -123,6 +132,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       <CurrentStreamScreen currentStream={currentStream} stream={stream} />
       <VideoPlayerList
         peerStreams={peerStreams}
+        setPeerStreams={setPeerStreams}
         currentStream={currentStream}
         setCurrentStream={setCurrentStream}
       />

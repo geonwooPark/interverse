@@ -10,12 +10,12 @@ export const getMedia = (isScreenStreaming: boolean) => {
   if (isScreenStreaming) {
     return navigator.mediaDevices.getDisplayMedia({
       video: true,
-      audio: false,
+      audio: true,
     })
   } else {
     return navigator.mediaDevices.getUserMedia({
       video: true,
-      audio: false,
+      audio: true,
     })
   }
 }
