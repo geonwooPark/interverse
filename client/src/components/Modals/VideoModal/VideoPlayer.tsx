@@ -1,16 +1,20 @@
 import { useEffect, useRef } from 'react'
 
-function VideoPlayer({ stream }: { stream: MediaStream }) {
+interface VideoPlayerProps {
+  stream: MediaStream
+  audio?: boolean
+}
+
+function VideoPlayer({ stream, audio }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     if (!videoRef.current || !stream) return
     videoRef.current.srcObject = stream
-  }, [stream])
+    videoRef.current.muted = !audio
+  }, [stream, audio])
 
-  return (
-    <video ref={videoRef} autoPlay muted className="size-full object-cover" />
-  )
+  return <video ref={videoRef} autoPlay className="size-full object-cover" />
 }
 
 export default VideoPlayer

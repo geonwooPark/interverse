@@ -32,6 +32,7 @@ export interface PeerStreamType {
   socketId: string
   nickName: string
   stream: MediaStream
+  audio: boolean
 }
 
 export interface CurrentStream {

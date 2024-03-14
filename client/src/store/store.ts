@@ -9,6 +9,7 @@ import { ManualModalSlice } from './features/manualModalSlice'
 import { VideoModalSlice } from './features/videoModalSlice'
 import { ScreenStreamerSlice } from './features/screenStreamerSlice'
 import { SurveyModalSlice } from './features/surveyModalSlice'
+import { MyStreamSlice } from './features/myStreamSlice'
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     surveyModal: SurveyModalSlice.reducer,
     videoModal: VideoModalSlice.reducer,
     screenStreamer: ScreenStreamerSlice.reducer,
+    myStream: MyStreamSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
