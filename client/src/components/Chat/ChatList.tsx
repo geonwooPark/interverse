@@ -1,4 +1,4 @@
-import { ChatItemType } from '../../types/client'
+import { ChatItemType } from '../../../../types/client'
 import ChatMessage from './ChatItem'
 
 interface ChatListProps {

@@ -1,4 +1,4 @@
-import { CurrentStream } from '../../../types/client'
+import { CurrentStream } from '../../../../../types/client'
 import VideoPlayer from './VideoPlayer'
 
 interface CurrentStreamScreenProps {

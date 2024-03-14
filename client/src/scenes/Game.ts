@@ -8,7 +8,10 @@ import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
 import { joinRoom, occupiedChairs, receiveChairId } from '../lib/ws'
 import { ClientJoinRoom, ServerAvatarPosition } from '../../../types/socket'
-import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
+import {
+  AddOtherPlayerType,
+  DisplayOtherPlayerChatType,
+} from '../../../types/client'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap

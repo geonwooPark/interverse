@@ -1,7 +1,7 @@
 import IconCam from '../svgs/IconCam.svg?react'
 import IconMic from '../svgs/IconMic.svg?react'
 import IconChat from '../svgs/IconChat.svg?react'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 
 interface UserStatusProps {
   authCookie: CookieType | null
@@ -19,7 +19,7 @@ function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   const onMicClick = () => {}
 
   return (
-    <div className="font-neodgm flex h-[64px] w-[380px] items-center justify-between rounded-md bg-white/30 px-4 py-2 text-sm shadow-md">
+    <div className="flex h-[64px] w-[380px] items-center justify-between rounded-md bg-white/30 px-4 py-2 font-neodgm text-sm shadow-md">
       <div>
         <p className="title">{authCookie?.nickName}</p>
         <p className="description">{role}</p>

@@ -1,6 +1,6 @@
 import Chat from './Chat/Chat'
 import UserStatus from './UserStatus'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 import { useEffect, useRef, useState } from 'react'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'

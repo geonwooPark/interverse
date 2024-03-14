@@ -1,4 +1,4 @@
-import { CurrentStream, PeerStreamType } from '../../../types/client'
+import { CurrentStream, PeerStreamType } from '../../../../../types/client'
 import VideoPlayer from './VideoPlayer'
 
 interface VideoPlayerListProps {

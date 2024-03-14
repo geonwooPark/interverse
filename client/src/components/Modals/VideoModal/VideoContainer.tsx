@@ -4,7 +4,7 @@ import {
   CookieType,
   CurrentStream,
   PeerStreamType,
-} from '../../../types/client'
+} from '../../../../../types/client'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
