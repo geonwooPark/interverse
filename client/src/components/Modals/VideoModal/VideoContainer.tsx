@@ -1,72 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { socket as ws } from '../../../lib/ws'
-import {
-  CookieType,
-  CurrentStream,
-  PeerStreamType,
-} from '../../../../../types/client'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { peer as me } from '../../../lib/peer'
+import { CookieType } from '../../../../../types/client'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
-import { getMedia, peer as me } from '../../../lib/peer'
-import { showVideoModal } from '../../../store/features/videoModalSlice'
-import { handleStreaming } from '../../../store/features/screenStreamerSlice'
+import { useVideoChat } from '../../../hooks/useVideoChat'
+import { useAppSelector } from '../../../store/store'
 
 interface VideoContainerProps {
   authCookie: CookieType
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
-  const dispatch = useAppDispatch()
-
-  const { isScreenStreaming } = useAppSelector((state) => state.screenStreamer)
-  const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
-  const [stream, setStream] = useState<MediaStream>()
-  const [currentStream, setCurrentStream] = useState<CurrentStream>()
-
-  useEffect(() => {
-    try {
-      getMedia(isScreenStreaming).then((stream) => {
-        setStream(stream)
-        setCurrentStream({
-          peerId: me.id,
-          stream,
-        })
-        setPeerStreams((prev) => [
-          ...prev,
-          {
-            peerId: me.id,
-            nickName: authCookie.nickName,
-            socketId: ws.id as string,
-            stream,
-            audio: true,
-          },
-        ])
-      })
-    } catch (error) {
-      if (error instanceof Error) {
-        alert('카메라와 마이크를 찾을 수 없거나 권한이 차단 되어있어요!')
-      }
-    }
-
-    ws.on('serverCreateVideoRoom', (roomNum) => {
-      console.log(`비디오 방 ${roomNum} 생성`)
-    })
-    ws.on('serverUpdateVideoRoomMember', (socketId: string) => {
-      setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
-    })
-    ws.on('serverLeaveVideoRoom', () => {
-      me.disconnect()
-      dispatch(showVideoModal(false))
-      dispatch(handleStreaming(false))
-    })
-
-    return () => {
-      ws.off('serverCreateVideoRoom')
-      ws.off('serverLeaveVideoRoom')
-      ws.off('serverUpdateVideoRoomMember')
-    }
-  }, [])
+  const { stream } = useAppSelector((state) => state.myStream)
+  const { peerStreams, setPeerStreams, currentStream, setCurrentStream } =
+    useVideoChat(authCookie)
 
   useEffect(() => {
     if (!me) return
@@ -129,7 +77,9 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
   return (
     <div>
-      <CurrentStreamScreen currentStream={currentStream} stream={stream} />
+      {stream && (
+        <CurrentStreamScreen currentStream={currentStream} stream={stream} />
+      )}
       <VideoPlayerList
         peerStreams={peerStreams}
         setPeerStreams={setPeerStreams}

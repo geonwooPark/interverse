@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 interface VideoPlayerProps {
   stream: MediaStream
-  audio: boolean
+  audio?: boolean
 }
 
 function VideoPlayer({ stream, audio }: VideoPlayerProps) {

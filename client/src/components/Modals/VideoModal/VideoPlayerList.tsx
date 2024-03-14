@@ -50,7 +50,7 @@ function VideoPlayerList({
             {peerStream.peerId !== me.id && (
               <button onClick={() => updateMuteStatus(peerStream.peerId)}>
                 <IconSound
-                  className={`size-5 ${peerStream.audio || 'text-red-600'}`}
+                  className={`size-5 ${peerStream.audio ? 'text-green-500' : 'text-red-500'}`}
                 />
               </button>
             )}

@@ -5,7 +5,6 @@ export const peer = new Peer({
   port: 9000,
   path: '/myapp',
 })
-
 export const getMedia = (isScreenStreaming: boolean) => {
   if (isScreenStreaming) {
     return navigator.mediaDevices.getDisplayMedia({
