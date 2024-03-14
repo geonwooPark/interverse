@@ -41,8 +41,9 @@ export const videoRoomHandler = (
 
   const leaveVideoRoom = (roomNum: string) => {
     io.to(socket.id).emit('serverLeaveVideoRoom')
-    socket.broadcast.to(roomNum).emit('serverUpdateVideoRoomMember', socket.id)
 
+    if (!videoRoom[roomNum]) return
+    socket.broadcast.to(roomNum).emit('serverUpdateVideoRoomMember', socket.id)
     delete videoRoom[roomNum][socket.id]
   }
 
