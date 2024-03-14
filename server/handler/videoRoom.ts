@@ -1,16 +1,15 @@
 import { Socket } from 'socket.io'
 import { videoRoom } from '..'
-// import { ClientToServerEvents, ServerToClientEvents } from '../../types/socket'
+import { ClientToServerEvents, ServerToClientEvents } from '../../types/socket'
 
-// interface JoinVideoRoomType {
-//   roomNum: string
-//   peerId: string
-//   nickName: string
-// }
+interface JoinVideoRoomType {
+  roomNum: string
+  peerId: string
+  nickName: string
+}
 
 export const videoRoomHandler = (
-  socket: Socket,
-  // socket: Socket<ClientToServerEvents, ServerToClientEvents>,
+  socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
   const createVideoRoom = (roomNum: string) => {
@@ -18,7 +17,7 @@ export const videoRoomHandler = (
     socket.emit('serverCreateVideoRoom', roomNum)
   }
 
-  const joinVideoRoom = ({ roomNum, peerId, nickName }: any) => {
+  const joinVideoRoom = ({ roomNum, peerId, nickName }: JoinVideoRoomType) => {
     if (!peerId) return
     if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
     if (videoRoom[roomNum][socket.id]) return
@@ -39,27 +38,6 @@ export const videoRoomHandler = (
       leaveVideoRoom(roomNum)
     })
   }
-  // const joinVideoRoom = ({ roomNum, peerId, nickName }: JoinVideoRoomType) => {
-  //   if (!peerId) return
-  //   if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
-  //   if (videoRoom[roomNum][socket.id]) return
-  //   if (Object.keys(videoRoom[roomNum]).length >= 7) return
-
-  //   videoRoom[roomNum][socket.id] = {
-  //     peerId,
-  //     socketId: socket.id,
-  //     nickName,
-  //   }
-  //   socket.join(`${roomNum}_video`)
-
-  //   socket.broadcast
-  //     .to(`${roomNum}_video`)
-  //     .emit('serverJoinVideoRoom', { peerId, socketId: socket.id, nickName })
-
-  //   socket.on('disconnect', () => {
-  //     leaveVideoRoom(roomNum)
-  //   })
-  // }
 
   const leaveVideoRoom = (roomNum: string) => {
     io.to(socket.id).emit('serverLeaveVideoRoom')
