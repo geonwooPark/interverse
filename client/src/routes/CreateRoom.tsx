@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
-import { setCookie } from '../utils/cookie'
-import { encrypt } from '../utils/crypto'
+import { setCookie } from '../lib/cookie'
+import { encrypt } from '../lib/crypto'
 
 function CreateRoom() {
   const navigate = useNavigate()

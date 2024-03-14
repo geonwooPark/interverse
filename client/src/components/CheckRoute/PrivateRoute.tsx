@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom'
-import { getCookie } from '../../utils/cookie'
+import { getCookie } from '../../lib/cookie'
 
 function PrivateRoute() {
   const hostCookie = getCookie('interverse_host')

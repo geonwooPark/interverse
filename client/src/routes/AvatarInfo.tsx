@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { setCookie } from '../utils/cookie'
+import { setCookie } from '../lib/cookie'
 import AvatarSelector from '../components/AvatarSelector'
 import NickNameInput from '../components/NickNameInput'
 

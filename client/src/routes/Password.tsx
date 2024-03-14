@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { decrypt } from '../utils/crypto'
+import { decrypt } from '../lib/crypto'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 function Password() {
