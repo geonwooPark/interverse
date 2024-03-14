@@ -1,5 +1,6 @@
 import Chair from '../items/Chair'
 import {
+  occupiedChairs,
   sendAvatarPosition,
   sendChairId,
   sendPlayerInfo,
@@ -142,6 +143,7 @@ export default class Player extends Avatar {
 
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
+              if (occupiedChairs.includes(chair.id.toString())) return
               this.preX = this.x
               this.preY = this.y
               this.setVelocity(0, 0)
