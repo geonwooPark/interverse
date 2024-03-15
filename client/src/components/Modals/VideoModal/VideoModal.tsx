@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../../store/store'
-import { CookieType } from '../../../../../types/client'
+import { CookieType } from '../../../types/client'
 import VideoContainer from './VideoContainer'
 
 interface VideoModalProps {

@@ -1,4 +1,9 @@
 import { Socket, io } from 'socket.io-client'
+
+import phaserGame from '../PhaserGame'
+import Game from '../scenes/Game'
+import { store } from '../store/store'
+import { addMessage } from '../store/features/chatListSlice'
 import {
   ClientAvatarPosition,
   ClientChairId,
@@ -8,11 +13,7 @@ import {
   ClientPlayerInfo,
   ClientToServerEvents,
   ServerToClientEvents,
-} from '../../../types/socket'
-import phaserGame from '../PhaserGame'
-import Game from '../scenes/Game'
-import { store } from '../store/store'
-import { addMessage } from '../store/features/chatListSlice'
+} from '../types/socket'
 
 export let occupiedChairs: string[] = []
 

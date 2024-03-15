@@ -1,4 +1,4 @@
-interface ServerMessage {
+export interface ServerMessage {
   message: string
   nickName: string
   roomNum: string
@@ -6,7 +6,7 @@ interface ServerMessage {
   newPlayerId?: string
 }
 
-interface ClientMessage {
+export interface ClientMessage {
   message: string
   nickName: string
   roomNum: string
@@ -14,7 +14,7 @@ interface ClientMessage {
   newPlayerId?: string
 }
 
-interface ClientJoinRoom {
+export interface ClientJoinRoom {
   roomNum: string
   authCookie: {
     roomNum: string
@@ -25,7 +25,7 @@ interface ClientJoinRoom {
   }
 }
 
-interface ServerPlayerInfo {
+export interface ServerPlayerInfo {
   x: number
   y: number
   nickName: string
@@ -34,7 +34,7 @@ interface ServerPlayerInfo {
   socketId: string
 }
 
-interface ClientPlayerInfo {
+export interface ClientPlayerInfo {
   x: number
   y: number
   nickName: string
@@ -42,21 +42,21 @@ interface ClientPlayerInfo {
   roomNum: string
 }
 
-interface ServerAvatarPosition {
+export interface ServerAvatarPosition {
   x: number
   y: number
   socketId: string
   animation: any
 }
 
-interface ClientAvatarPosition {
+export interface ClientAvatarPosition {
   x: number
   y: number
   roomNum: string
   animation: any
 }
 
-interface ServerOtherAvatarPosition {
+export interface ServerOtherAvatarPosition {
   x: number
   y: number
   nickName: string
@@ -66,7 +66,7 @@ interface ServerOtherAvatarPosition {
   socketId: string
 }
 
-interface ClientOtherAvatarPosition {
+export interface ClientOtherAvatarPosition {
   x: number
   y: number
   nickName: string
@@ -76,25 +76,25 @@ interface ClientOtherAvatarPosition {
   newPlayerId: string
 }
 
-interface IUser {
+export interface IUser {
   peerId: string
   socketId: string
   nickName: string
 }
 
-interface ClientJoinVideoRoom {
+export interface ClientJoinVideoRoom {
   roomNum: string
   peerId: string
   nickName: string
 }
 
-interface ServerJoinVideoRoom {
+export interface ServerJoinVideoRoom {
   socketId: string
   peerId: string
   nickName: string
 }
 
-interface ClientChairId {
+export interface ClientChairId {
   roomNum: string
   chairId: string
 }

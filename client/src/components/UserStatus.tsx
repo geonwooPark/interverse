@@ -1,13 +1,13 @@
 import IconCam from '../svgs/IconCam.svg?react'
 import IconMic from '../svgs/IconMic.svg?react'
 import IconChat from '../svgs/IconChat.svg?react'
-import { CookieType } from '../../../types/client'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import {
   controlStream,
   handleAudio,
   handleVideo,
 } from '../store/features/myStreamSlice'
+import { CookieType } from '../types/client'
 
 interface UserStatusProps {
   authCookie: CookieType | null

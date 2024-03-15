@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { ChatItemType } from '../../../../types/client'
+import { ChatItemType } from '../../types/client'
 
 interface ChatItemProps {
   chatItem: ChatItemType

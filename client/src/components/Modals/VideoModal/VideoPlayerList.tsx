@@ -1,7 +1,7 @@
-import { CurrentStream, PeerStreamType } from '../../../../../types/client'
 import VideoPlayer from './VideoPlayer'
 import IconSound from '../../../svgs/IconSound.svg?react'
 import { peer as me } from '../../../lib/peer'
+import { CurrentStream, PeerStreamType } from '../../../types/client'
 
 interface VideoPlayerListProps {
   peerStreams: PeerStreamType[]
