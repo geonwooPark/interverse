@@ -6,12 +6,13 @@ import { videoRoomHandler } from './handler/videoRoom'
 import { roomHandler } from './handler/room'
 import { chairHandler } from './handler/chair'
 import { ClientToServerEvents, ServerToClientEvents } from './types/server'
+import path from 'path'
 
 const app = express()
 app.use(cors())
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 const server = http.createServer(app)
