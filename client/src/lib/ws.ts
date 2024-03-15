@@ -17,7 +17,7 @@ import { addMessage } from '../store/features/chatListSlice'
 export let occupiedChairs: string[] = []
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  `${import.meta.env.VITE_BACKEND}`,
+  `https://server-interverse-team94.koyeb.app`,
 )
 
 export const joinRoom = ({ roomNum, authCookie }: ClientJoinRoom) => {
