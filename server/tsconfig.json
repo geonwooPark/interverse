@@ -15,5 +15,5 @@
       "*": ["types/*"]
     }
   },
-  "include": ["../types/socket.d.ts", "*"]
+  "include": ["*"]
 }
