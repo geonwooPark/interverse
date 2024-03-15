@@ -6,7 +6,6 @@ import { videoRoomHandler } from './handler/videoRoom'
 import { roomHandler } from './handler/room'
 import { chairHandler } from './handler/chair'
 import { ClientToServerEvents, ServerToClientEvents } from './types/server'
-import path from 'path'
 
 const app = express()
 app.use(cors())
@@ -18,7 +17,7 @@ const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: [`https://team94-interverse.vercel.app`],
+    origin: ['https://team94-interverse.vercel.app', 'http://localhost:5173'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
