@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { socket as ws } from '../../../lib/ws'
 import { peer as me } from '../../../lib/peer'
-import { CookieType } from '../../../../../types/client'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoChat } from '../../../hooks/useVideoChat'
 import { useAppSelector } from '../../../store/store'
+import { MediaConnection } from 'peerjs'
+import { CookieType } from '../../../types/client'
 
 interface VideoContainerProps {
   authCookie: CookieType
@@ -13,19 +14,29 @@ interface VideoContainerProps {
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
   const { stream } = useAppSelector((state) => state.myStream)
-  const { peerStreams, setPeerStreams, currentStream, setCurrentStream } =
-    useVideoChat(authCookie)
+  const {
+    peerStreams,
+    setPeerStreams,
+    currentStream,
+    setCurrentStream,
+    isJoined,
+    setIsJoined,
+  } = useVideoChat(authCookie)
 
   useEffect(() => {
-    if (!me) return
-    if (!stream) return
-
+    if (isJoined) return
     ws.emit('clientCreateVideoRoom', authCookie.roomNum)
     ws.emit('clientJoinVideoRoom', {
       roomNum: authCookie.roomNum,
       peerId: me.id,
       nickName: authCookie.nickName,
     })
+    setIsJoined(true)
+  }, [isJoined])
+
+  useEffect(() => {
+    if (!me) return
+    if (!stream) return
 
     ws.on('serverJoinVideoRoom', (user) => {
       const { peerId, nickName, socketId } = user
@@ -51,9 +62,9 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       })
     })
 
-    // 전화를 걸 때 발생
-    me.on('call', (call) => {
+    const handleIncomingCall = (call: MediaConnection) => {
       const { nickName, socketId } = call.metadata
+      // 전화에 응답
       call.answer(stream)
       // 새로운 멤버에서 실행
       call.once('stream', (peerStream) => {
@@ -68,10 +79,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
           },
         ])
       })
-    })
+    }
+
+    me.once('call', handleIncomingCall)
 
     return () => {
       ws.off('serverJoinVideoRoom')
+      me.off('call', handleIncomingCall)
     }
   }, [me, stream])
 

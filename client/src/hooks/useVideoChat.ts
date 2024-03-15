@@ -2,20 +2,17 @@ import { useEffect, useState } from 'react'
 import { getMedia, peer as me } from '../lib/peer'
 import { socket as ws } from '../lib/ws'
 import { useAppDispatch, useAppSelector } from '../store/store'
-import {
-  CookieType,
-  CurrentStream,
-  PeerStreamType,
-} from '../../../types/client'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import { handleStreaming } from '../store/features/screenStreamerSlice'
 import { setStream } from '../store/features/myStreamSlice'
+import { CookieType, CurrentStream, PeerStreamType } from '../types/client'
 
 export const useVideoChat = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
   const { isScreenStreaming } = useAppSelector((state) => state.screenStreamer)
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
   const [currentStream, setCurrentStream] = useState<CurrentStream>()
+  const [isJoined, setIsJoined] = useState(false)
   const { controller } = useAppSelector((state) => state.myStream)
 
   useEffect(() => {
@@ -59,6 +56,7 @@ export const useVideoChat = (authCookie: CookieType) => {
       me.disconnect()
       dispatch(showVideoModal(false))
       dispatch(handleStreaming(false))
+      setIsJoined(false)
     })
 
     return () => {
@@ -73,5 +71,7 @@ export const useVideoChat = (authCookie: CookieType) => {
     setPeerStreams,
     currentStream,
     setCurrentStream,
+    isJoined,
+    setIsJoined,
   }
 }
