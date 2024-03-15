@@ -189,7 +189,7 @@ const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: ['http://localhost:5173', 'https://admin.socket.io'],
+    origin: [`team94-interverse.vercel.app`, 'https://admin.socket.io'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
