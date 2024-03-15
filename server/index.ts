@@ -11,6 +11,7 @@ import path from 'path'
 const app = express()
 app.use(cors())
 
+app.use(express.static(path.join(__dirname, 'build')))
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
