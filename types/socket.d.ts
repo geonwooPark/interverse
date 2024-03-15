@@ -99,7 +99,7 @@ interface ClientChairId {
   chairId: string
 }
 
-interface ServerToClientEvents {
+export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
   serverMsg: (message: ServerMessage) => void
   serverPlayerInfo: ({
@@ -137,7 +137,7 @@ interface ServerToClientEvents {
   serverChairId: (chairId: string) => void
 }
 
-interface ClientToServerEvents {
+export interface ClientToServerEvents {
   clientJoinRoom: ({ roomNum }: ClientJoinRoom) => void
   clientLeaveRoom: () => void
   clientMsg: (message: ClientMessage) => void
