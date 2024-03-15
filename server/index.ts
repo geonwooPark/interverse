@@ -10,6 +10,10 @@ import { ClientToServerEvents, ServerToClientEvents } from './types/server'
 const app = express()
 app.use(cors())
 
+app.get('/', function (req, res) {
+  res.send('Hello World')
+})
+
 const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
