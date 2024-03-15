@@ -3,7 +3,7 @@ import { socket as ws } from '../../../lib/ws'
 import { peer as me } from '../../../lib/peer'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
-import { useVideoChat } from '../../../hooks/useVideoChat'
+import { useVideoStream } from '../../../hooks/useVideoStream'
 import { useAppSelector } from '../../../store/store'
 import { MediaConnection } from 'peerjs'
 import { CookieType } from '../../../types/client'
@@ -21,7 +21,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     setCurrentStream,
     isJoined,
     setIsJoined,
-  } = useVideoChat(authCookie)
+  } = useVideoStream(authCookie)
 
   useEffect(() => {
     if (isJoined) return

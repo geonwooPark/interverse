@@ -7,7 +7,7 @@ import { handleStreaming } from '../store/features/screenStreamerSlice'
 import { setStream } from '../store/features/myStreamSlice'
 import { CookieType, CurrentStream, PeerStreamType } from '../types/client'
 
-export const useVideoChat = (authCookie: CookieType) => {
+export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
   const { isScreenStreaming } = useAppSelector((state) => state.screenStreamer)
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
