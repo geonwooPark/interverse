@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { socket as ws } from '../../../lib/ws'
 import { peer as me } from '../../../lib/peer'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
 import { MediaConnection } from 'peerjs'
 import { CookieType } from '../../../types/client'
+import { ws } from '../../../lib/ws'
 
 interface VideoContainerProps {
   authCookie: CookieType
@@ -24,8 +24,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
   useEffect(() => {
     if (isJoined) return
-    ws.emit('clientCreateVideoRoom', authCookie.roomNum)
-    ws.emit('clientJoinVideoRoom', {
+    ws.socket.emit('clientCreateVideoRoom', authCookie.roomNum)
+    ws.socket.emit('clientJoinVideoRoom', {
       roomNum: authCookie.roomNum,
       peerId: me.id,
       nickName: authCookie.nickName,
@@ -37,13 +37,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!me) return
     if (!stream) return
 
-    ws.on('serverJoinVideoRoom', (user) => {
+    ws.socket.on('serverJoinVideoRoom', (user) => {
       const { peerId, nickName, socketId } = user
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
         metadata: {
           nickName: authCookie.nickName,
-          socketId: ws.id,
+          socketId: ws.socket.id,
         },
       })
       // 기존 멤버에서 실행
@@ -83,7 +83,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     me.once('call', handleIncomingCall)
 
     return () => {
-      ws.off('serverJoinVideoRoom')
+      ws.socket.off('serverJoinVideoRoom')
       me.off('call', handleIncomingCall)
     }
   }, [me, stream])

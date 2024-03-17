@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { getMedia, peer as me } from '../lib/peer'
-import { socket as ws } from '../lib/ws'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import {
@@ -9,6 +8,7 @@ import {
   stopStream,
 } from '../store/features/myStreamSlice'
 import { CookieType, CurrentStream, PeerStreamType } from '../types/client'
+import { ws } from '../lib/ws'
 
 export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
@@ -40,7 +40,7 @@ export const useVideoStream = (authCookie: CookieType) => {
           {
             peerId: me.id,
             nickName: authCookie.nickName,
-            socketId: ws.id as string,
+            socketId: ws.socket.id as string,
             stream,
             audio: true,
           },
@@ -52,7 +52,7 @@ export const useVideoStream = (authCookie: CookieType) => {
       }
     }
 
-    ws.on('serverUpdateVideoRoomMember', (socketId: string) => {
+    ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
       if (!stream) return
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
       setCurrentStream({
@@ -60,7 +60,7 @@ export const useVideoStream = (authCookie: CookieType) => {
         stream,
       })
     })
-    ws.on('serverLeaveVideoRoom', () => {
+    ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()
       setIsJoined(false)
       dispatch(stopStream())
@@ -69,8 +69,8 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
 
     return () => {
-      ws.off('serverLeaveVideoRoom')
-      ws.off('serverUpdateVideoRoomMember')
+      ws.socket.off('serverLeaveVideoRoom')
+      ws.socket.off('serverUpdateVideoRoomMember')
     }
   }, [])
 

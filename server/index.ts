@@ -5,7 +5,12 @@ import cors from 'cors'
 import { videoRoomHandler } from './handler/videoRoom'
 import { roomHandler } from './handler/room'
 import { chairHandler } from './handler/chair'
-import { ClientToServerEvents, ServerToClientEvents } from './types/server'
+import {
+  ClientToServerEvents,
+  RoomUser,
+  ServerToClientEvents,
+  VideoRoomUser,
+} from './types/server'
 
 const app = express()
 app.use(cors())
@@ -17,19 +22,14 @@ const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: ['https://team94-interverse.vercel.app', 'http://localhost:5173'],
+    origin: ['http://localhost:5173', 'https://team94-interverse.vercel.app'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
 })
 
-export const videoRoom: Record<string, Record<string, IUser>> = {}
-interface IUser {
-  peerId: string
-  socketId: string
-  nickName: string
-}
-
+export const rooms: Record<string, Record<string, RoomUser>> = {}
+export const videoRoom: Record<string, Record<string, VideoRoomUser>> = {}
 export const occupiedChairs: Record<string, Map<string, string>> = {}
 
 io.on(
@@ -46,5 +46,5 @@ io.on(
 )
 
 server.listen(3000, () => {
-  console.log('서버 실행중..')
+  console.log('서버 실행중...')
 })

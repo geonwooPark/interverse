@@ -1,5 +1,5 @@
 import ObjectItem from '../items/ObjectItem'
-import { sendMessage } from '../lib/ws'
+import { ws } from '../lib/ws'
 
 export default class Avatar extends Phaser.Physics.Arcade.Sprite {
   avatarTexture: string
@@ -61,7 +61,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
 
     // 서버로 메세지 보내기
     if (roomNum) {
-      sendMessage({
+      ws.sendMessage({
         message: content,
         nickName: this.nickname.text,
         senderId: '',

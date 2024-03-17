@@ -6,9 +6,9 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import { joinRoom, occupiedChairs, receiveChairId } from '../lib/ws'
 import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
 import { ClientJoinRoom, ServerAvatarPosition } from '../types/socket'
+import { ws } from '../lib/ws'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -174,7 +174,7 @@ export default class Game extends Phaser.Scene {
 
     if (
       interactionItem.id &&
-      occupiedChairs.includes(interactionItem.id.toString())
+      ws.occupiedChairs.includes(interactionItem.id.toString())
     )
       return
     player.isCollide = true
@@ -217,20 +217,17 @@ export default class Game extends Phaser.Scene {
   joinRoom({ roomNum, authCookie }: ClientJoinRoom) {
     if (!this.player) return
 
-    joinRoom({ roomNum, authCookie })
+    ws.joinRoom({ roomNum, authCookie })
+    ws.receiveChairId()
+    this.roomNum = roomNum
     this.player.setNickname(authCookie.nickName)
     this.player.setAvatarTexture(authCookie.texture)
     this.player.sendPlayerInfo(roomNum)
-    this.roomNum = roomNum
-
     this.player.setPosition(
       authCookie.role === 'host' ? 260 : 720,
       authCookie.role === 'host' ? 520 : 170,
     )
-
     this.setUpKeys()
-
-    receiveChairId()
   }
 
   /** 다른 플레이어 입장 */

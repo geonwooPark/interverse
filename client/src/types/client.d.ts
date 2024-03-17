@@ -18,8 +18,9 @@ export interface AddOtherPlayerType {
   y: number
   nickName: string
   texture: string
-  animation?: string
-  socketId?: string
+  animation: string
+  socketId: string
+  roomNum: string
 }
 
 export interface DisplayOtherPlayerChatType {

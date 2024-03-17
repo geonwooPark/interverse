@@ -1,13 +1,5 @@
 import Chair from '../items/Chair'
 import {
-  occupiedChairs,
-  sendAvatarPosition,
-  sendChairId,
-  sendPlayerInfo,
-  sendPlayerInfoToNewPlayer,
-  socket,
-} from '../lib/ws'
-import {
   changeAlertContent,
   closeAlert,
   openAlert,
@@ -29,6 +21,7 @@ import { store } from '../store/store'
 import Avatar from './Avatar'
 import { peer as me } from '../lib/peer'
 import { handleScreenSharing } from '../store/features/myStreamSlice'
+import { ws } from '../lib/ws'
 
 export default class Player extends Avatar {
   isCollide = false
@@ -48,30 +41,13 @@ export default class Player extends Avatar {
 
   // 서버로 나의 아바타 정보 전달
   sendPlayerInfo(roomNum: string) {
-    sendPlayerInfo({
-      x: this.x,
-      y: this.y,
-      nickName: this.nickname.text,
-      texture: this.avatarTexture,
-      roomNum,
-    })
-  }
-  // 새로운 유저에세 나의 아바타 정보 전달
-  sendPlayerInfoToNewPlayer({
-    roomNum,
-    newPlayerId,
-  }: {
-    roomNum: string
-    newPlayerId: string
-  }) {
-    sendPlayerInfoToNewPlayer({
+    ws.sendPlayerInfo({
       x: this.x,
       y: this.y,
       nickName: this.nickname.text,
       texture: this.avatarTexture,
       animation: this.anims.currentAnim!.key,
       roomNum,
-      newPlayerId,
     })
   }
 
@@ -129,7 +105,7 @@ export default class Player extends Avatar {
           this.prevVy = vy
         }
 
-        sendAvatarPosition({
+        ws.sendAvatarPosition({
           x: this.x,
           y: this.y,
           roomNum,
@@ -143,7 +119,7 @@ export default class Player extends Avatar {
 
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
-              if (occupiedChairs.includes(chair.id.toString())) return
+              if (ws.occupiedChairs.includes(chair.id.toString())) return
               this.preX = this.x
               this.preY = this.y
               this.setVelocity(0, 0)
@@ -159,12 +135,12 @@ export default class Player extends Avatar {
               this.behavior = 'sit'
 
               // 의자에 앉으면 서버로 의자의 넘버를 보냄
-              sendChairId({
+              ws.sendChairId({
                 roomNum,
                 chairId: chair.id?.toString() || '',
               })
 
-              sendAvatarPosition({
+              ws.sendAvatarPosition({
                 x: this.x,
                 y: this.y,
                 roomNum,
@@ -210,7 +186,7 @@ export default class Player extends Avatar {
               this.anims.play(`${this.avatarTexture}_stand_down`, true)
               this.behavior = 'share'
 
-              sendAvatarPosition({
+              ws.sendAvatarPosition({
                 x: this.x,
                 y: this.y,
                 roomNum,
@@ -238,7 +214,7 @@ export default class Player extends Avatar {
           const chair = this.selectedInteractionItem as Chair
           if (!this.selectedInteractionItem) return
 
-          sendChairId({
+          ws.sendChairId({
             roomNum,
             chairId: chair.id?.toString() || '',
           })
@@ -247,7 +223,7 @@ export default class Player extends Avatar {
             store.dispatch(closeCreatorModal())
           }
           if (chair.interaction === 'interview') {
-            socket.emit('clientLeaveVideoRoom', roomNum)
+            ws.socket.emit('clientLeaveVideoRoom', roomNum)
           }
 
           this.setPosition(this.preX, this.preY)
@@ -264,7 +240,7 @@ export default class Player extends Avatar {
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
           if (!this.selectedInteractionItem) return
           this.behavior = 'stand'
-          socket.emit('clientLeaveVideoRoom', roomNum)
+          ws.socket.emit('clientLeaveVideoRoom', roomNum)
         }
         break
     }

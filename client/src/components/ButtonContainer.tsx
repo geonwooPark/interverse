@@ -1,4 +1,4 @@
-import { socket } from '../lib/ws'
+import { ws } from '../lib/ws'
 import {
   changeAlertContent,
   closeAlert,
@@ -35,7 +35,7 @@ function ButtonContainer() {
       }),
     )
     dispatch(openModal())
-    socket.emit('clientLeaveRoom')
+    ws.socket.emit('clientLeaveRoom')
   }
 
   return (

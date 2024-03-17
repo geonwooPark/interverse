@@ -30,6 +30,7 @@ export interface ServerPlayerInfo {
   y: number
   nickName: string
   texture: string
+  animation: any
   roomNum: string
   socketId: string
 }
@@ -39,6 +40,7 @@ export interface ClientPlayerInfo {
   y: number
   nickName: string
   texture: string
+  animation: any
   roomNum: string
 }
 
@@ -99,6 +101,16 @@ export interface ClientChairId {
   chairId: string
 }
 
+export interface RoomUser {
+  x: number
+  y: number
+  nickName: string
+  texture: string
+  animation: any
+  roomNum: string
+  socketId: string
+}
+
 export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
   serverMsg: (message: ServerMessage) => void
@@ -135,6 +147,7 @@ export interface ServerToClientEvents {
   serverUpdateVideoRoomMember: (socketId: string) => void
   serverOccupiedChairs: (chairs: string[]) => void
   serverChairId: (chairId: string) => void
+  serverRoomMember: (rooms: Record<string, Record<string, RoomUser>>) => void
 }
 
 export interface ClientToServerEvents {
