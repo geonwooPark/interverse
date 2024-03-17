@@ -20,7 +20,7 @@ export default class Chair extends ObjectItem {
     if (this.interaction === 'menual') {
       this.setInteractionBox('스페이스키를 눌러 제작자를 확인하세요!')
     } else {
-      this.setInteractionBox('스페이스키를 눌러 앉아보세요!')
+      this.setInteractionBox('스페이스키를 눌러 화상채팅을 시작하세요!')
     }
   }
 }

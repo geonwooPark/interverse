@@ -1,20 +1,4 @@
-interface WS {
-  socket: Socket<ServerToClientEvents, ClientToServerEvents>
-  game: Game | null
-  occupiedChairs: string[]
-  joinRoom: ({ authCookie }: ClientJoinRoom) => void
-  sendMessage: ({ message, nickName, senderId, roomNum }: ClientMessage) => void
-  sendAvatarPosition: ({
-    x,
-    y,
-    roomNum,
-    animation,
-  }: ClientAvatarPosition) => void
-  sendChairId: ({ roomNum, chairId }: ClientChairId) => void
-  receiveChairId: () => void
-}
-
-interface ServerMessage {
+export interface ServerMessage {
   message: string
   nickName: string
   roomNum: string
@@ -22,7 +6,7 @@ interface ServerMessage {
   newPlayerId?: string
 }
 
-interface ClientMessage {
+export interface ClientMessage {
   message: string
   nickName: string
   roomNum: string
@@ -30,7 +14,7 @@ interface ClientMessage {
   newPlayerId?: string
 }
 
-interface ClientJoinRoom {
+export interface ClientJoinRoom {
   authCookie: {
     roomNum: string
     role: 'host' | 'guest'
@@ -42,7 +26,7 @@ interface ClientJoinRoom {
   animation: any
 }
 
-interface ServerPlayerInfo {
+export interface ServerPlayerInfo {
   nickName: string
   texture: string
   animation: any
@@ -50,44 +34,44 @@ interface ServerPlayerInfo {
   socketId: string
 }
 
-interface ServerAvatarPosition {
+export interface ServerAvatarPosition {
   x: number
   y: number
   socketId: string
   animation: any
 }
 
-interface ClientAvatarPosition {
+export interface ClientAvatarPosition {
   x: number
   y: number
   roomNum: string
   animation: any
 }
 
-interface ClientJoinVideoRoom {
+export interface ClientJoinVideoRoom {
   roomNum: string
   peerId: string
   nickName: string
 }
 
-interface ServerJoinVideoRoom {
+export interface ServerJoinVideoRoom {
   socketId: string
   peerId: string
   nickName: string
 }
 
-interface ClientChairId {
+export interface ClientChairId {
   roomNum: string
   chairId: string
 }
 
-interface JoinVideoRoomType {
+export interface JoinVideoRoomType {
   roomNum: string
   peerId: string
   nickName: string
 }
 
-interface RoomUser {
+export interface RoomUser {
   nickName: string
   texture: string
   animation: any
@@ -95,7 +79,7 @@ interface RoomUser {
   socketId: string
 }
 
-interface VideoRoomUser {
+export interface VideoRoomUser {
   peerId: string
   socketId: string
   nickName: string

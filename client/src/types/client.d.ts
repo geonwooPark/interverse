@@ -13,14 +13,6 @@ export interface CookieType {
   texture: string
 }
 
-export interface AddOtherPlayerType {
-  nickName: string
-  texture: string
-  animation: string
-  socketId: string
-  roomNum: string
-}
-
 export interface DisplayOtherPlayerChatType {
   message: string
   socketId: string

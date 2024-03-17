@@ -9,9 +9,9 @@ import {
   ClientJoinRoom,
   ClientMessage,
   ClientToServerEvents,
+  ServerPlayerInfo,
   ServerToClientEvents,
 } from '../types/socket'
-import { AddOtherPlayerType } from '../types/client'
 
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
@@ -63,7 +63,7 @@ export const ws: WS = {
     ws.socket.on('serverRoomMember', (users) => {
       if (!ws.game) return
       for (const user in users) {
-        ws.game.addOtherPlayer(users[user] as unknown as AddOtherPlayerType)
+        ws.game.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
       }
     })
     // 방에 입장했을 때 이미 누군가 앉아있는 의자들

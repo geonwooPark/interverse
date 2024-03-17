@@ -6,12 +6,8 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import {
-  AddOtherPlayerType,
-  CookieType,
-  DisplayOtherPlayerChatType,
-} from '../types/client'
-import { ServerAvatarPosition } from '../types/socket'
+import { CookieType, DisplayOtherPlayerChatType } from '../types/client'
+import { ServerAvatarPosition, ServerPlayerInfo } from '../types/socket'
 import { ws } from '../lib/ws'
 
 export default class Game extends Phaser.Scene {
@@ -232,12 +228,7 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 다른 플레이어 입장 */
-  addOtherPlayer({
-    nickName,
-    texture,
-    animation,
-    socketId,
-  }: AddOtherPlayerType) {
+  addOtherPlayer({ nickName, texture, animation, socketId }: ServerPlayerInfo) {
     if (!socketId) return
 
     const newPlayer = new OtherPlayer(this, -1000, -1000, texture, nickName)
