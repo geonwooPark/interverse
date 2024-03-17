@@ -7,7 +7,6 @@ import { ChatListSlice } from './features/chatListSlice'
 import { CreatorModalSlice } from './features/creatorModalSlice'
 import { ManualModalSlice } from './features/manualModalSlice'
 import { VideoModalSlice } from './features/videoModalSlice'
-import { ScreenStreamerSlice } from './features/screenStreamerSlice'
 import { SurveyModalSlice } from './features/surveyModalSlice'
 import { MyStreamSlice } from './features/myStreamSlice'
 
@@ -21,7 +20,6 @@ export const store = configureStore({
     manualModal: ManualModalSlice.reducer,
     surveyModal: SurveyModalSlice.reducer,
     videoModal: VideoModalSlice.reducer,
-    screenStreamer: ScreenStreamerSlice.reducer,
     myStream: MyStreamSlice.reducer,
   },
 

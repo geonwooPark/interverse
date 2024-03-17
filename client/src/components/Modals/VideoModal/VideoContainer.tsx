@@ -4,7 +4,6 @@ import { peer as me } from '../../../lib/peer'
 import VideoPlayerList from './VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
-import { useAppSelector } from '../../../store/store'
 import { MediaConnection } from 'peerjs'
 import { CookieType } from '../../../types/client'
 
@@ -13,8 +12,8 @@ interface VideoContainerProps {
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
-  const { stream } = useAppSelector((state) => state.myStream)
   const {
+    stream,
     peerStreams,
     setPeerStreams,
     currentStream,

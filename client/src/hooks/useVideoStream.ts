@@ -3,26 +3,32 @@ import { getMedia, peer as me } from '../lib/peer'
 import { socket as ws } from '../lib/ws'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
-import { handleStreaming } from '../store/features/screenStreamerSlice'
-import { setStream } from '../store/features/myStreamSlice'
+import {
+  handleScreenSharing,
+  setStream,
+  stopStream,
+} from '../store/features/myStreamSlice'
 import { CookieType, CurrentStream, PeerStreamType } from '../types/client'
 
 export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
-  const { isScreenStreaming } = useAppSelector((state) => state.screenStreamer)
+  const { stream, controller, isScreenSharing } = useAppSelector(
+    (state) => state.myStream,
+  )
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
   const [currentStream, setCurrentStream] = useState<CurrentStream>()
   const [isJoined, setIsJoined] = useState(false)
-  const { controller } = useAppSelector((state) => state.myStream)
 
   useEffect(() => {
     try {
-      getMedia(isScreenStreaming).then((stream) => {
+      getMedia(isScreenSharing).then((stream) => {
         const audioTrack = stream.getAudioTracks()[0]
         const videoTrack = stream.getVideoTracks()[0]
 
-        audioTrack.enabled = controller.audio
-        videoTrack.enabled = controller.video
+        if (audioTrack && videoTrack) {
+          audioTrack.enabled = controller.audio
+          videoTrack.enabled = controller.video
+        }
 
         dispatch(setStream(stream))
         setCurrentStream({
@@ -50,13 +56,19 @@ export const useVideoStream = (authCookie: CookieType) => {
       console.log(`비디오 방 ${roomNum} 생성`)
     })
     ws.on('serverUpdateVideoRoomMember', (socketId: string) => {
+      if (!stream) return
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
+      setCurrentStream({
+        peerId: me.id,
+        stream,
+      })
     })
     ws.on('serverLeaveVideoRoom', () => {
       me.disconnect()
-      dispatch(showVideoModal(false))
-      dispatch(handleStreaming(false))
       setIsJoined(false)
+      dispatch(stopStream())
+      dispatch(showVideoModal(false))
+      if (isScreenSharing) dispatch(handleScreenSharing(false))
     })
 
     return () => {
@@ -67,6 +79,7 @@ export const useVideoStream = (authCookie: CookieType) => {
   }, [])
 
   return {
+    stream,
     peerStreams,
     setPeerStreams,
     currentStream,
