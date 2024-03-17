@@ -28,7 +28,7 @@ import { showVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
 import { peer as me } from '../lib/peer'
-import { handleStreaming } from '../store/features/screenStreamerSlice'
+import { handleScreenSharing } from '../store/features/myStreamSlice'
 
 export default class Player extends Avatar {
   isCollide = false
@@ -221,7 +221,7 @@ export default class Player extends Avatar {
                 me.reconnect()
               }
               store.dispatch(showVideoModal(true))
-              store.dispatch(handleStreaming(true))
+              store.dispatch(handleScreenSharing(true))
               store.dispatch(
                 changeAlertContent(
                   'ESC 키를 눌러 화면공유를 중지할 수 있습니다.',

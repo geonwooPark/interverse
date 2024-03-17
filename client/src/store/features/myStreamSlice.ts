@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 interface MyStreamType {
   stream: MediaStream | null
+  isScreenSharing: boolean
   controller: {
     video: boolean
     audio: boolean
@@ -10,6 +11,7 @@ interface MyStreamType {
 
 const initialState: MyStreamType = {
   stream: null,
+  isScreenSharing: false,
   controller: {
     video: false,
     audio: false,
@@ -23,7 +25,7 @@ export const MyStreamSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    setStream: (state, action: PayloadAction<MediaStream>) => {
+    setStream: (state, action: PayloadAction<MediaStream | null>) => {
       state.stream = action.payload
     },
     controlStream: (state, action: PayloadAction<'video' | 'audio'>) => {
@@ -39,6 +41,12 @@ export const MyStreamSlice = createSlice({
           audio: !state.controller.audio,
         }
       }
+    },
+    stopStream: (state) => {
+      state.stream?.getTracks().forEach((track) => track.stop())
+    },
+    handleScreenSharing: (state, action: PayloadAction<boolean>) => {
+      state.isScreenSharing = action.payload
     },
     handleAudio: (state) => {
       if (!state.stream) return
@@ -61,5 +69,11 @@ export const MyStreamSlice = createSlice({
   },
 })
 
-export const { setStream, controlStream, handleAudio, handleVideo } =
-  MyStreamSlice.actions
+export const {
+  setStream,
+  stopStream,
+  controlStream,
+  handleScreenSharing,
+  handleAudio,
+  handleVideo,
+} = MyStreamSlice.actions

@@ -5,8 +5,9 @@ export const peer = new Peer({
   secure: true,
   port: 443,
 })
-export const getMedia = (isScreenStreaming: boolean) => {
-  if (isScreenStreaming) {
+
+export const getMedia = (isScreenSharing: boolean) => {
+  if (isScreenSharing) {
     return navigator.mediaDevices.getDisplayMedia({
       video: true,
       audio: true,

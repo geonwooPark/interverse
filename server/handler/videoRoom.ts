@@ -12,14 +12,8 @@ export const videoRoomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
-  const createVideoRoom = (roomNum: string) => {
-    if (videoRoom[roomNum]) return
-    videoRoom[roomNum] = videoRoom[roomNum] || {}
-    socket.emit('serverCreateVideoRoom', roomNum)
-  }
-
   const joinVideoRoom = ({ roomNum, peerId, nickName }: JoinVideoRoomType) => {
-    if (!peerId) return
+    if (!peerId || !roomNum || !nickName) return
     if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
     if (videoRoom[roomNum][socket.id]) return
     if (Object.keys(videoRoom[roomNum]).length >= 7) return
@@ -47,7 +41,6 @@ export const videoRoomHandler = (
     io.to(socket.id).emit('serverLeaveVideoRoom')
   }
 
-  socket.on('clientCreateVideoRoom', createVideoRoom)
   socket.on('clientJoinVideoRoom', joinVideoRoom)
   socket.on('clientLeaveVideoRoom', leaveVideoRoom)
 }
