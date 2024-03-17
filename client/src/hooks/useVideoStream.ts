@@ -53,12 +53,13 @@ export const useVideoStream = (authCookie: CookieType) => {
     }
 
     ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
-      if (!stream) return
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
-      setCurrentStream({
-        peerId: me.id,
-        stream,
-      })
+      if (stream) {
+        setCurrentStream({
+          peerId: me.id,
+          stream,
+        })
+      }
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()

@@ -6,8 +6,12 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import { AddOtherPlayerType, DisplayOtherPlayerChatType } from '../types/client'
-import { ClientJoinRoom, ServerAvatarPosition } from '../types/socket'
+import {
+  AddOtherPlayerType,
+  CookieType,
+  DisplayOtherPlayerChatType,
+} from '../types/client'
+import { ServerAvatarPosition } from '../types/socket'
 import { ws } from '../lib/ws'
 
 export default class Game extends Phaser.Scene {
@@ -214,26 +218,21 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 방에 입장 */
-  joinRoom({ roomNum, authCookie }: ClientJoinRoom) {
+  joinRoom({ authCookie }: { authCookie: CookieType }) {
     if (!this.player) return
+    this.roomNum = authCookie.roomNum
 
-    ws.joinRoom({ roomNum, authCookie })
+    ws.joinRoom({
+      authCookie,
+      texture: this.player.avatarTexture,
+      animation: this.player.anims.currentAnim!.key,
+    })
     ws.receiveChairId()
-    this.roomNum = roomNum
-    this.player.setNickname(authCookie.nickName)
-    this.player.setAvatarTexture(authCookie.texture)
-    this.player.sendPlayerInfo(roomNum)
-    this.player.setPosition(
-      authCookie.role === 'host' ? 260 : 720,
-      authCookie.role === 'host' ? 520 : 170,
-    )
     this.setUpKeys()
   }
 
   /** 다른 플레이어 입장 */
   addOtherPlayer({
-    x,
-    y,
     nickName,
     texture,
     animation,
@@ -241,7 +240,7 @@ export default class Game extends Phaser.Scene {
   }: AddOtherPlayerType) {
     if (!socketId) return
 
-    const newPlayer = new OtherPlayer(this, x, y, texture, nickName)
+    const newPlayer = new OtherPlayer(this, -1000, -1000, texture, nickName)
     newPlayer.anims.play(animation || `${texture}_stand_down`, true)
     newPlayer.setDepth(900)
     this.add.existing(newPlayer)

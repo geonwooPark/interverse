@@ -14,8 +14,6 @@ export interface CookieType {
 }
 
 export interface AddOtherPlayerType {
-  x: number
-  y: number
   nickName: string
   texture: string
   animation: string

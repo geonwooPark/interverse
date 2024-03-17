@@ -8,7 +8,6 @@ import {
   ClientChairId,
   ClientJoinRoom,
   ClientMessage,
-  ClientPlayerInfo,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../types/socket'
@@ -18,14 +17,7 @@ interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game: Game | null
   occupiedChairs: string[]
-  joinRoom: ({ roomNum, authCookie }: ClientJoinRoom) => void
-  sendPlayerInfo: ({
-    x,
-    y,
-    nickName,
-    texture,
-    roomNum,
-  }: ClientPlayerInfo) => void
+  joinRoom: ({ authCookie }: ClientJoinRoom) => void
   sendMessage: ({ message, nickName, senderId, roomNum }: ClientMessage) => void
   sendAvatarPosition: ({
     x,
@@ -38,40 +30,29 @@ interface WS {
 }
 
 export const ws: WS = {
-  // socket: io(`https://server-interverse-team94.koyeb.app`),
-  socket: io('http://localhost:3000'),
+  socket: io(import.meta.env.VITE_BACKEND),
   game: null,
   occupiedChairs: [],
 
-  joinRoom: ({ roomNum, authCookie }) => {
+  joinRoom: ({ authCookie, texture, animation }) => {
     ws.game = phaserGame.scene.keys.game as Game
+    ws.game.player.setNickname(authCookie.nickName)
+    ws.game.player.setAvatarTexture(authCookie.texture)
+    ws.game.player.setPosition(
+      authCookie.role === 'host' ? 260 : 720,
+      authCookie.role === 'host' ? 520 : 170,
+    )
 
-    // 서버로 방 번호와 쿠키 전달
-    ws.socket.emit('clientJoinRoom', {
-      roomNum,
-      authCookie,
-    })
-    // 방에 입장했을 때 이미 누군가 앉아있는 의자들
-    ws.socket.on('serverOccupiedChairs', (chairs) => {
-      if (!chairs) return
-      ws.occupiedChairs = [...chairs]
-    })
-    // 서버에서 방에서 나간 유저 정보 받기
-    ws.socket.on('serverLeaveRoom', (socketId) => {
+    // 서버로 쿠키와 아바타 정보 전달
+    ws.socket.emit('clientJoinRoom', { authCookie, texture, animation })
+    // 서버에서 입장 메시지 받기
+    ws.socket.on('serverMsg', (messageData) => {
       if (!ws.game) return
-      ws.game.removeOtherPlayer(socketId)
-    })
-  },
-
-  sendPlayerInfo: ({ x, y, nickName, texture, animation, roomNum }) => {
-    // 서버로 나의 아바타 정보 전달
-    ws.socket.emit('clientPlayerInfo', {
-      x,
-      y,
-      nickName,
-      texture,
-      animation,
-      roomNum,
+      store.dispatch(addMessage(messageData))
+      ws.game.displayOtherPlayerChat({
+        message: messageData.message,
+        socketId: messageData.senderId,
+      })
     })
     // 서버에서 기존 방의 유저들이 새로운 유저의 정보 받기
     ws.socket.on('serverPlayerInfo', (playerInfo) => {
@@ -85,15 +66,15 @@ export const ws: WS = {
         ws.game.addOtherPlayer(users[user] as unknown as AddOtherPlayerType)
       }
     })
-
-    // 서버에서 입장 메시지 받기
-    ws.socket.on('serverMsg', (messageData) => {
+    // 방에 입장했을 때 이미 누군가 앉아있는 의자들
+    ws.socket.on('serverOccupiedChairs', (chairs) => {
+      if (!chairs) return
+      ws.occupiedChairs = [...chairs]
+    })
+    // 서버에서 방에서 나간 유저 정보 받기
+    ws.socket.on('serverLeaveRoom', (socketId) => {
       if (!ws.game) return
-      store.dispatch(addMessage(messageData))
-      ws.game.displayOtherPlayerChat({
-        message: messageData.message,
-        socketId: messageData.senderId,
-      })
+      ws.game.removeOtherPlayer(socketId)
     })
   },
 

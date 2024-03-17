@@ -39,18 +39,6 @@ export default class Player extends Avatar {
     super(scene, x, y, texture, frame)
   }
 
-  // 서버로 나의 아바타 정보 전달
-  sendPlayerInfo(roomNum: string) {
-    ws.sendPlayerInfo({
-      x: this.x,
-      y: this.y,
-      nickName: this.nickname.text,
-      texture: this.avatarTexture,
-      animation: this.anims.currentAnim!.key,
-      roomNum,
-    })
-  }
-
   // 플레이어,닉네임 및 채팅 이동
   update(
     cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
