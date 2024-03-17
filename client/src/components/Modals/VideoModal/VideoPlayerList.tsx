@@ -38,23 +38,24 @@ function VideoPlayerList({
   return (
     <div className="mx-auto flex w-full justify-center gap-4">
       {peerStreams.map((peerStream) => (
-        <div key={peerStream.peerId}>
+        <div key={peerStream.peerId} className="relative">
           <div
             onClick={() => changeCurrentStreamer(peerStream)}
-            className={`${peerStream.peerId === currentStream?.peerId ? 'border-purple-600' : 'border-transparent'} mb-1 h-[160px] w-[240px] cursor-pointer overflow-hidden rounded-md border-2`}
+            className={`${peerStream.peerId === currentStream?.peerId ? 'border-purple-600' : 'border-transparent'} mb-1 h-[160px] w-[240px] cursor-pointer overflow-hidden rounded-md border-2 [&>video]:cursor-pointer`}
           >
             <VideoPlayer stream={peerStream.stream} audio={peerStream.audio} />
           </div>
-          <div className="flex items-center justify-center gap-2 text-white">
-            <p className={`text-center`}>{peerStream.nickName}</p>
-            {peerStream.peerId !== me.id && (
-              <button onClick={() => updateMuteStatus(peerStream.peerId)}>
-                <IconSound
-                  className={`size-5 ${peerStream.audio ? 'text-green-500' : 'text-red-500'}`}
-                />
-              </button>
-            )}
-          </div>
+          <p className={`text-center`}>{peerStream.nickName}</p>
+          {peerStream.peerId !== me.id && (
+            <button
+              onClick={() => updateMuteStatus(peerStream.peerId)}
+              className="absolute right-2 top-2 rounded-full bg-white/30 p-1"
+            >
+              <IconSound
+                className={`size-4 ${peerStream.audio ? 'text-green-500' : 'text-red-500'}`}
+              />
+            </button>
+          )}
         </div>
       ))}
     </div>
