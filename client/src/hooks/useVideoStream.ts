@@ -52,9 +52,6 @@ export const useVideoStream = (authCookie: CookieType) => {
       }
     }
 
-    ws.on('serverCreateVideoRoom', (roomNum) => {
-      console.log(`비디오 방 ${roomNum} 생성`)
-    })
     ws.on('serverUpdateVideoRoomMember', (socketId: string) => {
       if (!stream) return
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
@@ -72,7 +69,6 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
 
     return () => {
-      ws.off('serverCreateVideoRoom')
       ws.off('serverLeaveVideoRoom')
       ws.off('serverUpdateVideoRoomMember')
     }
