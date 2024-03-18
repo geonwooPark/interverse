@@ -93,13 +93,6 @@ export default class Player extends Avatar {
           this.prevVy = vy
         }
 
-        ws.sendAvatarPosition({
-          x: this.x,
-          y: this.y,
-          roomNum,
-          animation: this.anims.currentAnim!.key,
-        })
-
         // 의자에 앉기
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
           if (!this.selectedInteractionItem) return
@@ -232,6 +225,13 @@ export default class Player extends Avatar {
         }
         break
     }
+
+    ws.sendAvatarPosition({
+      x: this.x,
+      y: this.y,
+      roomNum,
+      animation: this.anims.currentAnim!.key,
+    })
 
     if (
       this.selectedInteractionItem &&
