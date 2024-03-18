@@ -13,7 +13,10 @@ import IconOff from '../svgs/IconOff.svg?react'
 function ButtonContainer() {
   const dispatch = useAppDispatch()
 
-  const onLinkClick = () => {
+  const onLinkClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    ;(event.target as HTMLButtonElement).blur()
     dispatch(changeAlertContent('복사 완료! 링크를 공유하여 초대하세요.'))
     dispatch(openAlert())
     navigator.clipboard.writeText(window.location.href)
