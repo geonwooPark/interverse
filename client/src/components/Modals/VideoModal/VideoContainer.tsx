@@ -38,6 +38,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!stream) return
 
     ws.socket.on('serverJoinVideoRoom', (user) => {
+      console.log(user)
       const { peerId, nickName, socketId } = user
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
@@ -46,8 +47,10 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
           socketId: ws.socket.id,
         },
       })
+      console.log(call)
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
+        console.log('기존 멤버 실행')
         setPeerStreams((prev) => [
           ...prev,
           {
@@ -62,6 +65,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     })
 
     const handleIncomingCall = (call: MediaConnection) => {
+      console.log('전화받음', call)
       const { nickName, socketId } = call.metadata
       // 전화에 응답
       call.answer(stream)
@@ -80,13 +84,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       })
     }
 
-    me.once('call', handleIncomingCall)
+    me.on('call', handleIncomingCall)
 
     return () => {
       ws.socket.off('serverJoinVideoRoom')
       me.off('call', handleIncomingCall)
     }
-  }, [me, stream])
+  }, [me, stream, ws])
 
   return (
     <div>
