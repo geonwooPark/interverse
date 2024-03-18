@@ -22,7 +22,7 @@ const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: ['http://localhost:5173', 'https://team94-interverse.vercel.app'],
+    origin: ['http://localhost:5173', 'https://www.interverse.kr'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
