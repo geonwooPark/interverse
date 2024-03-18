@@ -1,5 +1,4 @@
 import { Socket, io } from 'socket.io-client'
-
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
 import { store } from '../store/store'
@@ -9,149 +8,109 @@ import {
   ClientChairId,
   ClientJoinRoom,
   ClientMessage,
-  ClientOtherAvatarPosition,
-  ClientPlayerInfo,
   ClientToServerEvents,
+  ServerPlayerInfo,
   ServerToClientEvents,
 } from '../types/socket'
 
-export let occupiedChairs: string[] = []
-
-export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  `https://server-interverse-team94.koyeb.app`,
-)
-
-export const joinRoom = ({ roomNum, authCookie }: ClientJoinRoom) => {
-  // 서버로 방 번호와 쿠키 전달
-  socket.emit('clientJoinRoom', {
-    roomNum,
-    authCookie,
-  })
-
-  // 서버에서 방에서 나간 유저 정보 받기
-  socket.on('serverLeaveRoom', (sockerId) => {
-    const game = phaserGame.scene.keys.game as Game
-    game.removeOtherPlayer(sockerId)
-  })
-
-  // 방에 입장했을 때 이미 누군가 앉아있는 의자들
-  socket.on('serverOccupiedChairs', (chairs) => {
-    if (!chairs) return
-    occupiedChairs = [...chairs]
-  })
-}
-
-export const sendPlayerInfo = ({
-  x,
-  y,
-  nickName,
-  texture,
-  roomNum,
-}: ClientPlayerInfo) => {
-  // 서버로 나의 아바타 정보 전달
-  socket.emit('clientPlayerInfo', {
-    x,
-    y,
-    nickName,
-    texture,
-    roomNum,
-  })
-  // 서버에서 새로운 유저 정보 받기
-  socket.on('serverPlayerInfo', (playerInfo) => {
-    const game = phaserGame.scene.keys.game as Game
-    game.addOtherPlayer(playerInfo)
-  })
-
-  // 서버에서 입장 메시지 받기
-  socket.on('serverMsg', (messageData) => {
-    const game = phaserGame.scene.keys.game as Game
-    store.dispatch(addMessage(messageData))
-    game.displayOtherPlayerChat({
-      message: messageData.message,
-      socketId: messageData.senderId,
-    })
-
-    // 새로운 유저 입장 시 실행되는 함수
-    game.player.sendPlayerInfoToNewPlayer({
-      roomNum: messageData.roomNum,
-      newPlayerId: messageData.newPlayerId || '',
-    })
-  })
-}
-
-export const sendPlayerInfoToNewPlayer = ({
-  x,
-  y,
-  nickName,
-  texture,
-  animation,
-  roomNum,
-  newPlayerId,
-}: ClientOtherAvatarPosition) => {
-  // 새로운 유저에게 나의 정보 전달
-  socket.emit('clientOtherAvatarPosition', {
-    x,
-    y,
-    nickName,
-    texture,
-    animation,
-    roomNum,
-    newPlayerId,
-  })
-
-  // 서버에서 방에 있던 기존 유저 정보 받기
-  socket.on('serverOtherAvatarPosition', (otherAvatarPosition) => {
-    const game = phaserGame.scene.keys.game as Game
-    game.addOtherPlayer(otherAvatarPosition)
-  })
-}
-
-export const sendMessage = ({
-  message,
-  nickName,
-  senderId,
-  roomNum,
-}: ClientMessage) => {
-  // 서버로 메시지 보내기
-  socket.emit('clientMsg', {
-    message,
-    senderId,
-    nickName,
-    roomNum,
-  })
-}
-
-export const sendAvatarPosition = ({
-  x,
-  y,
-  roomNum,
-  animation,
-}: ClientAvatarPosition) => {
-  // 서버로 실시간 나의 위치 정보 보내기
-  socket.emit('clientAvatarPosition', {
+interface WS {
+  socket: Socket<ServerToClientEvents, ClientToServerEvents>
+  game: Game | null
+  occupiedChairs: string[]
+  joinRoom: ({ authCookie }: ClientJoinRoom) => void
+  sendMessage: ({ message, nickName, senderId, roomNum }: ClientMessage) => void
+  sendAvatarPosition: ({
     x,
     y,
     roomNum,
     animation,
-  })
-
-  // 서버로부터 다른 모든 유저들 위치 정보 받기
-  socket.on('serverAvatarPosition', (avatarPosition) => {
-    const game = phaserGame.scene.keys.game as Game
-    game.updateOtherPlayer(avatarPosition)
-  })
+  }: ClientAvatarPosition) => void
+  sendChairId: ({ roomNum, chairId }: ClientChairId) => void
+  receiveChairId: () => void
 }
 
-/** 의자에 앉으면 다른 사람들에게 앉은 의자 번호를 알려주는 함수 */
-export const sendChairId = ({ roomNum, chairId }: ClientChairId) => {
-  socket.emit('clientChairId', { roomNum, chairId })
-}
+export const ws: WS = {
+  socket: io(import.meta.env.VITE_BACKEND),
+  game: null,
+  occupiedChairs: [],
 
-/** 다른 사람이 의자에 앉거나 일어나서 의자 번호를 보내주면 그 번호를 받아서 저장하는 함수 */
-export const receiveChairId = () => {
-  socket.on('serverChairId', (chairId: string) => {
-    occupiedChairs.includes(chairId)
-      ? (occupiedChairs = occupiedChairs.filter((r) => r !== chairId))
-      : occupiedChairs.push(chairId)
-  })
+  joinRoom: ({ authCookie, texture, animation }) => {
+    ws.game = phaserGame.scene.keys.game as Game
+    ws.game.player.setNickname(authCookie.nickName)
+    ws.game.player.setAvatarTexture(authCookie.texture)
+    ws.game.player.setPosition(
+      authCookie.role === 'host' ? 260 : 720,
+      authCookie.role === 'host' ? 520 : 170,
+    )
+
+    // 서버로 쿠키와 아바타 정보 전달
+    ws.socket.emit('clientJoinRoom', { authCookie, texture, animation })
+    // 서버에서 입장 메시지 받기
+    ws.socket.on('serverMsg', (messageData) => {
+      if (!ws.game) return
+      store.dispatch(addMessage(messageData))
+      ws.game.displayOtherPlayerChat({
+        message: messageData.message,
+        socketId: messageData.senderId,
+      })
+    })
+    // 서버에서 기존 방의 유저들이 새로운 유저의 정보 받기
+    ws.socket.on('serverPlayerInfo', (playerInfo) => {
+      if (!ws.game) return
+      ws.game.addOtherPlayer(playerInfo)
+    })
+    // 서버에서 새로운 유저가 방에 존재하는 유저들의 정보 받기
+    ws.socket.on('serverRoomMember', (users) => {
+      if (!ws.game) return
+      for (const user in users) {
+        ws.game.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
+      }
+    })
+    // 방에 입장했을 때 이미 누군가 앉아있는 의자들
+    ws.socket.on('serverOccupiedChairs', (chairs) => {
+      if (!chairs) return
+      ws.occupiedChairs = [...chairs]
+    })
+    // 서버에서 방에서 나간 유저 정보 받기
+    ws.socket.on('serverLeaveRoom', (socketId) => {
+      if (!ws.game) return
+      ws.game.removeOtherPlayer(socketId)
+    })
+  },
+
+  sendMessage: ({ message, nickName, senderId, roomNum }) => {
+    ws.socket.emit('clientMsg', {
+      message,
+      senderId,
+      nickName,
+      roomNum,
+    })
+  },
+
+  sendAvatarPosition: ({ x, y, roomNum, animation }) => {
+    // 서버로 실시간 나의 위치 정보 보내기
+    ws.socket.emit('clientAvatarPosition', {
+      x,
+      y,
+      roomNum,
+      animation,
+    })
+    // 서버로부터 다른 모든 유저들 위치 정보 받기
+    ws.socket.on('serverAvatarPosition', (avatarPosition) => {
+      if (!ws.game) return
+      ws.game.updateOtherPlayer(avatarPosition)
+    })
+  },
+
+  sendChairId: ({ roomNum, chairId }) => {
+    ws.socket.emit('clientChairId', { roomNum, chairId })
+  },
+
+  receiveChairId: () => {
+    ws.socket.on('serverChairId', (chairId: string) => {
+      ws.occupiedChairs.includes(chairId)
+        ? (ws.occupiedChairs = ws.occupiedChairs.filter((r) => r !== chairId))
+        : ws.occupiedChairs.push(chairId)
+    })
+  },
 }

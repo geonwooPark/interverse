@@ -31,7 +31,6 @@ function Room() {
 
     const joinRoom = () => {
       game.joinRoom({
-        roomNum: params.roomId as string,
         authCookie,
       })
     }
