@@ -53,7 +53,7 @@ export interface ClientJoinVideoRoom {
   peerId: string
   nickName: string
   texture: string
-  video: boolean
+  isVideoEnabled: boolean
 }
 
 export interface ServerJoinVideoRoom {
@@ -61,7 +61,7 @@ export interface ServerJoinVideoRoom {
   peerId: string
   nickName: string
   texture: string
-  video: boolean
+  isVideoEnabled: boolean
 }
 
 export interface ClientChairId {
@@ -114,7 +114,7 @@ export interface ServerToClientEvents {
     socketId,
     nickName,
     texture,
-    video,
+    isVideoEnabled,
   }: ServerJoinVideoRoom) => void
   serverLeaveVideoRoom: () => void
   serverUpdateVideoRoomMember: (socketId: string) => void
@@ -139,7 +139,7 @@ export interface ClientToServerEvents {
     peerId,
     nickName,
     texture,
-    video,
+    isVideoEnabled,
   }: ClientJoinVideoRoom) => void
   clientCreateVideoRoom: (roomNum: string) => void
   clientLeaveVideoRoom: (roomNum: string) => void

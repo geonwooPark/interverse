@@ -19,23 +19,26 @@ interface UserStatusProps {
 function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   const role = authCookie?.role === 'host' ? '호스트' : '게스트'
   const dispatch = useAppDispatch()
-  const { stream, controller } = useAppSelector((state) => state.myStream)
+  const { myStream, controller } = useAppSelector((state) => state.myStream)
 
   const onChatClick = () => {
     setShowChat((prev) => !prev)
   }
+
   const onCamClick = () => {
     dispatch(controlStream('video'))
     dispatch(handleVideo())
+
     const isVideoEnabled = controller.video ? false : true
     if (!authCookie) return
-    if (stream) {
+    if (myStream.stream) {
       ws.socket.emit('clientHandleCamera', {
         isVideoEnabled,
         roomNum: authCookie.roomNum,
       })
     }
   }
+
   const onMicClick = () => {
     dispatch(controlStream('audio'))
     dispatch(handleAudio())

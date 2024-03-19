@@ -1,27 +1,16 @@
-import { CurrentStream } from '../../../types/client'
+import { PeerStreamType } from '../../../types/client'
 import VideoPlayer from './VideoPlayer'
 
 interface CurrentStreamScreenProps {
-  currentStream?: CurrentStream
-  stream?: MediaStream
+  currentStream: PeerStreamType | null
 }
 
-function CurrentStreamScreen({
-  currentStream,
-  stream,
-}: CurrentStreamScreenProps) {
+function CurrentStreamScreen({ currentStream }: CurrentStreamScreenProps) {
+  if (!currentStream) return
   return (
-    <>
-      {stream && (
-        <div className="mx-auto mb-4 h-[400px] w-[600px] overflow-hidden rounded-md">
-          <VideoPlayer
-            stream={currentStream?.stream || stream}
-            texture={currentStream?.texture}
-            video={currentStream?.video}
-          />
-        </div>
-      )}
-    </>
+    <div className="mx-auto mb-4 h-[400px] w-[600px] overflow-hidden rounded-md">
+      <VideoPlayer videoStream={currentStream} />
+    </div>
   )
 }
 

@@ -1,54 +1,49 @@
 import { useEffect, useState } from 'react'
+import { ws } from '../lib/ws'
 import { getMedia, peer as me } from '../lib/peer'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import {
   handleScreenSharing,
-  setStream,
+  setMyStream,
   stopStream,
 } from '../store/features/myStreamSlice'
-import { CookieType, CurrentStream, PeerStreamType } from '../types/client'
-import { ws } from '../lib/ws'
+import { CookieType, PeerStreamType } from '../types/client'
 
 export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
-  const { stream, controller, isScreenSharing } = useAppSelector(
+  const { myStream, controller, isScreenSharing } = useAppSelector(
     (state) => state.myStream,
   )
   const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
-  const [currentStream, setCurrentStream] = useState<CurrentStream>()
+  const [currentStream, setCurrentStream] = useState<PeerStreamType | null>(
+    null,
+  )
   const [isJoined, setIsJoined] = useState(false)
+  const { video, audio } = controller
+  const { nickName, texture } = authCookie
 
   useEffect(() => {
     try {
       getMedia(isScreenSharing).then((stream) => {
+        const initStream = {
+          peerId: me.id,
+          socketId: ws.socket.id as string,
+          nickName,
+          stream,
+          isVideoEnabled: video,
+          texture,
+        }
+
         const audioTrack = stream.getAudioTracks()[0]
         const videoTrack = stream.getVideoTracks()[0]
 
         if (audioTrack && videoTrack) {
-          audioTrack.enabled = controller.audio
-          videoTrack.enabled = controller.video
+          audioTrack.enabled = audio
+          videoTrack.enabled = video
         }
 
-        dispatch(setStream(stream))
-        setCurrentStream({
-          peerId: me.id,
-          stream,
-          texture: authCookie.texture,
-          video: controller.video,
-        })
-        setPeerStreams((prev) => [
-          ...prev,
-          {
-            peerId: me.id,
-            nickName: authCookie.nickName,
-            socketId: ws.socket.id as string,
-            stream,
-            video: controller.video,
-            audio: true,
-            texture: authCookie.texture,
-          },
-        ])
+        dispatch(setMyStream(initStream), setCurrentStream(initStream))
       })
     } catch (error) {
       if (error instanceof Error) {
@@ -60,7 +55,7 @@ export const useVideoStream = (authCookie: CookieType) => {
       setPeerStreams((prev) =>
         prev.map((stream) => {
           if (stream.socketId === socketId) {
-            return { ...stream, video: isVideoEnabled }
+            return { ...stream, isVideoEnabled }
           }
           return stream
         }),
@@ -68,14 +63,7 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
     ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
-      // if (stream) {
-      //   setCurrentStream({
-      //     peerId: me.id,
-      //     stream,
-      //     texture: authCookie.texture,
-      //     video: controller.video,
-      //   })
-      // }
+      setCurrentStream(myStream)
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()
@@ -90,10 +78,10 @@ export const useVideoStream = (authCookie: CookieType) => {
       ws.socket.off('serverLeaveVideoRoom')
       ws.socket.off('serverUpdateVideoRoomMember')
     }
-  }, [])
+  }, [peerStreams])
 
   return {
-    stream,
+    myStream,
     peerStreams,
     setPeerStreams,
     currentStream,

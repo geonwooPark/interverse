@@ -16,7 +16,7 @@ export const videoRoomHandler = (
     peerId,
     nickName,
     texture,
-    video,
+    isVideoEnabled,
   }: ClientJoinVideoRoom) => {
     if (!peerId || !roomNum || !nickName) return
     if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
@@ -35,7 +35,7 @@ export const videoRoomHandler = (
       socketId: socket.id,
       nickName,
       texture,
-      video,
+      isVideoEnabled,
     })
 
     socket.on('disconnect', () => {
