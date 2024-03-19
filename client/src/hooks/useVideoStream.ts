@@ -25,7 +25,7 @@ export const useVideoStream = (authCookie: CookieType) => {
 
   useEffect(() => {
     try {
-      getMedia().then((stream) => {
+      getMedia(isScreenSharing).then((stream) => {
         const initStream = {
           peerId: me.id,
           socketId: ws.socket.id as string,
@@ -69,7 +69,7 @@ export const useVideoStream = (authCookie: CookieType) => {
       setIsJoined(false)
       dispatch(stopStream())
       dispatch(showVideoModal(false))
-      // if (isScreenSharing) dispatch(handleScreenSharing(false))
+      if (isScreenSharing) dispatch(handleScreenSharing(false))
     })
 
     return () => {

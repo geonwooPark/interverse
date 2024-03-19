@@ -142,7 +142,7 @@ export default class Player extends Avatar {
                 store.dispatch(showVideoModal(true))
                 store.dispatch(
                   changeAlertContent(
-                    'ESC 키를 눌러 화상채팅을 중지할 수 있습니다.',
+                    'ESC 키를 눌러 화상통화를 중지할 수 있습니다.',
                   ),
                 )
               } else {
