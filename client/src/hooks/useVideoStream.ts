@@ -38,10 +38,8 @@ export const useVideoStream = (authCookie: CookieType) => {
         const audioTrack = stream.getAudioTracks()[0]
         const videoTrack = stream.getVideoTracks()[0]
 
-        if (audioTrack && videoTrack) {
-          audioTrack.enabled = audio
-          videoTrack.enabled = video
-        }
+        audioTrack.enabled = audio
+        videoTrack.enabled = video
 
         dispatch(setMyStream(initStream), setCurrentStream(initStream))
       })
