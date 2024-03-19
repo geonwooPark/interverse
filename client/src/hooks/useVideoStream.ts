@@ -63,7 +63,6 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
     ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
-      setCurrentStream(myStream)
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()
@@ -78,6 +77,10 @@ export const useVideoStream = (authCookie: CookieType) => {
       ws.socket.off('serverLeaveVideoRoom')
       ws.socket.off('serverUpdateVideoRoomMember')
     }
+  }, [])
+
+  useEffect(() => {
+    setCurrentStream(myStream)
   }, [peerStreams])
 
   return {
