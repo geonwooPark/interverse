@@ -1,12 +1,15 @@
-import { textureImage } from '../routes/AvatarInfo'
-
 interface AvatarSelectorProps {
   texture: number
   setTexture: React.Dispatch<React.SetStateAction<number>>
+  textureArr: [string, string][]
 }
 
-function AvatarSelector({ texture, setTexture }: AvatarSelectorProps) {
-  const textureImageLength = Object.keys(textureImage).length
+function AvatarSelector({
+  texture,
+  setTexture,
+  textureArr,
+}: AvatarSelectorProps) {
+  const textureImageLength = textureArr.length
   const onTextureLeftArrowClick = () => {
     if (texture > 0) {
       setTexture((prev) => prev - 1)
@@ -31,7 +34,7 @@ function AvatarSelector({ texture, setTexture }: AvatarSelectorProps) {
           〈
         </div>
         <div
-          className={`h-[48px] w-[32px] scale-150 bg-[64px] ${textureImage[texture]}`}
+          className={`h-[48px] w-[32px] scale-150 bg-[64px] ${textureArr[texture][1]}`}
         ></div>
         <div className="cursor-pointer" onClick={onTextureRightArrowClick}>
           〉

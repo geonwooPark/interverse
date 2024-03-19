@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PeerStreamType } from '../../types/client'
 
-interface MyStreamType {
-  stream: MediaStream | null
+interface StreamType {
+  myStream: PeerStreamType
   isScreenSharing: boolean
   controller: {
     video: boolean
@@ -9,11 +10,18 @@ interface MyStreamType {
   }
 }
 
-const initialState: MyStreamType = {
-  stream: null,
+const initialState: StreamType = {
+  myStream: {
+    peerId: '',
+    socketId: '',
+    nickName: '',
+    stream: null,
+    isVideoEnabled: false,
+    texture: '',
+  },
   isScreenSharing: false,
   controller: {
-    video: false,
+    video: false, // 내 화면 조정
     audio: false,
   },
 }
@@ -25,14 +33,19 @@ export const MyStreamSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    setStream: (state, action: PayloadAction<MediaStream | null>) => {
-      state.stream = action.payload
+    setMyStream: (state, action: PayloadAction<PeerStreamType>) => {
+      state.myStream = action.payload
     },
     controlStream: (state, action: PayloadAction<'video' | 'audio'>) => {
       if (action.payload === 'video') {
         state.controller = {
           ...state.controller,
           video: !state.controller.video,
+        }
+
+        state.myStream = {
+          ...state.myStream,
+          isVideoEnabled: !state.myStream.isVideoEnabled,
         }
       }
       if (action.payload === 'audio') {
@@ -43,14 +56,14 @@ export const MyStreamSlice = createSlice({
       }
     },
     stopStream: (state) => {
-      state.stream?.getTracks().forEach((track) => track.stop())
+      state.myStream.stream?.getTracks().forEach((track) => track.stop())
     },
     handleScreenSharing: (state, action: PayloadAction<boolean>) => {
       state.isScreenSharing = action.payload
     },
     handleAudio: (state) => {
-      if (!state.stream) return
-      const audioTrack = state.stream.getAudioTracks()[0]
+      if (!state.myStream.stream) return
+      const audioTrack = state.myStream.stream.getAudioTracks()[0]
       if (audioTrack.enabled) {
         audioTrack.enabled = false
       } else {
@@ -58,8 +71,8 @@ export const MyStreamSlice = createSlice({
       }
     },
     handleVideo: (state) => {
-      if (!state.stream) return
-      const videoTrack = state.stream.getVideoTracks()[0]
+      if (!state.myStream.stream) return
+      const videoTrack = state.myStream.stream.getVideoTracks()[0]
       if (videoTrack.enabled) {
         videoTrack.enabled = false
       } else {
@@ -70,7 +83,7 @@ export const MyStreamSlice = createSlice({
 })
 
 export const {
-  setStream,
+  setMyStream,
   stopStream,
   controlStream,
   handleScreenSharing,

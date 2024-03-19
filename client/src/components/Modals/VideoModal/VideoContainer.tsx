@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
+import { ws } from '../../../lib/ws'
 import { peer as me } from '../../../lib/peer'
-import VideoPlayerList from './VideoPlayerList'
+import VideoPlayerList from './VideoPlayerList/VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
 import { MediaConnection } from 'peerjs'
 import { CookieType } from '../../../types/client'
-import { ws } from '../../../lib/ws'
 
 interface VideoContainerProps {
   authCookie: CookieType
@@ -13,14 +13,16 @@ interface VideoContainerProps {
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
   const {
-    stream,
+    myStream,
     peerStreams,
     setPeerStreams,
     currentStream,
     setCurrentStream,
     isJoined,
     setIsJoined,
+    controller,
   } = useVideoStream(authCookie)
+  const { stream } = myStream
 
   useEffect(() => {
     if (isJoined) return
@@ -29,6 +31,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       roomNum: authCookie.roomNum,
       peerId: me.id,
       nickName: authCookie.nickName,
+      texture: authCookie.texture,
+      isVideoEnabled: controller.video,
     })
     setIsJoined(true)
   }, [isJoined])
@@ -37,36 +41,35 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!me) return
     if (!stream) return
 
-    ws.socket.on('serverJoinVideoRoom', (user) => {
-      console.log(user)
-      const { peerId, nickName, socketId } = user
+    ws.socket.on('serverJoinVideoRoom', (newUser) => {
       // 기존 멤버들이 신규 멤버에게 call
-      const call = me.call(user.peerId, stream, {
+      const call = me.call(newUser.peerId, stream, {
         metadata: {
           nickName: authCookie.nickName,
           socketId: ws.socket.id,
+          texture: authCookie.texture,
+          isVideoEnabled: controller.video,
         },
       })
-      console.log(call)
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
-        console.log('기존 멤버 실행')
         setPeerStreams((prev) => [
           ...prev,
           {
-            peerId,
-            nickName,
-            socketId,
+            peerId: newUser.peerId,
+            nickName: newUser.nickName,
+            socketId: newUser.socketId,
+            texture: newUser.texture,
+            isVideoEnabled: newUser.isVideoEnabled,
             stream: peerStream,
-            audio: true,
+            sound: true,
           },
         ])
       })
     })
 
     const handleIncomingCall = (call: MediaConnection) => {
-      console.log('전화받음', call)
-      const { nickName, socketId } = call.metadata
+      const { nickName, socketId, texture, isVideoEnabled } = call.metadata
       // 전화에 응답
       call.answer(stream)
       // 새로운 멤버에서 실행
@@ -77,8 +80,10 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             peerId: call.peer,
             nickName,
             socketId,
+            texture,
+            isVideoEnabled,
             stream: peerStream,
-            audio: true,
+            sound: true,
           },
         ])
       })
@@ -90,14 +95,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       ws.socket.off('serverJoinVideoRoom')
       me.off('call', handleIncomingCall)
     }
-  }, [me, stream, ws])
+  }, [me, stream, controller])
 
   return (
     <div>
-      {stream && (
-        <CurrentStreamScreen currentStream={currentStream} stream={stream} />
-      )}
+      {stream && <CurrentStreamScreen currentStream={currentStream} />}
       <VideoPlayerList
+        myStream={myStream}
         peerStreams={peerStreams}
         setPeerStreams={setPeerStreams}
         currentStream={currentStream}
