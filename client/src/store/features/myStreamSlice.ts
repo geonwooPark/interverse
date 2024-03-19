@@ -73,7 +73,6 @@ export const MyStreamSlice = createSlice({
     handleVideo: (state) => {
       if (!state.myStream.stream) return
       const videoTrack = state.myStream.stream.getVideoTracks()[0]
-      console.log(videoTrack)
       if (videoTrack.enabled) {
         videoTrack.enabled = false
       } else {
