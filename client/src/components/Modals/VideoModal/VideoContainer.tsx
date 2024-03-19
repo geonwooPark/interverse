@@ -20,6 +20,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     setCurrentStream,
     isJoined,
     setIsJoined,
+    controller,
   } = useVideoStream(authCookie)
 
   useEffect(() => {
@@ -29,6 +30,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       roomNum: authCookie.roomNum,
       peerId: me.id,
       nickName: authCookie.nickName,
+      texture: authCookie.texture,
+      video: controller.video,
     })
     setIsJoined(true)
   }, [isJoined])
@@ -38,19 +41,19 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     if (!stream) return
 
     ws.socket.on('serverJoinVideoRoom', (user) => {
-      console.log(user)
-      const { peerId, nickName, socketId } = user
+      const { peerId, nickName, socketId, texture, video } = user
+
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.call(user.peerId, stream, {
         metadata: {
           nickName: authCookie.nickName,
           socketId: ws.socket.id,
+          texture: authCookie.texture,
+          video: controller.video,
         },
       })
-      console.log(call)
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
-        console.log('기존 멤버 실행')
         setPeerStreams((prev) => [
           ...prev,
           {
@@ -58,15 +61,16 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             nickName,
             socketId,
             stream: peerStream,
+            video,
             audio: true,
+            texture,
           },
         ])
       })
     })
 
     const handleIncomingCall = (call: MediaConnection) => {
-      console.log('전화받음', call)
-      const { nickName, socketId } = call.metadata
+      const { nickName, socketId, texture, video } = call.metadata
       // 전화에 응답
       call.answer(stream)
       // 새로운 멤버에서 실행
@@ -78,7 +82,9 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             nickName,
             socketId,
             stream: peerStream,
+            video,
             audio: true,
+            texture,
           },
         ])
       })
@@ -90,7 +96,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       ws.socket.off('serverJoinVideoRoom')
       me.off('call', handleIncomingCall)
     }
-  }, [me, stream, ws])
+  }, [me, stream, controller])
 
   return (
     <div>

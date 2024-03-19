@@ -52,23 +52,21 @@ export interface ClientJoinVideoRoom {
   roomNum: string
   peerId: string
   nickName: string
+  texture: string
+  video: boolean
 }
 
 export interface ServerJoinVideoRoom {
   socketId: string
   peerId: string
   nickName: string
+  texture: string
+  video: boolean
 }
 
 export interface ClientChairId {
   roomNum: string
   chairId: string
-}
-
-export interface JoinVideoRoomType {
-  roomNum: string
-  peerId: string
-  nickName: string
 }
 
 export interface RoomUser {
@@ -83,6 +81,16 @@ export interface VideoRoomUser {
   peerId: string
   socketId: string
   nickName: string
+}
+
+export interface ClientHandleCamera {
+  isVideoEnabled: boolean
+  roomNum: string
+}
+
+export interface ServerHandleCamera {
+  socketId: string
+  isVideoEnabled: boolean
 }
 
 export interface ServerToClientEvents {
@@ -105,12 +113,15 @@ export interface ServerToClientEvents {
     peerId,
     socketId,
     nickName,
+    texture,
+    video,
   }: ServerJoinVideoRoom) => void
   serverLeaveVideoRoom: () => void
   serverUpdateVideoRoomMember: (socketId: string) => void
   serverOccupiedChairs: (chairs: string[]) => void
   serverChairId: (chairId: string) => void
   serverRoomMember: (rooms: Record<string, Record<string, RoomUser>>) => void
+  serverHandleCamera: ({ socketId, isVideoEnabled }: ServerHandleCamera) => void
 }
 
 export interface ClientToServerEvents {
@@ -127,8 +138,11 @@ export interface ClientToServerEvents {
     roomNum,
     peerId,
     nickName,
+    texture,
+    video,
   }: ClientJoinVideoRoom) => void
   clientCreateVideoRoom: (roomNum: string) => void
   clientLeaveVideoRoom: (roomNum: string) => void
   clientChairId: ({ roomNum, chairId }: ClientChairId) => void
+  clientHandleCamera: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
 }

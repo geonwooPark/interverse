@@ -14,7 +14,11 @@ function CurrentStreamScreen({
     <>
       {stream && (
         <div className="mx-auto mb-4 h-[400px] w-[600px] overflow-hidden rounded-md">
-          <VideoPlayer stream={currentStream?.stream || stream} />
+          <VideoPlayer
+            stream={currentStream?.stream || stream}
+            texture={currentStream?.texture}
+            video={currentStream?.video}
+          />
         </div>
       )}
     </>

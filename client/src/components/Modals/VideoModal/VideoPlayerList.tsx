@@ -19,20 +19,24 @@ function VideoPlayerList({
   setCurrentStream,
 }: VideoPlayerListProps) {
   const changeCurrentStreamer = (peerStream: PeerStreamType) => {
+    const { peerId, stream, texture, video } = peerStream
     setCurrentStream({
-      peerId: peerStream.peerId,
-      stream: peerStream.stream,
+      peerId,
+      stream,
+      texture,
+      video,
     })
   }
 
   const updateMuteStatus = (id: string) => {
-    const changedPeerStreams = peerStreams.map((stream) => {
-      if (stream.peerId === id) {
-        return { ...stream, audio: !stream.audio }
-      }
-      return stream
-    })
-    setPeerStreams(changedPeerStreams)
+    setPeerStreams((prev) =>
+      prev.map((stream) => {
+        if (stream.peerId === id) {
+          return { ...stream, audio: !stream.audio }
+        }
+        return stream
+      }),
+    )
   }
 
   return (
@@ -41,15 +45,20 @@ function VideoPlayerList({
         <div key={peerStream.peerId} className="relative">
           <div
             onClick={() => changeCurrentStreamer(peerStream)}
-            className={`${peerStream.peerId === currentStream?.peerId ? 'border-purple-600' : 'border-transparent'} mb-1 h-[160px] w-[240px] cursor-pointer overflow-hidden rounded-md border-2 [&>video]:cursor-pointer`}
+            className={`${peerStream.peerId === currentStream?.peerId ? 'border-purple-600' : 'border-transparent'} mb-1 h-[160px] w-[240px] cursor-pointer overflow-hidden rounded-md border-2 [&>div]:cursor-pointer`}
           >
-            <VideoPlayer stream={peerStream.stream} audio={peerStream.audio} />
+            <VideoPlayer
+              stream={peerStream.stream}
+              audio={peerStream.audio}
+              texture={peerStream.texture}
+              video={peerStream.video}
+            />
           </div>
-          <p className={`text-center`}>{peerStream.nickName}</p>
+          <p className={`text-center text-white`}>{peerStream.nickName}</p>
           {peerStream.peerId !== me.id && (
             <button
               onClick={() => updateMuteStatus(peerStream.peerId)}
-              className="absolute right-2 top-2 rounded-full bg-white/30 p-1"
+              className="absolute right-2 top-2 rounded-full bg-black/70 p-1"
             >
               <IconSound
                 className={`size-4 ${peerStream.audio ? 'text-green-500' : 'text-red-500'}`}

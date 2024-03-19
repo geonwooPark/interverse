@@ -8,6 +8,7 @@ import {
   handleVideo,
 } from '../store/features/myStreamSlice'
 import { CookieType } from '../types/client'
+import { ws } from '../lib/ws'
 
 interface UserStatusProps {
   authCookie: CookieType | null
@@ -18,7 +19,7 @@ interface UserStatusProps {
 function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   const role = authCookie?.role === 'host' ? '호스트' : '게스트'
   const dispatch = useAppDispatch()
-  const { controller } = useAppSelector((state) => state.myStream)
+  const { stream, controller } = useAppSelector((state) => state.myStream)
 
   const onChatClick = () => {
     setShowChat((prev) => !prev)
@@ -26,6 +27,14 @@ function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   const onCamClick = () => {
     dispatch(controlStream('video'))
     dispatch(handleVideo())
+    const isVideoEnabled = controller.video ? false : true
+    if (!authCookie) return
+    if (stream) {
+      ws.socket.emit('clientHandleCamera', {
+        isVideoEnabled,
+        roomNum: authCookie.roomNum,
+      })
+    }
   }
   const onMicClick = () => {
     dispatch(controlStream('audio'))

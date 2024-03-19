@@ -23,10 +23,14 @@ export interface PeerStreamType {
   socketId: string
   nickName: string
   stream: MediaStream
+  video: boolean
   audio: boolean
+  texture: string
 }
 
 export interface CurrentStream {
   peerId: string
   stream: MediaStream
+  texture: string
+  video: boolean
 }

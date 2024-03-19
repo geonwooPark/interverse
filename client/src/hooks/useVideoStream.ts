@@ -34,6 +34,8 @@ export const useVideoStream = (authCookie: CookieType) => {
         setCurrentStream({
           peerId: me.id,
           stream,
+          texture: authCookie.texture,
+          video: controller.video,
         })
         setPeerStreams((prev) => [
           ...prev,
@@ -42,7 +44,9 @@ export const useVideoStream = (authCookie: CookieType) => {
             nickName: authCookie.nickName,
             socketId: ws.socket.id as string,
             stream,
+            video: controller.video,
             audio: true,
+            texture: authCookie.texture,
           },
         ])
       })
@@ -52,14 +56,26 @@ export const useVideoStream = (authCookie: CookieType) => {
       }
     }
 
+    ws.socket.on('serverHandleCamera', ({ socketId, isVideoEnabled }) => {
+      setPeerStreams((prev) =>
+        prev.map((stream) => {
+          if (stream.socketId === socketId) {
+            return { ...stream, video: isVideoEnabled }
+          }
+          return stream
+        }),
+      )
+    })
     ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
-      if (stream) {
-        setCurrentStream({
-          peerId: me.id,
-          stream,
-        })
-      }
+      // if (stream) {
+      //   setCurrentStream({
+      //     peerId: me.id,
+      //     stream,
+      //     texture: authCookie.texture,
+      //     video: controller.video,
+      //   })
+      // }
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()
@@ -70,6 +86,7 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
 
     return () => {
+      ws.socket.off('serverHandleCamera')
       ws.socket.off('serverLeaveVideoRoom')
       ws.socket.off('serverUpdateVideoRoomMember')
     }
@@ -83,5 +100,6 @@ export const useVideoStream = (authCookie: CookieType) => {
     setCurrentStream,
     isJoined,
     setIsJoined,
+    controller,
   }
 }
