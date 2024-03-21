@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ws } from '../lib/ws'
-import { getMedia, peer as me } from '../lib/peer'
+import { peer as me } from '../lib/peer'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import {
@@ -19,7 +19,6 @@ export const useVideoStream = (authCookie: CookieType) => {
   const [currentStream, setCurrentStream] = useState<PeerStreamType | null>(
     null,
   )
-  const [isJoined, setIsJoined] = useState(false)
   const { video, audio } = controller
   const { nickName, texture } = authCookie
 
@@ -69,8 +68,7 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()
-      setIsJoined(false)
-      // dispatch(stopStream())
+      dispatch(stopStream())
       dispatch(showVideoModal(false))
       if (isScreenSharing) dispatch(handleScreenSharing(false))
     })
@@ -92,8 +90,6 @@ export const useVideoStream = (authCookie: CookieType) => {
     setPeerStreams,
     currentStream,
     setCurrentStream,
-    isJoined,
-    setIsJoined,
     controller,
   }
 }
