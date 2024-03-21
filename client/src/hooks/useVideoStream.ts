@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { ws } from '../lib/ws'
-import { peer as me } from '../lib/peer'
+import { getDisplayStream, getUserStream, peer as me } from '../lib/peer'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import {
   handleScreenSharing,
+  initStream,
   setMyStream,
   stopStream,
 } from '../store/features/myStreamSlice'
@@ -19,37 +20,18 @@ export const useVideoStream = (authCookie: CookieType) => {
   const [currentStream, setCurrentStream] = useState<PeerStreamType | null>(
     null,
   )
-  const { video, audio } = controller
-  const { nickName, texture } = authCookie
+
+  const setMediaStream = (initStream: PeerStreamType) => {
+    dispatch(setMyStream(initStream))
+    setCurrentStream(initStream)
+  }
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true,
-        audio: {
-          echoCancellation: true, // 에코 캔슬링 활성화
-          noiseSuppression: true, // 노이즈 캔슬링 활성화
-        },
-      })
-      .then((stream) => {
-        const initStream = {
-          peerId: me.id,
-          socketId: ws.socket.id as string,
-          nickName,
-          stream,
-          isVideoEnabled: video,
-          texture,
-        }
-
-        const audioTrack = stream.getAudioTracks()[0]
-        const videoTrack = stream.getVideoTracks()[0]
-
-        audioTrack.enabled = audio
-        videoTrack.enabled = video
-
-        dispatch(setMyStream(initStream))
-        setCurrentStream(initStream)
-      })
+    if (isScreenSharing) {
+      getDisplayStream(setMediaStream, authCookie, controller)
+    } else {
+      getUserStream(setMediaStream, authCookie, controller)
+    }
   }, [])
 
   useEffect(() => {
@@ -70,6 +52,7 @@ export const useVideoStream = (authCookie: CookieType) => {
       me.disconnect()
       dispatch(stopStream())
       dispatch(showVideoModal(false))
+      dispatch(setMyStream(initStream))
       if (isScreenSharing) dispatch(handleScreenSharing(false))
     })
 

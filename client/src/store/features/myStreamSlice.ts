@@ -10,15 +10,17 @@ interface StreamType {
   }
 }
 
+export const initStream = {
+  peerId: '',
+  socketId: '',
+  nickName: '',
+  stream: null,
+  isVideoEnabled: false,
+  texture: '',
+}
+
 const initialState: StreamType = {
-  myStream: {
-    peerId: '',
-    socketId: '',
-    nickName: '',
-    stream: null,
-    isVideoEnabled: false,
-    texture: '',
-  },
+  myStream: initStream,
   isScreenSharing: false,
   controller: {
     video: false, // 내 화면 조정
