@@ -38,7 +38,7 @@ function AvatarInfo() {
   }, [value])
 
   return (
-    <div className="fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70 font-neodgm">
+    <div className="font-neodgm fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70">
       <div className="h-fit w-[300px] rounded-md bg-white p-4">
         <AvatarSelector
           texture={texture}
