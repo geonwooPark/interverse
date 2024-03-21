@@ -251,8 +251,176 @@ export const createAvatarAnims = (
   })
 
   anims.create({
-    key: 'emma_sit_up',
-    frames: anims.generateFrameNumbers('emma', { start: 51, end: 51 }),
+    key: 'james_sit_up',
+    frames: anims.generateFrameNumbers('james', { start: 51, end: 51 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'james_stand_right',
+    frames: anims.generateFrameNumbers('james', { start: 0, end: 5 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_stand_up',
+    frames: anims.generateFrameNumbers('james', { start: 6, end: 11 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_stand_left',
+    frames: anims.generateFrameNumbers('james', { start: 12, end: 17 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_stand_down',
+    frames: anims.generateFrameNumbers('james', { start: 18, end: 23 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_run_right',
+    frames: anims.generateFrameNumbers('james', { start: 24, end: 29 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_run_up',
+    frames: anims.generateFrameNumbers('james', { start: 30, end: 35 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_run_left',
+    frames: anims.generateFrameNumbers('james', { start: 36, end: 41 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_run_down',
+    frames: anims.generateFrameNumbers('james', { start: 42, end: 47 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'james_sit_right',
+    frames: anims.generateFrameNumbers('james', { start: 48, end: 48 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'james_sit_left',
+    frames: anims.generateFrameNumbers('james', { start: 49, end: 49 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'james_sit_down',
+    frames: anims.generateFrameNumbers('james', { start: 50, end: 50 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'james_sit_up',
+    frames: anims.generateFrameNumbers('james', { start: 51, end: 51 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'sofia_stand_right',
+    frames: anims.generateFrameNumbers('sofia', { start: 0, end: 5 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_stand_up',
+    frames: anims.generateFrameNumbers('sofia', { start: 6, end: 11 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_stand_left',
+    frames: anims.generateFrameNumbers('sofia', { start: 12, end: 17 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_stand_down',
+    frames: anims.generateFrameNumbers('sofia', { start: 18, end: 23 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_run_right',
+    frames: anims.generateFrameNumbers('sofia', { start: 24, end: 29 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_run_up',
+    frames: anims.generateFrameNumbers('sofia', { start: 30, end: 35 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_run_left',
+    frames: anims.generateFrameNumbers('sofia', { start: 36, end: 41 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_run_down',
+    frames: anims.generateFrameNumbers('sofia', { start: 42, end: 47 }),
+    frameRate: animsFrameRate,
+    repeat: -1,
+  })
+
+  anims.create({
+    key: 'sofia_sit_right',
+    frames: anims.generateFrameNumbers('sofia', { start: 48, end: 48 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'sofia_sit_left',
+    frames: anims.generateFrameNumbers('sofia', { start: 49, end: 49 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'sofia_sit_down',
+    frames: anims.generateFrameNumbers('sofia', { start: 50, end: 50 }),
+    frameRate: animsFrameRate,
+    repeat: 0,
+  })
+
+  anims.create({
+    key: 'sofia_sit_up',
+    frames: anims.generateFrameNumbers('sofia', { start: 51, end: 51 }),
     frameRate: animsFrameRate,
     repeat: 0,
   })

@@ -33,9 +33,11 @@ function AvatarSelector({
         <div className="cursor-pointer" onClick={onTextureLeftArrowClick}>
           〈
         </div>
-        <div
-          className={`h-[48px] w-[32px] scale-150 bg-[64px] ${textureArr[texture][1]}`}
-        ></div>
+        <div className="flex">
+          <div
+            className={`h-[52px] w-[32px] scale-150 bg-[-608px] bg-no-repeat ${textureArr[texture][1]}`}
+          />
+        </div>
         <div className="cursor-pointer" onClick={onTextureRightArrowClick}>
           〉
         </div>
