@@ -1,43 +1,19 @@
-// {
-//   "compilerOptions": {
-//     "outDir": "lib",
-//     "target": "es6",
-//     "module": "commonjs",
-//     "strict": true,
-//     "allowJs": true,
-//     "strictNullChecks": false,
-//     "esModuleInterop": true,
-//     "experimentalDecorators": true,
-//     "skipLibCheck": true,
-//     "forceConsistentCasingInFileNames": true,
-//     "baseUrl": ".",
-//     "paths": {
-//       "*": ["types/*"]
-//     }
-//   },
-//   "include": ["*"]
-// }
 {
   "compilerOptions": {
     "outDir": "lib",
-    "target": "ES5",
+    "target": "es6",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-
     "strict": true,
     "allowJs": true,
     "strictNullChecks": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "typeRoots": ["node_modules/@types", "../types/*"]
+    "paths": {
+      "*": ["types/*"]
+    }
   },
   "include": ["*"]
 }

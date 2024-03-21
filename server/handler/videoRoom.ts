@@ -5,7 +5,7 @@ import {
   ClientJoinVideoRoom,
   ClientToServerEvents,
   ServerToClientEvents,
-} from '../../types/server'
+} from '../types/server'
 
 export const videoRoomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
