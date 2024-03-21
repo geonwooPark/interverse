@@ -24,8 +24,15 @@ export const useVideoStream = (authCookie: CookieType) => {
   const { nickName, texture } = authCookie
 
   useEffect(() => {
-    try {
-      getMedia(isScreenSharing).then((stream) => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: true,
+        audio: {
+          echoCancellation: true, // 에코 캔슬링 활성화
+          noiseSuppression: true, // 노이즈 캔슬링 활성화
+        },
+      })
+      .then((stream) => {
         const initStream = {
           peerId: me.id,
           socketId: ws.socket.id as string,
@@ -41,14 +48,12 @@ export const useVideoStream = (authCookie: CookieType) => {
         audioTrack.enabled = audio
         videoTrack.enabled = video
 
-        dispatch(setMyStream(initStream), setCurrentStream(initStream))
+        dispatch(setMyStream(initStream))
+        setCurrentStream(initStream)
       })
-    } catch (error) {
-      if (error instanceof Error) {
-        alert('카메라와 마이크를 찾을 수 없거나 권한이 차단 되어있어요!')
-      }
-    }
+  }, [])
 
+  useEffect(() => {
     ws.socket.on('serverHandleCamera', ({ socketId, isVideoEnabled }) => {
       setPeerStreams((prev) =>
         prev.map((stream) => {
@@ -65,7 +70,7 @@ export const useVideoStream = (authCookie: CookieType) => {
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnect()
       setIsJoined(false)
-      dispatch(stopStream())
+      // dispatch(stopStream())
       dispatch(showVideoModal(false))
       if (isScreenSharing) dispatch(handleScreenSharing(false))
     })

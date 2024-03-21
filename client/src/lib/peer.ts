@@ -4,6 +4,9 @@ export const peer = new Peer({
   host: import.meta.env.VITE_PEER,
   secure: true,
   port: 443,
+  // host: 'localhost',
+  // port: 9000,
+  // path: '/myapp',
 })
 
 export const getMedia = (isScreenSharing: boolean) => {
