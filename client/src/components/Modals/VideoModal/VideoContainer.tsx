@@ -91,9 +91,11 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     }
   }, [me, stream, controller])
 
+  if (!stream) return
+
   return (
     <div className="grid size-full grid-cols-[3fr,1fr] items-center xl:grid-cols-5">
-      {stream && <CurrentStreamScreen currentStream={currentStream} />}
+      <CurrentStreamScreen currentStream={currentStream} />
       <VideoPlayerList
         myStream={myStream}
         peerStreams={peerStreams}
