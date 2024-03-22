@@ -92,7 +92,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   }, [me, stream, controller])
 
   return (
-    <div>
+    <div className="grid size-full grid-cols-[3fr,1fr] items-center xl:grid-cols-5">
       {stream && <CurrentStreamScreen currentStream={currentStream} />}
       <VideoPlayerList
         myStream={myStream}

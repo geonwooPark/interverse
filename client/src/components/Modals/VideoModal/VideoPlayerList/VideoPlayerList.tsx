@@ -22,7 +22,7 @@ function VideoPlayerList({
   }
 
   return (
-    <div className="mx-auto flex w-full justify-center gap-4">
+    <div className="hide-scroll mx-auto flex size-full flex-col items-end gap-2 self-start overflow-y-scroll p-4">
       <VideoStream
         stream={myStream}
         currentStream={currentStream}
