@@ -25,7 +25,7 @@ function VideoMutedButton({
   return (
     <button
       onClick={() => updateMuteStatus(peerId)}
-      className="absolute right-2 top-2 rounded-full bg-black/70 p-1"
+      className="absolute right-2 top-2 hidden rounded-full bg-black/70 p-1 group-hover:block"
     >
       <IconSound
         className={`size-4 ${sound ? 'text-green-500' : 'text-red-500'}`}

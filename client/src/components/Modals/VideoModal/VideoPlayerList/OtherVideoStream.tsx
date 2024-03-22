@@ -17,7 +17,7 @@ function OtherVideoStream({
   setPeerStreams,
 }: OtherVideoStreamProps) {
   return (
-    <div className="relative">
+    <div className="group relative">
       <VideoStream
         stream={peerStream}
         currentStream={currentStream}
