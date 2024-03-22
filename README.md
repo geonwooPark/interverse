@@ -21,7 +21,7 @@
 
 ### 🗺 안내서
 
-<img width="800" alt="안내서" src="https://github.com/Team94/interverse/assets/45960361/dc694f99-3a85-4bf1-b4a2-4ed1cc409278">
+<img width="800" alt="안내서" src="https://github.com/Team94/interverse/assets/45960361/f8bc3d48-24f0-4dd5-b2a5-75cd19ea21de">
 
 ## 👾 아키텍처 및 주요 기능
 
