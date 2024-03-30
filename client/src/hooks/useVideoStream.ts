@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ws } from '../lib/ws'
-import { getDisplayStream, getUserStream, peer as me } from '../lib/peer'
+import { me } from '../lib/peer'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import {
@@ -28,9 +28,19 @@ export const useVideoStream = (authCookie: CookieType) => {
 
   useEffect(() => {
     if (isScreenSharing) {
-      getDisplayStream(setMediaStream, authCookie, controller)
+      me.getDisplayStream(
+        setMediaStream,
+        authCookie,
+        controller,
+        ws.socket.id as string,
+      )
     } else {
-      getUserStream(setMediaStream, authCookie, controller)
+      me.getUserStream(
+        setMediaStream,
+        authCookie,
+        controller,
+        ws.socket.id as string,
+      )
     }
   }, [])
 
@@ -49,7 +59,7 @@ export const useVideoStream = (authCookie: CookieType) => {
       setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
-      me.disconnect()
+      me.disconnectPeerId()
       dispatch(stopStream())
       dispatch(showVideoModal(false))
       dispatch(setMyStream(initStream))

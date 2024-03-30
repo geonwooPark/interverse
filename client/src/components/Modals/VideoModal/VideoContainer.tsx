@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { ws } from '../../../lib/ws'
-import { peer as me } from '../../../lib/peer'
+import { me } from '../../../lib/peer'
 import VideoPlayerList from './VideoPlayerList/VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
@@ -23,13 +23,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   const { stream } = myStream
 
   useEffect(() => {
-    if (!me) return
+    if (!me.peer) return
     if (!stream) return
 
     ws.socket.emit('clientCreateVideoRoom', authCookie.roomNum)
     ws.socket.emit('clientJoinVideoRoom', {
       roomNum: authCookie.roomNum,
-      peerId: me.id,
+      peerId: me.peer.id,
       nickName: authCookie.nickName,
       texture: authCookie.texture,
       isVideoEnabled: controller.video,
@@ -37,7 +37,7 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
 
     ws.socket.on('serverJoinVideoRoom', (newUser) => {
       // 기존 멤버들이 신규 멤버에게 call
-      const call = me.call(newUser.peerId, stream, {
+      const call = me.peer.call(newUser.peerId, stream, {
         metadata: {
           nickName: authCookie.nickName,
           socketId: ws.socket.id,
@@ -83,13 +83,13 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       })
     }
 
-    me.on('call', handleIncomingCall)
+    me.peer.on('call', handleIncomingCall)
 
     return () => {
       ws.socket.off('serverJoinVideoRoom')
-      me.off('call', handleIncomingCall)
+      me.peer.off('call', handleIncomingCall)
     }
-  }, [me, stream, controller])
+  }, [me.peer, stream, controller])
 
   if (!stream) return
 

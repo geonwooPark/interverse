@@ -19,7 +19,7 @@ import {
 import { showVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
-import { peer as me } from '../lib/peer'
+import { me } from '../lib/peer'
 import { handleScreenSharing } from '../store/features/myStreamSlice'
 import { ws } from '../lib/ws'
 
@@ -136,9 +136,7 @@ export default class Player extends Avatar {
                   ),
                 )
               } else if (chair.interaction === 'interview') {
-                if (me.disconnected) {
-                  me.reconnect()
-                }
+                me.reconnectPeerId()
                 store.dispatch(showVideoModal(true))
                 store.dispatch(
                   changeAlertContent(
@@ -174,9 +172,7 @@ export default class Player extends Avatar {
                 animation: this.anims.currentAnim!.key,
               })
 
-              if (me.disconnected) {
-                me.reconnect()
-              }
+              me.reconnectPeerId()
               store.dispatch(showVideoModal(true))
               store.dispatch(handleScreenSharing(true))
               store.dispatch(
