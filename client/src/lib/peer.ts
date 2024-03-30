@@ -1,5 +1,7 @@
 import Peer from 'peerjs'
-import { CookieType, PeerStreamType } from '../types/client'
+import { CookieType } from '../types/client'
+import { store } from '../store/store'
+import { setMyStream } from '../store/features/myStreamSlice'
 
 export const me = {
   peer: new Peer({
@@ -12,7 +14,6 @@ export const me = {
   }),
 
   getUserStream(
-    setMediaStream: (initStream: PeerStreamType) => void,
     authCookie: CookieType,
     controller: { video: boolean; audio: boolean },
     socketId: string,
@@ -44,12 +45,11 @@ export const me = {
         videoTrack.enabled = video
         audioTrack.enabled = audio
 
-        setMediaStream(initStream)
+        store.dispatch(setMyStream(initStream))
       })
   },
 
   getDisplayStream(
-    setMediaStream: (initStream: PeerStreamType) => void,
     authCookie: CookieType,
     controller: { video: boolean; audio: boolean },
     socketId: string,
@@ -58,7 +58,13 @@ export const me = {
     const { nickName, texture } = authCookie
 
     navigator.mediaDevices
-      .getUserMedia({ video: false, audio: true })
+      .getUserMedia({
+        video: false,
+        audio: {
+          echoCancellation: true, // 에코 캔슬링 활성화
+          noiseSuppression: true, // 노이즈 캔슬링 활성화
+        },
+      })
       .then((audioStream) => {
         navigator.mediaDevices
           .getDisplayMedia({ video: true, audio: false })
@@ -83,7 +89,7 @@ export const me = {
             videoTrack.enabled = video
             audioTrack.enabled = audio
 
-            setMediaStream(initStream)
+            store.dispatch(setMyStream(initStream))
           })
       })
   },
@@ -93,8 +99,8 @@ export const me = {
   },
 
   reconnectPeerId() {
-    if (me.peer.disconnected) {
-      me.peer.reconnect()
+    if (this.peer.disconnected) {
+      this.peer.reconnect()
     }
   },
 }

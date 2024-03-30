@@ -6,35 +6,24 @@ import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
 import { MediaConnection } from 'peerjs'
 import { CookieType } from '../../../types/client'
+import { useAppDispatch } from '../../../store/store'
+import { addPeerStream } from '../../../store/features/myStreamSlice'
 
 interface VideoContainerProps {
   authCookie: CookieType
 }
 
 function VideoContainer({ authCookie }: VideoContainerProps) {
-  const {
-    myStream,
-    peerStreams,
-    setPeerStreams,
-    currentStream,
-    setCurrentStream,
-    controller,
-  } = useVideoStream(authCookie)
+  const dispatch = useAppDispatch()
+  const { myStream, peerStreams, currentStream, controller } =
+    useVideoStream(authCookie)
   const { stream } = myStream
 
   useEffect(() => {
     if (!me.peer) return
     if (!stream) return
 
-    ws.socket.emit('clientCreateVideoRoom', authCookie.roomNum)
-    ws.socket.emit('clientJoinVideoRoom', {
-      roomNum: authCookie.roomNum,
-      peerId: me.peer.id,
-      nickName: authCookie.nickName,
-      texture: authCookie.texture,
-      isVideoEnabled: controller.video,
-    })
-
+    ws.joinVideoRoom({ authCookie, video: controller.video })
     ws.socket.on('serverJoinVideoRoom', (newUser) => {
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.peer.call(newUser.peerId, stream, {
@@ -47,9 +36,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       })
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
-        setPeerStreams((prev) => [
-          ...prev,
-          {
+        dispatch(
+          addPeerStream({
             peerId: newUser.peerId,
             nickName: newUser.nickName,
             socketId: newUser.socketId,
@@ -57,8 +45,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             isVideoEnabled: newUser.isVideoEnabled,
             stream: peerStream,
             sound: true,
-          },
-        ])
+          }),
+        )
       })
     })
 
@@ -68,9 +56,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
       call.answer(stream)
       // 새로운 멤버에서 실행
       call.once('stream', (peerStream) => {
-        setPeerStreams((prev) => [
-          ...prev,
-          {
+        dispatch(
+          addPeerStream({
             peerId: call.peer,
             nickName,
             socketId,
@@ -78,8 +65,8 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
             isVideoEnabled,
             stream: peerStream,
             sound: true,
-          },
-        ])
+          }),
+        )
       })
     }
 
@@ -91,17 +78,15 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
     }
   }, [me.peer, stream, controller])
 
-  if (!stream) return
-
   return (
     <div className="grid size-full grid-cols-[3fr,1fr] items-center xl:grid-cols-5">
-      <CurrentStreamScreen currentStream={currentStream} />
+      <CurrentStreamScreen
+        currentStream={currentStream.stream ? currentStream : myStream}
+      />
       <VideoPlayerList
         myStream={myStream}
         peerStreams={peerStreams}
-        setPeerStreams={setPeerStreams}
         currentStream={currentStream}
-        setCurrentStream={setCurrentStream}
       />
     </div>
   )

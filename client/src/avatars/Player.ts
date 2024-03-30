@@ -200,7 +200,7 @@ export default class Player extends Avatar {
             store.dispatch(closeCreatorModal())
           }
           if (chair.interaction === 'interview') {
-            ws.socket.emit('clientLeaveVideoRoom', roomNum)
+            ws.leaveVideoRoom(roomNum)
           }
 
           this.setPosition(this.preX, this.preY)
@@ -217,7 +217,7 @@ export default class Player extends Avatar {
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
           if (!this.selectedInteractionItem) return
           this.behavior = 'stand'
-          ws.socket.emit('clientLeaveVideoRoom', roomNum)
+          ws.leaveVideoRoom(roomNum)
         }
         break
     }

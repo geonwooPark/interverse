@@ -126,7 +126,6 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   clientJoinRoom: ({ authCookie }: ClientJoinRoom) => void
-  clientLeaveRoom: () => void
   clientMsg: (message: ClientMessage) => void
   clientAvatarPosition: ({
     x,

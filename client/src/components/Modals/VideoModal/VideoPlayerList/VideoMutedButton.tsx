@@ -1,30 +1,21 @@
+import { updatePeerStreamSound } from '../../../../store/features/myStreamSlice'
+import { useAppDispatch } from '../../../../store/store'
 import IconSound from '../../../../svgs/IconSound.svg?react'
-import { PeerStreamType } from '../../../../types/client'
 
 interface VideoMutedButtonProps {
-  setPeerStreams: React.Dispatch<React.SetStateAction<PeerStreamType[]>>
   peerId: string
   sound?: boolean
 }
 
-function VideoMutedButton({
-  setPeerStreams,
-  peerId,
-  sound,
-}: VideoMutedButtonProps) {
-  const updateMuteStatus = (id: string) => {
-    setPeerStreams((prev) =>
-      prev.map((stream) => {
-        if (stream.peerId === id) {
-          return { ...stream, sound: !stream.sound }
-        }
-        return stream
-      }),
-    )
+function VideoMutedButton({ peerId, sound }: VideoMutedButtonProps) {
+  const dispatch = useAppDispatch()
+  const updateMuteStatus = () => {
+    dispatch(updatePeerStreamSound(peerId))
   }
+
   return (
     <button
-      onClick={() => updateMuteStatus(peerId)}
+      onClick={updateMuteStatus}
       className="absolute right-2 top-2 hidden rounded-full bg-black/70 p-1 group-hover:block"
     >
       <IconSound

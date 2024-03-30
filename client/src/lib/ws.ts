@@ -6,12 +6,15 @@ import { addMessage } from '../store/features/chatListSlice'
 import {
   ClientAvatarPosition,
   ClientChairId,
+  ClientHandleCamera,
   ClientJoinRoom,
   ClientMessage,
   ClientToServerEvents,
   ServerPlayerInfo,
   ServerToClientEvents,
 } from '../types/socket'
+import { CookieType } from '../types/client'
+import { me } from './peer'
 
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
@@ -27,6 +30,15 @@ interface WS {
   }: ClientAvatarPosition) => void
   sendChairId: ({ roomNum, chairId }: ClientChairId) => void
   receiveChairId: () => void
+  sendCameraStatus: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
+  joinVideoRoom: ({
+    authCookie,
+    video,
+  }: {
+    authCookie: CookieType
+    video: boolean
+  }) => void
+  leaveVideoRoom: (roomNum: string) => void
 }
 
 export const ws: WS = {
@@ -34,52 +46,52 @@ export const ws: WS = {
   game: null,
   occupiedChairs: [],
 
-  joinRoom: ({ authCookie, texture, animation }) => {
-    ws.game = phaserGame.scene.keys.game as Game
-    ws.game.player.setNickname(authCookie.nickName)
-    ws.game.player.setAvatarTexture(authCookie.texture)
-    ws.game.player.setPosition(
+  joinRoom({ authCookie, texture, animation }) {
+    this.game = phaserGame.scene.keys.game as Game
+    this.game.player.setNickname(authCookie.nickName)
+    this.game.player.setAvatarTexture(authCookie.texture)
+    this.game.player.setPosition(
       authCookie.role === 'host' ? 260 : 720,
       authCookie.role === 'host' ? 520 : 170,
     )
 
     // 서버로 쿠키와 아바타 정보 전달
-    ws.socket.emit('clientJoinRoom', { authCookie, texture, animation })
+    this.socket.emit('clientJoinRoom', { authCookie, texture, animation })
     // 서버에서 입장 메시지 받기
-    ws.socket.on('serverMsg', (messageData) => {
-      if (!ws.game) return
+    this.socket.on('serverMsg', (messageData) => {
+      if (!this.game) return
       store.dispatch(addMessage(messageData))
-      ws.game.displayOtherPlayerChat({
+      this.game.displayOtherPlayerChat({
         message: messageData.message,
         socketId: messageData.senderId,
       })
     })
     // 서버에서 기존 방의 유저들이 새로운 유저의 정보 받기
-    ws.socket.on('serverPlayerInfo', (playerInfo) => {
-      if (!ws.game) return
-      ws.game.addOtherPlayer(playerInfo)
+    this.socket.on('serverPlayerInfo', (playerInfo) => {
+      if (!this.game) return
+      this.game.addOtherPlayer(playerInfo)
     })
     // 서버에서 새로운 유저가 방에 존재하는 유저들의 정보 받기
-    ws.socket.on('serverRoomMember', (users) => {
-      if (!ws.game) return
+    this.socket.on('serverRoomMember', (users) => {
+      if (!this.game) return
       for (const user in users) {
-        ws.game.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
+        this.game.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
       }
     })
     // 방에 입장했을 때 이미 누군가 앉아있는 의자들
-    ws.socket.on('serverOccupiedChairs', (chairs) => {
+    this.socket.on('serverOccupiedChairs', (chairs) => {
       if (!chairs) return
-      ws.occupiedChairs = [...chairs]
+      this.occupiedChairs = [...chairs]
     })
     // 서버에서 방에서 나간 유저 정보 받기
-    ws.socket.on('serverLeaveRoom', (socketId) => {
-      if (!ws.game) return
-      ws.game.removeOtherPlayer(socketId)
+    this.socket.on('serverLeaveRoom', (socketId) => {
+      if (!this.game) return
+      this.game.removeOtherPlayer(socketId)
     })
   },
 
-  sendMessage: ({ message, nickName, senderId, roomNum }) => {
-    ws.socket.emit('clientMsg', {
+  sendMessage({ message, nickName, senderId, roomNum }) {
+    this.socket.emit('clientMsg', {
       message,
       senderId,
       nickName,
@@ -87,30 +99,54 @@ export const ws: WS = {
     })
   },
 
-  sendAvatarPosition: ({ x, y, roomNum, animation }) => {
+  sendAvatarPosition({ x, y, roomNum, animation }) {
     // 서버로 실시간 나의 위치 정보 보내기
-    ws.socket.emit('clientAvatarPosition', {
+    this.socket.emit('clientAvatarPosition', {
       x,
       y,
       roomNum,
       animation,
     })
     // 서버로부터 다른 모든 유저들 위치 정보 받기
-    ws.socket.on('serverAvatarPosition', (avatarPosition) => {
-      if (!ws.game) return
-      ws.game.updateOtherPlayer(avatarPosition)
+    this.socket.on('serverAvatarPosition', (avatarPosition) => {
+      if (!this.game) return
+      this.game.updateOtherPlayer(avatarPosition)
     })
   },
 
-  sendChairId: ({ roomNum, chairId }) => {
-    ws.socket.emit('clientChairId', { roomNum, chairId })
+  sendChairId({ roomNum, chairId }) {
+    this.socket.emit('clientChairId', { roomNum, chairId })
   },
 
-  receiveChairId: () => {
-    ws.socket.on('serverChairId', (chairId: string) => {
-      ws.occupiedChairs.includes(chairId)
-        ? (ws.occupiedChairs = ws.occupiedChairs.filter((r) => r !== chairId))
-        : ws.occupiedChairs.push(chairId)
+  receiveChairId() {
+    this.socket.on('serverChairId', (chairId: string) => {
+      this.occupiedChairs.includes(chairId)
+        ? (this.occupiedChairs = this.occupiedChairs.filter(
+            (r) => r !== chairId,
+          ))
+        : this.occupiedChairs.push(chairId)
     })
+  },
+
+  sendCameraStatus({ isVideoEnabled, roomNum }) {
+    this.socket.emit('clientHandleCamera', {
+      isVideoEnabled,
+      roomNum,
+    })
+  },
+
+  joinVideoRoom({ authCookie, video }) {
+    this.socket.emit('clientCreateVideoRoom', authCookie.roomNum)
+    this.socket.emit('clientJoinVideoRoom', {
+      roomNum: authCookie.roomNum,
+      peerId: me.peer.id,
+      nickName: authCookie.nickName,
+      texture: authCookie.texture,
+      isVideoEnabled: video,
+    })
+  },
+
+  leaveVideoRoom(roomNum) {
+    this.socket.emit('clientLeaveVideoRoom', roomNum)
   },
 }

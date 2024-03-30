@@ -17,7 +17,8 @@ import Controller from '../components/Controller'
 
 function Room() {
   const params = useParams()
-  const authCookie = getAuthCookie(params.roomId as string)
+  const { roomId } = params
+  const authCookie = getAuthCookie(roomId as string)
   const dispatch = useAppDispatch()
   const [game, setGame] = useState<Game | null>(null)
 

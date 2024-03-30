@@ -32,10 +32,7 @@ function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
     const isVideoEnabled = controller.video ? false : true
     if (!authCookie) return
     if (myStream.stream) {
-      ws.socket.emit('clientHandleCamera', {
-        isVideoEnabled,
-        roomNum: authCookie.roomNum,
-      })
+      ws.sendCameraStatus({ isVideoEnabled, roomNum: authCookie.roomNum })
     }
   }
 

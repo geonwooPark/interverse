@@ -1,3 +1,5 @@
+import { setCurrentStream } from '../../../../store/features/myStreamSlice'
+import { useAppDispatch } from '../../../../store/store'
 import { PeerStreamType } from '../../../../types/client'
 import OtherVideoStream from './OtherVideoStream'
 import VideoStream from './VideoStream'
@@ -5,20 +7,18 @@ import VideoStream from './VideoStream'
 interface VideoPlayerListProps {
   myStream: PeerStreamType
   peerStreams: PeerStreamType[]
-  setPeerStreams: React.Dispatch<React.SetStateAction<PeerStreamType[]>>
   currentStream: PeerStreamType | null
-  setCurrentStream: React.Dispatch<React.SetStateAction<PeerStreamType | null>>
 }
 
 function VideoPlayerList({
   myStream,
   peerStreams,
-  setPeerStreams,
   currentStream,
-  setCurrentStream,
 }: VideoPlayerListProps) {
+  const dispatch = useAppDispatch()
+
   const changeCurrentStreamer = (peerStream: PeerStreamType) => {
-    setCurrentStream(peerStream)
+    dispatch(setCurrentStream(peerStream))
   }
 
   return (
@@ -32,9 +32,8 @@ function VideoPlayerList({
         <OtherVideoStream
           key={peerStream.peerId}
           peerStream={peerStream}
-          changeCurrentStreamer={changeCurrentStreamer}
           currentStream={currentStream}
-          setPeerStreams={setPeerStreams}
+          changeCurrentStreamer={changeCurrentStreamer}
         />
       ))}
     </div>

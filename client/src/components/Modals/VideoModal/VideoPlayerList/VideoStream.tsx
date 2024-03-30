@@ -1,7 +1,7 @@
 import { PeerStreamType } from '../../../../types/client'
 import VideoPlayer from '../VideoPlayer'
 
-interface MyVideoStreamProps {
+interface VideoStreamProps {
   stream: PeerStreamType
   currentStream: PeerStreamType | null
   changeCurrentStreamer: (peerStream: PeerStreamType) => void
@@ -11,7 +11,7 @@ function VideoStream({
   stream,
   currentStream,
   changeCurrentStreamer,
-}: MyVideoStreamProps) {
+}: VideoStreamProps) {
   return (
     <div
       onClick={() => changeCurrentStreamer(stream)}

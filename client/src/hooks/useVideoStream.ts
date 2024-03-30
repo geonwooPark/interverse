@@ -1,69 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ws } from '../lib/ws'
 import { me } from '../lib/peer'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import { showVideoModal } from '../store/features/videoModalSlice'
 import {
-  handleScreenSharing,
-  initStream,
-  setMyStream,
+  deletePeerStream,
   stopStream,
+  updatePeerStreamVideo,
 } from '../store/features/myStreamSlice'
-import { CookieType, PeerStreamType } from '../types/client'
+import { CookieType } from '../types/client'
 
 export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
-  const { myStream, controller, isScreenSharing } = useAppSelector(
-    (state) => state.myStream,
-  )
-  const [peerStreams, setPeerStreams] = useState<PeerStreamType[]>([])
-  const [currentStream, setCurrentStream] = useState<PeerStreamType | null>(
-    null,
-  )
-
-  const setMediaStream = (initStream: PeerStreamType) => {
-    dispatch(setMyStream(initStream))
-    setCurrentStream(initStream)
-  }
+  const { myStream, currentStream, peerStreams, controller, isScreenSharing } =
+    useAppSelector((state) => state.myStream)
 
   useEffect(() => {
     if (isScreenSharing) {
-      me.getDisplayStream(
-        setMediaStream,
-        authCookie,
-        controller,
-        ws.socket.id as string,
-      )
+      me.getDisplayStream(authCookie, controller, ws.socket.id as string)
     } else {
-      me.getUserStream(
-        setMediaStream,
-        authCookie,
-        controller,
-        ws.socket.id as string,
-      )
+      me.getUserStream(authCookie, controller, ws.socket.id as string)
     }
   }, [])
 
   useEffect(() => {
     ws.socket.on('serverHandleCamera', ({ socketId, isVideoEnabled }) => {
-      setPeerStreams((prev) =>
-        prev.map((stream) => {
-          if (stream.socketId === socketId) {
-            return { ...stream, isVideoEnabled }
-          }
-          return stream
-        }),
-      )
+      dispatch(updatePeerStreamVideo({ socketId, isVideoEnabled }))
     })
     ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
-      setPeerStreams((prev) => prev.filter((r) => r.socketId !== socketId))
+      dispatch(deletePeerStream(socketId))
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       me.disconnectPeerId()
       dispatch(stopStream())
       dispatch(showVideoModal(false))
-      dispatch(setMyStream(initStream))
-      if (isScreenSharing) dispatch(handleScreenSharing(false))
     })
 
     return () => {
@@ -73,16 +43,10 @@ export const useVideoStream = (authCookie: CookieType) => {
     }
   }, [])
 
-  useEffect(() => {
-    setCurrentStream(myStream)
-  }, [peerStreams])
-
   return {
     myStream,
     peerStreams,
-    setPeerStreams,
     currentStream,
-    setCurrentStream,
     controller,
   }
 }

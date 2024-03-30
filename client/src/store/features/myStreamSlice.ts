@@ -3,6 +3,8 @@ import { PeerStreamType } from '../../types/client'
 
 interface StreamType {
   myStream: PeerStreamType
+  currentStream: PeerStreamType
+  peerStreams: PeerStreamType[]
   isScreenSharing: boolean
   controller: {
     video: boolean
@@ -21,6 +23,8 @@ export const initStream = {
 
 const initialState: StreamType = {
   myStream: initStream,
+  currentStream: initStream,
+  peerStreams: [],
   isScreenSharing: false,
   controller: {
     video: false, // 내 화면 조정
@@ -38,6 +42,36 @@ export const MyStreamSlice = createSlice({
     setMyStream: (state, action: PayloadAction<PeerStreamType>) => {
       state.myStream = action.payload
     },
+    setCurrentStream: (state, action: PayloadAction<PeerStreamType>) => {
+      state.currentStream = action.payload
+    },
+    addPeerStream: (state, action: PayloadAction<PeerStreamType>) => {
+      state.peerStreams = [...state.peerStreams, action.payload]
+    },
+    deletePeerStream: (state, action: PayloadAction<string>) => {
+      state.peerStreams = state.peerStreams.filter(
+        (r) => r.socketId !== action.payload,
+      )
+    },
+    updatePeerStreamVideo: (
+      state,
+      action: PayloadAction<{ socketId: string; isVideoEnabled: boolean }>,
+    ) => {
+      state.peerStreams = state.peerStreams.map((stream) => {
+        if (stream.socketId === action.payload.socketId) {
+          return { ...stream, isVideoEnabled: action.payload.isVideoEnabled }
+        }
+        return stream
+      })
+    },
+    updatePeerStreamSound: (state, action: PayloadAction<string>) => {
+      state.peerStreams = state.peerStreams.map((stream) => {
+        if (stream.peerId === action.payload) {
+          return { ...stream, sound: !stream.sound }
+        }
+        return stream
+      })
+    },
     controlStream: (state, action: PayloadAction<'video' | 'audio'>) => {
       if (action.payload === 'video') {
         state.controller = {
@@ -49,6 +83,13 @@ export const MyStreamSlice = createSlice({
           ...state.myStream,
           isVideoEnabled: !state.myStream.isVideoEnabled,
         }
+
+        if (state.myStream.peerId === state.currentStream.peerId) {
+          state.currentStream = {
+            ...state.currentStream,
+            isVideoEnabled: !state.currentStream.isVideoEnabled,
+          }
+        }
       }
       if (action.payload === 'audio') {
         state.controller = {
@@ -59,6 +100,10 @@ export const MyStreamSlice = createSlice({
     },
     stopStream: (state) => {
       state.myStream.stream?.getTracks().forEach((track) => track.stop())
+      state.peerStreams = []
+      state.myStream = initStream
+      state.currentStream = initStream
+      state.isScreenSharing = false
     },
     handleScreenSharing: (state, action: PayloadAction<boolean>) => {
       state.isScreenSharing = action.payload
@@ -66,26 +111,23 @@ export const MyStreamSlice = createSlice({
     handleAudio: (state) => {
       if (!state.myStream.stream) return
       const audioTrack = state.myStream.stream.getAudioTracks()[0]
-      if (audioTrack.enabled) {
-        audioTrack.enabled = false
-      } else {
-        audioTrack.enabled = true
-      }
+      audioTrack.enabled = audioTrack.enabled ? false : true
     },
     handleVideo: (state) => {
       if (!state.myStream.stream) return
       const videoTrack = state.myStream.stream.getVideoTracks()[0]
-      if (videoTrack.enabled) {
-        videoTrack.enabled = false
-      } else {
-        videoTrack.enabled = true
-      }
+      videoTrack.enabled = videoTrack.enabled ? false : true
     },
   },
 })
 
 export const {
   setMyStream,
+  setCurrentStream,
+  addPeerStream,
+  deletePeerStream,
+  updatePeerStreamVideo,
+  updatePeerStreamSound,
   stopStream,
   controlStream,
   handleScreenSharing,
