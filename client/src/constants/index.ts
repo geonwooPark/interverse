@@ -5,3 +5,5 @@ export const textureImage = new Map([
   ['james', `bg-[url("/assets/character/james.png")]`],
   ['sofia', `bg-[url("/assets/character/sofia.png")]`],
 ])
+
+export const MAX_NICKNAME_LENGTH = 10
