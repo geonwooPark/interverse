@@ -11,9 +11,9 @@ import CreatorModal from '../components/Modals/CreatorModal/CreatorModal'
 import ManualModal from '../components/Modals/ManualModal/ManualModal'
 import SurveyModal from '../components/Modals/SurveyModal/SurveyModal'
 import { useAppDispatch } from '../store/store'
-import { closeModal } from '../store/features/modalDisplaySlice'
 import { useGoBack } from '../hooks/useGoBack'
 import Controller from '../components/Controller'
+import { handleModal } from '../store/features/modalSlice'
 
 function Room() {
   const params = useParams()
@@ -56,7 +56,7 @@ function Room() {
     description: '정말 종료하시겠습니까?',
     action: () => {
       window.location.replace('/')
-      dispatch(closeModal())
+      dispatch(handleModal())
     },
     actionLabel: '종료',
   })

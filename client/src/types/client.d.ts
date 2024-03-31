@@ -32,3 +32,10 @@ export interface PeerStreamType {
 export interface TextureImageType {
   [key: string | number]: string
 }
+
+export interface ModalContentType {
+  title: string
+  description: string
+  action: any
+  actionLabel: string
+}

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { ServerMessage } from '../../types/socket'
 
 type ChatListType = ServerMessage[]
@@ -12,7 +12,7 @@ export const ChatListSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    addMessage: (state, action) => {
+    addMessage: (state, action: PayloadAction<ServerMessage>) => {
       return (state = [...state, action.payload])
     },
   },

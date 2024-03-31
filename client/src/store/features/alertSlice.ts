@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 interface AlertType {
   content: string
@@ -17,7 +17,7 @@ export const AlertSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    changeAlertContent: (state, action) => {
+    changeAlertContent: (state, action: PayloadAction<string>) => {
       state.content = action.payload
     },
     openAlert: (state) => {

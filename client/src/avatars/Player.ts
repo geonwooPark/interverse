@@ -16,7 +16,7 @@ import {
   closeSurveyModal,
   openSurveyModal,
 } from '../store/features/surveyModalSlice'
-import { showVideoModal } from '../store/features/videoModalSlice'
+import { handleVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
 import { me } from '../lib/peer'
@@ -137,7 +137,7 @@ export default class Player extends Avatar {
                 )
               } else if (chair.interaction === 'interview') {
                 me.reconnectPeerId()
-                store.dispatch(showVideoModal(true))
+                store.dispatch(handleVideoModal())
                 store.dispatch(
                   changeAlertContent(
                     'ESC 키를 눌러 화상통화를 중지할 수 있습니다.',
@@ -173,7 +173,7 @@ export default class Player extends Avatar {
               })
 
               me.reconnectPeerId()
-              store.dispatch(showVideoModal(true))
+              store.dispatch(handleVideoModal())
               store.dispatch(handleScreenSharing(true))
               store.dispatch(
                 changeAlertContent(

@@ -1,15 +1,13 @@
+import { handleModal } from '../../store/features/modalSlice'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import { closeModal } from '../../store/features/modalDisplaySlice'
 
 function Modal() {
-  const { isOpen } = useAppSelector((state) => state.modalDisplay)
-  const { title, description, action, actionLabel } = useAppSelector(
-    (state) => state.modalContent,
-  )
+  const { content, isOpen } = useAppSelector((state) => state.modal)
+  const { title, description, action, actionLabel } = content
   const dispatch = useAppDispatch()
 
   const onClick = () => {
-    dispatch(closeModal())
+    dispatch(handleModal())
   }
 
   if (!isOpen) return null
@@ -17,7 +15,7 @@ function Modal() {
   return (
     <div
       onClick={onClick}
-      className="font-neodgm fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center bg-black/70"
+      className="fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center bg-black/70 font-neodgm"
     >
       <div
         onClick={(e) => e.stopPropagation()}

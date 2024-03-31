@@ -13,10 +13,10 @@ export const VideoModalSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    showVideoModal: (state, action) => {
-      state.isOpen = action.payload
+    handleVideoModal: (state) => {
+      state.isOpen = state.isOpen ? false : true
     },
   },
 })
 
-export const { showVideoModal } = VideoModalSlice.actions
+export const { handleVideoModal } = VideoModalSlice.actions

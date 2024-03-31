@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { ModalDisplaySlice } from './features/modalDisplaySlice'
-import { ModalContentSlice } from './features/modalContentSlice'
+import { ModalSlice } from './features/modalSlice'
 import { AlertSlice } from './features/alertSlice'
 import { ChatListSlice } from './features/chatListSlice'
 import { CreatorModalSlice } from './features/creatorModalSlice'
@@ -12,8 +11,7 @@ import { MyStreamSlice } from './features/myStreamSlice'
 
 export const store = configureStore({
   reducer: {
-    modalDisplay: ModalDisplaySlice.reducer,
-    modalContent: ModalContentSlice.reducer,
+    modal: ModalSlice.reducer,
     alert: AlertSlice.reducer,
     chatList: ChatListSlice.reducer,
     creatorModal: CreatorModalSlice.reducer,

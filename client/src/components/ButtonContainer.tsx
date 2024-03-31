@@ -1,10 +1,9 @@
 import {
   changeAlertContent,
-  closeAlert,
   openAlert,
+  closeAlert,
 } from '../store/features/alertSlice'
-import { changeModalContent } from '../store/features/modalContentSlice'
-import { closeModal, openModal } from '../store/features/modalDisplaySlice'
+import { changeModalContent, handleModal } from '../store/features/modalSlice'
 import { useAppDispatch } from '../store/store'
 import IconLink from '../svgs/IconLink.svg?react'
 import IconOff from '../svgs/IconOff.svg?react'
@@ -31,12 +30,12 @@ function ButtonContainer() {
         description: '정말 종료하시겠습니까?',
         action: () => {
           window.location.replace('/')
-          dispatch(closeModal())
+          dispatch(handleModal())
         },
         actionLabel: '종료',
       }),
     )
-    dispatch(openModal())
+    dispatch(handleModal())
   }
 
   return (
