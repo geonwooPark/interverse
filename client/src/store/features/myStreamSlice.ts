@@ -12,7 +12,7 @@ interface StreamType {
   }
 }
 
-export const initStream = {
+const initStream = {
   peerId: '',
   socketId: '',
   nickName: '',
@@ -72,30 +72,28 @@ export const MyStreamSlice = createSlice({
         return stream
       })
     },
-    controlStream: (state, action: PayloadAction<'video' | 'audio'>) => {
-      if (action.payload === 'video') {
-        state.controller = {
-          ...state.controller,
-          video: !state.controller.video,
-        }
+    controlVideoStream: (state) => {
+      state.controller = {
+        ...state.controller,
+        video: !state.controller.video,
+      }
 
-        state.myStream = {
-          ...state.myStream,
-          isVideoEnabled: !state.myStream.isVideoEnabled,
-        }
+      state.myStream = {
+        ...state.myStream,
+        isVideoEnabled: !state.myStream.isVideoEnabled,
+      }
 
-        if (state.myStream.peerId === state.currentStream.peerId) {
-          state.currentStream = {
-            ...state.currentStream,
-            isVideoEnabled: !state.currentStream.isVideoEnabled,
-          }
+      if (state.myStream.peerId === state.currentStream.peerId) {
+        state.currentStream = {
+          ...state.currentStream,
+          isVideoEnabled: !state.currentStream.isVideoEnabled,
         }
       }
-      if (action.payload === 'audio') {
-        state.controller = {
-          ...state.controller,
-          audio: !state.controller.audio,
-        }
+    },
+    controlAudioStream: (state) => {
+      state.controller = {
+        ...state.controller,
+        audio: !state.controller.audio,
       }
     },
     stopStream: (state) => {
@@ -129,7 +127,8 @@ export const {
   updatePeerStreamVideo,
   updatePeerStreamSound,
   stopStream,
-  controlStream,
+  controlVideoStream,
+  controlAudioStream,
   handleScreenSharing,
   handleAudio,
   handleVideo,

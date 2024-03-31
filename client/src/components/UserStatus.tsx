@@ -3,7 +3,8 @@ import IconMic from '../svgs/IconMic.svg?react'
 import IconChat from '../svgs/IconChat.svg?react'
 import { useAppDispatch, useAppSelector } from '../store/store'
 import {
-  controlStream,
+  controlVideoStream,
+  controlAudioStream,
   handleAudio,
   handleVideo,
 } from '../store/features/myStreamSlice'
@@ -26,7 +27,7 @@ function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   }
 
   const onCamClick = () => {
-    dispatch(controlStream('video'))
+    dispatch(controlVideoStream())
     dispatch(handleVideo())
 
     const isVideoEnabled = controller.video ? false : true
@@ -37,7 +38,7 @@ function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   }
 
   const onMicClick = () => {
-    dispatch(controlStream('audio'))
+    dispatch(controlAudioStream())
     dispatch(handleAudio())
   }
 

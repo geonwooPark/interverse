@@ -1,7 +1,11 @@
 import Peer from 'peerjs'
 import { CookieType } from '../types/client'
 import { store } from '../store/store'
-import { setMyStream } from '../store/features/myStreamSlice'
+import {
+  controlVideoStream,
+  handleVideo,
+  setMyStream,
+} from '../store/features/myStreamSlice'
 
 export const me = {
   peer: new Peer({
@@ -90,6 +94,10 @@ export const me = {
             audioTrack.enabled = audio
 
             store.dispatch(setMyStream(initStream))
+            if (!video) {
+              store.dispatch(controlVideoStream())
+              store.dispatch(handleVideo())
+            }
           })
       })
   },
