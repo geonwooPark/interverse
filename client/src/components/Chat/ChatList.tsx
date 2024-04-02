@@ -1,11 +1,9 @@
-import { ChatItemType } from '../../types/client'
+import { useAppSelector } from '../../store/store'
 import ChatItem from './ChatItem'
 
-interface ChatListProps {
-  chatList: ChatItemType[]
-}
+function ChatList() {
+  const chatList = useAppSelector((state) => state.chatList)
 
-function ChatList({ chatList }: ChatListProps) {
   return (
     <ul className="hide-scroll overflow-y-auto pt-2">
       {chatList.map((chatItem, i) => (
