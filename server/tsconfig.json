@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "target": "es5",
+    "outDir": "lib",
+    "target": "es6",
     "module": "commonjs",
     "strict": true,
     "allowJs": true,
@@ -9,14 +9,11 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "*": ["types/*"]
-    },
-    "typeRoots": ["node_modules/@types", "../types/server.d.ts"]
+    }
   },
   "include": ["*"]
 }
