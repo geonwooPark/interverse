@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { ChatItemType } from '../../types/client'
 import ChatMessage from './ChatItem'
 
@@ -15,4 +16,4 @@ function ChatList({ chatList }: ChatListProps) {
   )
 }
 
-export default ChatList
+export default memo(ChatList)
