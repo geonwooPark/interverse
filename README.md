@@ -27,7 +27,7 @@
 
 - ### 아키텍처
 
-<img width="800" alt="flow" src="https://github.com/Team94/interverse/assets/136573728/8df5524d-3e2d-436e-8bd7-143ea4e3265a">
+<img width="800" alt="flow" src="https://github.com/Team94/interverse/assets/136573728/42f3e6cb-af3d-4725-94b8-c6b5fc3ee075">
 
 - ### 물리 엔진
 
