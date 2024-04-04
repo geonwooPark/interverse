@@ -101,7 +101,7 @@ export default class Game extends Phaser.Scene {
     this.add.existing(this.player)
 
     // Camera Setting
-    this.cameras.main.zoom = 1.45
+    this.cameras.main.zoom = 1.6
     this.cameras.main.startFollow(this.player, true)
 
     // ChairToUp Layer
