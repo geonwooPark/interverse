@@ -2,7 +2,7 @@
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "builds": [
     {
-      "src": "client/**",
+      "src": "client",
       "use": "@vercel/static-build"
     }
   ]
