@@ -8,7 +8,7 @@ interface UserListProps {
 function UserList({ users }: UserListProps) {
   return (
     <div className="absolute left-[50%] translate-x-[-50%]">
-      <ul className="hide-scroll max-h-[180px] w-[180px] overflow-x-auto overflow-y-scroll rounded-md bg-white/30 text-sm shadow-md">
+      <ul className="hide-scroll max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white/30 text-sm shadow-md">
         {users.map((user) => (
           <li key={user.socketId} className="flex items-center p-2">
             <div
