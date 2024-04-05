@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "heroku-postbuild": "rm -rf client && npm install && cd types && npm install && cd ../server && npm install && tsc"
+    "heroku-postbuild": "rm -rf client && npm install && cd types && npm install && cd ../server && npm install && tsc",
+    "dev-server": "cd server && npm run dev"
   },
   "author": "",
   "license": "ISC",
