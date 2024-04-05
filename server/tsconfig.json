@@ -9,11 +9,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["types/*"]
-    }
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["*"]
+  "include": ["."]
 }
