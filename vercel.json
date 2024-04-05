@@ -1,6 +1,5 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "buildCommand": "rm -rf server && npm install && cd types && npm install && cd ../client && npm run build",
-  "outputDirectory": "./client/dist",
-  "installCommand": "npm install"
+  "devCommand": "cd client && npm run dev"
 }
