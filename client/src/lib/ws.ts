@@ -10,11 +10,13 @@ import {
   ClientJoinRoom,
   ClientMessage,
   ClientToServerEvents,
+  RoomUser,
   ServerPlayerInfo,
   ServerToClientEvents,
 } from '../../../types/socket'
 import { CookieType } from '../../../types/client'
 import { me } from './peer'
+import { addUser, deleteUser, setUsers } from '../store/features/usersSlice'
 
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
@@ -46,7 +48,7 @@ export const ws: WS = {
   game: null,
   occupiedChairs: [],
 
-  joinRoom({ authCookie, texture, animation }) {
+  joinRoom({ authCookie, texture }) {
     this.game = phaserGame.scene.keys.game as Game
     this.game.player.setNickname(authCookie.nickName)
     this.game.player.setAvatarTexture(authCookie.texture)
@@ -56,7 +58,7 @@ export const ws: WS = {
     )
 
     // 서버로 쿠키와 아바타 정보 전달
-    this.socket.emit('clientJoinRoom', { authCookie, texture, animation })
+    this.socket.emit('clientJoinRoom', { authCookie, texture })
     // 서버에서 입장 메시지 받기
     this.socket.on('serverMsg', (messageData) => {
       if (!this.game) return
@@ -70,13 +72,19 @@ export const ws: WS = {
     this.socket.on('serverPlayerInfo', (playerInfo) => {
       if (!this.game) return
       this.game.addOtherPlayer(playerInfo)
+      store.dispatch(addUser(playerInfo))
     })
     // 서버에서 새로운 유저가 방에 존재하는 유저들의 정보 받기
     this.socket.on('serverRoomMember', (users) => {
       if (!this.game) return
+      let userList: RoomUser[] = []
       for (const user in users) {
+        userList = [...userList, users[user] as unknown as RoomUser]
+
+        if (user === this.socket.id) continue
         this.game.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
       }
+      store.dispatch(setUsers(userList))
     })
     // 방에 입장했을 때 이미 누군가 앉아있는 의자들
     this.socket.on('serverOccupiedChairs', (chairs) => {
@@ -87,6 +95,7 @@ export const ws: WS = {
     this.socket.on('serverLeaveRoom', (socketId) => {
       if (!this.game) return
       this.game.removeOtherPlayer(socketId)
+      store.dispatch(deleteUser(socketId))
     })
   },
 

@@ -7,6 +7,7 @@ import { changeModalContent, handleModal } from '../store/features/modalSlice'
 import { useAppDispatch } from '../store/store'
 import IconLink from '../svgs/IconLink.svg?react'
 import IconOff from '../svgs/IconOff.svg?react'
+import ConnectedUserList from './ConnectedUserList'
 
 function ButtonContainer() {
   const dispatch = useAppDispatch()
@@ -40,6 +41,7 @@ function ButtonContainer() {
 
   return (
     <div className="fixed right-8 top-4 flex gap-3">
+      <ConnectedUserList />
       <button
         onClick={onLinkClick}
         className="flex size-[40px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
