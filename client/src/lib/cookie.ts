@@ -1,5 +1,5 @@
 import { Cookies } from 'react-cookie'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 
 const cookies = new Cookies()
 

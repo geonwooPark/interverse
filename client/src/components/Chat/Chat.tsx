@@ -1,5 +1,5 @@
 import ChatList from './ChatList'
-import { CookieType } from '../../types/client'
+import { CookieType } from '../../../../types/client'
 import ChatInput from './ChatInput'
 
 interface ChatProps {

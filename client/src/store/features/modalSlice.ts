@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ModalContentType } from '../../types/client'
+import { ModalContentType } from '../../../../types/client'
 
 export interface ModalType {
   content: {

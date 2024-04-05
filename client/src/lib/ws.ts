@@ -12,8 +12,8 @@ import {
   ClientToServerEvents,
   ServerPlayerInfo,
   ServerToClientEvents,
-} from '../types/socket'
-import { CookieType } from '../types/client'
+} from '../../../types/socket'
+import { CookieType } from '../../../types/client'
 import { me } from './peer'
 
 interface WS {

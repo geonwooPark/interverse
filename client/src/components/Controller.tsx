@@ -3,7 +3,7 @@ import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 
 interface ControllerProps {
   authCookie: CookieType | null

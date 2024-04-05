@@ -1,5 +1,5 @@
 import Peer from 'peerjs'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 import { store } from '../store/store'
 import {
   controlVideoStream,

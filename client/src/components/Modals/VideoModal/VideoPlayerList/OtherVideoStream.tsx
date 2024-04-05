@@ -1,4 +1,4 @@
-import { PeerStreamType } from '../../../../types/client'
+import { PeerStreamType } from '../../../../../../types/client'
 import VideoStreamerName from './VideoStreamerName'
 import VideoMutedButton from './VideoMutedButton'
 import VideoStream from './VideoStream'

@@ -10,7 +10,7 @@ import {
   RoomUser,
   ServerToClientEvents,
   VideoRoomUser,
-} from '../types/server'
+} from '../types/socket'
 
 const app = express()
 app.use(cors())

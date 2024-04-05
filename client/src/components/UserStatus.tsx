@@ -8,7 +8,7 @@ import {
   handleAudio,
   handleVideo,
 } from '../store/features/myStreamSlice'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 import { ws } from '../lib/ws'
 
 interface UserStatusProps {

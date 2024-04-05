@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { PeerStreamType } from '../../../types/client'
+import { PeerStreamType } from '../../../../../types/client'
 import { textureImage } from '../../../constants'
 
 interface VideoPlayerProps {

@@ -8,7 +8,7 @@ import {
   stopStream,
   updatePeerStreamVideo,
 } from '../store/features/myStreamSlice'
-import { CookieType } from '../types/client'
+import { CookieType } from '../../../types/client'
 
 export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()

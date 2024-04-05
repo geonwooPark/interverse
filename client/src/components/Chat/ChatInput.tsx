@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CookieType } from '../../types/client'
+import { CookieType } from '../../../../types/client'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
 

@@ -1,6 +1,6 @@
 import { setCurrentStream } from '../../../../store/features/myStreamSlice'
 import { useAppDispatch } from '../../../../store/store'
-import { PeerStreamType } from '../../../../types/client'
+import { PeerStreamType } from '../../../../../../types/client'
 import OtherVideoStream from './OtherVideoStream'
 import VideoStream from './VideoStream'
 

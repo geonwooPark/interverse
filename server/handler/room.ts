@@ -6,7 +6,7 @@ import {
   ClientMessage,
   ClientToServerEvents,
   ServerToClientEvents,
-} from '../../types/server'
+} from '../../types/socket'
 
 export const roomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,

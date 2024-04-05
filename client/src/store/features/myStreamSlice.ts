@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { PeerStreamType } from '../../types/client'
+import { PeerStreamType } from '../../../../types/client'
 
 interface StreamType {
   myStream: PeerStreamType

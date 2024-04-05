@@ -5,7 +5,7 @@ import VideoPlayerList from './VideoPlayerList/VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
 import { MediaConnection } from 'peerjs'
-import { CookieType } from '../../../types/client'
+import { CookieType } from '../../../../../types/client'
 import { useAppDispatch } from '../../../store/store'
 import { addPeerStream } from '../../../store/features/myStreamSlice'
 

@@ -6,8 +6,8 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import { CookieType, DisplayOtherPlayerChatType } from '../types/client'
-import { ServerAvatarPosition, ServerPlayerInfo } from '../types/socket'
+import { CookieType, DisplayOtherPlayerChatType } from '../../../types/client'
+import { ServerAvatarPosition, ServerPlayerInfo } from '../../../types/socket'
 import { ws } from '../lib/ws'
 
 export default class Game extends Phaser.Scene {

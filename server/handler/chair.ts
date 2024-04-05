@@ -4,7 +4,7 @@ import {
   ClientChairId,
   ClientToServerEvents,
   ServerToClientEvents,
-} from '../../types/server'
+} from '../../types/socket'
 
 export const chairHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ServerMessage } from '../../types/socket'
+import { ServerMessage } from '../../../../types/socket'
 
 type ChatListType = ServerMessage[]
 
