@@ -1,0 +1,7 @@
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
+  "scripts": {
+    "deploy-client": "rm -rf server && npm install && cd types && npm install && cd ../client && tsc && vite build"
+  },
+  "public": "./client"
+}
