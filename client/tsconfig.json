@@ -22,5 +22,5 @@
 
     "types": ["vite-plugin-svgr/client"]
   },
-  "include": ["src", "svg.d.ts"]
+  "include": ["src", "svg.d.ts", "../vite-env.d.ts"]
 }
