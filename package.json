@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deploy-client": "rm -rf server && cd client && tsc && vite build",
+    "dev-client": "cd client && npm run dev",
+    "deploy-server": "rm -rf client && cd server && tsc",
+    "dev-server": "cd server && npm run dev"
   },
   "author": "",
   "license": "ISC",
