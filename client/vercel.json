@@ -1,5 +1,3 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-  "functions": false,
-  "public": "../client"
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
