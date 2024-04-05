@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "heroku-postbuild": "rm -rf client && npm install && cd types && npm install && cd ../server && npm install && tsc --project tsconfig.json",
+    "heroku-postbuild": "rm -rf client && npm install && cd types && npm install && cd ../server && npm install && tsc",
     "dev-server": "cd server && npm run dev"
   },
   "author": "",
@@ -24,7 +24,6 @@
     "husky": "^8.0.0",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3",
-    "vite-plugin-svgr": "^4.2.0"
+    "typescript": "^5.4.3"
   }
 }
