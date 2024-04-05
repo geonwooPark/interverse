@@ -12,13 +12,22 @@ export const roomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
-  const joinRoom = ({ authCookie, texture, animation }: ClientJoinRoom) => {
+  const joinRoom = ({ authCookie, texture }: ClientJoinRoom) => {
     if (!authCookie) return
     const { roomNum, nickName } = authCookie
     if (!rooms[roomNum]) rooms[roomNum] = {}
 
     // 방에 입장시키기
     socket.join(roomNum)
+
+    if (rooms[roomNum]) {
+      rooms[roomNum][socket.id] = {
+        nickName,
+        texture,
+        roomNum,
+        socketId: socket.id,
+      }
+    }
 
     // 방 입장 메시지 보내기
     io.to(roomNum).emit('serverMsg', {
@@ -34,22 +43,11 @@ export const roomHandler = (
       nickName,
       roomNum,
       texture,
-      animation,
       socketId: socket.id,
     })
 
     // 다른 사람들의 아바타 정보를 나에게 전송
     io.to(socket.id).emit('serverRoomMember', rooms[roomNum])
-
-    if (rooms[roomNum]) {
-      rooms[roomNum][socket.id] = {
-        nickName,
-        texture,
-        animation,
-        roomNum,
-        socketId: socket.id,
-      }
-    }
 
     // 누군가 앉아있는 의자들 목록 알려주기
     if (occupiedChairs[roomNum]) {
