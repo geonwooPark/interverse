@@ -220,19 +220,18 @@ export default class Game extends Phaser.Scene {
 
     ws.joinRoom({
       authCookie,
-      texture: this.player.avatarTexture,
-      animation: this.player.anims.currentAnim!.key,
+      texture: authCookie.texture,
     })
     ws.receiveChairId()
     this.setUpKeys()
   }
 
   /** 다른 플레이어 입장 */
-  addOtherPlayer({ nickName, texture, animation, socketId }: ServerPlayerInfo) {
+  addOtherPlayer({ nickName, texture, socketId }: ServerPlayerInfo) {
     if (!socketId) return
 
     const newPlayer = new OtherPlayer(this, -1000, -1000, texture, nickName)
-    newPlayer.anims.play(animation || `${texture}_stand_down`, true)
+    newPlayer.anims.play(`${texture}_stand_down`, true)
     newPlayer.setDepth(900)
     this.add.existing(newPlayer)
 

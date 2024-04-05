@@ -23,13 +23,11 @@ export interface ClientJoinRoom {
     texture: string
   }
   texture: string
-  animation: any
 }
 
 export interface ServerPlayerInfo {
   nickName: string
   texture: string
-  animation: any
   roomNum: string
   socketId: string
 }
@@ -72,7 +70,6 @@ export interface ClientChairId {
 export interface RoomUser {
   nickName: string
   texture: string
-  animation: any
   roomNum: string
   socketId: string
 }
@@ -101,7 +98,6 @@ export interface ServerToClientEvents {
     texture,
     roomNum,
     socketId,
-    animation,
   }: ServerPlayerInfo) => void
   serverAvatarPosition: ({
     x,
