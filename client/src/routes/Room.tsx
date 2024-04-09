@@ -39,15 +39,11 @@ function Room() {
     if (game.isCreate) {
       joinRoom()
     } else {
-      phaserGame.scene.getScene('game').events.on('createGame', () => {
-        joinRoom()
-      })
+      phaserGame.scene.getScene('game').events.on('createGame', joinRoom)
     }
 
     return () => {
-      phaserGame.scene.getScene('game').events.off('createGame', () => {
-        joinRoom()
-      })
+      phaserGame.scene.getScene('game').events.off('createGame', joinRoom)
     }
   }, [game])
 
