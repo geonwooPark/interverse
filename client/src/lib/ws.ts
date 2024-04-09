@@ -17,6 +17,8 @@ import {
 import { CookieType } from '../../../types/client'
 import { me } from './peer'
 import { addUser, deleteUser, setUsers } from '../store/features/usersSlice'
+import { addPeerStream } from '../store/features/myStreamSlice'
+import { MediaConnection } from 'peerjs'
 
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
@@ -39,6 +41,22 @@ interface WS {
   }: {
     authCookie: CookieType
     video: boolean
+  }) => void
+  callToOtherPlayer: ({
+    authCookie,
+    stream,
+    video,
+  }: {
+    authCookie: CookieType
+    stream: MediaStream
+    video: boolean
+  }) => void
+  answerIncomingCall: ({
+    call,
+    stream,
+  }: {
+    call: MediaConnection
+    stream: MediaStream
   }) => void
   leaveVideoRoom: (roomNum: string) => void
 }
@@ -152,6 +170,54 @@ export const ws: WS = {
       nickName: authCookie.nickName,
       texture: authCookie.texture,
       isVideoEnabled: video,
+    })
+  },
+
+  callToOtherPlayer({ authCookie, stream, video }) {
+    this.socket.on('serverJoinVideoRoom', (newUser) => {
+      // 기존 멤버들이 신규 멤버에게 call
+      const call = me.peer.call(newUser.peerId, stream, {
+        metadata: {
+          nickName: authCookie.nickName,
+          socketId: ws.socket.id,
+          texture: authCookie.texture,
+          isVideoEnabled: video,
+        },
+      })
+      // 기존 멤버에서 실행
+      call.once('stream', (peerStream) => {
+        store.dispatch(
+          addPeerStream({
+            peerId: newUser.peerId,
+            nickName: newUser.nickName,
+            socketId: newUser.socketId,
+            texture: newUser.texture,
+            isVideoEnabled: newUser.isVideoEnabled,
+            stream: peerStream,
+            sound: true,
+          }),
+        )
+      })
+    })
+  },
+
+  answerIncomingCall({ call, stream }) {
+    const { nickName, socketId, texture, isVideoEnabled } = call.metadata
+    // 전화에 응답
+    call.answer(stream)
+    // 새로운 멤버에서 실행
+    call.once('stream', (peerStream) => {
+      store.dispatch(
+        addPeerStream({
+          peerId: call.peer,
+          nickName,
+          socketId,
+          texture,
+          isVideoEnabled,
+          stream: peerStream,
+          sound: true,
+        }),
+      )
     })
   },
 
