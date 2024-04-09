@@ -8,18 +8,16 @@ export const useGoBack = (content: ModalContentType) => {
 
   useEffect(() => {
     history.pushState(null, '', location.href)
+
     const browserPreventEvent = () => {
       history.pushState(null, '', location.href)
       dispatch(changeModalContent(content))
       dispatch(handleModal())
     }
-    window.addEventListener('popstate', () => {
-      browserPreventEvent()
-    })
+
+    window.addEventListener('popstate', browserPreventEvent)
     return () => {
-      window.removeEventListener('popstate', () => {
-        browserPreventEvent()
-      })
+      window.removeEventListener('popstate', browserPreventEvent)
     }
   }, [])
 }

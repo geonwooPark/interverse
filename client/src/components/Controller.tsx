@@ -14,15 +14,16 @@ function Controller({ authCookie }: ControllerProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [showChat, setShowChat] = useState(false)
 
-  const onFocusChat = () => {
-    setShowChat(true)
-    inputRef.current?.focus()
-    event?.preventDefault()
-    game.disableKeys()
-  }
-
   useEffect(() => {
     if (!game) return
+
+    const onFocusChat = () => {
+      setShowChat(true)
+      inputRef.current?.focus()
+      event?.preventDefault()
+      game.disableKeys()
+    }
+
     phaserGame.scene.getScene('game').events.on('onFocusChat', onFocusChat)
     return () => {
       phaserGame.scene.getScene('game').events.off('onFocusChat', onFocusChat)
