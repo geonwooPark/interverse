@@ -1,7 +1,7 @@
-import { useAppSelector } from '../../../store/store'
+import { useAppSelector } from '../../store/store'
 import DirectMessage from './DirectMessage'
 
-function DirectMessageModal() {
+function DirectMessages() {
   const { directMessages } = useAppSelector((state) => state.directMessageModal)
 
   const directMessagesArr = directMessages.map((dm) => (
@@ -11,4 +11,4 @@ function DirectMessageModal() {
   return directMessages && directMessagesArr
 }
 
-export default DirectMessageModal
+export default DirectMessages

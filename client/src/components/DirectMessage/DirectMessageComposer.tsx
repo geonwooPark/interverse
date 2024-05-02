@@ -1,11 +1,11 @@
-import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { useAppDispatch, useAppSelector } from '../../store/store'
 import {
   changeReceiver,
   handleDirectMessageComposer,
-} from '../../../store/features/directMessageModalSlice'
-import { ws } from '../../../lib/ws'
+} from '../../store/features/directMessageModalSlice'
+import { ws } from '../../lib/ws'
 import { useState } from 'react'
-import { CookieType } from '../../../../../types/client'
+import { CookieType } from '../../../../types/client'
 
 interface DirectMessageComposerProps {
   receiver: { nickName: string; id: string }

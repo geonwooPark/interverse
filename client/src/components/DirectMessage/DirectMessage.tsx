@@ -3,8 +3,8 @@ import {
   changeReceiver,
   handleDirectMessageComposer,
   removeDM,
-} from '../../../store/features/directMessageModalSlice'
-import { useAppDispatch } from '../../../store/store'
+} from '../../store/features/directMessageModalSlice'
+import { useAppDispatch } from '../../store/store'
 
 interface DirectMessageProps {
   dm: DirectMessageType

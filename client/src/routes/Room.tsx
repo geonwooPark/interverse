@@ -14,8 +14,7 @@ import { useAppDispatch } from '../store/store'
 import { useGoBack } from '../hooks/useGoBack'
 import Controller from '../components/Controller/Controller'
 import { handleModal } from '../store/features/modalSlice'
-import DirectMessageModal from '../components/Modals/DirectMessageModal/DirectMessageModal'
-import DirectMessageComposer from '../components/Modals/DirectMessageModal/DirectMessageComposer'
+import DirectMessages from '../components/DirectMessage/DirectMessages'
 
 function Room() {
   const params = useParams()
@@ -65,7 +64,7 @@ function Room() {
       <ButtonContainer authCookie={authCookie} />
       <Controller authCookie={authCookie} />
       <Alert />
-      <DirectMessageModal />
+      <DirectMessages />
       <CreatorModal />
       <ManualModal />
       <SurveyModal />
