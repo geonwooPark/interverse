@@ -6,6 +6,7 @@ import { addMessage } from '../store/features/chatListSlice'
 import {
   ClientAvatarPosition,
   ClientChairId,
+  ClientDirectMessage,
   ClientHandleCamera,
   ClientJoinRoom,
   ClientMessage,
@@ -19,6 +20,7 @@ import { me } from './peer'
 import { addUser, deleteUser, setUsers } from '../store/features/usersSlice'
 import { addPeerStream } from '../store/features/myStreamSlice'
 import { MediaConnection } from 'peerjs'
+import { addDM } from '../store/features/directMessageModalSlice'
 
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
@@ -58,6 +60,13 @@ interface WS {
     call: MediaConnection
     stream: MediaStream
   }) => void
+  sendDirectMessage: ({
+    message,
+    sender,
+    senderId,
+    receiver,
+    receiverId,
+  }: ClientDirectMessage) => void
   leaveVideoRoom: (roomNum: string) => void
 }
 
@@ -86,6 +95,10 @@ export const ws: WS = {
         socketId: messageData.senderId,
       })
     })
+    // 서버에서 DM 받기
+    this.socket.on('serverDirectMessage', (messageData) =>
+      store.dispatch(addDM({ id: Math.random(), ...messageData })),
+    )
     // 서버에서 기존 방의 유저들이 새로운 유저의 정보 받기
     this.socket.on('serverPlayerInfo', (playerInfo) => {
       if (!this.game) return
@@ -218,6 +231,16 @@ export const ws: WS = {
           sound: true,
         }),
       )
+    })
+  },
+
+  sendDirectMessage({ message, senderId, receiver, sender, receiverId }) {
+    this.socket.emit('clientDirectMessage', {
+      message,
+      sender,
+      senderId,
+      receiver,
+      receiverId,
     })
   },
 

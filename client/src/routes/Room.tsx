@@ -5,15 +5,17 @@ import Game from '../scenes/Game'
 import RoomTitle from '../components/RoomTitle'
 import Alert from '../components/Alert/Alert'
 import { getAuthCookie } from '../lib/cookie'
-import ButtonContainer from '../components/ButtonContainer'
+import ButtonContainer from '../components/ButtonContainer/ButtonContainer'
 import VideoModal from '../components/Modals/VideoModal/VideoModal'
 import CreatorModal from '../components/Modals/CreatorModal/CreatorModal'
 import ManualModal from '../components/Modals/ManualModal/ManualModal'
 import SurveyModal from '../components/Modals/SurveyModal/SurveyModal'
 import { useAppDispatch } from '../store/store'
 import { useGoBack } from '../hooks/useGoBack'
-import Controller from '../components/Controller'
+import Controller from '../components/Controller/Controller'
 import { handleModal } from '../store/features/modalSlice'
+import DirectMessageModal from '../components/Modals/DirectMessageModal/DirectMessageModal'
+import DirectMessageComposer from '../components/Modals/DirectMessageModal/DirectMessageComposer'
 
 function Room() {
   const params = useParams()
@@ -60,9 +62,10 @@ function Room() {
   return (
     <div>
       <RoomTitle />
-      <ButtonContainer />
+      <ButtonContainer authCookie={authCookie} />
       <Controller authCookie={authCookie} />
       <Alert />
+      <DirectMessageModal />
       <CreatorModal />
       <ManualModal />
       <SurveyModal />

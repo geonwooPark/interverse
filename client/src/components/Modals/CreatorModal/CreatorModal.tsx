@@ -15,7 +15,7 @@ function CreatorModal() {
   return (
     <div
       onClick={onClick}
-      className="font-neodgm fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center  bg-black/70"
+      className="fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center bg-black/70  font-neodgm"
     >
       <div onClick={(e) => e.stopPropagation()} className="flex gap-5">
         <CreatorCard

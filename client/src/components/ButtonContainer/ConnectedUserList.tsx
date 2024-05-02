@@ -1,10 +1,17 @@
 import { useMemo, useState } from 'react'
 import UserList from './UserList'
-import IconUsers from '../svgs/IconUsers.svg?react'
-import { useAppSelector } from '../store/store'
+import IconUsers from '../../svgs/IconUsers.svg?react'
+import { useAppSelector } from '../../store/store'
+import { CookieType } from '../../../../types/client'
+import DirectMessageComposer from '../Modals/DirectMessageModal/DirectMessageComposer'
 
-function ConnectedUserList() {
+interface ConnectedUserListProps {
+  authCookie: CookieType | null
+}
+
+function ConnectedUserList({ authCookie }: ConnectedUserListProps) {
   const users = useAppSelector((state) => state.users)
+  const { receiver } = useAppSelector((state) => state.directMessageModal)
 
   const userCount = useMemo(() => Object.keys(users).length, [users])
 
@@ -24,6 +31,7 @@ function ConnectedUserList() {
         <span>{userCount}</span>
       </button>
       {showUserList && <UserList users={users} />}
+      <DirectMessageComposer authCookie={authCookie} receiver={receiver} />
     </div>
   )
 }

@@ -9,10 +9,12 @@ import { VideoModalSlice } from './features/videoModalSlice'
 import { SurveyModalSlice } from './features/surveyModalSlice'
 import { MyStreamSlice } from './features/myStreamSlice'
 import { UsersSlice } from './features/usersSlice'
+import { DirectMessageModalSlice } from './features/directMessageModalSlice'
 
 export const store = configureStore({
   reducer: {
     modal: ModalSlice.reducer,
+    directMessageModal: DirectMessageModalSlice.reducer,
     alert: AlertSlice.reducer,
     chatList: ChatListSlice.reducer,
     creatorModal: CreatorModalSlice.reducer,
