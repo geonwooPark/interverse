@@ -1,15 +1,15 @@
-import IconCam from '../svgs/IconCam.svg?react'
-import IconMic from '../svgs/IconMic.svg?react'
-import IconChat from '../svgs/IconChat.svg?react'
-import { useAppDispatch, useAppSelector } from '../store/store'
+import IconCam from '../../svgs/IconCam.svg?react'
+import IconMic from '../../svgs/IconMic.svg?react'
+import IconChat from '../../svgs/IconChat.svg?react'
+import { useAppDispatch, useAppSelector } from '../../store/store'
 import {
   controlVideoStream,
   controlAudioStream,
   handleAudio,
   handleVideo,
-} from '../store/features/myStreamSlice'
-import { CookieType } from '../../../types/client'
-import { ws } from '../lib/ws'
+} from '../../store/features/myStreamSlice'
+import { CookieType } from '../../../../types/client'
+import { ws } from '../../lib/ws'
 
 interface UserStatusProps {
   authCookie: CookieType | null

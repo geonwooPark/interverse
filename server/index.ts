@@ -11,6 +11,7 @@ import {
   ServerToClientEvents,
   VideoRoomUser,
 } from '../types/socket'
+import { directMessageHandler } from './handler/directMessage'
 
 const app = express()
 app.use(cors())
@@ -38,6 +39,7 @@ io.on(
     roomHandler(socket, io)
     videoRoomHandler(socket, io)
     chairHandler(socket, io)
+    directMessageHandler(socket, io)
 
     socket.on('disconnecting', () => {
       console.log('유저 연결 끊김..')

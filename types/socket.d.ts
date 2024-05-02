@@ -90,6 +90,20 @@ export interface ServerHandleCamera {
   isVideoEnabled: boolean
 }
 
+export interface ClientDirectMessage {
+  message: string
+  sender: string
+  senderId: string
+  receiver: string
+  receiverId: string
+}
+
+export interface ServerDirectMessage {
+  message: string
+  sender: string
+  senderId: string
+}
+
 export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
   serverMsg: (message: ServerMessage) => void
@@ -118,6 +132,7 @@ export interface ServerToClientEvents {
   serverChairId: (chairId: string) => void
   serverRoomMember: (rooms: Record<string, Record<string, RoomUser>>) => void
   serverHandleCamera: ({ socketId, isVideoEnabled }: ServerHandleCamera) => void
+  serverDirectMessage: ({ message, senderId }: ServerDirectMessage) => void
 }
 
 export interface ClientToServerEvents {
@@ -140,4 +155,11 @@ export interface ClientToServerEvents {
   clientLeaveVideoRoom: (roomNum: string) => void
   clientChairId: ({ roomNum, chairId }: ClientChairId) => void
   clientHandleCamera: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
+  clientDirectMessage: ({
+    message,
+    sender,
+    senderId,
+    receiver,
+    receiverId,
+  }: ClientDirectMessage) => void
 }
