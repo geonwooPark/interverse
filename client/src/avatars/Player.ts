@@ -4,22 +4,12 @@ import {
   closeAlert,
   openAlert,
 } from '../store/features/alertSlice'
-import {
-  closeCreatorModal,
-  openCreatorModal,
-} from '../store/features/creatorModalSlice'
-import {
-  closeManualModal,
-  openManualModal,
-} from '../store/features/manualModalSlice'
-import {
-  closeSurveyModal,
-  openSurveyModal,
-} from '../store/features/surveyModalSlice'
+import { handleCreatorModal } from '../store/features/creatorModalSlice'
+import { handleManualModal } from '../store/features/manualModalSlice'
+import { handleSurveyModal } from '../store/features/surveyModalSlice'
 import { handleVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
-import { me } from '../lib/peer'
 import { handleScreenSharing } from '../store/features/myStreamSlice'
 import { ws } from '../lib/ws'
 
@@ -29,6 +19,9 @@ export default class Player extends Avatar {
   prevVy = 0
   preX = 0
   preY = 0
+  moveSpeed = 200
+  moveDirection: 'down' | 'up' | 'left' | 'right' = 'down'
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -46,37 +39,34 @@ export default class Player extends Avatar {
     keyEscape: Phaser.Input.Keyboard.Key,
     roomNum: string,
   ) {
-    const moveSpeed = 200
     let vx = 0
     let vy = 0
 
-    switch (this.behavior) {
-      case 'stand':
+    switch (this.interaction) {
+      case 'inactive':
         // 화살표 키 입력 감지 및 애니메이션 실행
-
         if (cursorsKeys?.left.isDown) {
-          vx -= moveSpeed
+          vx -= this.moveSpeed
+          this.moveDirection = 'left'
         } else if (cursorsKeys.right.isDown) {
-          vx += moveSpeed
+          vx += this.moveSpeed
+          this.moveDirection = 'right'
         } else if (cursorsKeys.up.isDown) {
-          vy -= moveSpeed
+          vy -= this.moveSpeed
+          this.moveDirection = 'up'
         } else if (cursorsKeys.down.isDown) {
-          vy += moveSpeed
+          vy += this.moveSpeed
+          this.moveDirection = 'down'
         }
 
-        if (vx > 0) {
-          this.play(`${this.avatarTexture}_run_right`, true)
-        } else if (vx < 0) {
-          this.play(`${this.avatarTexture}_run_left`, true)
-        } else if (vy > 0) {
-          this.play(`${this.avatarTexture}_run_down`, true)
-        } else if (vy < 0) {
-          this.play(`${this.avatarTexture}_run_up`, true)
+        // 아바타가 움직이는지 확인하여 애니메이션을 결정
+        if (this.body?.velocity.x !== 0 || this.body?.velocity.y !== 0) {
+          this.play(`${this.avatarTexture}_run_${this.moveDirection}`, true)
         } else {
-          // 이동 후 정지상태 애니메이션 실행
-          const animParts = this.anims.currentAnim!.key.split('_')
-          animParts[1] = 'stand'
-          this.anims.play(animParts.join('_'), true)
+          this.anims.play(
+            `${this.avatarTexture}_stand_${this.moveDirection}`,
+            true,
+          )
         }
 
         // 플레이어 이동
@@ -93,16 +83,20 @@ export default class Player extends Avatar {
           this.prevVy = vy
         }
 
-        // 의자에 앉기
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
           if (!this.selectedInteractionItem) return
-          const chair = this.selectedInteractionItem as Chair
+          const chair =
+            this.selectedInteractionItem.itemType === 'chair'
+              ? (this.selectedInteractionItem as Chair)
+              : undefined
+          this.preX = this.x
+          this.preY = this.y
 
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
+              if (!chair) return
               if (ws.occupiedChairs.has(chair.id.toString())) return
-              this.preX = this.x
-              this.preY = this.y
+
               this.setVelocity(0, 0)
               this.setPosition(chair.x, chair.y + 5)
               this.avatarContainer.setPosition(this.x, this.y - 35)
@@ -111,9 +105,6 @@ export default class Player extends Avatar {
                 `${this.avatarTexture}_sit_${chair.heading}`,
                 true,
               )
-
-              chair.clearInteractionBox()
-              this.behavior = 'sit'
 
               // 의자에 앉으면 서버로 의자의 넘버를 보냄
               ws.sendChairId({
@@ -129,14 +120,13 @@ export default class Player extends Avatar {
               })
 
               if (chair.interaction === 'menual') {
-                store.dispatch(openCreatorModal())
+                store.dispatch(handleCreatorModal())
                 store.dispatch(
                   changeAlertContent(
                     'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
                   ),
                 )
               } else if (chair.interaction === 'interview') {
-                me.reconnectPeerId()
                 store.dispatch(handleVideoModal())
                 store.dispatch(
                   changeAlertContent(
@@ -150,20 +140,29 @@ export default class Player extends Avatar {
                   ),
                 )
               }
-
               store.dispatch(openAlert())
+              this.selectedInteractionItem.itemType = 'chair'
               break
             case 'secretary':
-              store.dispatch(openManualModal())
-              store.dispatch(closeAlert())
+              store.dispatch(handleManualModal())
+              store.dispatch(
+                changeAlertContent(
+                  'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
+                ),
+              )
+              this.selectedInteractionItem.itemType = 'secretary'
               break
             case 'printer':
-              store.dispatch(openSurveyModal())
-              store.dispatch(closeAlert())
+              store.dispatch(handleSurveyModal())
+              store.dispatch(
+                changeAlertContent(
+                  'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
+                ),
+              )
+              this.selectedInteractionItem.itemType = 'printer'
               break
             case 'screenBoard':
               this.anims.play(`${this.avatarTexture}_stand_down`, true)
-              this.behavior = 'share'
 
               ws.sendAvatarPosition({
                 x: this.x,
@@ -172,7 +171,6 @@ export default class Player extends Avatar {
                 animation: this.anims.currentAnim!.key,
               })
 
-              me.reconnectPeerId()
               store.dispatch(handleVideoModal())
               store.dispatch(handleScreenSharing(true))
               store.dispatch(
@@ -180,72 +178,69 @@ export default class Player extends Avatar {
                   'ESC 키를 눌러 화면공유를 중지할 수 있습니다.',
                 ),
               )
+              this.selectedInteractionItem.itemType = 'screenBoard'
               break
           }
+
+          if (this.selectedInteractionItem.itemType !== 'waterPurifier') {
+            this.interaction = 'active'
+          }
         }
-
         break
-      case 'sit':
-        // 의자에서 일어나기
+
+      case 'active':
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
-          const chair = this.selectedInteractionItem as Chair
           if (!this.selectedInteractionItem) return
+          const chair =
+            this.selectedInteractionItem.itemType === 'chair'
+              ? (this.selectedInteractionItem as Chair)
+              : undefined
 
-          ws.sendChairId({
-            roomNum,
-            chairId: chair.id?.toString() || '',
-          })
+          switch (this.selectedInteractionItem.itemType) {
+            case 'chair':
+              if (!chair) return
 
-          if (chair.interaction === 'menual') {
-            store.dispatch(closeCreatorModal())
+              ws.sendChairId({
+                roomNum,
+                chairId: chair.id?.toString() || '',
+              })
+              if (chair.interaction === 'menual') {
+                store.dispatch(handleCreatorModal())
+              }
+              if (chair.interaction === 'interview') {
+                ws.leaveVideoRoom(roomNum)
+              }
+              this.setPosition(this.preX, this.preY)
+
+              break
+            case 'secretary':
+              store.dispatch(handleManualModal())
+              break
+            case 'printer':
+              store.dispatch(handleSurveyModal())
+              break
+            case 'screenBoard':
+              ws.leaveVideoRoom(roomNum)
           }
-          if (chair.interaction === 'interview') {
-            ws.leaveVideoRoom(roomNum)
-          }
-
-          this.setPosition(this.preX, this.preY)
-          const animParts = this.anims.currentAnim!.key.split('_')
-          animParts[1] = 'stand'
-          this.anims.play(animParts.join('_'), true)
-          this.behavior = 'stand'
-          this.setDepth(1000)
 
           store.dispatch(closeAlert())
-        }
-        break
-      case 'share':
-        if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
-          if (!this.selectedInteractionItem) return
-          this.behavior = 'stand'
-          ws.leaveVideoRoom(roomNum)
+          this.interaction = 'inactive'
         }
         break
     }
 
+    // 오브젝트와 충돌이 해제되면 Alert 제거
+    if (this.selectedInteractionItem && !this.isCollide) {
+      this.selectedInteractionItem.clearInteractionBox()
+      this.selectedInteractionItem = undefined
+    }
+
+    // 실시간으로 나의 위치 전송
     ws.sendAvatarPosition({
       x: this.x,
       y: this.y,
       roomNum,
       animation: this.anims.currentAnim!.key,
     })
-
-    if (
-      this.selectedInteractionItem &&
-      !this.isCollide
-      // !this.scene.physics.overlap(this, this.selectedInteractionItem)
-    ) {
-      // 플레이어와 오브젝트 겹침이 끝날 시
-      switch (this.selectedInteractionItem.itemType) {
-        case 'secretary':
-          store.dispatch(closeManualModal())
-          break
-        case 'printer':
-          store.dispatch(closeSurveyModal())
-          break
-      }
-
-      this.selectedInteractionItem.clearInteractionBox()
-      this.selectedInteractionItem = undefined
-    }
   }
 }

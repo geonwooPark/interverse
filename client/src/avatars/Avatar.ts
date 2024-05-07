@@ -6,7 +6,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
   avatarContainer: Phaser.GameObjects.Container
   nickname: Phaser.GameObjects.Text
   chatBox: Phaser.GameObjects.Container
-  behavior: 'stand' | 'sit' | 'share' = 'stand'
+  interaction: 'inactive' | 'active' = 'inactive'
   timeOut?: number
   selectedInteractionItem?: ObjectItem
 

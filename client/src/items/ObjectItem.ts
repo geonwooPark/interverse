@@ -6,13 +6,7 @@ import {
 import { store } from '../store/store'
 
 export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
-  itemType!:
-    | 'secretary'
-    | 'chair'
-    | 'waterPurifier'
-    | 'printer'
-    | 'ceoDesk'
-    | 'screenBoard'
+  itemType!: 'secretary' | 'chair' | 'waterPurifier' | 'printer' | 'screenBoard'
 
   constructor(
     scene: Phaser.Scene,
