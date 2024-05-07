@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { closeSurveyModal } from '../../../store/features/surveyModalSlice'
+import { handleSurveyModal } from '../../../store/features/surveyModalSlice'
 import SurveyCard from './SurveyCard'
 
 function SurveyModal() {
@@ -7,7 +7,7 @@ function SurveyModal() {
   const dispatch = useAppDispatch()
 
   const onClick = () => {
-    dispatch(closeSurveyModal())
+    dispatch(handleSurveyModal())
   }
 
   if (!isOpen) return
