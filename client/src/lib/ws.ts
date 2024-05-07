@@ -25,6 +25,7 @@ import { addDM } from '../store/features/directMessageModalSlice'
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game: Game | null
+  otherPeers: string[]
   occupiedChairs: string[]
   joinRoom: ({ authCookie }: ClientJoinRoom) => void
   sendMessage: ({ message, nickName, senderId, roomNum }: ClientMessage) => void
@@ -68,11 +69,14 @@ interface WS {
     receiverId,
   }: ClientDirectMessage) => void
   leaveVideoRoom: (roomNum: string) => void
+  clearOtherPeers: () => void
+  removeOtherPeer: (socketId: string) => void
 }
 
 export const ws: WS = {
   socket: io(import.meta.env.VITE_BACKEND),
   game: null,
+  otherPeers: [],
   occupiedChairs: [],
 
   joinRoom({ authCookie, texture }) {
@@ -199,6 +203,8 @@ export const ws: WS = {
       })
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
+        if (this.otherPeers.includes(newUser.socketId)) return
+        this.otherPeers.push(newUser.socketId)
         store.dispatch(
           addPeerStream({
             peerId: newUser.peerId,
@@ -220,6 +226,8 @@ export const ws: WS = {
     call.answer(stream)
     // 새로운 멤버에서 실행
     call.once('stream', (peerStream) => {
+      if (this.otherPeers.includes(socketId)) return
+      this.otherPeers.push(socketId)
       store.dispatch(
         addPeerStream({
           peerId: call.peer,
@@ -246,5 +254,14 @@ export const ws: WS = {
 
   leaveVideoRoom(roomNum) {
     this.socket.emit('clientLeaveVideoRoom', roomNum)
+    this.clearOtherPeers()
+  },
+
+  clearOtherPeers() {
+    this.otherPeers = []
+  },
+
+  removeOtherPeer(socketId: string) {
+    this.otherPeers = this.otherPeers.filter((r) => r !== socketId)
   },
 }

@@ -28,10 +28,10 @@ export const useVideoStream = (authCookie: CookieType) => {
       dispatch(updatePeerStreamVideo({ socketId, isVideoEnabled }))
     })
     ws.socket.on('serverUpdateVideoRoomMember', (socketId: string) => {
+      ws.removeOtherPeer(socketId)
       dispatch(deletePeerStream(socketId))
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
-      me.disconnectPeerId()
       dispatch(stopStream())
       dispatch(handleVideoModal())
     })

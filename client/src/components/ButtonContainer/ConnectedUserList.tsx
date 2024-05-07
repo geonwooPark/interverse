@@ -15,7 +15,7 @@ function ConnectedUserList({ authCookie }: ConnectedUserListProps) {
 
   const userCount = useMemo(() => Object.keys(users).length, [users])
 
-  const [showUserList, setShowUserList] = useState(false)
+  const [showUserList, setShowUserList] = useState(true)
 
   const onUserListClick = () => {
     setShowUserList((prev) => !prev)
