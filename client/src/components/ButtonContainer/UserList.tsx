@@ -2,7 +2,7 @@ import { RoomUser } from '../../../../types/socket'
 import {
   changeReceiver,
   handleDirectMessageComposer,
-} from '../../store/features/directMessageModalSlice'
+} from '../../store/features/directMessageSlice'
 import { useAppDispatch } from '../../store/store'
 import UserListItem from './UserListItem'
 

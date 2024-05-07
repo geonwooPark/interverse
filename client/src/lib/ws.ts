@@ -20,7 +20,7 @@ import { me } from './peer'
 import { addUser, deleteUser, setUsers } from '../store/features/usersSlice'
 import { addPeerStream } from '../store/features/myStreamSlice'
 import { MediaConnection } from 'peerjs'
-import { addDM } from '../store/features/directMessageModalSlice'
+import { addDM } from '../store/features/directMessageSlice'
 
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>

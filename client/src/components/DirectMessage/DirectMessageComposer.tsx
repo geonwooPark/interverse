@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store'
 import {
   changeReceiver,
   handleDirectMessageComposer,
-} from '../../store/features/directMessageModalSlice'
+} from '../../store/features/directMessageSlice'
 import { ws } from '../../lib/ws'
 import { useState } from 'react'
 import { CookieType } from '../../../../types/client'
@@ -17,7 +17,7 @@ function DirectMessageComposer({
   authCookie,
 }: DirectMessageComposerProps) {
   const { nickName, id } = receiver
-  const { isOpen } = useAppSelector((state) => state.directMessageModal)
+  const { isOpen } = useAppSelector((state) => state.directMessage)
   const dispatch = useAppDispatch()
 
   const [message, setMessage] = useState('')

@@ -11,7 +11,7 @@ interface ConnectedUserListProps {
 
 function ConnectedUserList({ authCookie }: ConnectedUserListProps) {
   const users = useAppSelector((state) => state.users)
-  const { receiver } = useAppSelector((state) => state.directMessageModal)
+  const { receiver } = useAppSelector((state) => state.directMessage)
 
   const userCount = useMemo(() => Object.keys(users).length, [users])
 

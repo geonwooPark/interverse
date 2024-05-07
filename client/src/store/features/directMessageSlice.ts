@@ -25,9 +25,9 @@ const initialState: DirectMessageModalType = {
   },
 }
 
-export const DirectMessageModalSlice = createSlice({
+export const DirectMessageSlice = createSlice({
   // store의 이름
-  name: 'modal-container',
+  name: 'directMessage',
   // 초기값
   initialState,
   // 처리하고자 하는 메서드
@@ -53,4 +53,4 @@ export const DirectMessageModalSlice = createSlice({
 })
 
 export const { addDM, removeDM, handleDirectMessageComposer, changeReceiver } =
-  DirectMessageModalSlice.actions
+  DirectMessageSlice.actions

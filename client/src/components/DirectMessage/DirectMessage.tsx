@@ -3,7 +3,7 @@ import {
   changeReceiver,
   handleDirectMessageComposer,
   removeDM,
-} from '../../store/features/directMessageModalSlice'
+} from '../../store/features/directMessageSlice'
 import { useAppDispatch } from '../../store/store'
 
 interface DirectMessageProps {

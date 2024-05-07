@@ -59,7 +59,7 @@ function Room() {
   })
 
   return (
-    <div>
+    <>
       <RoomTitle />
       <ButtonContainer authCookie={authCookie} />
       <Controller authCookie={authCookie} />
@@ -69,7 +69,7 @@ function Room() {
       <ManualModal />
       <SurveyModal />
       {authCookie && <VideoModal authCookie={authCookie} />}
-    </div>
+    </>
   )
 }
 
