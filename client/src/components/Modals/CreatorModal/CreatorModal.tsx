@@ -1,4 +1,4 @@
-import { closeCreatorModal } from '../../../store/features/creatorModalSlice'
+import { handleCreatorModal } from '../../../store/features/creatorModalSlice'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import CreatorCard from './CreatorCard'
 
@@ -7,7 +7,7 @@ function CreatorModal() {
   const dispatch = useAppDispatch()
 
   const onClick = () => {
-    dispatch(closeCreatorModal())
+    dispatch(handleCreatorModal())
   }
 
   if (!isOpen) return

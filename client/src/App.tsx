@@ -14,7 +14,6 @@ import UIContainer from './components/UIContainer'
 function App() {
   return (
     <>
-      <Modal />
       <UIContainer>
         <Router>
           <Routes>
@@ -33,6 +32,7 @@ function App() {
           </Routes>
         </Router>
       </UIContainer>
+      <Modal />
     </>
   )
 }
