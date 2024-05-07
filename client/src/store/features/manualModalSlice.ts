@@ -13,13 +13,10 @@ export const ManualModalSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    openManualModal: (state) => {
-      state.isOpen = true
-    },
-    closeManualModal: (state) => {
-      state.isOpen = false
+    handleManualModal: (state) => {
+      state.isOpen = state.isOpen ? false : true
     },
   },
 })
 
-export const { openManualModal, closeManualModal } = ManualModalSlice.actions
+export const { handleManualModal } = ManualModalSlice.actions

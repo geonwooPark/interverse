@@ -13,13 +13,10 @@ export const SurveyModalSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    openSurveyModal: (state) => {
-      state.isOpen = true
-    },
-    closeSurveyModal: (state) => {
-      state.isOpen = false
+    handleSurveyModal: (state) => {
+      state.isOpen = state.isOpen ? false : true
     },
   },
 })
 
-export const { openSurveyModal, closeSurveyModal } = SurveyModalSlice.actions
+export const { handleSurveyModal } = SurveyModalSlice.actions
