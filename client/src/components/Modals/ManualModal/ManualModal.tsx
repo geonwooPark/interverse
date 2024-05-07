@@ -1,4 +1,4 @@
-import { closeManualModal } from '../../../store/features/manualModalSlice'
+import { handleManualModal } from '../../../store/features/manualModalSlice'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import ManualCard from './ManualCard'
 
@@ -7,7 +7,7 @@ function ManualModal() {
   const dispatch = useAppDispatch()
 
   const onClick = () => {
-    dispatch(closeManualModal())
+    dispatch(handleManualModal())
   }
 
   if (!isOpen) return
