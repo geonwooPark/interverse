@@ -25,8 +25,8 @@ import { addDM } from '../store/features/directMessageModalSlice'
 interface WS {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game: Game | null
-  otherPeers: string[]
-  occupiedChairs: string[]
+  otherPeers: Set<string>
+  occupiedChairs: Set<string>
   joinRoom: ({ authCookie }: ClientJoinRoom) => void
   sendMessage: ({ message, nickName, senderId, roomNum }: ClientMessage) => void
   sendAvatarPosition: ({
@@ -76,8 +76,8 @@ interface WS {
 export const ws: WS = {
   socket: io(import.meta.env.VITE_BACKEND),
   game: null,
-  otherPeers: [],
-  occupiedChairs: [],
+  otherPeers: new Set(),
+  occupiedChairs: new Set(),
 
   joinRoom({ authCookie, texture }) {
     this.game = phaserGame.scene.keys.game as Game
@@ -124,7 +124,7 @@ export const ws: WS = {
     // 방에 입장했을 때 이미 누군가 앉아있는 의자들
     this.socket.on('serverOccupiedChairs', (chairs) => {
       if (!chairs) return
-      this.occupiedChairs = [...chairs]
+      this.occupiedChairs = new Set([...chairs])
     })
     // 서버에서 방에서 나간 유저 정보 받기
     this.socket.on('serverLeaveRoom', (socketId) => {
@@ -164,11 +164,11 @@ export const ws: WS = {
 
   receiveChairId() {
     this.socket.on('serverChairId', (chairId: string) => {
-      this.occupiedChairs.includes(chairId)
-        ? (this.occupiedChairs = this.occupiedChairs.filter(
-            (r) => r !== chairId,
-          ))
-        : this.occupiedChairs.push(chairId)
+      if (this.occupiedChairs.has(chairId)) {
+        this.occupiedChairs.delete(chairId)
+      } else {
+        this.occupiedChairs.add(chairId)
+      }
     })
   },
 
@@ -203,8 +203,8 @@ export const ws: WS = {
       })
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
-        if (this.otherPeers.includes(newUser.socketId)) return
-        this.otherPeers.push(newUser.socketId)
+        if (this.otherPeers.has(newUser.socketId)) return
+        this.otherPeers.add(newUser.socketId)
         store.dispatch(
           addPeerStream({
             peerId: newUser.peerId,
@@ -226,8 +226,8 @@ export const ws: WS = {
     call.answer(stream)
     // 새로운 멤버에서 실행
     call.once('stream', (peerStream) => {
-      if (this.otherPeers.includes(socketId)) return
-      this.otherPeers.push(socketId)
+      if (this.otherPeers.has(socketId)) return
+      this.otherPeers.add(socketId)
       store.dispatch(
         addPeerStream({
           peerId: call.peer,
@@ -258,10 +258,10 @@ export const ws: WS = {
   },
 
   clearOtherPeers() {
-    this.otherPeers = []
+    this.otherPeers.clear()
   },
 
   removeOtherPeer(socketId: string) {
-    this.otherPeers = this.otherPeers.filter((r) => r !== socketId)
+    this.otherPeers.delete(socketId)
   },
 }

@@ -100,7 +100,7 @@ export default class Player extends Avatar {
 
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
-              if (ws.occupiedChairs.includes(chair.id.toString())) return
+              if (ws.occupiedChairs.has(chair.id.toString())) return
               this.preX = this.x
               this.preY = this.y
               this.setVelocity(0, 0)

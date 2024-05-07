@@ -174,7 +174,7 @@ export default class Game extends Phaser.Scene {
 
     if (
       interactionItem.id &&
-      ws.occupiedChairs.includes(interactionItem.id.toString())
+      ws.occupiedChairs.has(interactionItem.id.toString())
     )
       return
     player.isCollide = true
