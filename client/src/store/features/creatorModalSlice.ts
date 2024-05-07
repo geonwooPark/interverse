@@ -13,13 +13,10 @@ export const CreatorModalSlice = createSlice({
   initialState,
   // 처리하고자 하는 메서드
   reducers: {
-    openCreatorModal: (state) => {
-      state.isOpen = true
-    },
-    closeCreatorModal: (state) => {
-      state.isOpen = false
+    handleCreatorModal: (state) => {
+      state.isOpen = state.isOpen ? false : true
     },
   },
 })
 
-export const { openCreatorModal, closeCreatorModal } = CreatorModalSlice.actions
+export const { handleCreatorModal } = CreatorModalSlice.actions
