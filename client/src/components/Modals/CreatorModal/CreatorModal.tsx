@@ -1,23 +1,15 @@
-import { handleCreatorModal } from '../../../store/features/creatorModalSlice'
-import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { useAppSelector } from '../../../store/store'
+import ModalBackdrop from '../ModalBackdrop'
 import CreatorCard from './CreatorCard'
 
 function CreatorModal() {
   const { isOpen } = useAppSelector((state) => state.creatorModal)
-  const dispatch = useAppDispatch()
-
-  const onClick = () => {
-    dispatch(handleCreatorModal())
-  }
 
   if (!isOpen) return
 
   return (
-    <div
-      onClick={onClick}
-      className="fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center bg-black/70  font-neodgm"
-    >
-      <div onClick={(e) => e.stopPropagation()} className="flex gap-5">
+    <ModalBackdrop>
+      <div className="flex gap-5">
         <CreatorCard
           image="avatar_2.png"
           name="강경서"
@@ -33,7 +25,7 @@ function CreatorModal() {
           link="https://github.com/geonwooPark"
         />
       </div>
-    </div>
+    </ModalBackdrop>
   )
 }
 
