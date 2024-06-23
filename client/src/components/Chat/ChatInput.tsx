@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { CookieType } from '../../../../types/client'
 import Game from '../../scenes/Game'
 import phaserGame from '../../PhaserGame'
+import { useAuthContext } from '../../routes/Room'
 
 interface ChatInputProps {
-  authCookie: CookieType | null
   inputRef: React.RefObject<HTMLInputElement>
 }
 
-function ChatInput({ authCookie, inputRef }: ChatInputProps) {
+function ChatInput({ inputRef }: ChatInputProps) {
+  const authCookie = useAuthContext()
   const game = phaserGame.scene.keys.game as Game
 
   const [inputValue, setInputValue] = useState('')

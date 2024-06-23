@@ -3,14 +3,14 @@ import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
 import phaserGame from '../../PhaserGame'
 import Game from '../../scenes/Game'
-import { useAuthContext } from '../../routes/Room'
+import { createPortal } from 'react-dom'
 
 function Controller() {
-  const authCookie = useAuthContext()
   const game = phaserGame.scene.keys.game as Game
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const [showChat, setShowChat] = useState(false)
+
+  const [showChat, setShowChat] = useState(true)
 
   useEffect(() => {
     if (!game) return
@@ -29,13 +29,12 @@ function Controller() {
   }, [game])
 
   return (
-    <div className="fixed bottom-5 z-[200] flex w-full flex-col items-center justify-center gap-2">
-      {showChat && <Chat authCookie={authCookie} inputRef={inputRef} />}
-      <UserStatus
-        authCookie={authCookie}
-        showChat={showChat}
-        setShowChat={setShowChat}
-      />
+    <div className="fixed bottom-24 flex w-full items-center justify-center">
+      {showChat && <Chat inputRef={inputRef} />}
+      {createPortal(
+        <UserStatus showChat={showChat} setShowChat={setShowChat} />,
+        document.getElementById('status-bar') as HTMLElement,
+      )}
     </div>
   )
 }

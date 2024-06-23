@@ -8,16 +8,16 @@ import {
   handleAudio,
   handleVideo,
 } from '../../store/features/myStreamSlice'
-import { CookieType } from '../../../../types/client'
 import { ws } from '../../lib/ws'
+import { useAuthContext } from '../../routes/Room'
 
 interface UserStatusProps {
-  authCookie: CookieType | null
   showChat: boolean
   setShowChat: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
+function UserStatus({ showChat, setShowChat }: UserStatusProps) {
+  const authCookie = useAuthContext()
   const role = authCookie?.role === 'host' ? '호스트' : '게스트'
   const dispatch = useAppDispatch()
   const { myStream, controller } = useAppSelector((state) => state.myStream)
@@ -43,7 +43,7 @@ function UserStatus({ authCookie, showChat, setShowChat }: UserStatusProps) {
   }
 
   return (
-    <div className="flex h-[64px] w-[380px] items-center justify-between rounded-md bg-white/30 px-4 py-2 font-neodgm text-sm shadow-md">
+    <div className="fixed bottom-5 left-[50%] flex h-[64px] w-[380px] translate-x-[-50%] items-center justify-between rounded-md bg-white/30 px-4 py-2 font-neodgm text-sm shadow-md">
       <div>
         <p className="title">{authCookie?.nickName}</p>
         <p className="description">{role}</p>

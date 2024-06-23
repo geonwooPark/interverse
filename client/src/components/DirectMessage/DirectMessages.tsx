@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useAppSelector } from '../../store/store'
 import DirectMessage from './DirectMessage'
 
@@ -8,7 +9,10 @@ function DirectMessages() {
     <DirectMessage key={dm.id} dm={dm} />
   ))
 
-  return directMessages && directMessagesArr
+  return createPortal(
+    directMessages && directMessagesArr,
+    document.getElementById('dm') as HTMLElement,
+  )
 }
 
 export default DirectMessages

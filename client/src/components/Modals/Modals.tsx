@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import ModalBackdrop from './ModalBackdrop'
 import { useAppSelector } from '../../store/store'
 import CreatorCard from './CreatorModal/CreatorCard'
 import ManualCard from './ManualModal/ManualCard'
 import SurveyCard from './SurveyModal/SurveyCard'
 import VideoCard from './VideoModal/VideoCard'
+import { createPortal } from 'react-dom'
 
 function Modals() {
   const { isOpen, type } = useAppSelector((state) => state.modals)
@@ -27,7 +28,12 @@ function Modals() {
       content = null
   }
 
-  return isOpen && <ModalBackdrop>{content}</ModalBackdrop>
+  if (!isOpen) return null
+
+  return createPortal(
+    <ModalBackdrop>{content}</ModalBackdrop>,
+    document.getElementById('modals') as HTMLElement,
+  )
 }
 
 export default Modals
