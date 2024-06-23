@@ -1,4 +1,4 @@
-import { CookieType } from '../../../../types/client'
+import { useAuthContext } from '../../routes/Room'
 import {
   changeAlertContent,
   openAlert,
@@ -7,17 +7,14 @@ import {
 import {
   changeModalContent,
   handleModal,
-} from '../../store/features/modalSlice'
+} from '../../store/features/confirmModalSlice'
 import { useAppDispatch } from '../../store/store'
 import IconLink from '../../svgs/IconLink.svg?react'
 import IconOff from '../../svgs/IconOff.svg?react'
 import ConnectedUserList from './ConnectedUserList'
 
-interface ButtonContainerProps {
-  authCookie: CookieType | null
-}
-
-function ButtonContainer({ authCookie }: ButtonContainerProps) {
+function ButtonContainer() {
+  const authCookie = useAuthContext()
   const dispatch = useAppDispatch()
 
   const onLinkClick = (
@@ -51,12 +48,14 @@ function ButtonContainer({ authCookie }: ButtonContainerProps) {
     <div className="fixed right-8 top-4 flex gap-3">
       <ConnectedUserList authCookie={authCookie} />
       <button
+        tabIndex={-1}
         onClick={onLinkClick}
         className="flex size-[40px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
       >
         <IconLink className="size-5" />
       </button>
       <button
+        tabIndex={-1}
         onClick={onOffClick}
         className="flex size-[40px] items-center justify-center rounded-full bg-white text-red-600"
       >

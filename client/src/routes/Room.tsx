@@ -6,15 +6,18 @@ import RoomTitle from '../components/RoomTitle'
 import Alert from '../components/Alert/Alert'
 import { getAuthCookie } from '../lib/cookie'
 import ButtonContainer from '../components/ButtonContainer/ButtonContainer'
-import VideoModal from '../components/Modals/VideoModal/VideoModal'
-import CreatorModal from '../components/Modals/CreatorModal/CreatorModal'
-import ManualModal from '../components/Modals/ManualModal/ManualModal'
-import SurveyModal from '../components/Modals/SurveyModal/SurveyModal'
 import { useAppDispatch } from '../store/store'
 import { useGoBack } from '../hooks/useGoBack'
 import Controller from '../components/Controller/Controller'
-import { handleModal } from '../store/features/modalSlice'
+import { handleModal } from '../store/features/confirmModalSlice'
 import DirectMessages from '../components/DirectMessage/DirectMessages'
+import Modals from '../components/Modals/Modals'
+import { CookieType } from '../../../types/client'
+import { _createContext } from '../utils/_createContext'
+
+type AuthContextState = CookieType
+
+export const [useAuthContext, AuthProvider] = _createContext<AuthContextState>()
 
 function Room() {
   const params = useParams()
@@ -59,17 +62,14 @@ function Room() {
   })
 
   return (
-    <>
+    <AuthProvider value={authCookie}>
       <RoomTitle />
-      <ButtonContainer authCookie={authCookie} />
-      <Controller authCookie={authCookie} />
+      <ButtonContainer />
+      <Controller />
       <Alert />
+      <Modals />
       <DirectMessages />
-      <CreatorModal />
-      <ManualModal />
-      <SurveyModal />
-      {authCookie && <VideoModal authCookie={authCookie} />}
-    </>
+    </AuthProvider>
   )
 }
 

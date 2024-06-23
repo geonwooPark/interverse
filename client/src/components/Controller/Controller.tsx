@@ -3,12 +3,10 @@ import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
 import phaserGame from '../../PhaserGame'
 import Game from '../../scenes/Game'
-import { CookieType } from '../../../../types/client'
+import { useAuthContext } from '../../routes/Room'
 
-interface ControllerProps {
-  authCookie: CookieType | null
-}
-function Controller({ authCookie }: ControllerProps) {
+function Controller() {
+  const authCookie = useAuthContext()
   const game = phaserGame.scene.keys.game as Game
 
   const inputRef = useRef<HTMLInputElement>(null)
