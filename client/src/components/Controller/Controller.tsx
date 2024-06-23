@@ -1,9 +1,9 @@
-import Chat from '../Chat/Chat'
 import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
 import phaserGame from '../../PhaserGame'
 import Game from '../../scenes/Game'
 import { createPortal } from 'react-dom'
+import Chat from './Chat/Chat'
 
 function Controller() {
   const game = phaserGame.scene.keys.game as Game

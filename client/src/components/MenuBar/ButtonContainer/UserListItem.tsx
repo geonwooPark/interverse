@@ -1,7 +1,7 @@
-import { RoomUser } from '../../../../types/socket'
-import { textureImage } from '../../constants'
-import { ws } from '../../lib/ws'
-import IconMessage from '../../svgs/IconMessage.svg?react'
+import { RoomUser } from '../../../../../types/socket'
+import { textureImage } from '../../../constants'
+import { ws } from '../../../lib/ws'
+import IconMessage from '../../../svgs/IconMessage.svg?react'
 
 interface UserListItemProps {
   user: RoomUser

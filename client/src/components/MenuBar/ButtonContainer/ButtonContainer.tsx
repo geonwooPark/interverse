@@ -1,16 +1,16 @@
-import { useAuthContext } from '../../routes/Room'
+import { useAuthContext } from '../../../routes/Room'
 import {
   changeAlertContent,
   openAlert,
   closeAlert,
-} from '../../store/features/alertSlice'
+} from '../../../store/features/alertSlice'
 import {
   changeModalContent,
   handleModal,
-} from '../../store/features/confirmModalSlice'
-import { useAppDispatch } from '../../store/store'
-import IconLink from '../../svgs/IconLink.svg?react'
-import IconOff from '../../svgs/IconOff.svg?react'
+} from '../../../store/features/confirmModalSlice'
+import { useAppDispatch } from '../../../store/store'
+import IconLink from '../../../svgs/IconLink.svg?react'
+import IconOff from '../../../svgs/IconOff.svg?react'
 import ConnectedUserList from './ConnectedUserList'
 
 function ButtonContainer() {
@@ -45,7 +45,7 @@ function ButtonContainer() {
   }
 
   return (
-    <div className="fixed right-8 top-4 flex gap-3">
+    <div className="flex gap-3">
       <ConnectedUserList authCookie={authCookie} />
       <button
         tabIndex={-1}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import Game from '../../scenes/Game'
-import phaserGame from '../../PhaserGame'
-import { useAuthContext } from '../../routes/Room'
+import Game from '../../../scenes/Game'
+import phaserGame from '../../../PhaserGame'
+import { useAuthContext } from '../../../routes/Room'
 
 interface ChatInputProps {
   inputRef: React.RefObject<HTMLInputElement>
@@ -33,10 +33,6 @@ function ChatInput({ inputRef }: ChatInputProps) {
       setInputValue('')
     }
   }
-
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
 
   return (
     <form onSubmit={handleSubmit}>

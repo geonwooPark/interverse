@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import UserList from './UserList'
-import IconUsers from '../../svgs/IconUsers.svg?react'
-import { useAppSelector } from '../../store/store'
-import { CookieType } from '../../../../types/client'
-import DirectMessageComposer from '../DirectMessage/DirectMessageComposer'
+import IconUsers from '../../../svgs/IconUsers.svg?react'
+import { useAppSelector } from '../../../store/store'
+import { CookieType } from '../../../../../types/client'
+import DirectMessageComposer from '../../DirectMessage/DirectMessageComposer'
 
 interface ConnectedUserListProps {
   authCookie: CookieType | null

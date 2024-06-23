@@ -1,9 +1,9 @@
-import { RoomUser } from '../../../../types/socket'
+import { RoomUser } from '../../../../../types/socket'
 import {
   changeReceiver,
   handleDirectMessageComposer,
-} from '../../store/features/directMessageSlice'
-import { useAppDispatch } from '../../store/store'
+} from '../../../store/features/directMessageSlice'
+import { useAppDispatch } from '../../../store/store'
 import UserListItem from './UserListItem'
 
 interface UserListProps {
