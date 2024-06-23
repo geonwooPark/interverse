@@ -1,26 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { ModalSlice } from './features/modalSlice'
+import { ConfirmModalSlice } from './features/confirmModalSlice'
 import { AlertSlice } from './features/alertSlice'
 import { ChatListSlice } from './features/chatListSlice'
-import { CreatorModalSlice } from './features/creatorModalSlice'
-import { ManualModalSlice } from './features/manualModalSlice'
-import { VideoModalSlice } from './features/videoModalSlice'
-import { SurveyModalSlice } from './features/surveyModalSlice'
 import { MyStreamSlice } from './features/myStreamSlice'
 import { UsersSlice } from './features/usersSlice'
 import { DirectMessageSlice } from './features/directMessageSlice'
+import { ModalsSlice } from './features/modalsSlice'
 
 export const store = configureStore({
   reducer: {
-    modal: ModalSlice.reducer,
+    confirmModal: ConfirmModalSlice.reducer,
+    modals: ModalsSlice.reducer,
     directMessage: DirectMessageSlice.reducer,
     alert: AlertSlice.reducer,
     chatList: ChatListSlice.reducer,
-    creatorModal: CreatorModalSlice.reducer,
-    manualModal: ManualModalSlice.reducer,
-    surveyModal: SurveyModalSlice.reducer,
-    videoModal: VideoModalSlice.reducer,
     myStream: MyStreamSlice.reducer,
     users: UsersSlice.reducer,
   },

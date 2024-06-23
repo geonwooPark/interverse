@@ -1,33 +1,23 @@
-interface CreatorCardProps {
-  image: string
-  name: string
-  job: string
-  email: string
-  link: string
-}
+import React from 'react'
+import CreatorItem from './CreatorItem'
 
-function CreatorCard({ image, name, job, email, link }: CreatorCardProps) {
+function CreatorCard() {
   return (
-    <div className="flex h-[360px] w-[260px] flex-col items-center justify-between rounded-md bg-white p-6">
-      <div className="flex aspect-square w-[190px] items-center justify-center rounded-full bg-gray-100">
-        <img src={`/images/${image}`} alt="creator" width={90} />
-      </div>
-      <div className="flex flex-col self-start px-2">
-        <div className="flex items-end gap-1">
-          <span className="text-2xl">{name}</span>
-          <span className="opacity-30">|</span>
-          <span className="opacity-30">{job}</span>
-        </div>
-        <span className="text-lg">{email}</span>
-      </div>
-      <a
-        href={link}
-        target="_blank"
-        rel="noreferrer"
-        className="primary-button"
-      >
-        <span>GITHUB</span>
-      </a>
+    <div className="flex gap-5">
+      <CreatorItem
+        image="avatar_2.png"
+        name="강경서"
+        job="Frontend"
+        email="kks_big@naver.com"
+        link="https://github.com/kangkyeongseo"
+      />
+      <CreatorItem
+        image="avatar_1.png"
+        name="박건우"
+        job="Frontend"
+        email="white0581@naver.com"
+        link="https://github.com/geonwooPark"
+      />
     </div>
   )
 }

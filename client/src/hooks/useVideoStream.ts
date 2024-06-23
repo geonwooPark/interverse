@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 import { ws } from '../lib/ws'
 import { me } from '../lib/peer'
 import { useAppDispatch, useAppSelector } from '../store/store'
-import { handleVideoModal } from '../store/features/videoModalSlice'
 import {
   deletePeerStream,
   stopStream,
   updatePeerStreamVideo,
 } from '../store/features/myStreamSlice'
 import { CookieType } from '../../../types/client'
+import { handleModals } from '../store/features/modalsSlice'
 
 export const useVideoStream = (authCookie: CookieType) => {
   const dispatch = useAppDispatch()
@@ -33,7 +33,7 @@ export const useVideoStream = (authCookie: CookieType) => {
     })
     ws.socket.on('serverLeaveVideoRoom', () => {
       dispatch(stopStream())
-      dispatch(handleVideoModal())
+      dispatch(handleModals('video'))
     })
 
     return () => {

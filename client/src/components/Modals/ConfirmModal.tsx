@@ -1,8 +1,8 @@
-import { handleModal } from '../../store/features/modalSlice'
+import { handleModal } from '../../store/features/confirmModalSlice'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 
-function Modal() {
-  const { content, isOpen } = useAppSelector((state) => state.modal)
+function ConfirmModal() {
+  const { content, isOpen } = useAppSelector((state) => state.confirmModal)
   const { title, description, action, actionLabel } = content
   const dispatch = useAppDispatch()
 
@@ -36,4 +36,4 @@ function Modal() {
   )
 }
 
-export default Modal
+export default ConfirmModal

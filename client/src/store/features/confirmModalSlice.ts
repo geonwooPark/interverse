@@ -21,7 +21,7 @@ const initialState: ModalType = {
   isOpen: false,
 }
 
-export const ModalSlice = createSlice({
+export const ConfirmModalSlice = createSlice({
   // store의 이름
   name: 'modal',
   // 초기값
@@ -37,4 +37,4 @@ export const ModalSlice = createSlice({
   },
 })
 
-export const { changeModalContent, handleModal } = ModalSlice.actions
+export const { changeModalContent, handleModal } = ConfirmModalSlice.actions

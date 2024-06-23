@@ -3,13 +3,13 @@ import Home from './routes/Home'
 import Room from './routes/Room'
 import Landing from './routes/Landing'
 import MyRoom from './routes/MyRoom'
-import Modal from './components/Modals/Modal'
 import CreateRoom from './routes/CreateRoom'
 import Password from './routes/Password'
 import AvatarInfo from './routes/AvatarInfo'
 import PrivateRoute from './components/CheckRoute/PrivateRoute'
 import AuthRoute from './components/CheckRoute/AuthRoute'
 import UIContainer from './components/UIContainer'
+import ConfirmModal from './components/Modals/ConfirmModal'
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
           </Routes>
         </Router>
       </UIContainer>
-      <Modal />
+      <ConfirmModal />
     </>
   )
 }

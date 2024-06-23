@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { useAppDispatch } from '../store/store'
-import { changeModalContent, handleModal } from '../store/features/modalSlice'
+import {
+  changeModalContent,
+  handleModal,
+} from '../store/features/confirmModalSlice'
 import { ModalContentType } from '../../../types/client'
 
 export const useGoBack = (content: ModalContentType) => {

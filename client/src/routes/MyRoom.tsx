@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { getCookie, removeCookie } from '../lib/cookie'
 import { useAppDispatch } from '../store/store'
-import { changeModalContent, handleModal } from '../store/features/modalSlice'
+import {
+  changeModalContent,
+  handleModal,
+} from '../store/features/confirmModalSlice'
 import gifAvatarRun from '/gif/avatar_run.gif'
 
 function MyRoom() {

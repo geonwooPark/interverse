@@ -4,14 +4,11 @@ import {
   closeAlert,
   openAlert,
 } from '../store/features/alertSlice'
-import { handleCreatorModal } from '../store/features/creatorModalSlice'
-import { handleManualModal } from '../store/features/manualModalSlice'
-import { handleSurveyModal } from '../store/features/surveyModalSlice'
-import { handleVideoModal } from '../store/features/videoModalSlice'
 import { store } from '../store/store'
 import Avatar from './Avatar'
 import { handleScreenSharing } from '../store/features/myStreamSlice'
 import { ws } from '../lib/ws'
+import { handleModals } from '../store/features/modalsSlice'
 
 export default class Player extends Avatar {
   isCollide = false
@@ -120,14 +117,14 @@ export default class Player extends Avatar {
               })
 
               if (chair.interaction === 'menual') {
-                store.dispatch(handleCreatorModal())
+                store.dispatch(handleModals('creator'))
                 store.dispatch(
                   changeAlertContent(
                     'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
                   ),
                 )
               } else if (chair.interaction === 'interview') {
-                store.dispatch(handleVideoModal())
+                store.dispatch(handleModals('video'))
                 store.dispatch(
                   changeAlertContent(
                     'ESC 키를 눌러 화상통화를 중지할 수 있습니다.',
@@ -144,7 +141,7 @@ export default class Player extends Avatar {
               this.selectedInteractionItem.itemType = 'chair'
               break
             case 'secretary':
-              store.dispatch(handleManualModal())
+              store.dispatch(handleModals('manual'))
               store.dispatch(
                 changeAlertContent(
                   'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
@@ -153,7 +150,7 @@ export default class Player extends Avatar {
               this.selectedInteractionItem.itemType = 'secretary'
               break
             case 'printer':
-              store.dispatch(handleSurveyModal())
+              store.dispatch(handleModals('survey'))
               store.dispatch(
                 changeAlertContent(
                   'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
@@ -171,7 +168,7 @@ export default class Player extends Avatar {
                 animation: this.anims.currentAnim!.key,
               })
 
-              store.dispatch(handleVideoModal())
+              store.dispatch(handleModals('video'))
               store.dispatch(handleScreenSharing(true))
               store.dispatch(
                 changeAlertContent(
@@ -205,7 +202,7 @@ export default class Player extends Avatar {
                 chairId: chair.id?.toString() || '',
               })
               if (chair.interaction === 'menual') {
-                store.dispatch(handleCreatorModal())
+                store.dispatch(handleModals('creator'))
               }
               if (chair.interaction === 'interview') {
                 ws.leaveVideoRoom(roomNum)
@@ -214,10 +211,10 @@ export default class Player extends Avatar {
 
               break
             case 'secretary':
-              store.dispatch(handleManualModal())
+              store.dispatch(handleModals('manual'))
               break
             case 'printer':
-              store.dispatch(handleSurveyModal())
+              store.dispatch(handleModals('survey'))
               break
             case 'screenBoard':
               ws.leaveVideoRoom(roomNum)

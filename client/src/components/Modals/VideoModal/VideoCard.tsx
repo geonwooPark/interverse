@@ -5,13 +5,10 @@ import VideoPlayerList from './VideoPlayerList/VideoPlayerList'
 import CurrentStreamScreen from './CurrentStreamScreen'
 import { useVideoStream } from '../../../hooks/useVideoStream'
 import { MediaConnection } from 'peerjs'
-import { CookieType } from '../../../../../types/client'
+import { useAuthContext } from '../../../routes/Room'
 
-interface VideoContainerProps {
-  authCookie: CookieType
-}
-
-function VideoContainer({ authCookie }: VideoContainerProps) {
+function VideoCard() {
+  const authCookie = useAuthContext()
   const { myStream, peerStreams, currentStream, controller } =
     useVideoStream(authCookie)
   const { stream } = myStream
@@ -48,4 +45,4 @@ function VideoContainer({ authCookie }: VideoContainerProps) {
   )
 }
 
-export default VideoContainer
+export default VideoCard
