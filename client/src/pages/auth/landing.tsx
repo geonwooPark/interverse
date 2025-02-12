@@ -8,7 +8,7 @@ function LandingPage() {
   const hostCookie = getCookie('interverse_host')
 
   return (
-    <div className="flex size-full flex-col items-center justify-center font-neodgm shadow-md">
+    <div className="flex flex-col items-center">
       {/* 로고 */}
       <div className="mb-5">
         <img src="/images/logo.png" alt="logo" width={400} />
@@ -31,7 +31,7 @@ function LandingPage() {
           <div className="space-y-2">
             <img src={'/images/avatars.png'} alt="landing-image" width={265} />
             <button
-              onClick={() => navigate(hostCookie ? '/my-room' : '/create-room')}
+              onClick={() => navigate(hostCookie ? '/waiting' : '/create')}
               className="primary-button"
             >
               시작하기
