@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { decrypt } from '../lib/crypto'
+import { decrypt } from '../../lib/crypto'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-function Password() {
+function PasswordPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const { password } = location.state
@@ -54,4 +54,4 @@ function Password() {
   )
 }
 
-export default Password
+export default PasswordPage

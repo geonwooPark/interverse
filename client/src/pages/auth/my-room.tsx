@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom'
-import { getCookie, removeCookie } from '../lib/cookie'
-import { useAppDispatch } from '../store/store'
+import { getCookie, removeCookie } from '../../lib/cookie'
+import { useAppDispatch } from '../../store/store'
 import {
   changeModalContent,
   handleModal,
-} from '../store/features/confirmModalSlice'
+} from '../../store/features/confirmModalSlice'
 import gifAvatarRun from '/gif/avatar_run.gif'
 
-function MyRoom() {
+function MyRoomPage() {
   const navigate = useNavigate()
   const hostCookie = getCookie('interverse_host')
   const dispatch = useAppDispatch()
@@ -53,4 +53,4 @@ function MyRoom() {
   )
 }
 
-export default MyRoom
+export default MyRoomPage

@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import phaserGame from '../PhaserGame'
-import Game from '../scenes/Game'
-import Alert from '../components/Alert/Alert'
-import { getAuthCookie } from '../lib/cookie'
-import { useAppDispatch } from '../store/store'
-import { useGoBack } from '../hooks/useGoBack'
-import Controller from '../components/Controller/Controller'
-import { handleModal } from '../store/features/confirmModalSlice'
-import DirectMessages from '../components/DirectMessage/DirectMessages'
-import Modals from '../components/Modals/Modals'
-import { CookieType } from '../../../types/client'
-import { _createContext } from '../utils/_createContext'
-import MenuBar from '../components/MenuBar/MenuBar'
+import phaserGame from '../../PhaserGame'
+import Game from '../../scenes/Game'
+import Alert from '../../components/Alert/Alert'
+import { getAuthCookie } from '../../lib/cookie'
+import { useAppDispatch } from '../../store/store'
+import { useGoBack } from '../../hooks/useGoBack'
+import Controller from '../../components/Controller/Controller'
+import { handleModal } from '../../store/features/confirmModalSlice'
+import DirectMessages from '../../components/DirectMessage/DirectMessages'
+import Modals from '../../components/Modals/Modals'
+import { CookieType } from '../../../../types/client'
+import { _createContext } from '../../utils/_createContext'
+import MenuBar from '../../components/MenuBar/MenuBar'
 
 type AuthContextState = CookieType
 
 export const [useAuthContext, AuthProvider] = _createContext<AuthContextState>()
 
-function Room() {
+function RoomPage() {
   const params = useParams()
   const { roomId } = params
   const authCookie = getAuthCookie(roomId as string)
@@ -71,4 +71,4 @@ function Room() {
   )
 }
 
-export default Room
+export default RoomPage

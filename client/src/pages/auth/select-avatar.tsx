@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { setCookie } from '../lib/cookie'
-import AvatarSelector from '../components/AvatarSelector'
-import NickNameInput from '../components/NickNameInput'
-import { textureImage } from '../constants'
+import { setCookie } from '../../lib/cookie'
+import AvatarSelector from '../../components/AvatarSelector'
+import NickNameInput from '../../components/NickNameInput'
+import { textureImage } from '../../constants'
 
-function AvatarInfo() {
+function AvatarPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const { roomNum, path } = location.state
@@ -38,7 +38,7 @@ function AvatarInfo() {
   }, [value])
 
   return (
-    <div className="font-neodgm fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70">
+    <div className="fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70 font-neodgm">
       <div className="h-fit w-[300px] rounded-md bg-white p-4">
         <AvatarSelector
           texture={texture}
@@ -54,4 +54,4 @@ function AvatarInfo() {
   )
 }
 
-export default AvatarInfo
+export default AvatarPage
