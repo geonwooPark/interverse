@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { decrypt } from '../../../../lib/crypto'
+import { decrypt } from '../../../lib/crypto'
 import { useLocation } from 'react-router-dom'
-import TextField from '../../../../components/TextField'
-import { StepFlowProps } from '../../../../components/StepFlow/types'
+import TextField from '../../../components/TextField'
+import { StepFlowProps } from '../../../components/StepFlow/types'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 

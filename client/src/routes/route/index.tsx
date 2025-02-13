@@ -1,20 +1,21 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
-import AuthLayout from '../../layouts/auth/layout'
+import Layout from '../../layouts/layout'
 
-const LandingPage = lazy(() => import('../../pages/auth/landing'))
-const WatingRoomPage = lazy(() => import('../../pages/auth/waiting/page'))
-const CreateRoomPage = lazy(() => import('../../pages/auth/create/page'))
+const LandingPage = lazy(() => import('../../pages/landing'))
+const WatingRoomPage = lazy(() => import('../../pages/waiting/page'))
+const CreateRoomPage = lazy(() => import('../../pages/create/page'))
+const RoomPage = lazy(() => import('../../pages/room/page'))
 
 // ----------------------------------------------------------------------
 
-export const authRoutes = [
+export const routes = [
   {
     element: (
       <Suspense>
-        <AuthLayout>
+        <Layout>
           <Outlet />
-        </AuthLayout>
+        </Layout>
       </Suspense>
     ),
     children: [
@@ -22,6 +23,7 @@ export const authRoutes = [
       { path: 'landing', element: <LandingPage /> },
       { path: 'create', element: <CreateRoomPage /> },
       { path: 'waiting', element: <WatingRoomPage /> },
+      { path: 'room', element: <RoomPage /> },
     ],
   },
 ]

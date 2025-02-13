@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
-import { setCookie } from '../../../lib/cookie'
-import { encrypt } from '../../../lib/crypto'
+import { setCookie } from '../../lib/cookie'
+import { encrypt } from '../../lib/crypto'
 import Characters from './Characters'
-import TextField from '../../../components/TextField'
+import TextField from '../../components/TextField'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
@@ -44,6 +44,7 @@ function CreateRoomPage() {
     setCookie('interverse_host', JSON.stringify(hostCookie), {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     })
+
     navigate(hostCookie.path)
   }
 

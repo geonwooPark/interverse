@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { textureImage } from '../../../../constants'
+import { textureImage } from '../../../constants'
 
 interface AvatarSelectorProps {
   texture: number

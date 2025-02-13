@@ -1,7 +1,6 @@
 import { useRoutes } from 'react-router-dom'
-import { mainRoutes } from './route/mainRoutes'
-import { authRoutes } from './route/authRoutes'
+import { routes } from './route'
 
 export default function Router() {
-  return useRoutes([...authRoutes, ...mainRoutes])
+  return useRoutes([...routes])
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import AvatarSelector from './AvatarSelector'
-import TextField from '../../../../components/TextField'
+import TextField from '../../../components/TextField'
 import { useNavigate } from 'react-router-dom'
-import { MAX_NICKNAME_LENGTH } from '../../../../constants'
-import { StepFlowProps } from '../../../../components/StepFlow/types'
+import { MAX_NICKNAME_LENGTH } from '../../../constants'
+import { StepFlowProps } from '../../../components/StepFlow/types'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
