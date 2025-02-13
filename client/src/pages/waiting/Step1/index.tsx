@@ -3,6 +3,7 @@ import { decrypt } from '../../../lib/crypto'
 import { useLocation } from 'react-router-dom'
 import TextField from '../../../components/TextField'
 import { StepFlowProps } from '../../../components/StepFlow/types'
+import Button from '../../../components/Button'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
@@ -32,7 +33,7 @@ function Step1({ activeStep, onNext }: Step1Props) {
 
   return (
     <div className="space-y-4">
-      <div className="title mb-4">비밀번호를 입력해주세요</div>
+      <div className="mb-4 text-lg">비밀번호를 입력해주세요</div>
 
       <TextField
         type="password"
@@ -43,9 +44,9 @@ function Step1({ activeStep, onNext }: Step1Props) {
         error={error}
       />
 
-      <button onClick={onClick} className="primary-button">
+      <Button size="lg" variant="contained" fullWidth onClick={onClick}>
         다음
-      </button>
+      </Button>
     </div>
   )
 }

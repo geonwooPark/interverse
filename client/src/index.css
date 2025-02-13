@@ -1,45 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-*,
-*:before,
-*:after {
-  @apply cursor-default;
-}
-
-button,
-a,
-a > span,
-svg,
-svg > path {
-  @apply cursor-pointer;
-}
-
 @font-face {
   font-family: 'neodgm';
   src: url('./fonts/neodgm.woff2');
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'neodgm';
+  }
+
+  *,
+  *:before,
+  *:after {
+    @apply cursor-default;
+  }
+}
+
 @layer components {
-  .title {
-    @apply text-lg;
+  #phaser canvas {
+    width: 100%;
   }
 
-  .description {
-    @apply text-sm;
-  }
-
-  .primary-button {
-    @apply flex h-[50px] w-full items-center justify-center rounded-md bg-purple-600 text-white hover:bg-purple-700;
-  }
-
-  .secondary-button {
-    @apply flex h-[50px] items-center justify-center w-full rounded-md border-2 border-purple-600 text-purple-600;
-  }
-
-  .input {
-    @apply w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none;
+  button,
+  a,
+  a > span,
+  svg,
+  svg > path {
+    @apply cursor-pointer;
   }
 }
 
@@ -51,8 +41,4 @@ svg > path {
   .hide-scroll::-webkit-scrollbar {
     display: none;
   }
-}
-
-#phaser canvas {
-  width: 100%;
 }

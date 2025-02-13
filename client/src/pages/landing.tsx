@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { getCookie } from '../lib/cookie'
 import gifImage from '/gif/interverse.gif'
+import Button from '../components/Button'
+import Logo from '../components/Logo'
 
 function LandingPage() {
   const navigate = useNavigate()
@@ -10,9 +12,7 @@ function LandingPage() {
   return (
     <div className="flex flex-col items-center">
       {/* 로고 */}
-      <div className="mb-5">
-        <img src="/images/logo.png" alt="logo" width={400} />
-      </div>
+      <Logo width={240} />
 
       <div className="grid w-[720px] grid-cols-2 gap-4 rounded-3xl bg-gray-300 p-8">
         {/* 영상 */}
@@ -23,19 +23,22 @@ function LandingPage() {
         {/* 인트로 */}
         <div className="flex flex-col items-center justify-center gap-8 p-2 text-center">
           <div className="flex flex-col justify-between">
-            <h4 className="title mb-2">쉽고 빠르게 즐기는, Interverse</h4>
-            <p className="description">로그인 없이 지금 바로</p>
-            <p className="description">Interverse 공간을 체험해보세요!</p>
+            <h4 className="mb-2 text-lg">쉽고 빠르게 즐기는, Interverse</h4>
+            <p className="text-sm">로그인 없이 지금 바로</p>
+            <p className="text-sm">Interverse 공간을 체험해보세요!</p>
           </div>
 
           <div className="space-y-2">
             <img src={'/images/avatars.png'} alt="landing-image" width={265} />
-            <button
+
+            <Button
+              size="lg"
+              variant="contained"
+              fullWidth
               onClick={() => navigate(hostCookie ? '/waiting' : '/create')}
-              className="primary-button"
             >
               시작하기
-            </button>
+            </Button>
           </div>
         </div>
       </div>

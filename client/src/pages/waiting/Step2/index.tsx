@@ -4,6 +4,7 @@ import TextField from '../../../components/TextField'
 import { useNavigate } from 'react-router-dom'
 import { MAX_NICKNAME_LENGTH } from '../../../constants'
 import { StepFlowProps } from '../../../components/StepFlow/types'
+import Button from '../../../components/Button'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
@@ -38,9 +39,9 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
         </div>
       </div>
 
-      <div className="space-y-3">
-        <button className="primary-button">입장하기</button>
-      </div>
+      <Button size="lg" variant="contained" fullWidth>
+        입장하기
+      </Button>
     </>
   )
 }

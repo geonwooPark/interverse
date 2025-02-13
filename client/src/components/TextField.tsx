@@ -7,10 +7,14 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 function TextField({ error, ...props }: TextFieldProps) {
   return (
     <>
-      <input {...props} autoComplete="off" className="input" />
+      <input
+        {...props}
+        autoComplete="off"
+        className="w-full rounded-md border bg-gray-100 px-4 py-2 text-xl outline-none"
+      />
       {error && (
         <p className="my-2 flex items-center text-sm text-red-600">
-          <span className="description mr-1">{error}</span>
+          <span className="mr-1 text-sm">{error}</span>
           <span className="translate-y-[2px] text-lg">🥲</span>
         </p>
       )}

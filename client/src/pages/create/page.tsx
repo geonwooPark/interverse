@@ -5,6 +5,7 @@ import { setCookie } from '../../lib/cookie'
 import { encrypt } from '../../lib/crypto'
 import Characters from './Characters'
 import TextField from '../../components/TextField'
+import Button from '../../components/Button'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
@@ -54,7 +55,9 @@ function CreateRoomPage() {
       <div className="relative z-10 w-[480px] rounded-3xl bg-gray-300 p-8">
         <div className="flex flex-col items-center justify-between p-2">
           <form onSubmit={onSubmit} className="space-y-4 text-center">
-            <div className="title">쉽고 빠르게 즐기는 메타버스, Interverse</div>
+            <div className="text-lg">
+              쉽고 빠르게 즐기는 메타버스, Interverse
+            </div>
 
             <TextField
               type="text"
@@ -78,9 +81,9 @@ function CreateRoomPage() {
               placeholder="닉네임"
               onChange={handleChange}
             />
-            <button type="submit" className="primary-button">
+            <Button size="lg" variant="contained" fullWidth>
               방 개설하기
-            </button>
+            </Button>
           </form>
         </div>
 

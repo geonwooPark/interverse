@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import phaserGame from '../../PhaserGame'
-import Game from '../../scenes/Game'
-import Alert from '../../components/Alert/Alert'
+import Game from '../../../scenes/Game'
+import Alert from './Alert/Alert'
 import { getAuthCookie } from '../../lib/cookie'
 import { useAppDispatch } from '../../store/store'
-import { useGoBack } from '../../hooks/useGoBack'
-import Controller from '../../components/Controller/Controller'
+import { useBlockGoBack } from '../../hooks/useBlockGoBack'
+import Controller from './Controller/Controller'
 import { handleModal } from '../../store/features/confirmModalSlice'
-import DirectMessages from '../../components/DirectMessage/DirectMessages'
-import Modals from '../../components/Modals/Modals'
+import DirectMessages from './DirectMessage/DirectMessages'
+import Modals from './Modals/Modals'
 import { CookieType } from '../../../../types/client'
 import { _createContext } from '../../utils/_createContext'
-import MenuBar from '../../components/MenuBar/MenuBar'
+import MenuBar from './MenuBar/MenuBar'
 
 type AuthContextState = CookieType
 
@@ -50,7 +50,7 @@ function RoomPage() {
     }
   }, [game])
 
-  useGoBack({
+  useBlockGoBack({
     title: '나가기',
     description: '정말 종료하시겠습니까?',
     action: () => {
