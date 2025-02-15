@@ -1,7 +1,12 @@
+import RoomsProvider from './providers/RoomsProvider'
 import Router from './routes/index'
 
 function App() {
-  return <Router />
+  return (
+    <RoomsProvider>
+      <Router />
+    </RoomsProvider>
+  )
 }
 
 export default App

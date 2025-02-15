@@ -1,8 +1,8 @@
 const ROOTS = {
-  LANDING: './landing',
-  WAITING: './waiting',
-  CREATE: './create',
-  ROOM: './room',
+  LANDING: '/landing',
+  WAITING: '/waiting',
+  CREATE: '/create',
+  ROOM: '/room',
 }
 
 export const paths = {

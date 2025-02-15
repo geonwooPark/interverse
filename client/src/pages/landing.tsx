@@ -1,13 +1,11 @@
 import { useNavigate } from 'react-router-dom'
-import { getCookie } from '../lib/cookie'
 import gifImage from '/gif/interverse.gif'
 import Button from '../components/Button'
 import Logo from '../components/Logo'
+import { paths } from '../routes/paths'
 
 function LandingPage() {
   const navigate = useNavigate()
-
-  const hostCookie = getCookie('interverse_host')
 
   return (
     <div className="flex flex-col items-center">
@@ -35,7 +33,7 @@ function LandingPage() {
               size="lg"
               variant="contained"
               fullWidth
-              onClick={() => navigate(hostCookie ? '/waiting' : '/create')}
+              onClick={() => navigate(paths.create)}
             >
               시작하기
             </Button>

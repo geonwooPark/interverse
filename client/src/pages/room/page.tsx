@@ -1,28 +1,20 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import phaserGame from '../../PhaserGame'
-import Game from '../../../scenes/Game'
 import Alert from './Alert/Alert'
-import { getAuthCookie } from '../../lib/cookie'
-import { useAppDispatch } from '../../store/store'
 import { useBlockGoBack } from '../../hooks/useBlockGoBack'
 import Controller from './Controller/Controller'
-import { handleModal } from '../../store/features/confirmModalSlice'
 import DirectMessages from './DirectMessage/DirectMessages'
-import Modals from './Modals/Modals'
-import { CookieType } from '../../../../types/client'
-import { _createContext } from '../../utils/_createContext'
-import MenuBar from './MenuBar/MenuBar'
-
-type AuthContextState = CookieType
-
-export const [useAuthContext, AuthProvider] = _createContext<AuthContextState>()
+import MenuBar from './MenuBar'
+import Game from '../../games/scenes/Game'
+import useModals from '../../hooks/useModals'
+import ConfirmModal from './Modals/ConfirmModal'
+import { useAuthCookie } from '../../providers/AuthProvider'
 
 function RoomPage() {
-  const params = useParams()
-  const { roomId } = params
-  const authCookie = getAuthCookie(roomId as string)
-  const dispatch = useAppDispatch()
+  const authCookie = useAuthCookie()
+
+  const { modals, addModal, removeModal } = useModals()
+
   const [game, setGame] = useState<Game | null>(null)
 
   useEffect(() => {
@@ -50,24 +42,26 @@ function RoomPage() {
     }
   }, [game])
 
-  useBlockGoBack({
-    title: '나가기',
-    description: '정말 종료하시겠습니까?',
-    action: () => {
-      window.location.replace('/')
-      dispatch(handleModal())
-    },
-    actionLabel: '종료',
-  })
+  useBlockGoBack(() =>
+    addModal(
+      <ConfirmModal
+        title="나가기"
+        description="정말 종료하시겠습니까?"
+        actionLabel="종료"
+        onClose={removeModal}
+        onSubmit={() => window.location.replace('/')}
+      />,
+    ),
+  )
 
   return (
-    <AuthProvider value={authCookie}>
+    <>
       <MenuBar />
-      <Controller />
+      {/* <Controller />
       <Alert />
-      <Modals />
-      <DirectMessages />
-    </AuthProvider>
+      <DirectMessages /> */}
+      {modals}
+    </>
   )
 }
 

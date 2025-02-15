@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import Layout from '../../layouts/layout'
+import AuthProvider from '../../providers/AuthProvider'
 
 const LandingPage = lazy(() => import('../../pages/landing'))
 const WatingRoomPage = lazy(() => import('../../pages/waiting/page'))
@@ -23,7 +24,14 @@ export const routes = [
       { path: 'landing', element: <LandingPage /> },
       { path: 'create', element: <CreateRoomPage /> },
       { path: 'waiting', element: <WatingRoomPage /> },
-      { path: 'room', element: <RoomPage /> },
+      {
+        path: 'room',
+        element: (
+          <AuthProvider>
+            <RoomPage />
+          </AuthProvider>
+        ),
+      },
     ],
   },
 ]

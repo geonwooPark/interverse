@@ -1,20 +1,26 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
-import { setCookie } from '../../lib/cookie'
-import { encrypt } from '../../lib/crypto'
+import { encrypt } from '../../utils/crypto'
 import Characters from './Characters'
 import TextField from '../../components/TextField'
 import Button from '../../components/Button'
+import { CookieType } from '../../../../types/client'
+import { useRoomsAction, useRoomsState } from '../../providers/RoomsProvider'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
+
+  const rooms = useRoomsState()
+
+  const updateRooms = useRoomsAction()
 
   const [values, setValues] = useState({
     title: '',
     password: '',
     nickName: '',
   })
+
   const { title, password, nickName } = values
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,17 +40,16 @@ function CreateRoomPage() {
 
     const hashedPassword = encodeURIComponent(encrypt(password))
 
-    const hostCookie = {
+    const hostCookie: CookieType = {
       roomNum,
       role: 'host',
       nickName,
-      path: `/${roomNum}?title=${encodedTitle}&hp=${hashedPassword}`,
-      texture: 'conference',
+      title,
+      path: `/room?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,
+      createAt: new Date(),
     }
 
-    setCookie('interverse_host', JSON.stringify(hostCookie), {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    })
+    updateRooms([...rooms, hostCookie])
 
     navigate(hostCookie.path)
   }
@@ -81,7 +86,7 @@ function CreateRoomPage() {
               placeholder="닉네임"
               onChange={handleChange}
             />
-            <Button size="lg" variant="contained" fullWidth>
+            <Button type="submit" size="lg" variant="contained" fullWidth>
               방 개설하기
             </Button>
           </form>

@@ -9,8 +9,9 @@ export interface CookieType {
   roomNum: string
   role: 'host' | 'guest'
   nickName: string
+  title: string
   path: string
-  texture: string
+  createAt: Date
 }
 
 export interface DisplayOtherPlayerChatType {
