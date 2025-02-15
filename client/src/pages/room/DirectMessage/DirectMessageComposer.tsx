@@ -1,23 +1,21 @@
-import { useAppDispatch, useAppSelector } from '../../store/store'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
 import {
   changeReceiver,
   handleDirectMessageComposer,
-} from '../../store/features/directMessageSlice'
-import { ws } from '../../lib/ws'
+} from '../../../store/features/directMessageSlice'
+import { ws } from '../../../lib/ws'
 import { useState } from 'react'
-import { CookieType } from '../../../../types/client'
+import { useAuthCookie } from '../../../providers/AuthProvider'
 
-interface DirectMessageComposerProps {
-  receiver: { nickName: string; id: string }
-  authCookie: CookieType | null
-}
+function DirectMessageComposer() {
+  const authCookie = useAuthCookie()
 
-function DirectMessageComposer({
-  receiver,
-  authCookie,
-}: DirectMessageComposerProps) {
-  const { nickName, id } = receiver
+  const {
+    receiver: { nickName, id },
+  } = useAppSelector((state) => state.directMessage)
+
   const { isOpen } = useAppSelector((state) => state.directMessage)
+
   const dispatch = useAppDispatch()
 
   const [message, setMessage] = useState('')
@@ -63,6 +61,7 @@ function DirectMessageComposer({
         <button onClick={onClose} className="secondary-button">
           닫기
         </button>
+
         <button onClick={onSubmit} className="primary-button">
           전송
         </button>

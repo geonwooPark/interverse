@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom'
-import { useAppSelector } from '../../store/store'
+import { useAppSelector } from '../../../store/store'
 import DirectMessage from './DirectMessage'
 
 function DirectMessages() {

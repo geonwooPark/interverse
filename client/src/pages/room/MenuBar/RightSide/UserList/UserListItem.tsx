@@ -1,7 +1,7 @@
-import { RoomUser } from '../../../../../types/socket'
-import { IconMessage } from '../../../../svgs'
-import { textureImage } from '../../../constants'
-import { ws } from '../../../lib/ws'
+import { ws } from '../../../../../lib/ws'
+import { textureImage } from '../../../../../constants'
+import { IconMessage } from '../../../../../assets/svgs'
+import { RoomUser } from '../../../../../../../types/socket'
 
 interface UserListItemProps {
   user: RoomUser
@@ -17,6 +17,7 @@ function UserListItem({ user, sendDM }: UserListItemProps) {
         />
         {user.nickName}
       </div>
+
       {user.socketId !== ws.socket.id && (
         <IconMessage
           className="size-5"
