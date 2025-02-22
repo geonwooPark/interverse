@@ -1,12 +1,11 @@
 import { IconLink, IconOff } from '../../../../assets/svgs'
+import ConfirmModal from '../../../../components/ConfirmModal'
 import useModals from '../../../../hooks/useModals'
 import {
   changeAlertContent,
   openAlert,
-  closeAlert,
 } from '../../../../store/features/alertSlice'
 import { useAppDispatch } from '../../../../store/store'
-import ConfirmModal from '../../Modals/ConfirmModal'
 import UserList from './UserList'
 
 function RightSide() {
@@ -21,10 +20,6 @@ function RightSide() {
     dispatch(changeAlertContent('복사 완료! 링크를 공유하여 초대하세요.'))
     dispatch(openAlert())
     navigator.clipboard.writeText(window.location.href)
-
-    setTimeout(() => {
-      dispatch(closeAlert())
-    }, 5000)
   }
 
   const onOffClick = () => {

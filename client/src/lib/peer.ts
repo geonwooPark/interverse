@@ -23,7 +23,8 @@ export const me = {
     socketId: string,
   ) {
     const { video, audio } = controller
-    const { nickName, texture } = authCookie
+
+    const { nickname, texture } = authCookie
 
     navigator.mediaDevices
       .getUserMedia({
@@ -37,7 +38,7 @@ export const me = {
         const initStream = {
           peerId: this.peer.id,
           socketId,
-          nickName,
+          nickname,
           stream,
           isVideoEnabled: video,
           texture,
@@ -59,7 +60,8 @@ export const me = {
     socketId: string,
   ) {
     const { video, audio } = controller
-    const { nickName, texture } = authCookie
+
+    const { nickname, texture } = authCookie
 
     navigator.mediaDevices
       .getUserMedia({

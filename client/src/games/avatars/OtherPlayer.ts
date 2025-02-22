@@ -6,11 +6,11 @@ export default class OtherPlayer extends Avatar {
     x: number,
     y: number,
     texture: string,
-    nickName: string,
+    nickname: string,
     frame?: string | number,
   ) {
     super(scene, x, y, texture, frame)
-    this.setNickname(nickName)
+    this.setNickname(nickname)
   }
 
   updatePosition({

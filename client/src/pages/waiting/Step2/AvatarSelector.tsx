@@ -1,46 +1,45 @@
-import { useMemo } from 'react'
-import { textureImage } from '../../../constants'
+import { textureMap } from '../../../constants'
 
 interface AvatarSelectorProps {
   texture: number
-  setTexture: React.Dispatch<React.SetStateAction<number>>
+  onChange: (value: number) => void
 }
 
-function AvatarSelector({ texture, setTexture }: AvatarSelectorProps) {
-  const textureArr = useMemo(() => Array.from(textureImage).slice(1), [])
+function AvatarSelector({ texture, onChange }: AvatarSelectorProps) {
+  const textureArr = Object.keys(textureMap)
 
   const textureImageLength = textureArr.length
 
-  const onTextureLeftArrowClick = () => {
+  const onLeftArrowClick = () => {
     if (texture > 0) {
-      setTexture((prev) => prev - 1)
+      onChange(texture - 1)
     } else if (texture === 0) {
-      setTexture(textureImageLength - 1)
+      onChange(textureImageLength - 1)
     }
   }
 
-  const onTextureRightArrowClick = () => {
+  const onRightArrowClick = () => {
     if (texture < textureImageLength - 1) {
-      setTexture((prev) => prev + 1)
+      onChange(texture + 1)
     } else if (texture === textureImageLength - 1) {
-      setTexture(0)
+      onChange(0)
     }
   }
 
   return (
     <div className="relative w-full rounded-md bg-gray-200 py-14">
       <div className="flex items-center justify-center gap-10">
-        <div className="cursor-pointer" onClick={onTextureLeftArrowClick}>
+        <div className="cursor-pointer" onClick={onLeftArrowClick}>
           〈
         </div>
 
         <div className="flex">
           <div
-            className={`h-[52px] w-[32px] scale-150 bg-[-608px] bg-no-repeat ${textureArr[texture][1]}`}
+            className={`h-[52px] w-[32px] scale-150 bg-[-608px] bg-no-repeat ${textureMap[textureArr[texture]]}`}
           />
         </div>
 
-        <div className="cursor-pointer" onClick={onTextureRightArrowClick}>
+        <div className="cursor-pointer" onClick={onRightArrowClick}>
           〉
         </div>
       </div>

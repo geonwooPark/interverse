@@ -1,18 +1,28 @@
 import { useState } from 'react'
-import { decrypt } from '../../../lib/crypto'
-import { useLocation } from 'react-router-dom'
+import { decrypt } from '../../../utils/crypto'
 import TextField from '../../../components/TextField'
 import { StepFlowProps } from '../../../components/StepFlow/types'
 import Button from '../../../components/Button'
+import { useSearchParams } from 'react-router-dom'
+import { useRoomsAction, useRoomsState } from '../../../providers/RoomsProvider'
+import { CookieType } from '../../../../../types/client'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
 function Step1({ activeStep, onNext }: Step1Props) {
-  // const location = useLocation()
+  const rooms = useRoomsState()
 
-  // const { password } = location.state
+  const updateRooms = useRoomsAction()
 
-  // const decryptedPassword = decrypt(password)
+  const [searchParams] = useSearchParams()
+
+  const roomNum = searchParams.get('roomNum') as string
+
+  const title = searchParams.get('title') as string
+
+  const hp = searchParams.get('hp') as string
+
+  const decryptedPassword = decrypt(hp)
 
   const [value, setValue] = useState('')
 
@@ -23,30 +33,44 @@ function Step1({ activeStep, onNext }: Step1Props) {
   }
 
   const onClick = () => {
-    // if (!value || decryptedPassword !== value) {
-    //   setError('비밀번호를 확인해주세요')
-    //   return setTimeout(() => setError(''), 3000)
-    // }
-    // navigate(`/room`)
+    if (!value || decryptedPassword !== value) {
+      setError('비밀번호를 확인해주세요')
+
+      return setTimeout(() => setError(''), 3000)
+    }
+
+    const cookie: CookieType = {
+      roomNum,
+      role: 'guest',
+      title,
+      createAt: new Date(),
+    }
+
+    updateRooms([...rooms, cookie])
+
     onNext && onNext()
   }
 
   return (
-    <div className="space-y-4">
-      <div className="mb-4 text-lg">비밀번호를 입력해주세요</div>
+    <div className="flex size-full items-center justify-center">
+      <div className="w-[360px] space-y-8 rounded-3xl bg-gray-300 p-8">
+        <div className="space-y-4">
+          <div className="mb-4 text-lg">비밀번호를 입력해주세요</div>
 
-      <TextField
-        type="password"
-        value={value}
-        placeholder="비밀번호"
-        onChange={handleChange}
-        maxLength={4}
-        error={error}
-      />
+          <TextField
+            type="password"
+            value={value}
+            placeholder="비밀번호"
+            onChange={handleChange}
+            maxLength={4}
+            error={error}
+          />
 
-      <Button size="lg" variant="contained" fullWidth onClick={onClick}>
-        다음
-      </Button>
+          <Button size="lg" variant="contained" fullWidth onClick={onClick}>
+            다음
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

@@ -12,9 +12,7 @@ export const roomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
-  const joinRoom = ({ authCookie, texture }: ClientJoinRoom) => {
-    if (!authCookie) return
-    const { roomNum, nickName } = authCookie
+  const joinRoom = ({ roomNum, nickname, texture }: ClientJoinRoom) => {
     if (!rooms[roomNum]) rooms[roomNum] = {}
 
     // 방에 입장시키기
@@ -22,7 +20,7 @@ export const roomHandler = (
 
     if (rooms[roomNum]) {
       rooms[roomNum][socket.id] = {
-        nickName,
+        nickname,
         texture,
         roomNum,
         socketId: socket.id,
@@ -32,15 +30,15 @@ export const roomHandler = (
     // 방 입장 메시지 보내기
     io.to(roomNum).emit('serverMsg', {
       senderId: socket.id,
-      nickName: '',
-      message: `${nickName}님이 입장했습니다.`,
+      nickname: '',
+      message: `${nickname}님이 입장했습니다.`,
       roomNum,
       newPlayerId: socket.id,
     })
 
     // 나의 아바타 정보를 나를 제외한 모두에게 전송
     socket.broadcast.to(roomNum).emit('serverPlayerInfo', {
-      nickName,
+      nickname,
       roomNum,
       texture,
       socketId: socket.id,

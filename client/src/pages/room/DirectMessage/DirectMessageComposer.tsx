@@ -11,7 +11,7 @@ function DirectMessageComposer() {
   const authCookie = useAuthCookie()
 
   const {
-    receiver: { nickName, id },
+    receiver: { nickname, id },
   } = useAppSelector((state) => state.directMessage)
 
   const { isOpen } = useAppSelector((state) => state.directMessage)
@@ -35,12 +35,12 @@ function DirectMessageComposer() {
     if (!message) return
 
     dispatch(handleDirectMessageComposer())
-    dispatch(changeReceiver({ nickName: '', id: '' }))
+    dispatch(changeReceiver({ nickname: '', id: '' }))
     ws.sendDirectMessage({
       message,
-      sender: authCookie?.nickName as string,
+      sender: authCookie?.nickname as string,
       senderId: ws.socket.id as string,
-      receiver: nickName,
+      receiver: nickname,
       receiverId: id,
     })
   }
@@ -51,7 +51,7 @@ function DirectMessageComposer() {
     <div
       className={`fixed left-[50%] top-[50%] z-[200] h-auto w-[400px] translate-x-[-50%] translate-y-[-50%] rounded-md border-2 bg-white px-4 py-3 font-neodgm`}
     >
-      <div className="mb-2 text-lg">{nickName}님에게 보내는 메시지</div>
+      <div className="mb-2 text-lg">{nickname}님에게 보내는 메시지</div>
       <textarea
         placeholder="메세지를 입력하세요."
         onChange={handleChange}

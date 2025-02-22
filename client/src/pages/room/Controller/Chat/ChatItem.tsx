@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
-import { ChatItemType } from '../../../../../types/client'
+import { ChatItemType } from '../../../../../../types/client'
 
 interface ChatItemProps {
   chatItem: ChatItemType
 }
+
 function ChatItem({ chatItem }: ChatItemProps) {
   const scrollRef = useRef<HTMLLIElement | null>(null)
 
@@ -16,11 +17,11 @@ function ChatItem({ chatItem }: ChatItemProps) {
       ref={scrollRef}
       className="inline-block w-full break-all rounded-sm px-4"
     >
-      {chatItem.nickName && (
-        <span className={`mr-2 font-bold`}>{chatItem.nickName}</span>
+      {chatItem.nickname && (
+        <span className={`mr-2 font-bold`}>{chatItem.nickname}</span>
       )}
       <span
-        className={`${chatItem.nickName ? 'text-black' : 'font-bold text-purple-600'}`}
+        className={`${chatItem.nickname ? 'text-black' : 'font-bold text-purple-600'}`}
       >
         {chatItem.message}
       </span>

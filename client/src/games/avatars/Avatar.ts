@@ -1,7 +1,8 @@
+import { SocketIO } from '../../lib/ws'
 import ObjectItem from '../items/ObjectItem'
-import { ws } from '../../lib/ws'
 
 export default class Avatar extends Phaser.Physics.Arcade.Sprite {
+  protected ws: SocketIO = SocketIO.getInstance()
   avatarTexture: string
   avatarContainer: Phaser.GameObjects.Container
   nickname: Phaser.GameObjects.Text
@@ -35,8 +36,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
 
     this.scene.physics.world.enable(this)
     this.scene.physics.world.enable(this.avatarContainer)
-    // const playContainerBody = this.avatarContainer
-    //   .body as Phaser.Physics.Arcade.Body
+
     const collisionRange = [0.5, 0.1]
     this.setSize(
       this.width * collisionRange[0],
@@ -61,9 +61,9 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
 
     // 서버로 메세지 보내기
     if (roomNum) {
-      ws.sendMessage({
+      this.ws.sendMessage({
         message: content,
-        nickName: this.nickname.text,
+        nickname: this.nickname.text,
         senderId: '',
         roomNum,
       })

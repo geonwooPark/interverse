@@ -1,13 +1,8 @@
 import Chair from '../items/Chair'
-import {
-  changeAlertContent,
-  closeAlert,
-  openAlert,
-} from '../../store/features/alertSlice'
+import { changeAlertContent, openAlert } from '../../store/features/alertSlice'
 import { store } from '../../store/store'
 import Avatar from './Avatar'
 import { handleScreenSharing } from '../../store/features/myStreamSlice'
-import { ws } from '../../lib/ws'
 import { handleModals } from '../../store/features/modalsSlice'
 
 export default class Player extends Avatar {
@@ -92,7 +87,7 @@ export default class Player extends Avatar {
           switch (this.selectedInteractionItem.itemType) {
             case 'chair':
               if (!chair) return
-              if (ws.occupiedChairs.has(chair.id.toString())) return
+              // if (this.ws.occupiedChairs.has(chair.id.toString())) return
 
               this.setVelocity(0, 0)
               this.setPosition(chair.x, chair.y + 5)
@@ -104,12 +99,12 @@ export default class Player extends Avatar {
               )
 
               // 의자에 앉으면 서버로 의자의 넘버를 보냄
-              ws.sendChairId({
+              this.ws.sendChairId({
                 roomNum,
                 chairId: chair.id?.toString() || '',
               })
 
-              ws.sendAvatarPosition({
+              this.ws.sendAvatarPosition({
                 x: this.x,
                 y: this.y,
                 roomNum,
@@ -161,7 +156,7 @@ export default class Player extends Avatar {
             case 'screenBoard':
               this.anims.play(`${this.avatarTexture}_stand_down`, true)
 
-              ws.sendAvatarPosition({
+              this.ws.sendAvatarPosition({
                 x: this.x,
                 y: this.y,
                 roomNum,
@@ -197,7 +192,7 @@ export default class Player extends Avatar {
             case 'chair':
               if (!chair) return
 
-              ws.sendChairId({
+              this.ws.sendChairId({
                 roomNum,
                 chairId: chair.id?.toString() || '',
               })
@@ -205,7 +200,7 @@ export default class Player extends Avatar {
                 store.dispatch(handleModals('creator'))
               }
               if (chair.interaction === 'interview') {
-                ws.leaveVideoRoom(roomNum)
+                this.ws.leaveVideoRoom()
               }
               this.setPosition(this.preX, this.preY)
 
@@ -217,10 +212,9 @@ export default class Player extends Avatar {
               store.dispatch(handleModals('survey'))
               break
             case 'screenBoard':
-              ws.leaveVideoRoom(roomNum)
+              this.ws.leaveVideoRoom()
           }
 
-          store.dispatch(closeAlert())
           this.interaction = 'inactive'
         }
         break
@@ -233,7 +227,7 @@ export default class Player extends Avatar {
     }
 
     // 실시간으로 나의 위치 전송
-    ws.sendAvatarPosition({
+    this.ws.sendAvatarPosition({
       x: this.x,
       y: this.y,
       roomNum,

@@ -7,6 +7,7 @@ import TextField from '../../components/TextField'
 import Button from '../../components/Button'
 import { CookieType } from '../../../../types/client'
 import { useRoomsAction, useRoomsState } from '../../providers/RoomsProvider'
+import { paths } from '../../routes/paths'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
@@ -18,10 +19,9 @@ function CreateRoomPage() {
   const [values, setValues] = useState({
     title: '',
     password: '',
-    nickName: '',
   })
 
-  const { title, password, nickName } = values
+  const { title, password } = values
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -32,7 +32,7 @@ function CreateRoomPage() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!title || !password || !nickName) return
+    if (!title || !password) return
 
     const roomNum = nanoid(8)
 
@@ -40,18 +40,18 @@ function CreateRoomPage() {
 
     const hashedPassword = encodeURIComponent(encrypt(password))
 
-    const hostCookie: CookieType = {
+    const cookie: CookieType = {
       roomNum,
       role: 'host',
-      nickName,
       title,
-      path: `/room?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,
       createAt: new Date(),
     }
 
-    updateRooms([...rooms, hostCookie])
+    updateRooms([...rooms, cookie])
 
-    navigate(hostCookie.path)
+    navigate(
+      `${paths.waiting}?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,
+    )
   }
 
   return (
@@ -78,13 +78,6 @@ function CreateRoomPage() {
               placeholder="방 비밀번호"
               onChange={handleChange}
               maxLength={4}
-            />
-            <TextField
-              type="text"
-              name="nickName"
-              value={nickName}
-              placeholder="닉네임"
-              onChange={handleChange}
             />
             <Button type="submit" size="lg" variant="contained" fullWidth>
               방 개설하기

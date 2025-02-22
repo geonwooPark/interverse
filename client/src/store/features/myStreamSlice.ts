@@ -15,7 +15,7 @@ interface StreamType {
 const initStream = {
   peerId: '',
   socketId: '',
-  nickName: '',
+  nickname: '',
   stream: null,
   isVideoEnabled: false,
   texture: '',

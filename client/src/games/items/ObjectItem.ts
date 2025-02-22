@@ -1,8 +1,4 @@
-import {
-  changeAlertContent,
-  closeAlert,
-  openAlert,
-} from '../../store/features/alertSlice'
+import { changeAlertContent, openAlert } from '../../store/features/alertSlice'
 import { store } from '../../store/store'
 
 export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
@@ -25,6 +21,5 @@ export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
 
   clearInteractionBox() {
     store.dispatch(changeAlertContent(''))
-    store.dispatch(closeAlert())
   }
 }

@@ -22,11 +22,12 @@ export const AlertSlice = createSlice({
     },
     openAlert: (state) => {
       state.isAlert = true
-    },
-    closeAlert: (state) => {
-      state.isAlert = false
+
+      setTimeout(() => {
+        state.isAlert = false
+      }, 5000)
     },
   },
 })
 
-export const { changeAlertContent, openAlert, closeAlert } = AlertSlice.actions
+export const { changeAlertContent, openAlert } = AlertSlice.actions

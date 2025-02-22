@@ -1,6 +1,6 @@
 export interface ServerMessage {
   message: string
-  nickName: string
+  nickname: string
   roomNum: string
   senderId: string
   newPlayerId?: string
@@ -8,25 +8,20 @@ export interface ServerMessage {
 
 export interface ClientMessage {
   message: string
-  nickName: string
+  nickname: string
   roomNum: string
   senderId: string
   newPlayerId?: string
 }
 
 export interface ClientJoinRoom {
-  authCookie: {
-    roomNum: string
-    role: 'host' | 'guest'
-    nickName: string
-    path: string
-    texture: string
-  }
+  roomNum: string
+  nickname: string
   texture: string
 }
 
 export interface ServerPlayerInfo {
-  nickName: string
+  nickname: string
   texture: string
   roomNum: string
   socketId: string
@@ -49,7 +44,7 @@ export interface ClientAvatarPosition {
 export interface ClientJoinVideoRoom {
   roomNum: string
   peerId: string
-  nickName: string
+  nickname: string
   texture: string
   isVideoEnabled: boolean
 }
@@ -57,7 +52,7 @@ export interface ClientJoinVideoRoom {
 export interface ServerJoinVideoRoom {
   socketId: string
   peerId: string
-  nickName: string
+  nickname: string
   texture: string
   isVideoEnabled: boolean
 }
@@ -68,7 +63,7 @@ export interface ClientChairId {
 }
 
 export interface RoomUser {
-  nickName: string
+  nickname: string
   texture: string
   roomNum: string
   socketId: string
@@ -77,7 +72,7 @@ export interface RoomUser {
 export interface VideoRoomUser {
   peerId: string
   socketId: string
-  nickName: string
+  nickname: string
 }
 
 export interface ClientHandleCamera {
@@ -108,7 +103,7 @@ export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
   serverMsg: (message: ServerMessage) => void
   serverPlayerInfo: ({
-    nickName,
+    nickname,
     texture,
     roomNum,
     socketId,
@@ -122,7 +117,7 @@ export interface ServerToClientEvents {
   serverJoinVideoRoom: ({
     peerId,
     socketId,
-    nickName,
+    nickname,
     texture,
     isVideoEnabled,
   }: ServerJoinVideoRoom) => void
@@ -147,7 +142,7 @@ export interface ClientToServerEvents {
   clientJoinVideoRoom: ({
     roomNum,
     peerId,
-    nickName,
+    nickname,
     texture,
     isVideoEnabled,
   }: ClientJoinVideoRoom) => void

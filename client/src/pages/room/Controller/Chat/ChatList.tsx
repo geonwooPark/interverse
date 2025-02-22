@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../../store/store'
+import { useAppSelector } from '../../../../store/store'
 import ChatItem from './ChatItem'
 
 function ChatList() {

@@ -21,7 +21,7 @@ function OtherVideoStream({
         currentStream={currentStream}
         changeCurrentStreamer={changeCurrentStreamer}
       />
-      <VideoStreamerName nickName={peerStream.nickName} />
+      <VideoStreamerName nickname={peerStream.nickname} />
       <VideoMutedButton peerId={peerStream.peerId} sound={peerStream.sound} />
     </div>
   )

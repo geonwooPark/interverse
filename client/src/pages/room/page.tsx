@@ -1,46 +1,33 @@
-import { useEffect, useState } from 'react'
-import phaserGame from '../../PhaserGame'
+import { useEffect } from 'react'
 import Alert from './Alert/Alert'
 import { useBlockGoBack } from '../../hooks/useBlockGoBack'
-import Controller from './Controller/Controller'
+import Controller from './Controller'
 import DirectMessages from './DirectMessage/DirectMessages'
 import MenuBar from './MenuBar'
-import Game from '../../games/scenes/Game'
 import useModals from '../../hooks/useModals'
-import ConfirmModal from './Modals/ConfirmModal'
 import { useAuthCookie } from '../../providers/AuthProvider'
+import ConfirmModal from '../../components/ConfirmModal'
+import GameSingleton from '../../PhaserGame'
+import Game from '../../games/scenes/Game'
 
+/**
+ * 게임 룸 화면
+ */
 function RoomPage() {
   const authCookie = useAuthCookie()
 
   const { modals, addModal, removeModal } = useModals()
 
-  const [game, setGame] = useState<Game | null>(null)
-
+  // 게임 입장
   useEffect(() => {
-    setGame(phaserGame.scene.keys.game as Game)
-  }, [])
-
-  useEffect(() => {
-    if (!game) return
     if (!authCookie) return
 
-    const joinRoom = () => {
-      game.joinRoom({
-        authCookie,
-      })
-    }
+    const game = GameSingleton.getInstance()
 
-    if (game.isCreate) {
-      joinRoom()
-    } else {
-      phaserGame.scene.getScene('game').events.on('createGame', joinRoom)
-    }
+    const gameScene = game.scene.getScene('game') as Game
 
-    return () => {
-      phaserGame.scene.getScene('game').events.off('createGame', joinRoom)
-    }
-  }, [game])
+    gameScene.initialize(authCookie.roomNum)
+  }, [])
 
   useBlockGoBack(() =>
     addModal(
@@ -57,9 +44,9 @@ function RoomPage() {
   return (
     <>
       <MenuBar />
-      {/* <Controller />
+      <Controller />
       <Alert />
-      <DirectMessages /> */}
+      <DirectMessages />
       {modals}
     </>
   )

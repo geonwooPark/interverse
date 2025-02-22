@@ -21,9 +21,9 @@ function UserList() {
     setShowUserList((prev) => !prev)
   }
 
-  const sendDM = (nickName: string, id: string) => {
+  const sendDM = (nickname: string, id: string) => {
     dispatch(handleDirectMessageComposer())
-    dispatch(changeReceiver({ nickName, id }))
+    dispatch(changeReceiver({ nickname, id }))
   }
 
   return (
@@ -47,7 +47,7 @@ function UserList() {
         </div>
       )}
 
-      <DirectMessageComposer />
+      {/* <DirectMessageComposer /> */}
     </div>
   )
 }

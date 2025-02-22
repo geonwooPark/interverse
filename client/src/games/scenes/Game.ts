@@ -6,28 +6,26 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import {
-  CookieType,
-  DisplayOtherPlayerChatType,
-} from '../../../../types/client'
+import { DisplayOtherPlayerChatType } from '../../../../types/client'
 import {
   ServerAvatarPosition,
   ServerPlayerInfo,
 } from '../../../../types/socket'
-import { ws } from '../../lib/ws'
+import { SocketIO } from '../../lib/ws'
+import { store } from '../../store/store'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
+  private ws: SocketIO = SocketIO.getInstance()
   private otherPlayers!: Phaser.Physics.Arcade.Group
   private otherPlayersMap = new Map<string, OtherPlayer>()
+  player!: Player
   cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
   keyEscape?: Phaser.Input.Keyboard.Key
   overlap?: Phaser.Physics.Arcade.StaticGroup
-  player!: Player
   roomNum!: string
-  isCreate = false
-  isColliding = false
+  occupiedChairs: Set<string> = new Set()
 
   constructor() {
     // Scene Key
@@ -101,9 +99,8 @@ export default class Game extends Phaser.Scene {
     // OtherPlayers Layer
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
 
-    // Player Layer + 플레이어 생성
     createAvatarAnims(this.anims)
-    this.player = new Player(this, -1000, -1000, 'conference')
+    this.player = new Player(this, 120, 180, '')
     this.add.existing(this.player)
 
     // Camera Setting
@@ -167,11 +164,6 @@ export default class Game extends Phaser.Scene {
       undefined,
       this,
     )
-
-    this.events.once('update', () => {
-      this.isCreate = true
-      this.events.emit('createGame', this.isCreate)
-    })
   }
 
   /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */
@@ -180,7 +172,7 @@ export default class Game extends Phaser.Scene {
 
     if (
       interactionItem.id &&
-      ws.occupiedChairs.has(interactionItem.id.toString())
+      this.occupiedChairs.has(interactionItem.id.toString())
     )
       return
     player.isCollide = true
@@ -220,23 +212,23 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 방에 입장 */
-  joinRoom({ authCookie }: { authCookie: CookieType }) {
-    if (!this.player) return
-    this.roomNum = authCookie.roomNum
+  initialize(roomNum: string) {
+    this.roomNum = roomNum
 
-    ws.joinRoom({
-      authCookie,
-      texture: authCookie.texture,
-    })
-    ws.receiveChairId()
+    const avatar = store.getState().avartar
+
+    this.player.setNickname(avatar.nickname)
+    this.player.setTexture(avatar.texture)
+
     this.setUpKeys()
+    this.ws.joinRoom()
   }
 
   /** 다른 플레이어 입장 */
-  addOtherPlayer({ nickName, texture, socketId }: ServerPlayerInfo) {
+  addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
     if (!socketId) return
 
-    const newPlayer = new OtherPlayer(this, -1000, -1000, texture, nickName)
+    const newPlayer = new OtherPlayer(this, -1000, -1000, texture, nickname)
     newPlayer.anims.play(`${texture}_stand_down`, true)
     newPlayer.setDepth(900)
     this.add.existing(newPlayer)

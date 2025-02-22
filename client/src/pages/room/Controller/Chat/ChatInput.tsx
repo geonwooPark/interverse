@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react'
-import Game from '../../../scenes/Game'
-import phaserGame from '../../../PhaserGame'
-import { useAuthContext } from '../../../routes/Room'
+import { useState } from 'react'
+import Game from '../../../../games/scenes/Game'
+import { useAuthCookie } from '../../../../providers/AuthProvider'
+import GameSingleton from '../../../../PhaserGame'
 
 interface ChatInputProps {
   inputRef: React.RefObject<HTMLInputElement>
 }
 
 function ChatInput({ inputRef }: ChatInputProps) {
-  const authCookie = useAuthContext()
-  const game = phaserGame.scene.keys.game as Game
+  const authCookie = useAuthCookie()
+
+  const game = GameSingleton.getInstance()
+
+  const gameScene = game.scene.getScene('game') as Game
 
   const [inputValue, setInputValue] = useState('')
 
@@ -25,11 +28,11 @@ function ChatInput({ inputRef }: ChatInputProps) {
     if (!authCookie) return
     if (!inputValue) {
       inputRef.current?.blur()
-      game.enableKeys()
+      gameScene.enableKeys()
     } else {
-      game.player.updateChat(inputValue, authCookie.roomNum)
+      gameScene.player.updateChat(inputValue, authCookie.roomNum)
       inputRef.current?.blur()
-      game.enableKeys()
+      gameScene.enableKeys()
       setInputValue('')
     }
   }

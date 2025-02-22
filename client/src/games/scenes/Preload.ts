@@ -1,3 +1,5 @@
+import Game from './Game'
+
 export default class Preload extends Phaser.Scene {
   constructor() {
     // Scene Key
@@ -101,12 +103,5 @@ export default class Preload extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 52,
     })
-    this.load.on('complete', () => {
-      this.startGame()
-    })
-  }
-
-  startGame() {
-    this.scene.launch('game')
   }
 }

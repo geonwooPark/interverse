@@ -11,7 +11,7 @@ export interface DirectMessageModalType {
   isOpen: boolean
   directMessages: DirectMessageType[]
   receiver: {
-    nickName: string
+    nickname: string
     id: string
   }
 }
@@ -20,7 +20,7 @@ const initialState: DirectMessageModalType = {
   isOpen: false,
   directMessages: [],
   receiver: {
-    nickName: '',
+    nickname: '',
     id: '',
   },
 }
@@ -45,7 +45,7 @@ export const DirectMessageSlice = createSlice({
     },
     changeReceiver: (
       state,
-      action: PayloadAction<{ nickName: string; id: string }>,
+      action: PayloadAction<{ nickname: string; id: string }>,
     ) => {
       state.receiver = action.payload
     },
