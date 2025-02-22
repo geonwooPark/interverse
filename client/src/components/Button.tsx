@@ -22,7 +22,8 @@ const ButtonVariants = cva(
         lg: 'h-[50px] px-8 text-base font-bold',
       },
       variant: {
-        contained: 'bg-purple-600 text-white hover:bg-purple-700',
+        contained:
+          'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50 hover:bg-cyan-400',
         outlined: 'border-2 border-purple-600 text-purple-600',
       },
       fullWidth: {

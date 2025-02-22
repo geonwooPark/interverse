@@ -19,6 +19,9 @@ module.exports = {
         default: 'url(/assets/cursor/Point.png), default',
         pointer: 'url(/assets/cursor/hand.png), pointer',
       },
+      boxShadow: {
+        level1: '0px 2px 20px 2px rgba(0, 0, 0, 0.12)',
+      },
     },
   },
   plugins: [],

@@ -53,10 +53,9 @@ function Step1({ activeStep, onNext }: Step1Props) {
 
   return (
     <div className="flex size-full items-center justify-center">
-      <div className="w-[360px] space-y-8 rounded-3xl bg-gray-300 p-8">
-        <div className="space-y-4">
-          <div className="mb-4 text-lg">비밀번호를 입력해주세요</div>
-
+      <div className="w-[360px] rounded-3xl p-8 shadow-level1">
+        <div className="mb-4 text-lg">비밀번호를 입력해주세요</div>
+        <div className="mb-6">
           <TextField
             type="password"
             value={value}
@@ -65,11 +64,11 @@ function Step1({ activeStep, onNext }: Step1Props) {
             maxLength={4}
             error={error}
           />
-
-          <Button size="lg" variant="contained" fullWidth onClick={onClick}>
-            다음
-          </Button>
         </div>
+
+        <Button size="lg" variant="contained" fullWidth onClick={onClick}>
+          다음
+        </Button>
       </div>
     </div>
   )

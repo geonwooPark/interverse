@@ -25,7 +25,7 @@ class GameSingleton {
           },
         },
         scene: [Preload, Game],
-        backgroundColor: '#1F3131',
+        backgroundColor: '#fff',
       }
 
       GameSingleton.instance = new Phaser.Game(config)

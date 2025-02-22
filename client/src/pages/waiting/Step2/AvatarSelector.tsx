@@ -27,7 +27,7 @@ function AvatarSelector({ texture, onChange }: AvatarSelectorProps) {
   }
 
   return (
-    <div className="relative w-full rounded-md bg-gray-200 py-14">
+    <div className="relative w-full rounded-md bg-gray-100 py-14">
       <div className="flex items-center justify-center gap-10">
         <div className="cursor-pointer" onClick={onLeftArrowClick}>
           〈

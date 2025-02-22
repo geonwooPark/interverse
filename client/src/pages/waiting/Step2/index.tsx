@@ -50,21 +50,19 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
   return (
     <div className="flex size-full items-center justify-center">
-      <div className="w-[360px] space-y-8 rounded-3xl bg-gray-300 p-8">
-        <div className="space-y-3">
-          <AvatarSelector texture={texture} onChange={onTextureChange} />
+      <div className="w-[360px] rounded-3xl p-8 shadow-level1">
+        <AvatarSelector texture={texture} onChange={onTextureChange} />
 
-          <div>
-            <TextField
-              value={nickname}
-              onChange={onNicknameChange}
-              placeholder="닉네임"
-              maxLength={MAX_NICKNAME_LENGTH}
-            />
-            <p className="ml-2 mt-1 text-xs text-gray-700">
-              닉네임은 최대 {MAX_NICKNAME_LENGTH}글자까지 가능합니다.
-            </p>
-          </div>
+        <div className="mb-6 mt-3">
+          <TextField
+            value={nickname}
+            onChange={onNicknameChange}
+            placeholder="닉네임"
+            maxLength={MAX_NICKNAME_LENGTH}
+          />
+          <p className="ml-2 mt-1 text-xs text-gray-700">
+            닉네임은 최대 {MAX_NICKNAME_LENGTH}글자까지 가능합니다.
+          </p>
         </div>
 
         <Button size="lg" variant="contained" fullWidth onClick={onEnter}>
