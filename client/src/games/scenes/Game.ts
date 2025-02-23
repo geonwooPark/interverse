@@ -219,7 +219,7 @@ export default class Game extends Phaser.Scene {
     const avatar = store.getState().avartar
 
     this.player.setNickname(avatar.nickname)
-    this.player.setTexture(avatar.texture)
+    this.player.setAvatarTexture(avatar.texture)
 
     this.setUpKeys()
     this.ws.joinRoom()

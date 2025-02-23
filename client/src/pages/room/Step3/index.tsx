@@ -6,6 +6,7 @@ import MenuBar from './MenuBar'
 import { useAuthCookie } from '@providers/AuthProvider'
 import GameSingleton from '../../../PhaserGame'
 import Game from '@games/scenes/Game'
+import Modals from './Modals/Modals'
 
 export default function Step3() {
   const authCookie = useAuthCookie()
@@ -28,6 +29,7 @@ export default function Step3() {
       {/* 
       <Alert />
       <DirectMessages /> */}
+      <Modals />
     </>
   )
 }

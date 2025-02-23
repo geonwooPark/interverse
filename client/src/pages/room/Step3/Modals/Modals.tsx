@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import ModalBackdrop from './ModalBackdrop'
 import { useAppSelector } from '@store/store'
-import CreatorCard from './CreatorModal/CreatorCard'
-import ManualCard from './ManualModal/ManualCard'
-import SurveyCard from './SurveyModal/SurveyCard'
+import CreatorCard from './CreatorModal'
+import ManualCard from './ManualModal'
+import SurveyCard from './SurveyModal'
 import VideoCard from './VideoModal/VideoCard'
 import { createPortal } from 'react-dom'
 
@@ -21,9 +21,9 @@ function Modals() {
     case 'survey':
       content = <SurveyCard />
       break
-    case 'video':
-      content = <VideoCard />
-      break
+    // case 'video':
+    //   content = <VideoCard />
+    //   break
     default:
       content = null
   }
