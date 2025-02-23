@@ -9,8 +9,10 @@ import { useAuthCookie } from '@providers/AuthProvider'
 
 function VideoCard() {
   const authCookie = useAuthCookie()
+
   const { myStream, peerStreams, currentStream, controller } =
     useVideoStream(authCookie)
+
   const { stream } = myStream
 
   useEffect(() => {

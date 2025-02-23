@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react'
-import Alert from './Alert/Alert'
+import Alert from './Alert'
 import Controller from './Controller'
 import DirectMessages from './DirectMessage/DirectMessages'
 import MenuBar from './MenuBar'
