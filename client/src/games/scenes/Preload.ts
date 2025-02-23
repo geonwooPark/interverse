@@ -1,5 +1,3 @@
-import Game from './Game'
-
 export default class Preload extends Phaser.Scene {
   constructor() {
     // Scene Key

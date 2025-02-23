@@ -49,7 +49,7 @@ function CreateRoomPage() {
     updateRooms([...rooms, cookie])
 
     navigate(
-      `${paths.waiting}?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,
+      `${paths.room}?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,
     )
   }
 
@@ -57,35 +57,34 @@ function CreateRoomPage() {
     <>
       {/* 생성 폼 */}
       <div className="relative z-10 w-[480px] rounded-3xl p-8 shadow-level1">
-        <div className="flex flex-col items-center justify-between">
-          <form className="mb-6 space-y-3 text-center">
-            <TextField
-              type="text"
-              name="title"
-              value={title}
-              placeholder="제목"
-              onChange={handleChange}
-            />
-            <TextField
-              type="password"
-              name="password"
-              value={password}
-              placeholder="비밀번호"
-              onChange={handleChange}
-              maxLength={4}
-            />
-          </form>
+        <div className="mb-4 text-xl">방 개설하기</div>
+        <form className="mb-6 space-y-3 text-center">
+          <TextField
+            type="text"
+            name="title"
+            value={title}
+            placeholder="제목"
+            onChange={handleChange}
+          />
+          <TextField
+            type="password"
+            name="password"
+            value={password}
+            placeholder="비밀번호"
+            onChange={handleChange}
+            maxLength={4}
+          />
+        </form>
 
-          <Button
-            type="submit"
-            size="lg"
-            variant="contained"
-            fullWidth
-            onClick={onSubmit}
-          >
-            방 개설하기
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          size="lg"
+          variant="contained"
+          fullWidth
+          onClick={onSubmit}
+        >
+          시작하기
+        </Button>
 
         {/* 캐릭터 */}
         <Characters />

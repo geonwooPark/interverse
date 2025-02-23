@@ -1,34 +1,35 @@
-import { useEffect } from 'react'
-import Alert from './Alert/Alert'
-import { useBlockGoBack } from '../../hooks/useBlockGoBack'
-import Controller from './Controller'
-import DirectMessages from './DirectMessage/DirectMessages'
-import MenuBar from './MenuBar'
-import useModals from '../../hooks/useModals'
-import { useAuthCookie } from '../../providers/AuthProvider'
-import ConfirmModal from '../../components/ConfirmModal'
+import { useEffect, useState } from 'react'
+import StepFlow from '../../components/StepFlow'
+import Step1 from './Step1'
+import Step2 from './Step2'
+import Step3 from './Step3'
 import GameSingleton from '../../PhaserGame'
-import Game from '../../games/scenes/Game'
+import ConfirmModal from '../../components/ConfirmModal'
+import { useBlockGoBack } from '../../hooks/useBlockGoBack'
+import useModals from '../../hooks/useModals'
 
 /**
- * 게임 룸 화면
+ * 웨이팅 화면
  */
-function RoomPage() {
-  const authCookie = useAuthCookie()
+function WaitingPage() {
+  const game = GameSingleton.getInstance()
 
   const { modals, addModal, removeModal } = useModals()
 
-  // 게임 입장
+  const [step, setStep] = useState(0)
+
+  const onNext = () => {
+    setStep((prev) => prev + 1)
+  }
+
+  // 필요한 에셋 프리로드
   useEffect(() => {
-    if (!authCookie) return
-
-    const game = GameSingleton.getInstance()
-
-    const gameScene = game.scene.getScene('game') as Game
-
-    gameScene.initialize(authCookie.roomNum)
+    if (!game.scene.isActive('Preload')) {
+      game.scene.start('Preload')
+    }
   }, [])
 
+  // 뒤로가기 막기
   useBlockGoBack(() =>
     addModal(
       <ConfirmModal
@@ -43,13 +44,15 @@ function RoomPage() {
 
   return (
     <>
-      <MenuBar />
-      <Controller />
-      <Alert />
-      <DirectMessages />
+      <StepFlow activeStep={step} onNext={onNext}>
+        <Step1 />
+        <Step2 />
+        <Step3 />
+      </StepFlow>
+
       {modals}
     </>
   )
 }
 
-export default RoomPage
+export default WaitingPage

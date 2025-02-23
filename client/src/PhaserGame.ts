@@ -14,9 +14,9 @@ class GameSingleton {
         parent: 'phaser',
         pixelArt: true,
         scale: {
-          mode: Phaser.Scale.ScaleModes.RESIZE,
           width: window.innerWidth,
           height: window.innerHeight,
+          parent: 'game-container',
         },
         physics: {
           default: 'arcade',

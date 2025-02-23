@@ -106,6 +106,7 @@ export default class Game extends Phaser.Scene {
     // Camera Setting
     this.cameras.main.zoom = 1.6
     this.cameras.main.startFollow(this.player, true)
+    this.cameras.main.setBackgroundColor('#3498db')
 
     // ChairToUp Layer
     const chairToUp = this.physics.add.staticGroup({ classType: Chair })

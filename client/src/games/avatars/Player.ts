@@ -227,11 +227,11 @@ export default class Player extends Avatar {
     }
 
     // 실시간으로 나의 위치 전송
-    this.ws.sendAvatarPosition({
-      x: this.x,
-      y: this.y,
-      roomNum,
-      animation: this.anims.currentAnim!.key,
-    })
+    // this.ws.sendAvatarPosition({
+    //   x: this.x,
+    //   y: this.y,
+    //   roomNum,
+    //   animation: this.anims.currentAnim!.key,
+    // })
   }
 }
