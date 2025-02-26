@@ -1,7 +1,11 @@
 import { IconLink, IconOff } from '@assets/svgs'
 import ConfirmModal from '@components/ConfirmModal'
 import useModals from '@hooks/useModals'
-import { changeAlertContent, openAlert } from '@store/features/alertSlice'
+import {
+  changeAlertContent,
+  closeAlert,
+  openAlert,
+} from '@store/features/alertSlice'
 import { useAppDispatch } from '@store/store'
 import UserList from './UserList'
 
@@ -14,9 +18,14 @@ function RightSide() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     ;(event.target as HTMLButtonElement).blur()
-    dispatch(changeAlertContent('복사 완료! 링크를 공유하여 초대하세요.'))
-    dispatch(openAlert())
     navigator.clipboard.writeText(window.location.href)
+
+    dispatch(openAlert())
+    dispatch(changeAlertContent('복사 완료! 링크를 공유하여 초대하세요.'))
+
+    setTimeout(() => {
+      dispatch(closeAlert())
+    }, 5000)
   }
 
   const onOffClick = () => {

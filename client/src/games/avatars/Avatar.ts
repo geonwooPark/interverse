@@ -49,6 +49,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
     this.nickname.setText(nickname)
   }
 
+  // 아바타 텍스처 설정
   setAvatarTexture(avatarTexture: string) {
     this.avatarTexture = avatarTexture
     this.anims.play(`${avatarTexture}_stand_down`, true)
@@ -56,9 +57,6 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
 
   // 채팅 생성
   updateChat(content: string, roomNum?: string) {
-    const limitedText =
-      content.length <= 60 ? content : content.substring(0, 60).concat('...')
-
     // 서버로 메세지 보내기
     if (roomNum) {
       this.ws.sendMessage({
@@ -69,7 +67,9 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
       })
     }
 
-    this.clearChat()
+    const limitedText =
+      content.length <= 60 ? content : content.substring(0, 60).concat('...')
+
     // 채팅 텍스트 생성
     const chat = this.scene.add
       .text(0, 0, limitedText, {

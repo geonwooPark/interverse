@@ -5,7 +5,7 @@ import AlertContent from './AlertContent'
 function Alert() {
   const { content, isAlert } = useAppSelector((state) => state.alert)
 
-  if (!isAlert) return null
+  if (!isAlert || !content) return null
 
   return createPortal(
     <AlertContent content={content} />,
