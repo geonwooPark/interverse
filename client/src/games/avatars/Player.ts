@@ -4,8 +4,10 @@ import { store } from '../../store/store'
 import Avatar from './Avatar'
 import { handleScreenSharing } from '../../store/features/myStreamSlice'
 import { handleModals } from '../../store/features/modalsSlice'
+import { SocketIO } from '@lib/socketIO'
 
 export default class Player extends Avatar {
+  protected ws: SocketIO = SocketIO.getInstance()
   isCollide = false
   prevVx = 0
   prevVy = 0
@@ -212,7 +214,7 @@ export default class Player extends Avatar {
               store.dispatch(handleModals('survey'))
               break
             case 'screenBoard':
-              this.ws.leaveVideoRoom(roomNum)
+            // this.ws.leaveVideoRoom(roomNum)
           }
 
           this.interaction = 'inactive'

@@ -13,7 +13,7 @@ interface ButtonProps
 }
 
 const ButtonVariants = cva(
-  `disabled:bg-grey flex items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed`,
+  `disabled:bg-grey flex w-full items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed`,
   {
     variants: {
       size: {
@@ -24,7 +24,7 @@ const ButtonVariants = cva(
       variant: {
         contained:
           'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50 hover:bg-cyan-400',
-        outlined: 'border-2 border-purple-600 text-purple-600',
+        outlined: 'border-2 border-cyan-500 text-cyan-500',
       },
       fullWidth: {
         true: 'w-full',

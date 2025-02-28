@@ -34,7 +34,7 @@ export default function Step3() {
       <MenuBar />
       <Controller />
       <Alert />
-      <DirectMessages />
+      {/* <DirectMessages /> */}
       <Modals />
     </>
   )
