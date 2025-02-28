@@ -26,8 +26,6 @@ export class SocketIO implements ISocketIO {
   private static instance: SocketIO | null = null
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game!: Game
-  // 비디오룸 참여 멤버
-  otherPeers: Set<string> = new Set()
 
   constructor() {
     this.socket = io(import.meta.env.VITE_BACKEND, {
@@ -218,8 +216,8 @@ export class SocketIO implements ISocketIO {
       })
       // 기존 멤버에서 실행
       call.once('stream', (peerStream) => {
-        if (this.otherPeers.has(newUser.socketId)) return
-        this.otherPeers.add(newUser.socketId)
+        if (this.game.videoChatPlayers.has(newUser.socketId)) return
+        this.game.videoChatPlayers.add(newUser.socketId)
         store.dispatch(
           addPeerStream({
             peerId: newUser.peerId,
@@ -247,8 +245,8 @@ export class SocketIO implements ISocketIO {
     call.answer(stream)
     // 새로운 멤버에서 실행
     call.once('stream', (peerStream) => {
-      if (this.otherPeers.has(socketId)) return
-      this.otherPeers.add(socketId)
+      if (this.game.videoChatPlayers.has(socketId)) return
+      this.game.videoChatPlayers.add(socketId)
       store.dispatch(
         addPeerStream({
           peerId: call.peer,
@@ -285,10 +283,10 @@ export class SocketIO implements ISocketIO {
   }
 
   clearOtherPeers() {
-    this.otherPeers.clear()
+    this.game.videoChatPlayers.clear()
   }
 
   removeOtherPeer(socketId: string) {
-    this.otherPeers.delete(socketId)
+    this.game.videoChatPlayers.delete(socketId)
   }
 }

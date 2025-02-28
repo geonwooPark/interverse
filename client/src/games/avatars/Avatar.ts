@@ -1,6 +1,8 @@
+import { SocketIO } from '@lib/socketIO'
 import ObjectItem from '../items/ObjectItem'
 
 export default class Avatar extends Phaser.Physics.Arcade.Sprite {
+  ws: SocketIO = SocketIO.getInstance()
   avatarTexture: string
   avatarContainer: Phaser.GameObjects.Container
   nickname: Phaser.GameObjects.Text
@@ -59,14 +61,6 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
   }
 
   updateChat(content: string) {
-    //   if (roomNum) {
-    //     this.ws.sendMessage({
-    //       message: content,
-    //       nickname: this.nickname.text,
-    //       senderId: '',
-    //       roomNum,
-    //     })
-
     const limitedText =
       content.length <= 60 ? content : content.substring(0, 60).concat('...')
 

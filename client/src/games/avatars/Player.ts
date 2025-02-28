@@ -4,10 +4,8 @@ import { store } from '../../store/store'
 import Avatar from './Avatar'
 import { handleScreenSharing } from '../../store/features/myStreamSlice'
 import { handleModals } from '../../store/features/modalsSlice'
-import { SocketIO } from '@lib/socketIO'
 
 export default class Player extends Avatar {
-  protected ws: SocketIO = SocketIO.getInstance()
   isCollide = false
   prevVx = 0
   prevVy = 0
@@ -26,6 +24,18 @@ export default class Player extends Avatar {
     super(scene, x, y, texture, frame)
   }
 
+  joinRoom(roomNum: string) {
+    const avatar = store.getState().avartar
+
+    this.setNickname(avatar.nickname)
+    this.setAvatarTexture(avatar.texture)
+    this.ws.joinRoom({
+      roomNum,
+      nickname: avatar.nickname,
+      texture: avatar.texture,
+    })
+  }
+
   // 플레이어,닉네임 및 채팅 이동
   update(
     cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
@@ -36,47 +46,49 @@ export default class Player extends Avatar {
     let vx = 0
     let vy = 0
 
+    // 화살표 키 입력 감지 및 애니메이션 실행
+    if (cursorsKeys?.left.isDown) {
+      vx -= this.moveSpeed
+      this.moveDirection = 'left'
+    } else if (cursorsKeys.right.isDown) {
+      vx += this.moveSpeed
+      this.moveDirection = 'right'
+    } else if (cursorsKeys.up.isDown) {
+      vy -= this.moveSpeed
+      this.moveDirection = 'up'
+    } else if (cursorsKeys.down.isDown) {
+      vy += this.moveSpeed
+      this.moveDirection = 'down'
+    }
+
+    this.setVelocity(vx, vy)
+
+    // 아바타가 움직이는지 확인하여 서버로 좌표를 전송
+    if (this.body?.velocity.x !== 0 || this.body?.velocity.y !== 0) {
+      this.play(`${this.avatarTexture}_run_${this.moveDirection}`, true)
+
+      this.ws.sendAvatarPosition({
+        x: this.x,
+        y: this.y,
+        roomNum,
+        animation: this.anims.currentAnim!.key,
+      })
+
+      this.avatarContainer.setPosition(this.x, this.y - 35)
+    } else {
+      this.anims.play(`${this.avatarTexture}_stand_${this.moveDirection}`, true)
+    }
+
+    // 충돌 상태 해지
+    if ((vx !== this.prevVx || vy !== this.prevVy) && !(vx === 0 && vy === 0)) {
+      this.isCollide = false
+      this.prevVx = vx
+      this.prevVy = vy
+    }
+
     switch (this.interaction) {
       case 'inactive':
-        // 화살표 키 입력 감지 및 애니메이션 실행
-        if (cursorsKeys?.left.isDown) {
-          vx -= this.moveSpeed
-          this.moveDirection = 'left'
-        } else if (cursorsKeys.right.isDown) {
-          vx += this.moveSpeed
-          this.moveDirection = 'right'
-        } else if (cursorsKeys.up.isDown) {
-          vy -= this.moveSpeed
-          this.moveDirection = 'up'
-        } else if (cursorsKeys.down.isDown) {
-          vy += this.moveSpeed
-          this.moveDirection = 'down'
-        }
-
-        // 아바타가 움직이는지 확인하여 애니메이션을 결정
-        if (this.body?.velocity.x !== 0 || this.body?.velocity.y !== 0) {
-          this.play(`${this.avatarTexture}_run_${this.moveDirection}`, true)
-        } else {
-          this.anims.play(
-            `${this.avatarTexture}_stand_${this.moveDirection}`,
-            true,
-          )
-        }
-
-        // 플레이어 이동
-        this.setVelocity(vx, vy)
-        this.avatarContainer.setPosition(this.x, this.y - 35)
-
-        // 충돌 상태 해지
-        if (
-          (vx !== this.prevVx || vy !== this.prevVy) &&
-          !(vx === 0 && vy === 0)
-        ) {
-          this.isCollide = false
-          this.prevVx = vx
-          this.prevVy = vy
-        }
-
+        // 인터렉션
         if (Phaser.Input.Keyboard.JustDown(keySpace)) {
           if (!this.selectedInteractionItem) return
           const chair =
@@ -185,6 +197,7 @@ export default class Player extends Avatar {
       case 'active':
         if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
           if (!this.selectedInteractionItem) return
+
           const chair =
             this.selectedInteractionItem.itemType === 'chair'
               ? (this.selectedInteractionItem as Chair)
@@ -227,13 +240,5 @@ export default class Player extends Avatar {
       this.selectedInteractionItem.clearInteractionBox()
       this.selectedInteractionItem = undefined
     }
-
-    // 실시간으로 나의 위치 전송
-    this.ws.sendAvatarPosition({
-      x: this.x,
-      y: this.y,
-      roomNum,
-      animation: this.anims.currentAnim!.key,
-    })
   }
 }

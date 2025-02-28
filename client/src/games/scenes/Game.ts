@@ -11,20 +11,19 @@ import {
   ServerAvatarPosition,
   ServerPlayerInfo,
 } from '../../../../types/socket'
-import { SocketIO } from '@lib/socketIO'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
-  private ws: SocketIO = SocketIO.getInstance()
   private otherPlayers!: Phaser.Physics.Arcade.Group
   private otherPlayersMap = new Map<string, OtherPlayer>()
+  private cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   player!: Player
-  cursur?: Phaser.Types.Input.Keyboard.CursorKeys
   keySpace?: Phaser.Input.Keyboard.Key
   keyEscape?: Phaser.Input.Keyboard.Key
   overlap?: Phaser.Physics.Arcade.StaticGroup
   roomNum!: string
   occupiedChairs: Set<string> = new Set()
+  videoChatPlayers: Set<string> = new Set()
 
   constructor() {
     // Scene Key
@@ -212,25 +211,11 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 방에 입장 */
-  initialize({
-    roomNum,
-    nickname,
-    texture,
-  }: {
-    roomNum: string
-    nickname: string
-    texture: string
-  }) {
+  initialize(roomNum: string) {
     this.roomNum = roomNum
-    this.player.setNickname(nickname)
-    this.player.setAvatarTexture(texture)
+    this.player.joinRoom(roomNum)
 
     this.setUpKeys()
-    this.ws.joinRoom({
-      roomNum,
-      nickname,
-      texture,
-    })
   }
 
   /** 다른 플레이어 입장 */
@@ -256,7 +241,7 @@ export default class Game extends Phaser.Scene {
     }
   }
 
-  /** 다른 유저들 위치 정보 업데이트 */
+  /** 다른 플레이어의 위치 정보 업데이트 */
   updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
 
@@ -265,12 +250,17 @@ export default class Game extends Phaser.Scene {
     }
   }
 
-  /** 채팅을 화면에 표시  */
+  /** 다른 플레이어의 채팅을 화면에 표시  */
   displayChat({ message, socketId }: DisplayOtherPlayerChatType) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
 
     if (otherPlayer) {
       otherPlayer.updateChat(message)
+
+      otherPlayer.ws.sendMessage({
+        message,
+        roomNum: this.roomNum,
+      })
     }
   }
 

@@ -15,7 +15,6 @@ import { MediaConnection } from 'peerjs'
 export interface ISocketIO {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game: Game | null
-  otherPeers: Set<string>
   joinRoom: ({
     roomNum,
     nickname,
