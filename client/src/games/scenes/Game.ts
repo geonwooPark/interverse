@@ -17,9 +17,9 @@ export default class Game extends Phaser.Scene {
   private otherPlayers!: Phaser.Physics.Arcade.Group
   private otherPlayersMap = new Map<string, OtherPlayer>()
   private cursur?: Phaser.Types.Input.Keyboard.CursorKeys
-  player!: Player
   keySpace?: Phaser.Input.Keyboard.Key
   keyEscape?: Phaser.Input.Keyboard.Key
+  player!: Player
   overlap?: Phaser.Physics.Arcade.StaticGroup
   roomNum!: string
   occupiedChairs: Set<string> = new Set()
@@ -174,7 +174,6 @@ export default class Game extends Phaser.Scene {
       this.occupiedChairs.has(interactionItem.id.toString())
     )
       return
-    player.isCollide = true
     player.selectedInteractionItem = interactionItem
     interactionItem.onInteractionBox()
   }
@@ -266,20 +265,16 @@ export default class Game extends Phaser.Scene {
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
-    if (
-      this.player &&
-      this.cursur &&
-      this.keySpace &&
-      this.keyEscape &&
-      this.roomNum
-    ) {
-      this.player.update(
-        this.cursur,
-        this.keySpace,
-        this.keyEscape,
-        this.roomNum,
-      )
+    // 플레이어 이동
+    if (this.player && this.cursur && this.roomNum) {
+      this.player.update(this.cursur, this.roomNum)
     }
+
+    // 플레이어 인터렉션
+    if (this.keyEscape && this.keyEscape) {
+      this.player.action(this.keySpace!, this.keyEscape)
+    }
+
     if (!this.physics.overlap(this.player, this.overlap)) {
       this.player.setOffset(0, 20)
     }

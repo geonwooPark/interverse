@@ -1,4 +1,8 @@
+import { store } from '@store/store'
 import ObjectItem from './ObjectItem'
+import { handleModals } from '@store/features/modalsSlice'
+import { changeAlertContent } from '@store/features/alertSlice'
+import Player from '@games/avatars/Player'
 
 export default class ScreenBoard extends ObjectItem {
   constructor(
@@ -11,6 +15,20 @@ export default class ScreenBoard extends ObjectItem {
     super(scene, x, y, texture, frame)
 
     this.itemType = 'screenBoard'
+  }
+
+  do(player: Player) {
+    store.dispatch(handleModals('video'))
+    store.dispatch(
+      changeAlertContent('ESC 키를 눌러 게임으로 돌아갈 수 있습니다.'),
+    )
+
+    player.anims.play(`${player.avatarTexture}_stand_down`, true)
+  }
+
+  undo() {
+    store.dispatch(handleModals('video'))
+    store.dispatch(changeAlertContent(''))
   }
 
   onInteractionBox() {

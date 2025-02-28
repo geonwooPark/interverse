@@ -1,9 +1,18 @@
+import Player from '@games/avatars/Player'
 import ObjectItem from './ObjectItem'
+import { handleModals } from '@store/features/modalsSlice'
+import { changeAlertContent } from '@store/features/alertSlice'
+import { store } from '@store/store'
 
 export default class Chair extends ObjectItem {
-  heading?: string
-  interaction?: string
   id!: number
+  tempX = 0
+  tempY = 0
+  // 의자 방향
+  heading?: string
+  // 의자 타입
+  interaction?: string
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -14,6 +23,40 @@ export default class Chair extends ObjectItem {
     super(scene, x, y, texture, frame)
 
     this.itemType = 'chair'
+  }
+
+  do(player: Player) {
+    this.tempX = player.x
+    this.tempY = player.y
+
+    player.setPosition(this.x, this.y + 5)
+    player.avatarContainer.setPosition(player.x, player.y - 35)
+
+    player.anims.play(`${player.avatarTexture}_sit_${this.heading}`, true)
+
+    if (this.interaction === 'menual') {
+      store.dispatch(handleModals('creator'))
+    } else if (this.interaction === 'interview') {
+      store.dispatch(handleModals('video'))
+    }
+
+    store.dispatch(
+      changeAlertContent('ESC 키를 눌르면 의자에서 일어날 수 있습니다.'),
+    )
+  }
+
+  undo(player: Player) {
+    player.setPosition(this.tempX, this.tempY)
+
+    if (this.interaction === 'menual') {
+      store.dispatch(handleModals('creator'))
+    } else if (this.interaction === 'interview') {
+      store.dispatch(handleModals('video'))
+    }
+
+    store.dispatch(
+      changeAlertContent('ESC 키를 눌르면 의자에서 일어날 수 있습니다.'),
+    )
   }
 
   onInteractionBox() {

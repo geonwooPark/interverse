@@ -1,18 +1,12 @@
-import Chair from '../items/Chair'
-import { changeAlertContent, openAlert } from '../../store/features/alertSlice'
 import { store } from '../../store/store'
 import Avatar from './Avatar'
-import { handleScreenSharing } from '../../store/features/myStreamSlice'
-import { handleModals } from '../../store/features/modalsSlice'
 
 export default class Player extends Avatar {
-  isCollide = false
   prevVx = 0
   prevVy = 0
-  preX = 0
-  preY = 0
   moveSpeed = 200
   moveDirection: 'down' | 'up' | 'left' | 'right' = 'down'
+  isInteracting = false
 
   constructor(
     scene: Phaser.Scene,
@@ -24,6 +18,7 @@ export default class Player extends Avatar {
     super(scene, x, y, texture, frame)
   }
 
+  // 방 참여
   joinRoom(roomNum: string) {
     const avatar = store.getState().avartar
 
@@ -36,13 +31,30 @@ export default class Player extends Avatar {
     })
   }
 
-  // 플레이어,닉네임 및 채팅 이동
-  update(
-    cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys,
+  // 인터렉션
+  action(
     keySpace: Phaser.Input.Keyboard.Key,
     keyEscape: Phaser.Input.Keyboard.Key,
-    roomNum: string,
   ) {
+    if (!this.selectedInteractionItem) return
+
+    if (Phaser.Input.Keyboard.JustDown(keySpace)) {
+      ;(this.selectedInteractionItem as any).do(this)
+
+      this.isInteracting = true
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
+      ;(this.selectedInteractionItem as any).undo(this)
+
+      this.isInteracting = false
+    }
+  }
+
+  // 플레이어,닉네임, 채팅 이동
+  update(cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys, roomNum: string) {
+    if (this.isInteracting) return this.setVelocity(0, 0)
+
     let vx = 0
     let vy = 0
 
@@ -81,164 +93,13 @@ export default class Player extends Avatar {
 
     // 충돌 상태 해지
     if ((vx !== this.prevVx || vy !== this.prevVy) && !(vx === 0 && vy === 0)) {
-      this.isCollide = false
       this.prevVx = vx
       this.prevVy = vy
-    }
 
-    switch (this.interaction) {
-      case 'inactive':
-        // 인터렉션
-        if (Phaser.Input.Keyboard.JustDown(keySpace)) {
-          if (!this.selectedInteractionItem) return
-          const chair =
-            this.selectedInteractionItem.itemType === 'chair'
-              ? (this.selectedInteractionItem as Chair)
-              : undefined
-          this.preX = this.x
-          this.preY = this.y
-
-          switch (this.selectedInteractionItem.itemType) {
-            case 'chair':
-              if (!chair) return
-              // if (this.ws.occupiedChairs.has(chair.id.toString())) return
-
-              this.setVelocity(0, 0)
-              this.setPosition(chair.x, chair.y + 5)
-              this.avatarContainer.setPosition(this.x, this.y - 35)
-
-              this.anims.play(
-                `${this.avatarTexture}_sit_${chair.heading}`,
-                true,
-              )
-
-              // 의자에 앉으면 서버로 의자의 넘버를 보냄
-              this.ws.sendChairId({
-                roomNum,
-                chairId: chair.id?.toString() || '',
-              })
-
-              this.ws.sendAvatarPosition({
-                x: this.x,
-                y: this.y,
-                roomNum,
-                animation: this.anims.currentAnim!.key,
-              })
-
-              if (chair.interaction === 'menual') {
-                store.dispatch(handleModals('creator'))
-                store.dispatch(
-                  changeAlertContent(
-                    'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
-                  ),
-                )
-              } else if (chair.interaction === 'interview') {
-                store.dispatch(handleModals('video'))
-                store.dispatch(
-                  changeAlertContent(
-                    'ESC 키를 눌러 화상통화를 중지할 수 있습니다.',
-                  ),
-                )
-              } else {
-                store.dispatch(
-                  changeAlertContent(
-                    'ESC 키를 눌러 의자에서 일어날 수 있습니다.',
-                  ),
-                )
-              }
-              store.dispatch(openAlert())
-              this.selectedInteractionItem.itemType = 'chair'
-              break
-            case 'secretary':
-              store.dispatch(handleModals('manual'))
-              store.dispatch(
-                changeAlertContent(
-                  'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
-                ),
-              )
-              this.selectedInteractionItem.itemType = 'secretary'
-              break
-            case 'printer':
-              store.dispatch(handleModals('survey'))
-              store.dispatch(
-                changeAlertContent(
-                  'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
-                ),
-              )
-              this.selectedInteractionItem.itemType = 'printer'
-              break
-            case 'screenBoard':
-              this.anims.play(`${this.avatarTexture}_stand_down`, true)
-
-              this.ws.sendAvatarPosition({
-                x: this.x,
-                y: this.y,
-                roomNum,
-                animation: this.anims.currentAnim!.key,
-              })
-
-              store.dispatch(handleModals('video'))
-              store.dispatch(handleScreenSharing(true))
-              store.dispatch(
-                changeAlertContent(
-                  'ESC 키를 눌러 화면공유를 중지할 수 있습니다.',
-                ),
-              )
-              this.selectedInteractionItem.itemType = 'screenBoard'
-              break
-          }
-
-          if (this.selectedInteractionItem.itemType !== 'waterPurifier') {
-            this.interaction = 'active'
-          }
-        }
-        break
-
-      case 'active':
-        if (Phaser.Input.Keyboard.JustDown(keyEscape)) {
-          if (!this.selectedInteractionItem) return
-
-          const chair =
-            this.selectedInteractionItem.itemType === 'chair'
-              ? (this.selectedInteractionItem as Chair)
-              : undefined
-
-          switch (this.selectedInteractionItem.itemType) {
-            case 'chair':
-              if (!chair) return
-
-              this.ws.sendChairId({
-                roomNum,
-                chairId: chair.id?.toString() || '',
-              })
-              if (chair.interaction === 'menual') {
-                store.dispatch(handleModals('creator'))
-              }
-              if (chair.interaction === 'interview') {
-                this.ws.leaveVideoRoom(roomNum)
-              }
-              this.setPosition(this.preX, this.preY)
-
-              break
-            case 'secretary':
-              store.dispatch(handleModals('manual'))
-              break
-            case 'printer':
-              store.dispatch(handleModals('survey'))
-              break
-            case 'screenBoard':
-            // this.ws.leaveVideoRoom(roomNum)
-          }
-
-          this.interaction = 'inactive'
-        }
-        break
-    }
-
-    // 오브젝트와 충돌이 해제되면 Alert 제거
-    if (this.selectedInteractionItem && !this.isCollide) {
-      this.selectedInteractionItem.clearInteractionBox()
-      this.selectedInteractionItem = undefined
+      if (this.selectedInteractionItem) {
+        this.selectedInteractionItem.clearInteractionBox()
+        this.selectedInteractionItem = undefined
+      }
     }
   }
 }

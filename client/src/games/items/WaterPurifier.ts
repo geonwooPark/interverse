@@ -15,6 +15,10 @@ export default class WaterPurifier extends ObjectItem {
     this.itemType = 'waterPurifier'
   }
 
+  do() {}
+
+  undo() {}
+
   onInteractionBox() {
     this.setInteractionBox(WaterPurifierContent[this.order].content)
     WaterPurifier.length > this.order ? (this.order += 1) : (this.order = 0)

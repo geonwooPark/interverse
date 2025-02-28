@@ -1,4 +1,7 @@
+import { store } from '@store/store'
 import ObjectItem from './ObjectItem'
+import { handleModals } from '@store/features/modalsSlice'
+import { changeAlertContent } from '@store/features/alertSlice'
 
 export default class Secretary extends ObjectItem {
   constructor(
@@ -11,6 +14,18 @@ export default class Secretary extends ObjectItem {
     super(scene, x, y, texture, frame)
 
     this.itemType = 'secretary'
+  }
+
+  do() {
+    store.dispatch(handleModals('manual'))
+    store.dispatch(
+      changeAlertContent('ESC 키를 눌러 게임으로 돌아갈 수 있습니다.'),
+    )
+  }
+
+  undo() {
+    store.dispatch(handleModals('manual'))
+    store.dispatch(changeAlertContent(''))
   }
 
   onInteractionBox() {
