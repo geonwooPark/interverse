@@ -11,8 +11,7 @@ import {
   ServerAvatarPosition,
   ServerPlayerInfo,
 } from '../../../../types/socket'
-import { SocketIO } from '../../lib/ws'
-import { store } from '../../store/store'
+import { SocketIO } from '@lib/socketIO'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -213,23 +212,32 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 방에 입장 */
-  initialize(roomNum: string) {
+  initialize({
+    roomNum,
+    nickname,
+    texture,
+  }: {
+    roomNum: string
+    nickname: string
+    texture: string
+  }) {
     this.roomNum = roomNum
-
-    const avatar = store.getState().avartar
-
-    this.player.setNickname(avatar.nickname)
-    this.player.setAvatarTexture(avatar.texture)
+    this.player.setNickname(nickname)
+    this.player.setAvatarTexture(texture)
 
     this.setUpKeys()
-    this.ws.joinRoom()
+    this.ws.joinRoom({
+      roomNum,
+      nickname,
+      texture,
+    })
   }
 
   /** 다른 플레이어 입장 */
   addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
     if (!socketId) return
 
-    const newPlayer = new OtherPlayer(this, -1000, -1000, texture, nickname)
+    const newPlayer = new OtherPlayer(this, 120, 180, texture, nickname)
     newPlayer.anims.play(`${texture}_stand_down`, true)
     newPlayer.setDepth(900)
     this.add.existing(newPlayer)
@@ -240,27 +248,30 @@ export default class Game extends Phaser.Scene {
 
   /** 다른 플레이어 퇴장 */
   removeOtherPlayer(socketId: string) {
-    if (!socketId) return
     const otherPlayer = this.otherPlayersMap.get(socketId)
 
-    if (!this.otherPlayersMap.has(socketId)) return
-    if (!otherPlayer) return
-
-    this.otherPlayers.remove(otherPlayer, true, true)
-    this.otherPlayersMap.delete(socketId)
+    if (otherPlayer) {
+      this.otherPlayers.remove(otherPlayer, true, true)
+      this.otherPlayersMap.delete(socketId)
+    }
   }
 
   /** 다른 유저들 위치 정보 업데이트 */
   updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
-    if (!otherPlayer) return
-    otherPlayer?.updatePosition({ x, y, animation })
+
+    if (otherPlayer) {
+      otherPlayer.updatePosition({ x, y, animation })
+    }
   }
 
-  /** 다른 유저 채팅을 화면에 표시  */
-  displayOtherPlayerChat({ message, socketId }: DisplayOtherPlayerChatType) {
+  /** 채팅을 화면에 표시  */
+  displayChat({ message, socketId }: DisplayOtherPlayerChatType) {
     const otherPlayer = this.otherPlayersMap.get(socketId)
-    otherPlayer?.updateChat(message)
+
+    if (otherPlayer) {
+      otherPlayer.updateChat(message)
+    }
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨

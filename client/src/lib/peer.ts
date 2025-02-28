@@ -1,11 +1,11 @@
 import Peer from 'peerjs'
 import { CookieType } from '../../../types/client'
-import { store } from '../store/store'
+import { store } from '@store/store'
 import {
   controlVideoStream,
   handleVideo,
   setMyStream,
-} from '../store/features/myStreamSlice'
+} from '@store/features/myStreamSlice'
 
 export const me = {
   peer: new Peer({

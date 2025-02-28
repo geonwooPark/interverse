@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client'
-import Game from '../games/scenes/Game'
-import { store } from '../store/store'
-import { addMessage } from '../store/features/chatListSlice'
+import Game from '@games/scenes/Game'
+import { store } from '@store/store'
+import { addMessage } from '@store/features/chatListSlice'
 import {
   ClientAvatarPosition,
   ClientChairId,
@@ -12,78 +12,31 @@ import {
   RoomUser,
   ServerPlayerInfo,
   ServerToClientEvents,
-} from '../../../types/socket'
-import { CookieType } from '../../../types/client'
-import { me } from './peer'
-import { addUser, deleteUser, setUsers } from '../store/features/usersSlice'
-import { addPeerStream } from '../store/features/myStreamSlice'
+} from '../../../../types/socket'
+import { CookieType } from '../../../../types/client'
+import { me } from '../peer'
+import { addUser, deleteUser, setUsers } from '@store/features/usersSlice'
+import { addPeerStream } from '@store/features/myStreamSlice'
 import { MediaConnection } from 'peerjs'
-import { addDM } from '../store/features/directMessageSlice'
-import GameSingleton from '../PhaserGame'
-
-interface ISocketIO {
-  socket: Socket<ServerToClientEvents, ClientToServerEvents>
-  game: Game | null
-  otherPeers: Set<string>
-  // occupiedChairs: Set<string>
-  roomNum: string
-  nickname: string
-  texture: string
-  joinRoom: () => void
-  sendMessage: ({ message, nickname, senderId, roomNum }: ClientMessage) => void
-  sendAvatarPosition: ({
-    x,
-    y,
-    roomNum,
-    animation,
-  }: ClientAvatarPosition) => void
-  sendChairId: ({ roomNum, chairId }: ClientChairId) => void
-  sendCameraStatus: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
-  joinVideoRoom: ({
-    authCookie,
-    video,
-  }: {
-    authCookie: CookieType
-    video: boolean
-  }) => void
-  callToOtherPlayer: ({
-    stream,
-    video,
-  }: {
-    stream: MediaStream
-    video: boolean
-  }) => void
-  answerIncomingCall: ({
-    call,
-    stream,
-  }: {
-    call: MediaConnection
-    stream: MediaStream
-  }) => void
-  sendDirectMessage: ({
-    message,
-    sender,
-    senderId,
-    receiver,
-    receiverId,
-  }: ClientDirectMessage) => void
-  leaveVideoRoom: (roomNum: string) => void
-  clearOtherPeers: () => void
-  removeOtherPeer: (socketId: string) => void
-}
+import { addDM } from '@store/features/directMessageSlice'
+import GameSingleton from '../../PhaserGame'
+import { ISocketIO } from './types'
 
 export class SocketIO implements ISocketIO {
   private static instance: SocketIO | null = null
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game!: Game
+  // 비디오룸 참여 멤버
   otherPeers: Set<string> = new Set()
-  roomNum = ''
-  nickname = ''
-  texture = ''
 
   constructor() {
-    this.socket = io(import.meta.env.VITE_BACKEND)
+    this.socket = io(import.meta.env.VITE_BACKEND, {
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+    })
     this.game = GameSingleton.getInstance().scene.keys.game as Game
+    this.setupListeners()
   }
 
   static getInstance(): SocketIO {
@@ -93,19 +46,21 @@ export class SocketIO implements ISocketIO {
     return SocketIO.instance
   }
 
-  joinRoom() {
-    // 서버로 쿠키와 아바타 정보 전달
-    this.socket.emit('clientJoinRoom', {
-      roomNum: this.roomNum,
-      nickname: this.nickname,
-      texture: this.texture,
+  private setupListeners() {
+    this.socket.on('disconnect', () => {
+      console.warn('🔴 서버와의 연결이 끊어졌습니다. 재연결 시도 중...')
+    })
+
+    this.socket.on('connect', () => {
+      console.log('🟢 서버에 연결되었습니다.')
     })
 
     // 서버에서 입장 메시지 받기
     this.socket.on('serverMsg', (messageData) => {
       if (!this.game) return
       store.dispatch(addMessage(messageData))
-      this.game.displayOtherPlayerChat({
+
+      this.game.displayChat({
         message: messageData.message,
         socketId: messageData.senderId,
       })
@@ -159,37 +114,59 @@ export class SocketIO implements ISocketIO {
         this.game.occupiedChairs.add(chairId)
       }
     })
-  }
 
-  sendMessage({ message, senderId }: ClientMessage) {
-    this.socket.emit('clientMsg', {
-      message,
-      senderId,
-      nickname: this.nickname,
-      roomNum: this.roomNum,
+    // 서버로부터 다른 모든 유저들 위치 정보 받기
+    this.socket.on('serverAvatarPosition', (avatarPosition) => {
+      this.game.updateOtherPlayer(avatarPosition)
     })
   }
 
+  disconnect() {
+    this.socket.disconnect()
+    SocketIO.instance = null
+  }
+
+  // 방 참여하기
+  joinRoom({
+    roomNum,
+    nickname,
+    texture,
+  }: {
+    roomNum: string
+    nickname: string
+    texture: string
+  }) {
+    this.socket.emit('clientJoinRoom', {
+      roomNum,
+      nickname,
+      texture,
+    })
+  }
+
+  // 메시지 보내기
+  sendMessage({ message, roomNum }: ClientMessage) {
+    this.socket.emit('clientMsg', {
+      message,
+      roomNum,
+    })
+  }
+
+  // 실시간 나의 위치 정보 보내기
   sendAvatarPosition({ x, y, roomNum, animation }: ClientAvatarPosition) {
-    // 서버로 실시간 나의 위치 정보 보내기
     this.socket.emit('clientAvatarPosition', {
       x,
       y,
       roomNum,
       animation,
     })
-
-    // 서버로부터 다른 모든 유저들 위치 정보 받기
-    this.socket.on('serverAvatarPosition', (avatarPosition) => {
-      if (!this.game) return
-      this.game.updateOtherPlayer(avatarPosition)
-    })
   }
 
-  sendChairId({ chairId }: ClientChairId) {
-    this.socket.emit('clientChairId', { roomNum: this.roomNum, chairId })
+  // 내가 앉은 의자 아이디 보내기
+  sendChairId({ roomNum, chairId }: ClientChairId) {
+    this.socket.emit('clientChairId', { roomNum, chairId })
   }
 
+  // 내 카메라 상태 보내기
   sendCameraStatus({ isVideoEnabled, roomNum }: ClientHandleCamera) {
     this.socket.emit('clientHandleCamera', {
       isVideoEnabled,
@@ -200,16 +177,20 @@ export class SocketIO implements ISocketIO {
   joinVideoRoom({
     authCookie,
     video,
+    nickname,
+    texture,
   }: {
     authCookie: CookieType
     video: boolean
+    nickname: string
+    texture: string
   }) {
     this.socket.emit('clientCreateVideoRoom', authCookie.roomNum)
     this.socket.emit('clientJoinVideoRoom', {
       roomNum: authCookie.roomNum,
       peerId: me.peer.id,
-      nickname: this.nickname,
-      texture: this.texture,
+      nickname,
+      texture,
       isVideoEnabled: video,
     })
   }
@@ -217,16 +198,20 @@ export class SocketIO implements ISocketIO {
   callToOtherPlayer({
     stream,
     video,
+    nickname,
+    texture,
   }: {
     stream: MediaStream
     video: boolean
+    nickname: string
+    texture: string
   }) {
     this.socket.on('serverJoinVideoRoom', (newUser) => {
       // 기존 멤버들이 신규 멤버에게 call
       const call = me.peer.call(newUser.peerId, stream, {
         metadata: {
-          nickname: this.nickname,
-          texture: this.texture,
+          nickname,
+          texture,
           socketId: this.socket.id,
           isVideoEnabled: video,
         },
@@ -294,8 +279,8 @@ export class SocketIO implements ISocketIO {
     })
   }
 
-  leaveVideoRoom() {
-    this.socket.emit('clientLeaveVideoRoom', this.roomNum)
+  leaveVideoRoom(roomNum: string) {
+    this.socket.emit('clientLeaveVideoRoom', roomNum)
     this.clearOtherPeers()
   }
 

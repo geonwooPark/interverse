@@ -7,9 +7,12 @@ import { useAuthCookie } from '@providers/AuthProvider'
 import GameSingleton from '../../../PhaserGame'
 import Game from '@games/scenes/Game'
 import Modals from './Modals/Modals'
+import { useAppSelector } from '@store/store'
 
 export default function Step3() {
   const authCookie = useAuthCookie()
+
+  const avartar = useAppSelector((state) => state.avartar)
 
   const game = GameSingleton.getInstance()
 
@@ -19,7 +22,11 @@ export default function Step3() {
   useLayoutEffect(() => {
     if (!authCookie) return
 
-    gameScene.initialize(authCookie.roomNum)
+    gameScene.initialize({
+      roomNum: authCookie.roomNum,
+      nickname: avartar.nickname,
+      texture: avartar.texture,
+    })
   }, [])
 
   return (

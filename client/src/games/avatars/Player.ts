@@ -200,7 +200,7 @@ export default class Player extends Avatar {
                 store.dispatch(handleModals('creator'))
               }
               if (chair.interaction === 'interview') {
-                this.ws.leaveVideoRoom()
+                this.ws.leaveVideoRoom(roomNum)
               }
               this.setPosition(this.preX, this.preY)
 
@@ -212,7 +212,7 @@ export default class Player extends Avatar {
               store.dispatch(handleModals('survey'))
               break
             case 'screenBoard':
-              this.ws.leaveVideoRoom()
+              this.ws.leaveVideoRoom(roomNum)
           }
 
           this.interaction = 'inactive'

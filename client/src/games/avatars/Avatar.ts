@@ -1,8 +1,6 @@
-import { SocketIO } from '../../lib/ws'
 import ObjectItem from '../items/ObjectItem'
 
 export default class Avatar extends Phaser.Physics.Arcade.Sprite {
-  protected ws: SocketIO = SocketIO.getInstance()
   avatarTexture: string
   avatarContainer: Phaser.GameObjects.Container
   nickname: Phaser.GameObjects.Text
@@ -21,14 +19,19 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture, frame)
 
     this.avatarTexture = texture
+
     this.anims.play(`${texture}_stand_down`, true)
+
     this.setDepth(1000)
+
     this.avatarContainer = this.scene.add.container(x, y - 35).setDepth(10000)
+
     this.nickname = this.scene.add
       .text(0, 0, '')
       .setFontSize(12)
       .setColor('#000000')
       .setOrigin(0.5)
+
     this.chatBox = this.scene.add.container(0, 0)
 
     this.avatarContainer.add(this.nickname)
@@ -44,7 +47,7 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
     )
   }
 
-  //닉네임 생성
+  // 닉네임 변경
   setNickname(nickname: string) {
     this.nickname.setText(nickname)
   }
@@ -55,20 +58,19 @@ export default class Avatar extends Phaser.Physics.Arcade.Sprite {
     this.anims.play(`${avatarTexture}_stand_down`, true)
   }
 
-  // 채팅 생성
-  updateChat(content: string, roomNum?: string) {
-    // 서버로 메세지 보내기
-    if (roomNum) {
-      this.ws.sendMessage({
-        message: content,
-        nickname: this.nickname.text,
-        senderId: '',
-        roomNum,
-      })
-    }
+  updateChat(content: string) {
+    //   if (roomNum) {
+    //     this.ws.sendMessage({
+    //       message: content,
+    //       nickname: this.nickname.text,
+    //       senderId: '',
+    //       roomNum,
+    //     })
 
     const limitedText =
       content.length <= 60 ? content : content.substring(0, 60).concat('...')
+
+    this.clearChat()
 
     // 채팅 텍스트 생성
     const chat = this.scene.add

@@ -30,7 +30,9 @@ function ChatInput({ inputRef }: ChatInputProps) {
       inputRef.current?.blur()
       gameScene.enableKeys()
     } else {
-      gameScene.player.updateChat(inputValue, authCookie.roomNum)
+      gameScene.player.updateChat(inputValue)
+
+      // 서버로 보내야함
       inputRef.current?.blur()
       gameScene.enableKeys()
       setInputValue('')

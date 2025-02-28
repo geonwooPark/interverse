@@ -8,10 +8,7 @@ export interface ServerMessage {
 
 export interface ClientMessage {
   message: string
-  nickname: string
   roomNum: string
-  senderId: string
-  newPlayerId?: string
 }
 
 export interface ClientJoinRoom {
