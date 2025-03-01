@@ -1,14 +1,30 @@
 import { createPortal } from 'react-dom'
-import { useAppSelector } from '@store/store'
-import AlertContent from './AlertContent'
+import AlertBox from './AlertBox'
+import useAlert from '@hooks/useAlert'
+import { useEffect } from 'react'
+import GameManager from '@managers/GameManager'
+import GameScene from '@games/scenes/Game'
 
 function Alert() {
-  const { content, isAlert } = useAppSelector((state) => state.alert)
+  const { isOpen, content, changeContent, openAlert, closeAlert } = useAlert()
 
-  if (!isAlert || !content) return null
+  const game = GameManager.getInstance()
+
+  const gameScene = game.scene.getScene('game') as GameScene
+
+  // 씬에 이벤트 등록
+  useEffect(() => {
+    gameScene.events.on('changeContent', (value: string) =>
+      changeContent(value),
+    )
+    gameScene.events.on('openAlert', () => openAlert())
+    gameScene.events.on('closeAlert', () => closeAlert())
+  }, [])
+
+  if (!isOpen || !content) return null
 
   return createPortal(
-    <AlertContent content={content} />,
+    <AlertBox content={content} />,
     document.getElementById('alert') as HTMLElement,
   )
 }

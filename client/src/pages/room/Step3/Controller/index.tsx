@@ -1,6 +1,6 @@
 import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
-import Game from '@games/scenes/Game'
+import GameScene from '@games/scenes/Game'
 import Chat from './Chat'
 import GameManager from '@managers/GameManager'
 
@@ -9,7 +9,7 @@ function Controller() {
 
   const game = GameManager.getInstance()
 
-  const gameScene = game.scene.getScene('game') as Game
+  const gameScene = game.scene.getScene('game') as GameScene
 
   const inputRef = useRef<HTMLInputElement>(null)
 

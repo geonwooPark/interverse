@@ -1,7 +1,5 @@
 import Player from '@games/avatars/Player'
 import ObjectItem from './ObjectItem'
-import { changeAlertContent } from '@store/features/alertSlice'
-import { store } from '@store/store'
 
 export default class Chair extends ObjectItem {
   id!: number
@@ -35,13 +33,22 @@ export default class Chair extends ObjectItem {
 
     if (this.interaction === 'menual') {
       this.scene.events.emit('openCreatorModal')
+      this.scene.events.emit(
+        'changeContent',
+        'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
+      )
     } else if (this.interaction === 'interview') {
       this.scene.events.emit('openVideoModal')
+      this.scene.events.emit(
+        'changeContent',
+        'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
+      )
+    } else {
+      this.scene.events.emit(
+        'changeContent',
+        'ESC 키를 누르면 의자에서 일어날 수 있습니다.',
+      )
     }
-
-    store.dispatch(
-      changeAlertContent('ESC 키를 눌르면 의자에서 일어날 수 있습니다.'),
-    )
   }
 
   undo(player: Player) {
@@ -53,9 +60,7 @@ export default class Chair extends ObjectItem {
       this.scene.events.emit('closeModal')
     }
 
-    store.dispatch(
-      changeAlertContent('ESC 키를 눌르면 의자에서 일어날 수 있습니다.'),
-    )
+    this.scene.events.emit('changeContent', '')
   }
 
   onInteractionBox() {

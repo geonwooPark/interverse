@@ -1,6 +1,4 @@
-import { store } from '@store/store'
 import ObjectItem from './ObjectItem'
-import { changeAlertContent } from '@store/features/alertSlice'
 import Player from '@games/avatars/Player'
 
 export default class ScreenBoard extends ObjectItem {
@@ -18,8 +16,9 @@ export default class ScreenBoard extends ObjectItem {
 
   do(player: Player) {
     this.scene.events.emit('openVideoModal')
-    store.dispatch(
-      changeAlertContent('ESC 키를 눌러 게임으로 돌아갈 수 있습니다.'),
+    this.scene.events.emit(
+      'changeContent',
+      'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
     )
 
     player.anims.play(`${player.avatarTexture}_stand_down`, true)
@@ -27,7 +26,7 @@ export default class ScreenBoard extends ObjectItem {
 
   undo() {
     this.scene.events.emit('closeModal')
-    store.dispatch(changeAlertContent(''))
+    this.scene.events.emit('changeContent', '')
   }
 
   onInteractionBox() {

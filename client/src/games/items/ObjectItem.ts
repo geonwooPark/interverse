@@ -1,6 +1,3 @@
-import { changeAlertContent, openAlert } from '../../store/features/alertSlice'
-import { store } from '../../store/store'
-
 export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
   itemType!: 'secretary' | 'chair' | 'waterPurifier' | 'printer' | 'screenBoard'
 
@@ -15,11 +12,11 @@ export default class ObjectItem extends Phaser.Physics.Arcade.Sprite {
   }
 
   setInteractionBox(content: string) {
-    store.dispatch(changeAlertContent(content))
-    store.dispatch(openAlert())
+    this.scene.events.emit('changeContent', content)
+    this.scene.events.emit('openAlert')
   }
 
   clearInteractionBox() {
-    store.dispatch(changeAlertContent(''))
+    this.scene.events.emit('changeContent', '')
   }
 }

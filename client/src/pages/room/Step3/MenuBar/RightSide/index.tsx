@@ -1,17 +1,9 @@
 import { IconLink, IconOff } from '@assets/svgs'
 import ConfirmModal from '@components/ConfirmModal'
 import useModals from '@hooks/useModals'
-import {
-  changeAlertContent,
-  closeAlert,
-  openAlert,
-} from '@store/features/alertSlice'
-import { useAppDispatch } from '@store/store'
 import UserList from './UserList'
 
 function RightSide() {
-  const dispatch = useAppDispatch()
-
   const { modals, addModal, removeModal } = useModals()
 
   const onLinkClick = (
@@ -20,12 +12,16 @@ function RightSide() {
     ;(event.target as HTMLButtonElement).blur()
     navigator.clipboard.writeText(window.location.href)
 
-    dispatch(openAlert())
-    dispatch(changeAlertContent('복사 완료! 링크를 공유하여 초대하세요.'))
-
-    setTimeout(() => {
-      dispatch(closeAlert())
-    }, 5000)
+    addModal(
+      <ConfirmModal
+        title="복사 완료"
+        description="정말 종료하시겠습니까?"
+        onClose={removeModal}
+        onSubmit={() => {
+          window.location.replace('/')
+        }}
+      />,
+    )
   }
 
   const onOffClick = () => {

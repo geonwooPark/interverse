@@ -1,10 +1,10 @@
 import React from 'react'
 
-interface AlertContentProps {
+interface AlertBoxProps {
   content: string
 }
 
-function AlertContent({ content }: AlertContentProps) {
+function AlertBox({ content }: AlertBoxProps) {
   return (
     <div className="fixed left-[50%] top-4 flex w-[500px] translate-x-[-50%] justify-center">
       <div className="flex items-center rounded-full bg-white px-4 py-2 text-center shadow-md">
@@ -16,4 +16,4 @@ function AlertContent({ content }: AlertContentProps) {
   )
 }
 
-export default AlertContent
+export default AlertBox

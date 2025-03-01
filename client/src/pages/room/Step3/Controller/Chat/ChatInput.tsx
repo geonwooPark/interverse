@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Game from '@games/scenes/Game'
+import GameScene from '@games/scenes/Game'
 import { useAuthCookie } from '@providers/AuthProvider'
 import GameManager from '@managers/GameManager'
 
@@ -12,7 +12,7 @@ function ChatInput({ inputRef }: ChatInputProps) {
 
   const game = GameManager.getInstance()
 
-  const gameScene = game.scene.getScene('game') as Game
+  const gameScene = game.scene.getScene('game') as GameScene
 
   const [inputValue, setInputValue] = useState('')
 

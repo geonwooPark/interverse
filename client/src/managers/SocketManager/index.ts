@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client'
-import Game from '@games/scenes/Game'
+import GameScene from '@games/scenes/Game'
 import { store } from '@store/store'
 import { addMessage } from '@store/features/chatListSlice'
 import {
@@ -24,7 +24,7 @@ import GameManager from '@managers/GameManager'
 
 export class SocketManager implements ISocketIO {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
-  game!: Game
+  game!: GameScene
 
   constructor() {
     this.socket = io(import.meta.env.VITE_BACKEND, {
@@ -33,7 +33,7 @@ export class SocketManager implements ISocketIO {
       reconnectionDelay: 1000,
     })
 
-    this.game = GameManager.getInstance().scene.keys.game as Game
+    this.game = GameManager.getInstance().scene.keys.game as GameScene
     this.setupListeners()
   }
 

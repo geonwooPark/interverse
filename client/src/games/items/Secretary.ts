@@ -1,6 +1,4 @@
-import { store } from '@store/store'
 import ObjectItem from './ObjectItem'
-import { changeAlertContent } from '@store/features/alertSlice'
 
 export default class Secretary extends ObjectItem {
   constructor(
@@ -17,14 +15,15 @@ export default class Secretary extends ObjectItem {
 
   do() {
     this.scene.events.emit('openMenualModal')
-    store.dispatch(
-      changeAlertContent('ESC 키를 눌러 게임으로 돌아갈 수 있습니다.'),
+    this.scene.events.emit(
+      'changeContent',
+      'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
     )
   }
 
   undo() {
     this.scene.events.emit('closeModal')
-    store.dispatch(changeAlertContent(''))
+    this.scene.events.emit('changeContent', '')
   }
 
   onInteractionBox() {

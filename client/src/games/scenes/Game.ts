@@ -25,6 +25,10 @@ export default class Game extends Phaser.Scene {
   occupiedChairs: Set<string> = new Set()
   videoChatPlayers: Set<string> = new Set()
 
+  // 플레이어 매니저
+  // 채팅 매니저
+  // 화상채팅 매니저
+
   constructor() {
     // Scene Key
     super('game')
