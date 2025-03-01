@@ -1,37 +1,34 @@
-import { ReactNode } from 'react'
+import { useEffect } from 'react'
 import ModalBackdrop from './ModalBackdrop'
-import { useAppSelector } from '@store/store'
 import CreatorCard from './CreatorModal'
 import ManualCard from './ManualModal'
 import SurveyCard from './SurveyModal'
 import VideoCard from './VideoModal/VideoCard'
+import GameManager from '@managers/GameManager'
+import Game from '@games/scenes/Game'
+import useModals from '@hooks/useModals'
 import { createPortal } from 'react-dom'
 
 function Modals() {
-  const { isOpen, type } = useAppSelector((state) => state.modals)
+  const { modals, addModal, removeModal } = useModals()
 
-  let content: ReactNode
-  switch (type) {
-    case 'creator':
-      content = <CreatorCard />
-      break
-    case 'manual':
-      content = <ManualCard />
-      break
-    case 'survey':
-      content = <SurveyCard />
-      break
-    // case 'video':
-    //   content = <VideoCard />
-    //   break
-    default:
-      content = null
-  }
+  const game = GameManager.getInstance()
 
-  if (!isOpen) return null
+  const gameScene = game.scene.getScene('game') as Game
+
+  // 씬에 이벤트 등록
+  useEffect(() => {
+    gameScene.events.on('closeModal', () => removeModal())
+    gameScene.events.on('openMenualModal', () => addModal(<ManualCard />))
+    gameScene.events.on('openSurveyModal', () => addModal(<SurveyCard />))
+    gameScene.events.on('openCreatorModal', () => addModal(<CreatorCard />))
+    // gameScene.events.on('openVideoModal', () => addModal(<VideoCard />))
+  }, [])
+
+  if (modals.length === 0) return null
 
   return createPortal(
-    <ModalBackdrop>{content}</ModalBackdrop>,
+    <ModalBackdrop>{modals}</ModalBackdrop>,
     document.getElementById('modals') as HTMLElement,
   )
 }

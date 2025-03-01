@@ -1,6 +1,5 @@
 import { store } from '@store/store'
 import ObjectItem from './ObjectItem'
-import { handleModals } from '@store/features/modalsSlice'
 import { changeAlertContent } from '@store/features/alertSlice'
 
 export default class Printer extends ObjectItem {
@@ -17,14 +16,14 @@ export default class Printer extends ObjectItem {
   }
 
   do() {
-    store.dispatch(handleModals('survey'))
+    this.scene.events.emit('openSurveyModal')
     store.dispatch(
       changeAlertContent('ESC 키를 눌러 게임으로 돌아갈 수 있습니다.'),
     )
   }
 
   undo() {
-    store.dispatch(handleModals('survey'))
+    this.scene.events.emit('closeModal')
     store.dispatch(changeAlertContent(''))
   }
 

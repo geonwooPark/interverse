@@ -1,6 +1,5 @@
 import { store } from '@store/store'
 import ObjectItem from './ObjectItem'
-import { handleModals } from '@store/features/modalsSlice'
 import { changeAlertContent } from '@store/features/alertSlice'
 import Player from '@games/avatars/Player'
 
@@ -18,7 +17,7 @@ export default class ScreenBoard extends ObjectItem {
   }
 
   do(player: Player) {
-    store.dispatch(handleModals('video'))
+    this.scene.events.emit('openVideoModal')
     store.dispatch(
       changeAlertContent('ESC 키를 눌러 게임으로 돌아갈 수 있습니다.'),
     )
@@ -27,7 +26,7 @@ export default class ScreenBoard extends ObjectItem {
   }
 
   undo() {
-    store.dispatch(handleModals('video'))
+    this.scene.events.emit('closeModal')
     store.dispatch(changeAlertContent(''))
   }
 

@@ -21,9 +21,9 @@ function LandingPage() {
         {/* 인트로 */}
         <div className="flex flex-col items-center justify-center gap-8 p-2 text-center">
           <div className="flex flex-col justify-between">
-            <h4 className="mb-2 text-lg">쉽고 빠르게 즐기는, INTERVERSE</h4>
-            <p className="text-sm">로그인 없이 지금 바로</p>
-            <p className="text-sm">INTERVERSE 공간을 체험해보세요!</p>
+            <h4 className="mb-2 text-lg">간편하게 시작하는 INTERVERSE</h4>
+            <p className="text-sm">회원가입 없이, 즉시</p>
+            <p className="text-sm">INTERVERSE의 새로운 공간을 경험해보세요.</p>
           </div>
 
           <div className="w-full space-y-2">

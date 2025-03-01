@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { createPortal } from 'react-dom'
 
 export default function useModals() {
   const [modals, setModals] = useState<JSX.Element[]>([])
@@ -21,10 +20,7 @@ export default function useModals() {
   }
 
   return {
-    modals: createPortal(
-      modals,
-      document.getElementById('modals') as HTMLElement,
-    ),
+    modals,
     addModal,
     removeModal,
     clearModal,

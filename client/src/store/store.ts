@@ -5,12 +5,10 @@ import { ChatListSlice } from './features/chatListSlice'
 import { MyStreamSlice } from './features/myStreamSlice'
 import { UsersSlice } from './features/usersSlice'
 import { DirectMessageSlice } from './features/directMessageSlice'
-import { ModalsSlice } from './features/modalsSlice'
 import { AvatarSlice } from './features/avatarSlice'
 
 export const store = configureStore({
   reducer: {
-    modals: ModalsSlice.reducer,
     avartar: AvatarSlice.reducer,
     directMessage: DirectMessageSlice.reducer,
     alert: AlertSlice.reducer,

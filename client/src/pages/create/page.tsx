@@ -56,8 +56,10 @@ function CreateRoomPage() {
   return (
     <>
       {/* 생성 폼 */}
-      <div className="relative z-10 w-[480px] rounded-3xl p-8 shadow-level1">
-        <div className="mb-4 text-xl">방 개설하기</div>
+      <div className="relative z-10 w-[520px] rounded-3xl p-8 shadow-level1">
+        <div className="mb-6 text-lg">
+          방을 만들고 팀원이나 참여자를 초대해 함께하세요!
+        </div>
         <form className="mb-6 space-y-3 text-center">
           <TextField
             type="text"
@@ -83,7 +85,7 @@ function CreateRoomPage() {
           fullWidth
           onClick={onSubmit}
         >
-          시작하기
+          새로운 방 만들기
         </Button>
 
         {/* 캐릭터 */}

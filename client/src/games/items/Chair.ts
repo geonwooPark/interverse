@@ -1,6 +1,5 @@
 import Player from '@games/avatars/Player'
 import ObjectItem from './ObjectItem'
-import { handleModals } from '@store/features/modalsSlice'
 import { changeAlertContent } from '@store/features/alertSlice'
 import { store } from '@store/store'
 
@@ -35,9 +34,9 @@ export default class Chair extends ObjectItem {
     player.anims.play(`${player.avatarTexture}_sit_${this.heading}`, true)
 
     if (this.interaction === 'menual') {
-      store.dispatch(handleModals('creator'))
+      this.scene.events.emit('openCreatorModal')
     } else if (this.interaction === 'interview') {
-      store.dispatch(handleModals('video'))
+      this.scene.events.emit('openVideoModal')
     }
 
     store.dispatch(
@@ -49,9 +48,9 @@ export default class Chair extends ObjectItem {
     player.setPosition(this.tempX, this.tempY)
 
     if (this.interaction === 'menual') {
-      store.dispatch(handleModals('creator'))
+      this.scene.events.emit('closeModal')
     } else if (this.interaction === 'interview') {
-      store.dispatch(handleModals('video'))
+      this.scene.events.emit('closeModal')
     }
 
     store.dispatch(
