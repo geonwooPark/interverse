@@ -60,6 +60,7 @@ function CreateRoomPage() {
         <div className="mb-6 text-lg">
           방을 만들고 팀원이나 참여자를 초대해 함께하세요!
         </div>
+
         <form className="mb-6 space-y-3 text-center">
           <TextField
             type="text"

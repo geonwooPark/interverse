@@ -1,22 +1,20 @@
 import Button from './Button'
 
-interface ConfirmModalProps {
+interface InfomationModalProps {
   title: string
   description: string
   actionLabel?: string
   hasDim?: boolean
   onClose: () => void
-  onSubmit: any
 }
 
-function ConfirmModal({
+function InfomationModal({
   title,
   description,
   actionLabel,
   hasDim = true,
   onClose,
-  onSubmit,
-}: ConfirmModalProps) {
+}: InfomationModalProps) {
   return (
     <div className="absolute inset-0 h-screen w-screen">
       {/* Dim */}
@@ -31,15 +29,14 @@ function ConfirmModal({
         </div>
 
         <div className="py-5">
-          <p className="text-sm">{description}</p>
+          <p className="whitespace-pre-line text-sm leading-[0.8]">
+            {description}
+          </p>
         </div>
 
         <div className="flex gap-2">
-          <Button size="md" variant="ghost" onClick={onClose}>
-            취소
-          </Button>
-          <Button size="md" variant="contained" onClick={onSubmit}>
-            {actionLabel || '확인'}
+          <Button size="md" variant="contained" onClick={onClose}>
+            {actionLabel || '닫기'}
           </Button>
         </div>
       </div>
@@ -47,4 +44,4 @@ function ConfirmModal({
   )
 }
 
-export default ConfirmModal
+export default InfomationModal
