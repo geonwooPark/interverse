@@ -6,7 +6,7 @@ interface ButtonProps
   extends Omit<InputHTMLAttributes<HTMLButtonElement>, 'size'> {
   type?: 'submit' | 'button'
   size: 'sm' | 'md' | 'lg'
-  variant: 'contained' | 'outlined'
+  variant: 'contained' | 'outlined' | 'ghost'
   fullWidth?: boolean
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
@@ -25,6 +25,7 @@ const ButtonVariants = cva(
         contained:
           'bg-cyan-500 text-white shadow-lg shadow-cyan-500/50 hover:bg-cyan-400',
         outlined: 'border-2 border-cyan-500 text-cyan-500',
+        ghost: 'border-2',
       },
       fullWidth: {
         true: 'w-full',

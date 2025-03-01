@@ -19,15 +19,21 @@ function CreatorCard() {
       <div className="flex flex-col self-start px-2">
         <div className="flex items-end gap-1">
           <span className="text-2xl">박건우</span>
-          <span className="opacity-30">|</span>
-          <span className="opacity-30">Frontend</span>
+          <span className="text-sm opacity-30">|</span>
+          <span className="text-sm opacity-30">프론트엔드</span>
         </div>
         <span className="text-lg">white0581@naver.com</span>
       </div>
 
-      <Button size="lg" variant="contained" fullWidth onClick={handleClick}>
-        GITHUB
-      </Button>
+      <div className="flex w-full flex-col gap-2">
+        <Button size="lg" variant="ghost" fullWidth onClick={handleClick}>
+          GITHUB
+        </Button>
+
+        <Button size="lg" variant="ghost" fullWidth onClick={handleClick}>
+          이력서
+        </Button>
+      </div>
     </div>
   )
 }
