@@ -14,7 +14,7 @@ export default defineConfig({
       { find: '@games', replacement: '/src/games' },
       { find: '@hooks', replacement: '/src/hooks' },
       { find: '@layouts', replacement: '/src/layouts' },
-      { find: '@lib', replacement: '/src/lib' },
+      { find: '@managers', replacement: '/src/managers' },
       { find: '@pages', replacement: '/src/pages' },
       { find: '@providers', replacement: '/src/providers' },
       { find: '@routes', replacement: '/src/routes' },

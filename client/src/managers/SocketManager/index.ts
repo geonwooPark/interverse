@@ -19,11 +19,10 @@ import { addUser, deleteUser, setUsers } from '@store/features/usersSlice'
 import { addPeerStream } from '@store/features/myStreamSlice'
 import { MediaConnection } from 'peerjs'
 import { addDM } from '@store/features/directMessageSlice'
-import GameSingleton from '../../PhaserGame'
 import { ISocketIO } from './types'
+import GameManager from '@managers/GameManager'
 
-export class SocketIO implements ISocketIO {
-  private static instance: SocketIO | null = null
+export class SocketManager implements ISocketIO {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
   game!: Game
 
@@ -33,15 +32,9 @@ export class SocketIO implements ISocketIO {
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
     })
-    this.game = GameSingleton.getInstance().scene.keys.game as Game
-    this.setupListeners()
-  }
 
-  static getInstance(): SocketIO {
-    if (!SocketIO.instance) {
-      SocketIO.instance = new SocketIO()
-    }
-    return SocketIO.instance
+    this.game = GameManager.getInstance().scene.keys.game as Game
+    this.setupListeners()
   }
 
   private setupListeners() {
@@ -121,7 +114,6 @@ export class SocketIO implements ISocketIO {
 
   disconnect() {
     this.socket.disconnect()
-    SocketIO.instance = null
   }
 
   // 방 참여하기

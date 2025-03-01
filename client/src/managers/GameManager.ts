@@ -1,14 +1,14 @@
 import Phaser from 'phaser'
-import Game from './games/scenes/Game'
-import Preload from './games/scenes/Preload'
+import Game from '../games/scenes/Game'
+import Preload from '../games/scenes/Preload'
 
-class GameSingleton {
+class GameManager {
   private static instance: Phaser.Game | null = null
 
   private constructor() {}
 
   public static getInstance(): Phaser.Game {
-    if (!GameSingleton.instance) {
+    if (!GameManager.instance) {
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
         parent: 'phaser',
@@ -28,11 +28,11 @@ class GameSingleton {
         backgroundColor: '#fff',
       }
 
-      GameSingleton.instance = new Phaser.Game(config)
+      GameManager.instance = new Phaser.Game(config)
     }
 
-    return GameSingleton.instance
+    return GameManager.instance
   }
 }
 
-export default GameSingleton
+export default GameManager

@@ -30,7 +30,7 @@
       "@games/*": ["src/games/*"],
       "@hooks/*": ["src/hooks/*"],
       "@layouts/*": ["src/layouts/*"],
-      "@lib/*": ["src/lib/*"],
+      "@lib/*": ["src/managers/*"],
       "@pages/*": ["src/pages/*"],
       "@providers/*": ["src/providers/*"],
       "@routes/*": ["src/routes/*"],

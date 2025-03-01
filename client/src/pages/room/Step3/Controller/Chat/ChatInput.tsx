@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Game from '@games/scenes/Game'
 import { useAuthCookie } from '@providers/AuthProvider'
-import GameSingleton from '../../../../../PhaserGame'
+import GameManager from '@managers/GameManager'
 
 interface ChatInputProps {
   inputRef: React.RefObject<HTMLInputElement>
@@ -10,7 +10,7 @@ interface ChatInputProps {
 function ChatInput({ inputRef }: ChatInputProps) {
   const authCookie = useAuthCookie()
 
-  const game = GameSingleton.getInstance()
+  const game = GameManager.getInstance()
 
   const gameScene = game.scene.getScene('game') as Game
 

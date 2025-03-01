@@ -3,16 +3,16 @@ import StepFlow from '../../components/StepFlow'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import Step3 from './Step3'
-import GameSingleton from '../../PhaserGame'
 import ConfirmModal from '../../components/ConfirmModal'
 import { useBlockGoBack } from '../../hooks/useBlockGoBack'
 import useModals from '../../hooks/useModals'
+import GameManager from '@managers/GameManager'
 
 /**
  * 웨이팅 화면
  */
 function WaitingPage() {
-  const game = GameSingleton.getInstance()
+  const game = GameManager.getInstance()
 
   const { modals, addModal, removeModal } = useModals()
 

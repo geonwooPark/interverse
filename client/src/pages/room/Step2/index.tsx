@@ -6,12 +6,12 @@ import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useAppDispatch } from '@store/store'
 import { setAvatar } from '@store/features/avatarSlice'
-import GameSingleton from '../../../PhaserGame'
+import GameManager from '@managers/GameManager'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
 export default function Step2({ activeStep, onNext }: Step2Props) {
-  const game = GameSingleton.getInstance()
+  const game = GameManager.getInstance()
 
   const dispatch = useAppDispatch()
 

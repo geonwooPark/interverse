@@ -2,12 +2,12 @@ import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
 import Game from '@games/scenes/Game'
 import Chat from './Chat'
-import GameSingleton from '../../../../PhaserGame'
+import GameManager from '@managers/GameManager'
 
 function Controller() {
   const [showChat, setShowChat] = useState(true)
 
-  const game = GameSingleton.getInstance()
+  const game = GameManager.getInstance()
 
   const gameScene = game.scene.getScene('game') as Game
 
