@@ -2,11 +2,12 @@ import { store } from '../../store/store'
 import Avatar from './Avatar'
 
 export default class Player extends Avatar {
-  prevVx = 0
-  prevVy = 0
-  moveSpeed = 200
-  moveDirection: 'down' | 'up' | 'left' | 'right' = 'down'
-  isInteracting = false
+  private prevVx = 0
+  private prevVy = 0
+  private moveSpeed = 200
+  private moveDirection: 'down' | 'up' | 'left' | 'right' = 'down'
+  private isInteracting = false
+  private stopTimeout: NodeJS.Timeout | null = null
 
   constructor(
     scene: Phaser.Scene,
@@ -75,9 +76,14 @@ export default class Player extends Avatar {
 
     this.setVelocity(vx, vy)
 
-    // 아바타가 움직이는지 확인하여 서버로 좌표를 전송
-    if (this.body?.velocity.x !== 0 || this.body?.velocity.y !== 0) {
-      this.play(`${this.avatarTexture}_run_${this.moveDirection}`, true)
+    const isMoving = this.body?.velocity.x !== 0 || this.body?.velocity.y !== 0
+
+    if (isMoving) {
+      const runAnims = `${this.avatarTexture}_run_${this.moveDirection}`
+
+      this.play(runAnims, true)
+
+      this.avatarContainer.setPosition(this.x, this.y - 35)
 
       this.ws.sendAvatarPosition({
         x: this.x,
@@ -86,12 +92,28 @@ export default class Player extends Avatar {
         animation: this.anims.currentAnim!.key,
       })
 
-      this.avatarContainer.setPosition(this.x, this.y - 35)
+      if (this.stopTimeout) {
+        clearTimeout(this.stopTimeout)
+        this.stopTimeout = null
+      }
     } else {
-      this.anims.play(`${this.avatarTexture}_stand_${this.moveDirection}`, true)
+      const standAnims = `${this.avatarTexture}_stand_${this.moveDirection}`
+
+      this.anims.play(standAnims, true)
+
+      if (!this.stopTimeout) {
+        this.stopTimeout = setTimeout(() => {
+          this.ws.sendAvatarPosition({
+            x: this.x,
+            y: this.y,
+            roomNum,
+            animation: standAnims,
+          })
+        }, 100)
+      }
     }
 
-    // 충돌 상태 해지
+    // 인터렉션 상태 해지
     if ((vx !== this.prevVx || vy !== this.prevVy) && !(vx === 0 && vy === 0)) {
       this.prevVx = vx
       this.prevVy = vy
