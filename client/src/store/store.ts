@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { ChatListSlice } from './features/chatListSlice'
 import { MyStreamSlice } from './features/myStreamSlice'
 import { UsersSlice } from './features/usersSlice'
 import { DirectMessageSlice } from './features/directMessageSlice'
@@ -10,7 +9,6 @@ export const store = configureStore({
   reducer: {
     avartar: AvatarSlice.reducer,
     directMessage: DirectMessageSlice.reducer,
-    chatList: ChatListSlice.reducer,
     myStream: MyStreamSlice.reducer,
     users: UsersSlice.reducer,
   },

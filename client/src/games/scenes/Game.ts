@@ -6,28 +6,30 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import { DisplayOtherPlayerChatType } from '../../../../types/client'
 import {
   ServerAvatarPosition,
+  ServerChat,
   ServerPlayerInfo,
 } from '../../../../types/socket'
+import { ChatManager } from '@managers/ChatManager'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
-  private otherPlayers!: Phaser.Physics.Arcade.Group
-  private otherPlayersMap = new Map<string, OtherPlayer>()
   private cursur?: Phaser.Types.Input.Keyboard.CursorKeys
-  keySpace?: Phaser.Input.Keyboard.Key
-  keyEscape?: Phaser.Input.Keyboard.Key
+  private overlap?: Phaser.Physics.Arcade.StaticGroup
+  private keySpace?: Phaser.Input.Keyboard.Key
+  private keyEscape?: Phaser.Input.Keyboard.Key
   player!: Player
-  overlap?: Phaser.Physics.Arcade.StaticGroup
   roomNum!: string
-  occupiedChairs: Set<string> = new Set()
-  videoChatPlayers: Set<string> = new Set()
-
-  // 플레이어 매니저
   // 채팅 매니저
+  chat = new ChatManager()
+  // 멀티 플레이 매니저
+  otherPlayers!: Phaser.Physics.Arcade.Group
+  otherPlayersMap = new Map<string, OtherPlayer>()
   // 화상채팅 매니저
+  videoChatPlayers: Set<string> = new Set()
+  // 의자 매니저
+  occupiedChairs: Set<string> = new Set()
 
   constructor() {
     // Scene Key
@@ -254,16 +256,11 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 다른 플레이어의 채팅을 화면에 표시  */
-  displayChat({ message, socketId }: DisplayOtherPlayerChatType) {
-    const otherPlayer = this.otherPlayersMap.get(socketId)
+  displayOtherPlayerChat(chat: ServerChat) {
+    const otherPlayer = this.otherPlayersMap.get(chat.socketId)
 
     if (otherPlayer) {
-      otherPlayer.updateChat(message)
-
-      otherPlayer.ws.sendMessage({
-        message,
-        roomNum: this.roomNum,
-      })
+      otherPlayer.updateChat(chat.message)
     }
   }
 

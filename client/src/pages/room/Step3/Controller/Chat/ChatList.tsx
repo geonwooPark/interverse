@@ -1,13 +1,24 @@
-import { useAppSelector } from '@store/store'
 import ChatItem from './ChatItem'
+import { useSyncExternalStore } from 'react'
+import GameManager from '@managers/GameManager'
+import GameScene from '@games/scenes/Game'
 
 function ChatList() {
-  const chatList = useAppSelector((state) => state.chatList)
+  const game = GameManager.getInstance()
+
+  const gameScene = game.scene.getScene('game') as GameScene
+
+  const chatManager = gameScene.chat
+
+  const chatlist = useSyncExternalStore(
+    (callback) => chatManager.subscribe(() => callback()),
+    () => chatManager.getState(),
+  )
 
   return (
     <ul className="hide-scroll overflow-y-auto pt-2">
-      {chatList.map((chatItem, i) => (
-        <ChatItem key={i} chatItem={chatItem} />
+      {chatlist.map((chat, i) => (
+        <ChatItem key={i} chatItem={chat} />
       ))}
     </ul>
   )

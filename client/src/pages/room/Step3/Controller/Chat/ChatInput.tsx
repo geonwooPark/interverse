@@ -2,6 +2,7 @@ import { useState } from 'react'
 import GameScene from '@games/scenes/Game'
 import { useAuthCookie } from '@providers/AuthProvider'
 import GameManager from '@managers/GameManager'
+import { useAppSelector } from '@store/store'
 
 interface ChatInputProps {
   inputRef: React.RefObject<HTMLInputElement>
@@ -9,6 +10,8 @@ interface ChatInputProps {
 
 function ChatInput({ inputRef }: ChatInputProps) {
   const authCookie = useAuthCookie()
+
+  const { nickname } = useAppSelector((state) => state.avartar)
 
   const game = GameManager.getInstance()
 
@@ -30,9 +33,16 @@ function ChatInput({ inputRef }: ChatInputProps) {
       inputRef.current?.blur()
       gameScene.enableKeys()
     } else {
+      const id = Math.random().toString()
+
+      gameScene.player.ws.sendMessage({
+        id,
+        message: inputValue,
+        roomNum: authCookie.roomNum,
+        sender: nickname,
+      })
       gameScene.player.updateChat(inputValue)
 
-      // 서버로 보내야함
       inputRef.current?.blur()
       gameScene.enableKeys()
       setInputValue('')

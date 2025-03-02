@@ -3,7 +3,7 @@ import { occupiedChairs, rooms } from '..'
 import {
   ClientAvatarPosition,
   ClientJoinRoom,
-  ClientMessage,
+  Chat,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../types/socket'
@@ -28,12 +28,12 @@ export const roomHandler = (
     }
 
     // 방 입장 메시지 보내기
-    io.to(roomNum).emit('serverMsg', {
-      senderId: socket.id,
-      nickname: '',
+    io.to(roomNum).emit('serverChat', {
+      id: '',
+      sender: '',
       message: `${nickname}님이 입장했습니다.`,
       roomNum,
-      newPlayerId: socket.id,
+      socketId: '',
     })
 
     // 나의 아바타 정보를 나를 제외한 모두에게 전송
@@ -61,11 +61,12 @@ export const roomHandler = (
     })
   }
 
-  const sendMessage = (message: ClientMessage) => {
-    if (message.roomNum === '') return
-    io.to(message.roomNum).emit('serverMsg', {
-      ...message,
-      senderId: socket.id,
+  const sendMessage = (chat: Chat) => {
+    if (chat.roomNum === '') return
+
+    io.to(chat.roomNum).emit('serverChat', {
+      ...chat,
+      socketId: socket.id,
     })
   }
 

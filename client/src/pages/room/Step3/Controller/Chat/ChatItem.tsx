@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { ChatItemType } from '../../../../../../../types/client'
+import { Chat } from '../../../../../../../types/socket'
 
 interface ChatItemProps {
-  chatItem: ChatItemType
+  chatItem: Chat
 }
 
 function ChatItem({ chatItem }: ChatItemProps) {
@@ -17,11 +17,11 @@ function ChatItem({ chatItem }: ChatItemProps) {
       ref={scrollRef}
       className="inline-block w-full break-all rounded-sm px-4"
     >
-      {chatItem.nickname && (
-        <span className={`mr-2 font-bold`}>{chatItem.nickname}</span>
+      {chatItem.sender && (
+        <span className={`mr-2 font-bold`}>{chatItem.sender}</span>
       )}
       <span
-        className={`${chatItem.nickname ? 'text-black' : 'font-bold text-purple-600'}`}
+        className={`${chatItem.sender ? 'text-black' : 'font-bold text-purple-600'}`}
       >
         {chatItem.message}
       </span>

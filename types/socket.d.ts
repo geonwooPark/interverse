@@ -1,14 +1,12 @@
-export interface ServerMessage {
+export interface Chat {
+  id: string
+  sender: string
   message: string
-  nickname: string
   roomNum: string
-  senderId: string
-  newPlayerId?: string
 }
 
-export interface ClientMessage {
-  message: string
-  roomNum: string
+export interface ServerChat extends Chat {
+  socketId: string
 }
 
 export interface ClientJoinRoom {
@@ -98,7 +96,7 @@ export interface ServerDirectMessage {
 
 export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
-  serverMsg: (message: ServerMessage) => void
+  serverChat: (chat: ServerChat) => void
   serverPlayerInfo: ({
     nickname,
     texture,
@@ -129,7 +127,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   clientJoinRoom: ({ authCookie }: ClientJoinRoom) => void
-  clientMsg: (message: ClientMessage) => void
+  clientMsg: (message: Message) => void
   clientAvatarPosition: ({
     x,
     y,

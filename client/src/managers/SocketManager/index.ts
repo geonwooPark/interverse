@@ -1,13 +1,12 @@
 import { io, Socket } from 'socket.io-client'
 import GameScene from '@games/scenes/Game'
 import { store } from '@store/store'
-import { addMessage } from '@store/features/chatListSlice'
 import {
   ClientAvatarPosition,
   ClientChairId,
   ClientDirectMessage,
   ClientHandleCamera,
-  ClientMessage,
+  Chat,
   ClientToServerEvents,
   RoomUser,
   ServerPlayerInfo,
@@ -46,15 +45,16 @@ export class SocketManager implements ISocketIO {
       console.log('🟢 서버에 연결되었습니다.')
     })
 
-    // 서버에서 입장 메시지 받기
-    this.socket.on('serverMsg', (messageData) => {
-      if (!this.game) return
-      store.dispatch(addMessage(messageData))
-
-      this.game.displayChat({
-        message: messageData.message,
-        socketId: messageData.senderId,
+    // 서버에서 메시지 받기
+    this.socket.on('serverChat', (serverChat) => {
+      this.game.chat.addChat({
+        id: serverChat.id,
+        message: serverChat.message,
+        sender: serverChat.sender,
+        roomNum: serverChat.roomNum,
       })
+
+      this.game.displayOtherPlayerChat(serverChat)
     })
 
     // 서버에서 DM 받기
@@ -64,14 +64,12 @@ export class SocketManager implements ISocketIO {
 
     // 서버에서 기존 방의 유저들이 새로운 유저의 정보 받기
     this.socket.on('serverPlayerInfo', (playerInfo) => {
-      if (!this.game) return
       this.game.addOtherPlayer(playerInfo)
       store.dispatch(addUser(playerInfo))
     })
 
     // 서버에서 새로운 유저가 방에 존재하는 유저들의 정보 받기
     this.socket.on('serverRoomMember', (users) => {
-      if (!this.game) return
       let userList: RoomUser[] = []
       for (const user in users) {
         userList = [...userList, users[user] as unknown as RoomUser]
@@ -84,7 +82,6 @@ export class SocketManager implements ISocketIO {
 
     // 방에 입장했을 때 이미 누군가 앉아있는 의자들
     this.socket.on('serverOccupiedChairs', (chairs) => {
-      if (!this.game) return
       if (!chairs) return
 
       this.game.occupiedChairs = new Set([...chairs])
@@ -92,7 +89,6 @@ export class SocketManager implements ISocketIO {
 
     // 서버에서 방에서 나간 유저 정보 받기
     this.socket.on('serverLeaveRoom', (socketId) => {
-      if (!this.game) return
       this.game.removeOtherPlayer(socketId)
       store.dispatch(deleteUser(socketId))
     })
@@ -134,11 +130,8 @@ export class SocketManager implements ISocketIO {
   }
 
   // 메시지 보내기
-  sendMessage({ message, roomNum }: ClientMessage) {
-    this.socket.emit('clientMsg', {
-      message,
-      roomNum,
-    })
+  sendMessage(chat: Chat) {
+    this.socket.emit('clientMsg', chat)
   }
 
   // 실시간 나의 위치 정보 보내기

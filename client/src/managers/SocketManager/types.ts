@@ -5,7 +5,7 @@ import {
   ClientChairId,
   ClientDirectMessage,
   ClientHandleCamera,
-  ClientMessage,
+  Chat,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../../../types/socket'
@@ -24,7 +24,7 @@ export interface ISocketIO {
     nickname: string
     texture: string
   }) => void
-  sendMessage: ({ message, roomNum }: ClientMessage) => void
+  sendMessage: ({ message, roomNum }: Chat) => void
   sendAvatarPosition: ({
     x,
     y,
