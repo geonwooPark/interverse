@@ -19,7 +19,7 @@ export default function Step3() {
   useLayoutEffect(() => {
     if (!authCookie) return
 
-    gameScene.initialize(authCookie.roomNum)
+    gameScene.joinRoom(authCookie.roomNum)
   }, [])
 
   return (

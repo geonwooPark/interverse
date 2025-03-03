@@ -11,6 +11,7 @@ import {
   ServerPlayerInfo,
 } from '../../../../types/socket'
 import { ChatManager } from '@managers/ChatManager'
+import { SocketManager } from '@managers/SocketManager'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -21,8 +22,10 @@ export default class Game extends Phaser.Scene {
   roomNum!: string
   player!: Player
   otherPlayers!: Phaser.Physics.Arcade.Group
+  // 소켓 매니저
+  socket: SocketManager
   // 채팅 매니저
-  chat: ChatManager | null
+  chat: ChatManager
   // 멀티 플레이 매니저
   otherPlayerMap = new Map<string, OtherPlayer>()
   // 화상채팅 매니저
@@ -34,6 +37,7 @@ export default class Game extends Phaser.Scene {
     // Scene Key
     super('game')
 
+    this.socket = new SocketManager(this)
     this.chat = new ChatManager(this)
   }
 
@@ -173,10 +177,10 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 방에 입장 */
-  initialize(roomNum: string) {
+  joinRoom(roomNum: string) {
     this.roomNum = roomNum
-    this.player.joinRoom(roomNum)
-    // otherPlayerMap에 나도 포함시켜야함
+
+    this.player.initialize(roomNum)
 
     this.setUpKeys()
   }

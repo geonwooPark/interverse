@@ -19,20 +19,21 @@ import { addPeerStream } from '@store/features/myStreamSlice'
 import { MediaConnection } from 'peerjs'
 import { addDM } from '@store/features/directMessageSlice'
 import { ISocketIO } from './types'
-import GameManager from '@managers/GameManager'
+import Game from '@games/scenes/Game'
 
 export class SocketManager implements ISocketIO {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
-  game!: GameScene
+  game: Game
 
-  constructor() {
+  constructor(game: GameScene) {
     this.socket = io(import.meta.env.VITE_BACKEND, {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
     })
 
-    this.game = GameManager.getInstance().scene.keys.game as GameScene
+    this.game = game
+
     this.setupListeners()
   }
 

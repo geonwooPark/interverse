@@ -1,5 +1,6 @@
 import { store } from '../../store/store'
 import Avatar from './Avatar'
+import GameScene from '@games/scenes/Game'
 
 export default class Player extends Avatar {
   private prevVx = 0
@@ -20,12 +21,12 @@ export default class Player extends Avatar {
   }
 
   // 방 참여
-  joinRoom(roomNum: string) {
+  initialize(roomNum: string) {
     const avatar = store.getState().avartar
 
     this.setNickname(avatar.nickname)
     this.setAvatarTexture(avatar.texture)
-    this.ws.joinRoom({
+    ;(this.scene as GameScene).socket.joinRoom({
       roomNum,
       nickname: avatar.nickname,
       texture: avatar.texture,
@@ -84,8 +85,7 @@ export default class Player extends Avatar {
       this.play(runAnims, true)
 
       this.avatarContainer.setPosition(this.x, this.y - 35)
-
-      this.ws.sendAvatarPosition({
+      ;(this.scene as GameScene).socket.sendAvatarPosition({
         x: this.x,
         y: this.y,
         roomNum,
@@ -103,7 +103,7 @@ export default class Player extends Avatar {
 
       if (!this.stopTimeout) {
         this.stopTimeout = setTimeout(() => {
-          this.ws.sendAvatarPosition({
+          ;(this.scene as GameScene).socket.sendAvatarPosition({
             x: this.x,
             y: this.y,
             roomNum,

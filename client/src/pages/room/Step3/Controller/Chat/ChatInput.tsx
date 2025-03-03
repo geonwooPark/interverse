@@ -35,7 +35,7 @@ function ChatInput({ inputRef }: ChatInputProps) {
     } else {
       const id = Math.random().toString()
 
-      gameScene.player.ws.sendMessage({
+      gameScene.socket.sendMessage({
         id,
         message: inputValue,
         roomNum: authCookie.roomNum,

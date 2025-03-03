@@ -1,8 +1,6 @@
-import { SocketManager } from '@managers/SocketManager'
 import ObjectItem from '../items/ObjectItem'
 
 export default class Avatar extends Phaser.Physics.Arcade.Sprite {
-  ws: SocketManager = new SocketManager()
   avatarTexture: string
   avatarContainer: Phaser.GameObjects.Container
   nickname: Phaser.GameObjects.Text
