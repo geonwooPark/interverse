@@ -4,17 +4,14 @@ import CreatorCard from './CreatorModal'
 import ManualCard from './ManualModal'
 import SurveyCard from './SurveyModal'
 import VideoCard from './VideoModal/VideoCard'
-import GameManager from '@managers/GameManager'
-import GameScene from '@games/scenes/Game'
 import useModals from '@hooks/useModals'
 import { createPortal } from 'react-dom'
+import { useScene } from '@providers/SceneProvider'
 
 function Modals() {
   const { modals, addModal, removeModal } = useModals()
 
-  const game = GameManager.getInstance()
-
-  const gameScene = game.scene.getScene('game') as GameScene
+  const gameScene = useScene()
 
   // 씬에 이벤트 등록
   useEffect(() => {

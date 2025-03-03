@@ -7,12 +7,16 @@ import ConfirmModal from '../../components/ConfirmModal'
 import { useBlockGoBack } from '../../hooks/useBlockGoBack'
 import useModals from '../../hooks/useModals'
 import GameManager from '@managers/GameManager'
+import SceneProvider from '@providers/SceneProvider'
+import GameScene from '@games/scenes/Game'
 
 /**
- * 웨이팅 화면
+ * 룸 화면
  */
-function WaitingPage() {
+function RoomPage() {
   const game = GameManager.getInstance()
+
+  const gameScene = game.scene.getScene('game') as GameScene
 
   const { modals, addModal, removeModal } = useModals()
 
@@ -43,7 +47,7 @@ function WaitingPage() {
   )
 
   return (
-    <>
+    <SceneProvider scene={gameScene}>
       <StepFlow activeStep={step} onNext={onNext}>
         <Step1 />
         <Step2 />
@@ -51,8 +55,8 @@ function WaitingPage() {
       </StepFlow>
 
       {modals}
-    </>
+    </SceneProvider>
   )
 }
 
-export default WaitingPage
+export default RoomPage

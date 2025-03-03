@@ -1,15 +1,12 @@
 import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
-import GameScene from '@games/scenes/Game'
 import Chat from './Chat'
-import GameManager from '@managers/GameManager'
+import { useScene } from '@providers/SceneProvider'
 
 function Controller() {
   const [showChat, setShowChat] = useState(true)
 
-  const game = GameManager.getInstance()
-
-  const gameScene = game.scene.getScene('game') as GameScene
+  const gameScene = useScene()
 
   const inputRef = useRef<HTMLInputElement>(null)
 

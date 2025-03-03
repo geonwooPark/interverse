@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import GameScene from '@games/scenes/Game'
 import { useAuthCookie } from '@providers/AuthProvider'
-import GameManager from '@managers/GameManager'
 import { useAppSelector } from '@store/store'
+import { useScene } from '@providers/SceneProvider'
 
 interface ChatInputProps {
   inputRef: React.RefObject<HTMLInputElement>
@@ -11,11 +10,9 @@ interface ChatInputProps {
 function ChatInput({ inputRef }: ChatInputProps) {
   const authCookie = useAuthCookie()
 
+  const gameScene = useScene()
+
   const { nickname } = useAppSelector((state) => state.avartar)
-
-  const game = GameManager.getInstance()
-
-  const gameScene = game.scene.getScene('game') as GameScene
 
   const [inputValue, setInputValue] = useState('')
 
