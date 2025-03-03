@@ -47,14 +47,7 @@ export class SocketManager implements ISocketIO {
 
     // 서버에서 메시지 받기
     this.socket.on('serverChat', (serverChat) => {
-      this.game.chat.addChat({
-        id: serverChat.id,
-        message: serverChat.message,
-        sender: serverChat.sender,
-        roomNum: serverChat.roomNum,
-      })
-
-      this.game.displayOtherPlayerChat(serverChat)
+      this.game.chat?.addChat(serverChat)
     })
 
     // 서버에서 DM 받기
@@ -130,8 +123,8 @@ export class SocketManager implements ISocketIO {
   }
 
   // 메시지 보내기
-  sendMessage(chat: Chat) {
-    this.socket.emit('clientMsg', chat)
+  sendMessage(clientChat: Chat) {
+    this.socket.emit('clientChat', clientChat)
   }
 
   // 실시간 나의 위치 정보 보내기

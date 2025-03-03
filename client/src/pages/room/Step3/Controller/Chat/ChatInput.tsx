@@ -41,7 +41,6 @@ function ChatInput({ inputRef }: ChatInputProps) {
         roomNum: authCookie.roomNum,
         sender: nickname,
       })
-      gameScene.player.updateChat(inputValue)
 
       inputRef.current?.blur()
       gameScene.enableKeys()

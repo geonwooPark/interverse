@@ -61,11 +61,11 @@ export const roomHandler = (
     })
   }
 
-  const sendMessage = (chat: Chat) => {
-    if (chat.roomNum === '') return
+  const sendMessage = (clientChat: Chat) => {
+    if (clientChat.roomNum === '') return
 
-    io.to(chat.roomNum).emit('serverChat', {
-      ...chat,
+    io.to(clientChat.roomNum).emit('serverChat', {
+      ...clientChat,
       socketId: socket.id,
     })
   }
@@ -78,6 +78,6 @@ export const roomHandler = (
   }
 
   socket.on('clientJoinRoom', joinRoom)
-  socket.on('clientMsg', sendMessage)
+  socket.on('clientChat', sendMessage)
   socket.on('clientAvatarPosition', sendAvatarPosition)
 }

@@ -8,7 +8,6 @@ import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
 import {
   ServerAvatarPosition,
-  ServerChat,
   ServerPlayerInfo,
 } from '../../../../types/socket'
 import { ChatManager } from '@managers/ChatManager'
@@ -19,13 +18,13 @@ export default class Game extends Phaser.Scene {
   private overlap?: Phaser.Physics.Arcade.StaticGroup
   private keySpace?: Phaser.Input.Keyboard.Key
   private keyEscape?: Phaser.Input.Keyboard.Key
-  player!: Player
   roomNum!: string
-  // 채팅 매니저
-  chat = new ChatManager()
-  // 멀티 플레이 매니저
+  player!: Player
   otherPlayers!: Phaser.Physics.Arcade.Group
-  otherPlayersMap = new Map<string, OtherPlayer>()
+  // 채팅 매니저
+  chat: ChatManager | null
+  // 멀티 플레이 매니저
+  otherPlayerMap = new Map<string, OtherPlayer>()
   // 화상채팅 매니저
   videoChatPlayers: Set<string> = new Set()
   // 의자 매니저
@@ -34,6 +33,8 @@ export default class Game extends Phaser.Scene {
   constructor() {
     // Scene Key
     super('game')
+
+    this.chat = new ChatManager(this)
   }
 
   setUpKeys() {
@@ -171,6 +172,47 @@ export default class Game extends Phaser.Scene {
     )
   }
 
+  /** 방에 입장 */
+  initialize(roomNum: string) {
+    this.roomNum = roomNum
+    this.player.joinRoom(roomNum)
+    // otherPlayerMap에 나도 포함시켜야함
+
+    this.setUpKeys()
+  }
+
+  /** 다른 플레이어 입장 */
+  addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
+    if (!socketId) return
+
+    const newPlayer = new OtherPlayer(this, 120, 180, texture, nickname)
+    newPlayer.anims.play(`${texture}_stand_down`, true)
+    newPlayer.setDepth(900)
+    this.add.existing(newPlayer)
+
+    this.otherPlayers.add(newPlayer)
+    this.otherPlayerMap.set(socketId, newPlayer)
+  }
+
+  /** 다른 플레이어 퇴장 */
+  removeOtherPlayer(socketId: string) {
+    const otherPlayer = this.otherPlayerMap.get(socketId)
+
+    if (otherPlayer) {
+      this.otherPlayers.remove(otherPlayer, true, true)
+      this.otherPlayerMap.delete(socketId)
+    }
+  }
+
+  /** 다른 플레이어의 위치 정보 업데이트 */
+  updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
+    const otherPlayer = this.otherPlayerMap.get(socketId)
+
+    if (otherPlayer) {
+      otherPlayer.updatePosition({ x, y, animation })
+    }
+  }
+
   /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */
   private handlePlayerCollider(player: any, interactionItem: any) {
     if (this.player.selectedInteractionItem) return
@@ -213,55 +255,6 @@ export default class Game extends Phaser.Scene {
       obj.setDepth(depth)
       return obj
     })
-  }
-
-  /** 방에 입장 */
-  initialize(roomNum: string) {
-    this.roomNum = roomNum
-    this.player.joinRoom(roomNum)
-
-    this.setUpKeys()
-  }
-
-  /** 다른 플레이어 입장 */
-  addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
-    if (!socketId) return
-
-    const newPlayer = new OtherPlayer(this, 120, 180, texture, nickname)
-    newPlayer.anims.play(`${texture}_stand_down`, true)
-    newPlayer.setDepth(900)
-    this.add.existing(newPlayer)
-
-    this.otherPlayers.add(newPlayer)
-    this.otherPlayersMap.set(socketId, newPlayer)
-  }
-
-  /** 다른 플레이어 퇴장 */
-  removeOtherPlayer(socketId: string) {
-    const otherPlayer = this.otherPlayersMap.get(socketId)
-
-    if (otherPlayer) {
-      this.otherPlayers.remove(otherPlayer, true, true)
-      this.otherPlayersMap.delete(socketId)
-    }
-  }
-
-  /** 다른 플레이어의 위치 정보 업데이트 */
-  updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
-    const otherPlayer = this.otherPlayersMap.get(socketId)
-
-    if (otherPlayer) {
-      otherPlayer.updatePosition({ x, y, animation })
-    }
-  }
-
-  /** 다른 플레이어의 채팅을 화면에 표시  */
-  displayOtherPlayerChat(chat: ServerChat) {
-    const otherPlayer = this.otherPlayersMap.get(chat.socketId)
-
-    if (otherPlayer) {
-      otherPlayer.updateChat(chat.message)
-    }
   }
 
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
