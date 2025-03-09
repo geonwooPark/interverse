@@ -5,7 +5,7 @@ import { useScene } from '@providers/SceneProvider'
 function ChatList() {
   const gameScene = useScene()
 
-  const chatManager = gameScene.ws.chat
+  const chatManager = gameScene.chat
 
   const chatlist = useSyncExternalStore(
     (callback) => chatManager.subscribe(() => callback()),

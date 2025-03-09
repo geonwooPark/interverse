@@ -22,7 +22,7 @@ export class PlayManager {
 
   /** 다른 플레이어의 위치 정보 업데이트 */
   updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
-    const otherPlayer = this.game.room.playerMap.get(socketId)
+    const otherPlayer = this.game.room.otherPlayerMap.get(socketId)
 
     if (otherPlayer) {
       otherPlayer.updatePosition({ x, y, animation })

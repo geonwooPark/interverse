@@ -1,6 +1,8 @@
 import Avatar from './Avatar'
 
 export default class OtherPlayer extends Avatar {
+  socketId?: string
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -8,9 +10,11 @@ export default class OtherPlayer extends Avatar {
     texture: string,
     nickname: string,
     frame?: string | number,
+    socketId?: string,
   ) {
     super(scene, x, y, texture, frame)
     this.setNickname(nickname)
+    this.socketId = socketId
   }
 
   updatePosition({

@@ -44,10 +44,12 @@ export class ChatManager extends Observable<ServerChat[]> {
   displayBubbleChat(chat: ServerChat) {
     if (!chat.sender) return
 
-    const targetPlayer = this.game.room.playerMap.get(chat.socketId)
+    const targetPlayer = this.game.room.otherPlayerMap.get(chat.socketId)
 
     if (targetPlayer) {
       targetPlayer.updateChat(chat.message)
+    } else {
+      this.game.player.updateChat(chat.message)
     }
   }
 }

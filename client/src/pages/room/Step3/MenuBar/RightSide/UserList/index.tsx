@@ -1,24 +1,30 @@
-import { useMemo, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@store/store'
-import DirectMessageComposer from '../../../DirectMessage/DirectMessageComposer'
+import { useState, useSyncExternalStore } from 'react'
+import { useAppDispatch } from '@store/store'
 import { IconUsers } from '@assets/svgs'
 import UserListItem from './UserListItem'
 import {
   changeReceiver,
   handleDirectMessageComposer,
 } from '@store/features/directMessageSlice'
+import { useScene } from '@providers/SceneProvider'
+import { textureMap } from '@constants/index'
 
 function UserList() {
   const dispatch = useAppDispatch()
 
-  const users = useAppSelector((state) => state.users)
+  const gameScene = useScene()
 
-  const userCount = useMemo(() => Object.keys(users).length, [users])
+  const roomManager = gameScene.room
 
-  const [showUserList, setShowUserList] = useState(true)
+  const userlist = useSyncExternalStore(
+    (callback) => roomManager.subscribe(() => callback()),
+    () => roomManager.getState(),
+  )
+
+  const [isShow, setIsShow] = useState(false)
 
   const toogleUserList = () => {
-    setShowUserList((prev) => !prev)
+    setIsShow((prev) => !prev)
   }
 
   const sendDM = (nickname: string, id: string) => {
@@ -34,20 +40,27 @@ function UserList() {
         className="flex items-center justify-center rounded-md bg-black/70 px-3 py-2 text-white duration-200 hover:bg-black/90"
       >
         <IconUsers className="mr-1 size-5" />
-        <span>{userCount}</span>
+        <span>{userlist.size + 1}</span>
       </button>
 
-      {showUserList && (
-        <div className="absolute -bottom-14 left-[50%] translate-x-[-50%]">
+      {isShow && (
+        <div className="absolute left-[50%] mt-4 translate-x-[-50%]">
           <ul className="hide-scroll max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white/30 text-sm shadow-md">
-            {users.map((user) => (
-              <UserListItem key={user.socketId} user={user} sendDM={sendDM} />
+            <li className="flex items-center justify-between p-2">
+              <div className="flex items-center">
+                <div
+                  className={`mr-2 size-8 rounded-full border bg-[63px] ${textureMap[gameScene.player.texture.key]}`}
+                />
+                {gameScene.player.nickname.text}
+              </div>
+            </li>
+
+            {Array.from(userlist).map((user) => (
+              <UserListItem key={user[0]} user={user[1]} sendDM={sendDM} />
             ))}
           </ul>
         </div>
       )}
-
-      {/* <DirectMessageComposer /> */}
     </div>
   )
 }

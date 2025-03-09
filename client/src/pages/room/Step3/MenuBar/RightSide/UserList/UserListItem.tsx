@@ -1,9 +1,9 @@
 import { IconMessage } from '@assets/svgs'
-import { RoomUser } from '../../../../../../../../types/socket'
 import { textureMap } from '@constants/index'
+import OtherPlayer from '@games/avatars/OtherPlayer'
 
 interface UserListItemProps {
-  user: RoomUser
+  user: OtherPlayer
   sendDM: (nickname: string, id: string) => void
 }
 
@@ -12,17 +12,15 @@ function UserListItem({ user, sendDM }: UserListItemProps) {
     <li key={user.socketId} className="flex items-center justify-between p-2">
       <div className="flex items-center">
         <div
-          className={`mr-2 size-8 rounded-full border bg-[63px] ${textureMap[user.texture]}`}
+          className={`mr-2 size-8 rounded-full border bg-[63px] ${textureMap[user.texture.key]}`}
         />
-        {user.nickname}
+        {user.nickname.text}
       </div>
 
-      {/* {user.socketId !== ws.socket.id && (
-        <IconMessage
-          className="size-5"
-          onClick={() => sendDM(user.nickname, user.socketId)}
-        />
-      )} */}
+      <IconMessage
+        className="size-5"
+        onClick={() => sendDM(user.nickname.text, user.socketId as string)}
+      />
     </li>
   )
 }

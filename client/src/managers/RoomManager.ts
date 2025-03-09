@@ -1,24 +1,29 @@
-import { store } from '@store/store'
-import { addUser, deleteUser, setUsers } from '@store/features/usersSlice'
 import { RoomUser, ServerPlayerInfo } from '../../../types/socket'
 import OtherPlayer from '@games/avatars/OtherPlayer'
 import GameScene from '@games/scenes/Game'
+import { Observable } from './Observable'
 
-export class RoomManager {
+export class RoomManager extends Observable<Map<string, OtherPlayer>> {
   private game: GameScene
-  playerMap = new Map<string, OtherPlayer>()
+  otherPlayerMap = new Map<string, OtherPlayer>()
 
   constructor(game: GameScene) {
+    super()
+
     this.game = game
 
     this.initialize()
+  }
+
+  getState(): Map<string, OtherPlayer> {
+    return this.otherPlayerMap
   }
 
   private initialize() {
     // 서버에서 기존 방의 유저들이 새로운 유저의 정보 받기
     this.game.ws.socket.on('serverPlayerInfo', (playerInfo) => {
       this.addOtherPlayer(playerInfo)
-      store.dispatch(addUser(playerInfo))
+      this.notify(this.otherPlayerMap)
     })
 
     // 서버에서 새로운 유저가 방에 존재하는 유저들의 정보 받기
@@ -30,13 +35,14 @@ export class RoomManager {
         if (user === this.game.ws.socket.id) continue
         this.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
       }
-      store.dispatch(setUsers(userList))
+      this.notify(this.otherPlayerMap)
     })
 
     // 서버에서 방에서 나간 유저 정보 받기
     this.game.ws.socket.on('serverLeaveRoom', (socketId) => {
+      console.log(socketId)
       this.removeOtherPlayer(socketId)
-      store.dispatch(deleteUser(socketId))
+      this.notify(this.otherPlayerMap)
     })
   }
 
@@ -58,7 +64,7 @@ export class RoomManager {
   }
 
   /** 다른 플레이어 입장 */
-  addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
+  private addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
     if (!socketId) return
 
     const newPlayer = new OtherPlayer(this.game, 120, 180, texture, nickname)
@@ -67,16 +73,19 @@ export class RoomManager {
     this.game.add.existing(newPlayer)
 
     this.game.otherPlayers.add(newPlayer)
-    this.playerMap.set(socketId, newPlayer)
+    this.otherPlayerMap = new Map(this.otherPlayerMap).set(socketId, newPlayer)
   }
 
   /** 다른 플레이어 퇴장 */
-  removeOtherPlayer(socketId: string) {
-    const otherPlayer = this.playerMap.get(socketId)
+  private removeOtherPlayer(socketId: string) {
+    const otherPlayer = this.otherPlayerMap.get(socketId)
 
     if (otherPlayer) {
       this.game.otherPlayers.remove(otherPlayer, true, true)
-      this.playerMap.delete(socketId)
+
+      const newMap = new Map(this.otherPlayerMap)
+      newMap.delete(socketId)
+      this.otherPlayerMap = newMap
     }
   }
 }

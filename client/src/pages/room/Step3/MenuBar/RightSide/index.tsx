@@ -37,13 +37,13 @@ function RightSide() {
   }
 
   return (
-    <div className="flex gap-3">
+    <div className="flex items-center gap-3">
       <UserList />
 
       <button
         tabIndex={-1}
         onClick={onLinkClick}
-        className="flex size-[40px] items-center justify-center rounded-full bg-purple-600 text-white duration-200 hover:bg-purple-700"
+        className="flex size-[40px] items-center justify-center rounded-full bg-cyan-500 text-white duration-200 hover:bg-purple-700"
       >
         <IconLink className="size-5" />
       </button>
