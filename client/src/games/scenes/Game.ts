@@ -6,11 +6,11 @@ import Printer from '../items/Printer'
 import Secretary from '../items/Secretary'
 import WaterPurifier from '../items/WaterPurifier'
 import ScreenBoard from '../items/ScreenBoard'
-import {
-  ServerAvatarPosition,
-  ServerPlayerInfo,
-} from '../../../../types/socket'
+import { RoomManager } from '@managers/RoomManager'
 import { ChatManager } from '@managers/ChatManager'
+import { ChairManager } from '@managers/ChairManager'
+import { PlayManager } from '@managers/PlayManager'
+import { VideoManager } from '@managers/VideoManager'
 import { SocketManager } from '@managers/SocketManager'
 
 export default class Game extends Phaser.Scene {
@@ -22,23 +22,23 @@ export default class Game extends Phaser.Scene {
   roomNum!: string
   player!: Player
   otherPlayers!: Phaser.Physics.Arcade.Group
-  // 소켓 매니저
-  socket: SocketManager
-  // 채팅 매니저
+  ws: SocketManager
+  room: RoomManager
   chat: ChatManager
-  // 멀티 플레이 매니저
-  otherPlayerMap = new Map<string, OtherPlayer>()
-  // 화상채팅 매니저
-  videoChatPlayers: Set<string> = new Set()
-  // 의자 매니저
-  occupiedChairs: Set<string> = new Set()
+  chair: ChairManager
+  play: PlayManager
+  video: VideoManager
 
   constructor() {
     // Scene Key
     super('game')
 
-    this.socket = new SocketManager(this)
+    this.ws = new SocketManager()
+    this.room = new RoomManager(this)
     this.chat = new ChatManager(this)
+    this.chair = new ChairManager(this)
+    this.play = new PlayManager(this)
+    this.video = new VideoManager(this)
   }
 
   setUpKeys() {
@@ -185,45 +185,13 @@ export default class Game extends Phaser.Scene {
     this.setUpKeys()
   }
 
-  /** 다른 플레이어 입장 */
-  addOtherPlayer({ nickname, texture, socketId }: ServerPlayerInfo) {
-    if (!socketId) return
-
-    const newPlayer = new OtherPlayer(this, 120, 180, texture, nickname)
-    newPlayer.anims.play(`${texture}_stand_down`, true)
-    newPlayer.setDepth(900)
-    this.add.existing(newPlayer)
-
-    this.otherPlayers.add(newPlayer)
-    this.otherPlayerMap.set(socketId, newPlayer)
-  }
-
-  /** 다른 플레이어 퇴장 */
-  removeOtherPlayer(socketId: string) {
-    const otherPlayer = this.otherPlayerMap.get(socketId)
-
-    if (otherPlayer) {
-      this.otherPlayers.remove(otherPlayer, true, true)
-      this.otherPlayerMap.delete(socketId)
-    }
-  }
-
-  /** 다른 플레이어의 위치 정보 업데이트 */
-  updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
-    const otherPlayer = this.otherPlayerMap.get(socketId)
-
-    if (otherPlayer) {
-      otherPlayer.updatePosition({ x, y, animation })
-    }
-  }
-
   /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */
   private handlePlayerCollider(player: any, interactionItem: any) {
     if (this.player.selectedInteractionItem) return
 
     if (
       interactionItem.id &&
-      this.occupiedChairs.has(interactionItem.id.toString())
+      this.chair.list.has(interactionItem.id.toString())
     )
       return
     player.selectedInteractionItem = interactionItem

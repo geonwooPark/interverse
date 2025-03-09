@@ -31,6 +31,10 @@ export default class Chair extends ObjectItem {
 
     player.anims.play(`${player.avatarTexture}_sit_${this.heading}`, true)
 
+    // sendAvatarPosition
+
+    // sendChairId
+
     if (this.interaction === 'menual') {
       this.scene.events.emit('openCreatorModal')
       this.scene.events.emit(

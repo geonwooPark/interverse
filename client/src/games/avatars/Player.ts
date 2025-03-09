@@ -26,7 +26,7 @@ export default class Player extends Avatar {
 
     this.setNickname(avatar.nickname)
     this.setAvatarTexture(avatar.texture)
-    ;(this.scene as GameScene).socket.joinRoom({
+    ;(this.scene as GameScene).ws.room.joinRoom({
       roomNum,
       nickname: avatar.nickname,
       texture: avatar.texture,
@@ -85,7 +85,7 @@ export default class Player extends Avatar {
       this.play(runAnims, true)
 
       this.avatarContainer.setPosition(this.x, this.y - 35)
-      ;(this.scene as GameScene).socket.sendAvatarPosition({
+      ;(this.scene as GameScene).ws.play.sendAvatarPosition({
         x: this.x,
         y: this.y,
         roomNum,
@@ -103,7 +103,7 @@ export default class Player extends Avatar {
 
       if (!this.stopTimeout) {
         this.stopTimeout = setTimeout(() => {
-          ;(this.scene as GameScene).socket.sendAvatarPosition({
+          ;(this.scene as GameScene).ws.play.sendAvatarPosition({
             x: this.x,
             y: this.y,
             roomNum,
