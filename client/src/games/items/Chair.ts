@@ -1,5 +1,6 @@
 import Player from '@games/avatars/Player'
 import ObjectItem from './ObjectItem'
+import GameScene from '@games/scenes/Game'
 
 export default class Chair extends ObjectItem {
   id!: number
@@ -26,14 +27,19 @@ export default class Chair extends ObjectItem {
     this.tempX = player.x
     this.tempY = player.y
 
+    const game = this.scene.game.scene.getScene('game') as GameScene
+    const sitAnims = `${player.texture.key}_sit_${this.heading}`
+
     player.setPosition(this.x, this.y + 5)
     player.avatarContainer.setPosition(player.x, player.y - 35)
+    player.anims.play(sitAnims, true)
 
-    player.anims.play(`${player.avatarTexture}_sit_${this.heading}`, true)
-
-    // sendAvatarPosition
-
-    // sendChairId
+    game.play.sendAvatarPosition({
+      x: this.x,
+      y: this.y,
+      animation: sitAnims,
+    })
+    game.chair.sendChairId(this.id.toString())
 
     if (this.interaction === 'menual') {
       this.scene.events.emit('openCreatorModal')
@@ -57,6 +63,16 @@ export default class Chair extends ObjectItem {
 
   undo(player: Player) {
     player.setPosition(this.tempX, this.tempY)
+
+    const game = this.scene.game.scene.getScene('game') as GameScene
+    const standAnims = `${player.texture.key}_stand_${this.heading}`
+
+    game.play.sendAvatarPosition({
+      x: this.tempX,
+      y: this.tempY,
+      animation: standAnims,
+    })
+    game.chair.sendChairId(this.id.toString())
 
     if (this.interaction === 'menual') {
       this.scene.events.emit('closeModal')

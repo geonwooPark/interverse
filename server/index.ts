@@ -29,9 +29,16 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   },
 })
 
-export const rooms: Record<string, Record<string, RoomUser>> = {}
+export const room: Record<
+  string,
+  {
+    users: RoomUser[]
+    video: RoomUser[]
+    chair: Set<string>
+  }
+> = {}
+
 export const videoRoom: Record<string, Record<string, VideoRoomUser>> = {}
-export const occupiedChairs: Record<string, Map<string, string>> = {}
 
 io.on(
   'connection',

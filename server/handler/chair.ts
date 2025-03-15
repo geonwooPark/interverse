@@ -1,34 +1,31 @@
 import { Socket } from 'socket.io'
-import { occupiedChairs } from '..'
 import {
   ClientChairId,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../types/socket'
+import { room } from '..'
 
 export const chairHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
   const sendChairId = ({ roomNum, chairId }: ClientChairId) => {
-    if (!occupiedChairs[roomNum]) occupiedChairs[roomNum] = new Map()
-
-    if (occupiedChairs[roomNum].has(socket.id)) {
-      occupiedChairs[roomNum].delete(socket.id)
+    if (room[roomNum].chair.has(chairId)) {
+      room[roomNum].chair.delete(chairId)
     } else {
-      occupiedChairs[roomNum].set(socket.id, chairId)
+      room[roomNum].chair.add(chairId)
     }
 
     socket.broadcast.to(roomNum).emit('serverChairId', chairId)
 
     socket.on('disconnect', () => {
-      leaveChair(roomNum)
-    })
-  }
+      if (room[roomNum].chair.has(chairId)) {
+        room[roomNum].chair.delete(chairId)
 
-  const leaveChair = (roomNum: string) => {
-    io.to(roomNum).emit('serverChairId', occupiedChairs[roomNum].get(socket.id))
-    occupiedChairs[roomNum].delete(socket.id)
+        io.to(roomNum).emit('serverChairId', chairId)
+      }
+    })
   }
 
   socket.on('clientChairId', sendChairId)

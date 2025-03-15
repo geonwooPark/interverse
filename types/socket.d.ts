@@ -32,8 +32,8 @@ export interface ServerAvatarPosition {
 export interface ClientAvatarPosition {
   x: number
   y: number
-  roomNum: string
   animation: any
+  roomNum?: string
 }
 
 export interface ClientJoinVideoRoom {
@@ -57,6 +57,7 @@ export interface ClientChairId {
   chairId: string
 }
 
+// Map으로 key는 socketId value는 texture,nickname
 export interface RoomUser {
   nickname: string
   texture: string
@@ -120,7 +121,7 @@ export interface ServerToClientEvents {
   serverUpdateVideoRoomMember: (socketId: string) => void
   serverOccupiedChairs: (chairs: string[]) => void
   serverChairId: (chairId: string) => void
-  serverRoomMember: (rooms: Record<string, Record<string, RoomUser>>) => void
+  serverRoomMember: (users: RoomUser[]) => void
   serverHandleCamera: ({ socketId, isVideoEnabled }: ServerHandleCamera) => void
   serverDirectMessage: ({ message, senderId }: ServerDirectMessage) => void
 }

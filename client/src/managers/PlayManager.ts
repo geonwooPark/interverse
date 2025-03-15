@@ -30,11 +30,11 @@ export class PlayManager {
   }
 
   // 실시간 나의 위치 정보 보내기
-  sendAvatarPosition({ x, y, roomNum, animation }: ClientAvatarPosition) {
+  sendAvatarPosition({ x, y, animation }: ClientAvatarPosition) {
     this.game.ws.socket.emit('clientAvatarPosition', {
       x,
       y,
-      roomNum,
+      roomNum: this.game.roomNum,
       animation,
     })
   }

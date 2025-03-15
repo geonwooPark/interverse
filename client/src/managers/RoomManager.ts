@@ -1,4 +1,4 @@
-import { RoomUser, ServerPlayerInfo } from '../../../types/socket'
+import { ServerPlayerInfo } from '../../../types/socket'
 import OtherPlayer from '@games/avatars/OtherPlayer'
 import GameScene from '@games/scenes/Game'
 import { Observable } from './Observable'
@@ -28,19 +28,15 @@ export class RoomManager extends Observable<Map<string, OtherPlayer>> {
 
     // 서버에서 새로운 유저가 방에 존재하는 유저들의 정보 받기
     this.game.ws.socket.on('serverRoomMember', (users) => {
-      let userList: RoomUser[] = []
-      for (const user in users) {
-        userList = [...userList, users[user] as unknown as RoomUser]
-
-        if (user === this.game.ws.socket.id) continue
-        this.addOtherPlayer(users[user] as unknown as ServerPlayerInfo)
+      for (const user of users) {
+        if (user.socketId === this.game.ws.socket.id) continue
+        this.addOtherPlayer(user)
       }
       this.notify(this.otherPlayerMap)
     })
 
     // 서버에서 방에서 나간 유저 정보 받기
     this.game.ws.socket.on('serverLeaveRoom', (socketId) => {
-      console.log(socketId)
       this.removeOtherPlayer(socketId)
       this.notify(this.otherPlayerMap)
     })

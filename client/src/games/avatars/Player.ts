@@ -88,7 +88,6 @@ export default class Player extends Avatar {
       ;(this.scene as GameScene).play.sendAvatarPosition({
         x: this.x,
         y: this.y,
-        roomNum,
         animation: this.anims.currentAnim!.key,
       })
 
@@ -103,10 +102,10 @@ export default class Player extends Avatar {
 
       if (!this.stopTimeout) {
         this.stopTimeout = setTimeout(() => {
+          if (this.isInteracting) return
           ;(this.scene as GameScene).play.sendAvatarPosition({
             x: this.x,
             y: this.y,
-            roomNum,
             animation: standAnims,
           })
         }, 100)

@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io'
-import { occupiedChairs, rooms } from '..'
+import { room } from '..'
 import {
   ClientAvatarPosition,
   ClientJoinRoom,
@@ -13,19 +13,25 @@ export const roomHandler = (
   io: any,
 ) => {
   const joinRoom = ({ roomNum, nickname, texture }: ClientJoinRoom) => {
-    if (!rooms[roomNum]) rooms[roomNum] = {}
+    if (!room[roomNum]) {
+      room[roomNum] = {
+        users: [],
+        video: [],
+        chair: new Set(),
+      }
+    }
+
+    const newUser = {
+      nickname,
+      texture,
+      roomNum,
+      socketId: socket.id,
+    }
+
+    room[roomNum].users.push(newUser)
 
     // 방에 입장시키기
     socket.join(roomNum)
-
-    if (rooms[roomNum]) {
-      rooms[roomNum][socket.id] = {
-        nickname,
-        texture,
-        roomNum,
-        socketId: socket.id,
-      }
-    }
 
     // 방 입장 메시지 보내기
     io.to(roomNum).emit('serverChat', {
@@ -36,28 +42,26 @@ export const roomHandler = (
       socketId: '',
     })
 
-    // 나의 아바타 정보를 나를 제외한 모두에게 전송
-    socket.broadcast.to(roomNum).emit('serverPlayerInfo', {
-      nickname,
-      roomNum,
-      texture,
-      socketId: socket.id,
-    })
+    // 다른 사람들의 정보를 나에게 전송
+    io.to(socket.id).emit('serverRoomMember', room[roomNum].users)
 
-    // 다른 사람들의 아바타 정보를 나에게 전송
-    io.to(socket.id).emit('serverRoomMember', rooms[roomNum])
+    // 나의 정보를 나를 제외한 모두에게 전송
+    socket.broadcast.to(roomNum).emit('serverPlayerInfo', newUser)
 
     // 누군가 앉아있는 의자들 목록 알려주기
-    if (occupiedChairs[roomNum]) {
+    if (room[roomNum].chair) {
       io.to(socket.id).emit(
         'serverOccupiedChairs',
-        Array.from(occupiedChairs[roomNum]?.values()),
+        Array.from(room[roomNum].chair),
       )
     }
 
     socket.on('disconnect', () => {
+      room[roomNum].users = room[roomNum].users.filter(
+        (r) => r.socketId !== socket.id,
+      )
+
       io.to(roomNum).emit('serverLeaveRoom', socket.id)
-      delete rooms[roomNum][socket.id]
     })
   }
 

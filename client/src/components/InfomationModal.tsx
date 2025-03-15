@@ -36,7 +36,7 @@ function InfomationModal({
 
         <div className="flex gap-2">
           <Button size="md" variant="contained" onClick={onClose}>
-            {actionLabel || '닫기'}
+            {actionLabel || '확인'}
           </Button>
         </div>
       </div>

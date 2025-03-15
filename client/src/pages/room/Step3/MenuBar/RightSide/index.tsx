@@ -43,7 +43,7 @@ function RightSide() {
       <button
         tabIndex={-1}
         onClick={onLinkClick}
-        className="flex size-[40px] items-center justify-center rounded-full bg-cyan-500 text-white duration-200 hover:bg-purple-700"
+        className="flex size-[40px] items-center justify-center rounded-full bg-cyan-500 text-white duration-200 hover:bg-cyan-600"
       >
         <IconLink className="size-5" />
       </button>

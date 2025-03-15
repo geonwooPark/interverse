@@ -1,4 +1,3 @@
-import { ClientChairId } from '../../../types/socket'
 import GameScene from '@games/scenes/Game'
 
 export class ChairManager {
@@ -19,7 +18,7 @@ export class ChairManager {
       this.list = new Set([...chairs])
     })
 
-    // 서버에서 이미 누군가 앉은 의자 목록 받기
+    // 누군가 의자에 앉는다면 아이디 받아서 리스트 업데이트
     this.game.ws.socket.on('serverChairId', (chairId: string) => {
       if (this.list.has(chairId)) {
         this.list.delete(chairId)
@@ -29,7 +28,11 @@ export class ChairManager {
     })
   }
 
-  sendChairId({ roomNum, chairId }: ClientChairId) {
-    this.game.ws.socket.emit('clientChairId', { roomNum, chairId })
+  // 의자에 앉는다면 서버로 아이디 전송
+  sendChairId(chairId: string) {
+    this.game.ws.socket.emit('clientChairId', {
+      roomNum: this.game.roomNum,
+      chairId,
+    })
   }
 }
