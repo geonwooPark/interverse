@@ -23,6 +23,15 @@ export interface IChat {
   socketId?: string
 }
 
+export interface IDirectMessage {
+  id: string
+  sender: string
+  message: string
+  roomNum: string
+  receiverId: string
+  socketId?: string
+}
+
 export interface IJoinRoom {
   roomNum: string
   nickname: string
@@ -77,23 +86,9 @@ export interface ServerHandleCamera {
   isVideoEnabled: boolean
 }
 
-export interface ClientDirectMessage {
-  message: string
-  sender: string
-  senderId: string
-  receiver: string
-  receiverId: string
-}
-
-export interface ServerDirectMessage {
-  message: string
-  sender: string
-  senderId: string
-}
-
 export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
-  serverChat: (chat: ServerChat) => void
+  serverChat: (chat: IChat) => void
   serverPlayerInfo: (roomUser: RoomUserDto) => void
   serverAvatarPosition: ({ x, y, animation, socketId }: IAvatarPosition) => void
   serverJoinVideoRoom: ({
@@ -109,12 +104,12 @@ export interface ServerToClientEvents {
   serverChairId: (chairId: string) => void
   serverRoomMember: (users: IRoomUserDto[]) => void
   serverHandleCamera: ({ socketId, isVideoEnabled }: ServerHandleCamera) => void
-  serverDirectMessage: ({ message, senderId }: ServerDirectMessage) => void
+  serverDM: (dm: IDirectMessage) => void
 }
 
 export interface ClientToServerEvents {
   clientJoinRoom: ({ authCookie }: IJoinRoom) => void
-  clientChat: (clientChat: Chat) => void
+  clientChat: (chat: IChat) => void
   clientAvatarPosition: ({ x, y, roomNum, animation }: IAvatarPosition) => void
   clientJoinVideoRoom: ({
     roomNum,
@@ -127,11 +122,5 @@ export interface ClientToServerEvents {
   clientLeaveVideoRoom: (roomNum: string) => void
   clientChairId: ({ roomNum, chairId }: IChair) => void
   clientHandleCamera: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
-  clientDirectMessage: ({
-    message,
-    sender,
-    senderId,
-    receiver,
-    receiverId,
-  }: ClientDirectMessage) => void
+  clientDM: (dm: IDirectMessage) => void
 }

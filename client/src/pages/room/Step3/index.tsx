@@ -1,11 +1,11 @@
 import { useLayoutEffect } from 'react'
 import Alert from './Alert'
 import Controller from './Controller'
-import DirectMessages from './DirectMessage/DirectMessages'
 import MenuBar from './MenuBar'
 import { useAuthCookie } from '@providers/AuthProvider'
 import Modals from './Modals/Modals'
 import { useScene } from '@providers/SceneProvider'
+import DMList from './DirectMessage/DMList'
 
 export default function Step3() {
   const authCookie = useAuthCookie()
@@ -24,7 +24,7 @@ export default function Step3() {
       <MenuBar />
       <Controller />
       <Alert />
-      {/* <DirectMessages /> */}
+      <DMList />
       <Modals />
     </>
   )

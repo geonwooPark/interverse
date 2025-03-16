@@ -36,8 +36,8 @@ export class ChatManager extends Observable<IChat[]> {
   }
 
   // 메시지 송신
-  sendMessage(clientChat: IChat) {
-    this.game.ws.socket.emit('clientChat', clientChat)
+  sendChat(chat: IChat) {
+    this.game.ws.socket.emit('clientChat', chat)
   }
 
   /** 플레이어의 채팅을 말풍선으로 표시  */

@@ -13,6 +13,7 @@ import { PlayManager } from '@managers/PlayManager'
 import { VideoManager } from '@managers/VideoManager'
 import { SocketManager } from '@managers/SocketManager'
 import { INIT_POSITION } from '@constants/index'
+import { DMManager } from '@managers/DMManager'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -29,6 +30,7 @@ export default class Game extends Phaser.Scene {
   chair: ChairManager
   play: PlayManager
   video: VideoManager
+  dm: DMManager
 
   constructor() {
     // Scene Key
@@ -40,6 +42,7 @@ export default class Game extends Phaser.Scene {
     this.chair = new ChairManager(this)
     this.play = new PlayManager(this)
     this.video = new VideoManager(this)
+    this.dm = new DMManager(this)
   }
 
   setUpKeys() {

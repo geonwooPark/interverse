@@ -1,24 +1,19 @@
 import { Socket } from 'socket.io'
 import {
-  IChat,
   ClientToServerEvents,
+  IDirectMessage,
   ServerToClientEvents,
 } from '../../types/socket'
 
-export const chatHandler = (
+export const dmHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
   const socketId = socket.id
 
-  const sendChat = (chat: IChat) => {
-    if (chat.roomNum === '') return
-
-    io.to(chat.roomNum).emit('serverChat', {
-      ...chat,
-      socketId,
-    })
+  const sendDM = (dm: IDirectMessage) => {
+    io.to(dm.receiverId).emit('serverDM', { ...dm, socketId })
   }
 
-  socket.on('clientChat', sendChat)
+  socket.on('clientDM', sendDM)
 }

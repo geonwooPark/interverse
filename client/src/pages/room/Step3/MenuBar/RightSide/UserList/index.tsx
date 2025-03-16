@@ -1,16 +1,13 @@
 import { useState, useSyncExternalStore } from 'react'
-import { useAppDispatch } from '@store/store'
 import { IconUsers } from '@assets/svgs'
 import UserListItem from './UserListItem'
-import {
-  changeReceiver,
-  handleDirectMessageComposer,
-} from '@store/features/directMessageSlice'
 import { useScene } from '@providers/SceneProvider'
 import { TEXTURE_MAP } from '@constants/index'
+import useModals from '@hooks/useModals'
+import DMCreateModal from '@components/DMCreateModal'
 
 function UserList() {
-  const dispatch = useAppDispatch()
+  const { modals, addModal, removeModal } = useModals()
 
   const gameScene = useScene()
 
@@ -27,9 +24,8 @@ function UserList() {
     setIsShow((prev) => !prev)
   }
 
-  const sendDM = (nickname: string, id: string) => {
-    dispatch(handleDirectMessageComposer())
-    dispatch(changeReceiver({ nickname, id }))
+  const handleDMModal = (id: string) => {
+    addModal(<DMCreateModal id={id} onClose={removeModal} />)
   }
 
   return (
@@ -56,11 +52,17 @@ function UserList() {
             </li>
 
             {Array.from(userlist).map((user) => (
-              <UserListItem key={user[0]} user={user[1]} sendDM={sendDM} />
+              <UserListItem
+                key={user[0]}
+                user={user[1]}
+                handleDMModal={handleDMModal}
+              />
             ))}
           </ul>
         </div>
       )}
+
+      {modals}
     </div>
   )
 }

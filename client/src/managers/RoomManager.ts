@@ -57,7 +57,15 @@ export class RoomManager extends Observable<Map<string, OtherPlayer>> {
   private addOtherPlayer({ x, y, texture, nickname, socketId }: IRoomUserDto) {
     if (!socketId) return
 
-    const newPlayer = new OtherPlayer(this.game, x, y, texture, nickname)
+    const newPlayer = new OtherPlayer(
+      this.game,
+      x,
+      y,
+      texture,
+      nickname,
+      undefined,
+      socketId,
+    )
     newPlayer.anims.play(`${texture}`, true)
     newPlayer.setDepth(900)
     this.game.add.existing(newPlayer)

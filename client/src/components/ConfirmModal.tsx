@@ -18,7 +18,7 @@ function ConfirmModal({
   onSubmit,
 }: ConfirmModalProps) {
   return (
-    <div className="absolute inset-0 h-screen w-screen">
+    <div className="fixed inset-0 h-screen w-screen">
       {/* Dim */}
       {hasDim && <div onClick={onClose} className="size-full bg-black/70" />}
 

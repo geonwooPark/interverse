@@ -7,13 +7,13 @@ import { roomHandler } from './handler/room'
 import { chairHandler } from './handler/chair'
 import { chatHandler } from './handler/chat'
 import { playHandler } from './handler/play'
+import { dmHandler } from './handler/dm'
 import {
   ClientToServerEvents,
   IRoomUser,
   ServerToClientEvents,
   VideoRoomUser,
 } from '../types/socket'
-import { directMessageHandler } from './handler/directMessage'
 
 const app = express()
 app.use(cors())
@@ -49,7 +49,7 @@ io.on(
     playHandler(socket, io)
     chatHandler(socket, io)
     chairHandler(socket, io)
-    directMessageHandler(socket, io)
+    dmHandler(socket, io)
     videoRoomHandler(socket, io)
 
     socket.on('disconnecting', () => {

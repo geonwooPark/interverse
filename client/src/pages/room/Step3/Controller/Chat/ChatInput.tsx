@@ -12,6 +12,8 @@ function ChatInput({ inputRef }: ChatInputProps) {
 
   const gameScene = useScene()
 
+  const ChatManager = gameScene.chat
+
   const { nickname } = useAppSelector((state) => state.avartar)
 
   const [inputValue, setInputValue] = useState('')
@@ -32,7 +34,7 @@ function ChatInput({ inputRef }: ChatInputProps) {
     } else {
       const id = Math.random().toString()
 
-      gameScene.chat.sendMessage({
+      ChatManager.sendChat({
         id,
         message: inputValue,
         roomNum: authCookie.roomNum,
