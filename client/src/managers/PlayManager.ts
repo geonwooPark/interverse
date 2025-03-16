@@ -1,7 +1,4 @@
-import {
-  ClientAvatarPosition,
-  ServerAvatarPosition,
-} from '../../../types/socket'
+import { IAvatarPosition } from '../../../types/socket'
 import GameScene from '@games/scenes/Game'
 
 export class PlayManager {
@@ -21,7 +18,9 @@ export class PlayManager {
   }
 
   /** 다른 플레이어의 위치 정보 업데이트 */
-  updateOtherPlayer({ x, y, socketId, animation }: ServerAvatarPosition) {
+  updateOtherPlayer({ x, y, socketId, animation }: IAvatarPosition) {
+    if (!socketId) return
+
     const otherPlayer = this.game.room.otherPlayerMap.get(socketId)
 
     if (otherPlayer) {
@@ -30,12 +29,13 @@ export class PlayManager {
   }
 
   // 실시간 나의 위치 정보 보내기
-  sendAvatarPosition({ x, y, animation }: ClientAvatarPosition) {
+  sendAvatarPosition({ x, y, animation, isLast }: IAvatarPosition) {
     this.game.ws.socket.emit('clientAvatarPosition', {
       x,
       y,
       roomNum: this.game.roomNum,
       animation,
+      isLast,
     })
   }
 }

@@ -12,6 +12,7 @@ import { ChairManager } from '@managers/ChairManager'
 import { PlayManager } from '@managers/PlayManager'
 import { VideoManager } from '@managers/VideoManager'
 import { SocketManager } from '@managers/SocketManager'
+import { INIT_POSITION } from '@constants/index'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -109,7 +110,7 @@ export default class Game extends Phaser.Scene {
     this.otherPlayers = this.physics.add.group({ classType: OtherPlayer })
 
     createAvatarAnims(this.anims)
-    this.player = new Player(this, 120, 180, '')
+    this.player = new Player(this, INIT_POSITION[0], INIT_POSITION[1], '')
     this.add.existing(this.player)
 
     // Camera Setting

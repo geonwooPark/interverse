@@ -7,7 +7,7 @@ import {
   handleDirectMessageComposer,
 } from '@store/features/directMessageSlice'
 import { useScene } from '@providers/SceneProvider'
-import { textureMap } from '@constants/index'
+import { TEXTURE_MAP } from '@constants/index'
 
 function UserList() {
   const dispatch = useAppDispatch()
@@ -49,7 +49,7 @@ function UserList() {
             <li className="flex items-center justify-between p-2">
               <div className="flex items-center">
                 <div
-                  className={`mr-2 size-8 rounded-full border bg-[63px] ${textureMap[gameScene.player.texture.key]}`}
+                  className={`mr-2 size-8 rounded-full border bg-[63px] ${TEXTURE_MAP[gameScene.player.texture.key]}`}
                 />
                 {gameScene.player.nickname.text}
               </div>

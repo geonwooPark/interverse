@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io'
 import {
-  ClientChairId,
+  IChair,
   ClientToServerEvents,
   ServerToClientEvents,
 } from '../../types/socket'
@@ -10,7 +10,7 @@ export const chairHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
-  const sendChairId = ({ roomNum, chairId }: ClientChairId) => {
+  const sendChairId = ({ roomNum, chairId }: IChair) => {
     if (room[roomNum].chair.has(chairId)) {
       room[roomNum].chair.delete(chairId)
     } else {

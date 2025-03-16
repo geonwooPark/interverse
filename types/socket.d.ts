@@ -1,39 +1,48 @@
-export interface Chat {
+export interface IRoomUser {
+  [socketId: string]: {
+    nickname: string
+    texture: string
+    x: number
+    y: number
+  }
+}
+
+export interface IRoomUserDto {
+  nickname: string
+  texture: string
+  x: number
+  y: number
+  socketId: string
+}
+
+export interface IChat {
   id: string
   sender: string
   message: string
   roomNum: string
+  socketId?: string
 }
 
-export interface ServerChat extends Chat {
-  socketId: string
-}
-
-export interface ClientJoinRoom {
+export interface IJoinRoom {
   roomNum: string
   nickname: string
   texture: string
-}
-
-export interface ServerPlayerInfo {
-  nickname: string
-  texture: string
-  roomNum: string
-  socketId: string
-}
-
-export interface ServerAvatarPosition {
   x: number
   y: number
-  socketId: string
-  animation: any
 }
 
-export interface ClientAvatarPosition {
+export interface IAvatarPosition {
   x: number
   y: number
   animation: any
+  socketId?: string
   roomNum?: string
+  isLast?: boolean
+}
+
+export interface IChair {
+  roomNum: string
+  chairId: string
 }
 
 export interface ClientJoinVideoRoom {
@@ -50,19 +59,6 @@ export interface ServerJoinVideoRoom {
   nickname: string
   texture: string
   isVideoEnabled: boolean
-}
-
-export interface ClientChairId {
-  roomNum: string
-  chairId: string
-}
-
-// Map으로 key는 socketId value는 texture,nickname
-export interface RoomUser {
-  nickname: string
-  texture: string
-  roomNum: string
-  socketId: string
 }
 
 export interface VideoRoomUser {
@@ -98,18 +94,8 @@ export interface ServerDirectMessage {
 export interface ServerToClientEvents {
   serverLeaveRoom: (sockerId: string) => void
   serverChat: (chat: ServerChat) => void
-  serverPlayerInfo: ({
-    nickname,
-    texture,
-    roomNum,
-    socketId,
-  }: ServerPlayerInfo) => void
-  serverAvatarPosition: ({
-    x,
-    y,
-    animation,
-    socketId,
-  }: ServerAvatarPosition) => void
+  serverPlayerInfo: (roomUser: RoomUserDto) => void
+  serverAvatarPosition: ({ x, y, animation, socketId }: IAvatarPosition) => void
   serverJoinVideoRoom: ({
     peerId,
     socketId,
@@ -121,20 +107,15 @@ export interface ServerToClientEvents {
   serverUpdateVideoRoomMember: (socketId: string) => void
   serverOccupiedChairs: (chairs: string[]) => void
   serverChairId: (chairId: string) => void
-  serverRoomMember: (users: RoomUser[]) => void
+  serverRoomMember: (users: IRoomUserDto[]) => void
   serverHandleCamera: ({ socketId, isVideoEnabled }: ServerHandleCamera) => void
   serverDirectMessage: ({ message, senderId }: ServerDirectMessage) => void
 }
 
 export interface ClientToServerEvents {
-  clientJoinRoom: ({ authCookie }: ClientJoinRoom) => void
+  clientJoinRoom: ({ authCookie }: IJoinRoom) => void
   clientChat: (clientChat: Chat) => void
-  clientAvatarPosition: ({
-    x,
-    y,
-    roomNum,
-    animation,
-  }: ClientAvatarPosition) => void
+  clientAvatarPosition: ({ x, y, roomNum, animation }: IAvatarPosition) => void
   clientJoinVideoRoom: ({
     roomNum,
     peerId,
@@ -144,7 +125,7 @@ export interface ClientToServerEvents {
   }: ClientJoinVideoRoom) => void
   clientCreateVideoRoom: (roomNum: string) => void
   clientLeaveVideoRoom: (roomNum: string) => void
-  clientChairId: ({ roomNum, chairId }: ClientChairId) => void
+  clientChairId: ({ roomNum, chairId }: IChair) => void
   clientHandleCamera: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
   clientDirectMessage: ({
     message,

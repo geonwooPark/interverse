@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import AvatarSelector from './AvatarSelector'
 import TextField from '@components/TextField'
-import { MAX_NICKNAME_LENGTH, textureMap } from '@constants/index'
+import { MAX_NICKNAME_LENGTH, TEXTURE_MAP } from '@constants/index'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useAppDispatch } from '@store/store'
@@ -33,7 +33,9 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
   const onEnter = () => {
     // 아바타 전역 상태에 등록
-    dispatch(setAvatar({ texture: Object.keys(textureMap)[texture], nickname }))
+    dispatch(
+      setAvatar({ texture: Object.keys(TEXTURE_MAP)[texture], nickname }),
+    )
 
     // 게임 실행
     game.scene.start('game')

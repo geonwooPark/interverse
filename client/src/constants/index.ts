@@ -1,4 +1,6 @@
-export const textureMap: Record<string, string> = {
+export const INIT_POSITION = [120, 180]
+
+export const TEXTURE_MAP: Record<string, string> = {
   conference: `bg-[url("/assets/character/conference.png")]`,
   bob: `bg-[url("/assets/character/bob.png")]`,
   emma: `bg-[url("/assets/character/emma.png")]`,
@@ -8,7 +10,7 @@ export const textureMap: Record<string, string> = {
 
 export const MAX_NICKNAME_LENGTH = 10
 
-export const WaterPurifierContent = [
+export const WATER_PURIFIER_CONTENT = [
   {
     content: '긴장될 때는 물을 한 잔 마셔보세요!',
   },

@@ -1,11 +1,11 @@
 import Game from '@games/scenes/Game'
-import { Chat, ServerChat } from '../../../types/socket'
+import { IChat } from '../../../types/socket'
 import { Observable } from './Observable'
 import GameScene from '@games/scenes/Game'
 
-export class ChatManager extends Observable<ServerChat[]> {
+export class ChatManager extends Observable<IChat[]> {
   private game: GameScene
-  private list: ServerChat[] = []
+  private list: IChat[] = []
 
   constructor(game: Game) {
     super()
@@ -22,12 +22,12 @@ export class ChatManager extends Observable<ServerChat[]> {
     })
   }
 
-  getState(): ServerChat[] {
+  getState(): IChat[] {
     return this.list
   }
 
   // 메시지 수신
-  receiveChat(chat: ServerChat): void {
+  receiveChat(chat: IChat): void {
     this.list = [...this.list, chat]
 
     this.displayBubbleChat(chat)
@@ -36,13 +36,14 @@ export class ChatManager extends Observable<ServerChat[]> {
   }
 
   // 메시지 송신
-  sendMessage(clientChat: Chat) {
+  sendMessage(clientChat: IChat) {
     this.game.ws.socket.emit('clientChat', clientChat)
   }
 
   /** 플레이어의 채팅을 말풍선으로 표시  */
-  displayBubbleChat(chat: ServerChat) {
+  displayBubbleChat(chat: IChat) {
     if (!chat.sender) return
+    if (!chat.socketId) return
 
     const targetPlayer = this.game.room.otherPlayerMap.get(chat.socketId)
 

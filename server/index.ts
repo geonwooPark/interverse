@@ -5,9 +5,11 @@ import cors from 'cors'
 import { videoRoomHandler } from './handler/videoRoom'
 import { roomHandler } from './handler/room'
 import { chairHandler } from './handler/chair'
+import { chatHandler } from './handler/chat'
+import { playHandler } from './handler/play'
 import {
   ClientToServerEvents,
-  RoomUser,
+  IRoomUser,
   ServerToClientEvents,
   VideoRoomUser,
 } from '../types/socket'
@@ -32,8 +34,8 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
 export const room: Record<
   string,
   {
-    users: RoomUser[]
-    video: RoomUser[]
+    users: IRoomUser
+    video: IRoomUser
     chair: Set<string>
   }
 > = {}
@@ -44,9 +46,11 @@ io.on(
   'connection',
   (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
     roomHandler(socket, io)
-    videoRoomHandler(socket, io)
+    playHandler(socket, io)
+    chatHandler(socket, io)
     chairHandler(socket, io)
     directMessageHandler(socket, io)
+    videoRoomHandler(socket, io)
 
     socket.on('disconnecting', () => {
       console.log('유저 연결 끊김..')

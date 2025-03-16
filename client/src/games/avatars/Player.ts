@@ -1,3 +1,4 @@
+import { INIT_POSITION } from '@constants/index'
 import { store } from '../../store/store'
 import Avatar from './Avatar'
 import GameScene from '@games/scenes/Game'
@@ -30,6 +31,8 @@ export default class Player extends Avatar {
       roomNum,
       nickname: avatar.nickname,
       texture: avatar.texture,
+      x: INIT_POSITION[0],
+      y: INIT_POSITION[1],
     })
   }
 
@@ -107,6 +110,7 @@ export default class Player extends Avatar {
             x: this.x,
             y: this.y,
             animation: standAnims,
+            isLast: true,
           })
         }, 100)
       }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { PeerStreamType } from '../../../../../../../types/client'
-import { textureMap } from '@constants/index'
+import { TEXTURE_MAP } from '@constants/index'
 
 interface VideoPlayerProps {
   videoStream: PeerStreamType
@@ -21,7 +21,7 @@ function VideoPlayer({ videoStream }: VideoPlayerProps) {
       {isVideoEnabled || (
         <div className="absolute left-[50%] top-[50%] flex size-full translate-x-[-50%] translate-y-[-50%] items-center justify-center bg-white">
           <div
-            className={`scale-120 h-[48px] w-[32px] bg-[64px] ${textureMap[texture]}`}
+            className={`scale-120 h-[48px] w-[32px] bg-[64px] ${TEXTURE_MAP[texture]}`}
           />
         </div>
       )}

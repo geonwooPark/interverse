@@ -1,4 +1,4 @@
-import { textureMap } from '@constants/index'
+import { TEXTURE_MAP } from '@constants/index'
 
 interface AvatarSelectorProps {
   texture: number
@@ -6,7 +6,7 @@ interface AvatarSelectorProps {
 }
 
 function AvatarSelector({ texture, onChange }: AvatarSelectorProps) {
-  const textureArr = Object.keys(textureMap)
+  const textureArr = Object.keys(TEXTURE_MAP)
 
   const textureImageLength = textureArr.length
 
@@ -35,7 +35,7 @@ function AvatarSelector({ texture, onChange }: AvatarSelectorProps) {
 
         <div className="flex">
           <div
-            className={`h-[52px] w-[32px] scale-150 bg-[-608px] bg-no-repeat ${textureMap[textureArr[texture]]}`}
+            className={`h-[52px] w-[32px] scale-150 bg-[-608px] bg-no-repeat ${TEXTURE_MAP[textureArr[texture]]}`}
           />
         </div>
 

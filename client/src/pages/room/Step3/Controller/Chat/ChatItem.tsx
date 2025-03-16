@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { Chat } from '../../../../../../../types/socket'
+import { IChat } from '../../../../../../../types/socket'
 
 interface ChatItemProps {
-  chatItem: Chat
+  chatItem: IChat
 }
 
 function ChatItem({ chatItem }: ChatItemProps) {

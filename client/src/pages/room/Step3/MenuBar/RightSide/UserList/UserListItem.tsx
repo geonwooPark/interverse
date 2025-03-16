@@ -1,5 +1,5 @@
 import { IconMessage } from '@assets/svgs'
-import { textureMap } from '@constants/index'
+import { TEXTURE_MAP } from '@constants/index'
 import OtherPlayer from '@games/avatars/OtherPlayer'
 
 interface UserListItemProps {
@@ -12,7 +12,7 @@ function UserListItem({ user, sendDM }: UserListItemProps) {
     <li key={user.socketId} className="flex items-center justify-between p-2">
       <div className="flex items-center">
         <div
-          className={`mr-2 size-8 rounded-full border bg-[63px] ${textureMap[user.texture.key]}`}
+          className={`mr-2 size-8 rounded-full border bg-[63px] ${TEXTURE_MAP[user.texture.key]}`}
         />
         {user.nickname.text}
       </div>
