@@ -11,6 +11,7 @@ import { dmHandler } from './handler/dm'
 import {
   ClientToServerEvents,
   IRoomUser,
+  IVideoRoomUser,
   ServerToClientEvents,
   VideoRoomUser,
 } from '../types/socket'
@@ -35,7 +36,7 @@ export const room: Record<
   string,
   {
     users: IRoomUser
-    video: IRoomUser
+    video: IVideoRoomUser
     chair: Set<string>
   }
 > = {}

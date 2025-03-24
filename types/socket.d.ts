@@ -54,6 +54,15 @@ export interface IChair {
   chairId: string
 }
 
+export interface IVideoRoomUser {
+  [socketId: string]: {
+    nickname: string
+    texture: string
+    isVideoEnabled: boolean
+    isAudioEnabled: boolean
+  }
+}
+
 export interface ClientJoinVideoRoom {
   roomNum: string
   peerId: string

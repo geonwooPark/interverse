@@ -25,11 +25,6 @@ export class SocketManager {
     this.socket.on('connect', () => {
       console.log('🟢 서버에 연결되었습니다.')
     })
-
-    // 서버에서 DM 받기
-    // this.socket.on('serverDirectMessage', (messageData) =>
-    //   store.dispatch(addDM({ id: Math.random(), ...messageData })),
-    // )
   }
 
   disconnect() {

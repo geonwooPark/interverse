@@ -1,61 +1,15 @@
 import { Socket } from 'socket.io'
-import { videoRoom } from '..'
-import {
-  ClientHandleCamera,
-  ClientJoinVideoRoom,
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from '../../types/socket'
+import { ClientToServerEvents, ServerToClientEvents } from '../../types/socket'
 
 export const videoRoomHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {
-  const joinVideoRoom = ({
-    roomNum,
-    peerId,
-    nickname,
-    texture,
-    isVideoEnabled,
-  }: ClientJoinVideoRoom) => {
-    if (!peerId || !roomNum || !nickname) return
-    if (!videoRoom[roomNum]) videoRoom[roomNum] = {}
-    if (videoRoom[roomNum][socket.id]) return
-    if (Object.keys(videoRoom[roomNum]).length >= 7) return
+  const joinVideoRoom = () => {}
 
-    videoRoom[roomNum][socket.id] = {
-      peerId,
-      socketId: socket.id,
-      nickname,
-    }
-    socket.join(`${roomNum}_video`)
+  const handleCamera = () => {}
 
-    socket.broadcast.to(`${roomNum}_video`).emit('serverJoinVideoRoom', {
-      peerId,
-      socketId: socket.id,
-      nickname,
-      texture,
-      isVideoEnabled,
-    })
-
-    socket.on('disconnect', () => {
-      leaveVideoRoom(roomNum)
-    })
-  }
-
-  const handleCamera = ({ isVideoEnabled, roomNum }: ClientHandleCamera) => {
-    io.to(`${roomNum}_video`).emit('serverHandleCamera', {
-      socketId: socket.id,
-      isVideoEnabled,
-    })
-  }
-
-  const leaveVideoRoom = (roomNum: string) => {
-    if (!videoRoom[roomNum]) return
-    socket.broadcast.to(roomNum).emit('serverUpdateVideoRoomMember', socket.id)
-    delete videoRoom[roomNum][socket.id]
-    io.to(socket.id).emit('serverLeaveVideoRoom')
-  }
+  const leaveVideoRoom = () => {}
 
   socket.on('clientJoinVideoRoom', joinVideoRoom)
   socket.on('clientHandleCamera', handleCamera)

@@ -38,6 +38,7 @@ export default class Chair extends ObjectItem {
       x: this.x,
       y: this.y,
       animation: sitAnims,
+      isLast: true,
     })
     game.chair.sendChairId(this.id.toString())
 

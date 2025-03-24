@@ -1,6 +1,6 @@
 import { store } from '@store/store'
 import { CookieType } from '../../../types/client'
-import { ClientDirectMessage, ClientHandleCamera } from '../../../types/socket'
+import { ClientHandleCamera } from '../../../types/socket'
 import { addPeerStream } from '@store/features/myStreamSlice'
 import { MediaConnection } from 'peerjs'
 import GameScene from '@games/scenes/Game'
@@ -108,22 +108,6 @@ export class VideoManager {
           sound: true,
         }),
       )
-    })
-  }
-
-  sendDirectMessage({
-    message,
-    senderId,
-    receiver,
-    sender,
-    receiverId,
-  }: ClientDirectMessage) {
-    this.game.ws.socket.emit('clientDirectMessage', {
-      message,
-      sender,
-      senderId,
-      receiver,
-      receiverId,
     })
   }
 
