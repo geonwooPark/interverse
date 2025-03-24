@@ -7,6 +7,7 @@ interface ConfirmModalProps {
   hasDim?: boolean
   onClose: () => void
   onSubmit: any
+  hideLeftButton?: boolean
 }
 
 function ConfirmModal({
@@ -16,6 +17,7 @@ function ConfirmModal({
   hasDim = true,
   onClose,
   onSubmit,
+  hideLeftButton = false,
 }: ConfirmModalProps) {
   return (
     <div className="fixed inset-0 h-screen w-screen">
@@ -31,13 +33,17 @@ function ConfirmModal({
         </div>
 
         <div className="py-5">
-          <p className="text-sm">{description}</p>
+          <p className="whitespace-pre-line text-sm leading-none">
+            {description}
+          </p>
         </div>
 
         <div className="flex gap-2">
-          <Button size="md" variant="ghost" onClick={onClose}>
-            취소
-          </Button>
+          {hideLeftButton || (
+            <Button size="md" variant="ghost" onClick={onClose}>
+              취소
+            </Button>
+          )}
           <Button size="md" variant="contained" onClick={onSubmit}>
             {actionLabel || '확인'}
           </Button>

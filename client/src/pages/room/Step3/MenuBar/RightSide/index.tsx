@@ -2,7 +2,6 @@ import { IconLink, IconOff } from '@assets/svgs'
 import ConfirmModal from '@components/ConfirmModal'
 import useModals from '@hooks/useModals'
 import UserList from './UserList'
-import InfomationModal from '@components/InfomationModal'
 
 function RightSide() {
   const { modals, addModal, removeModal } = useModals()
@@ -14,11 +13,13 @@ function RightSide() {
     navigator.clipboard.writeText(window.location.href)
 
     addModal(
-      <InfomationModal
+      <ConfirmModal
         title="복사 완료"
         description={`링크가 성공적으로 복사되었습니다. \n
         팀원이나 참여자와 공유하여 함께하세요!`}
         onClose={removeModal}
+        onSubmit={removeModal}
+        hideLeftButton
       />,
     )
   }
