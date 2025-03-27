@@ -54,6 +54,8 @@ export default class Chair extends ObjectItem {
         'changeContent',
         'ESC 키를 눌러 게임으로 돌아갈 수 있습니다.',
       )
+
+      game.video.joinVideoRoom()
     } else {
       this.scene.events.emit(
         'changeContent',

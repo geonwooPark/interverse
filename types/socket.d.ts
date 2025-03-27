@@ -114,22 +114,38 @@ export interface ServerToClientEvents {
   serverRoomMember: (users: IRoomUserDto[]) => void
   serverHandleCamera: ({ socketId, isVideoEnabled }: ServerHandleCamera) => void
   serverDM: (dm: IDirectMessage) => void
+  serverRtpCapabilities: (
+    rtpCapabilities: mediasoup.types.RtpCapabilities,
+  ) => void
+  serverSendTransportCreated: (transport: any) => void
+  serverProduced: ({ id: any }) => void
 }
 
 export interface ClientToServerEvents {
   clientJoinRoom: ({ authCookie }: IJoinRoom) => void
   clientChat: (chat: IChat) => void
   clientAvatarPosition: ({ x, y, roomNum, animation }: IAvatarPosition) => void
-  clientJoinVideoRoom: ({
-    roomNum,
-    peerId,
-    nickname,
-    texture,
-    isVideoEnabled,
-  }: ClientJoinVideoRoom) => void
+  clientJoinVideoRoom: (roomNum: string) => void
   clientCreateVideoRoom: (roomNum: string) => void
   clientLeaveVideoRoom: (roomNum: string) => void
   clientChairId: ({ roomNum, chairId }: IChair) => void
   clientHandleCamera: ({ isVideoEnabled, roomNum }: ClientHandleCamera) => void
   clientDM: (dm: IDirectMessage) => void
+  clientCreateSendTransport: (roomNum: string) => void
+  clientConnectTransport: ({
+    roomNum,
+    dtlsParameters,
+  }: {
+    roomNum: string
+    dtlsParameters: any
+  }) => Promise<void>
+  clientProduce: ({
+    roomNum,
+    kind,
+    rtpParameters,
+  }: {
+    roomNum: string
+    kind: any
+    rtpParameters: any
+  }) => Promise<void>
 }

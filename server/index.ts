@@ -11,17 +11,14 @@ import { dmHandler } from './handler/dm'
 import {
   ClientToServerEvents,
   IRoomUser,
-  IVideoRoomUser,
   ServerToClientEvents,
-  VideoRoomUser,
 } from '../types/socket'
+import { WebRtcTransport } from 'mediasoup/node/lib/WebRtcTransportTypes'
 
 const app = express()
+
 app.use(cors())
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!')
-})
 const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
@@ -36,12 +33,10 @@ export const room: Record<
   string,
   {
     users: IRoomUser
-    video: IVideoRoomUser
+    video: Map<string, WebRtcTransport>
     chair: Set<string>
   }
 > = {}
-
-export const videoRoom: Record<string, Record<string, VideoRoomUser>> = {}
 
 io.on(
   'connection',
@@ -59,6 +54,6 @@ io.on(
   },
 )
 
-server.listen(3000, () => {
+server.listen(8000, () => {
   console.log('서버 실행중...')
 })

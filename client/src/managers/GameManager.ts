@@ -17,6 +17,7 @@ class GameManager {
           width: window.innerWidth,
           height: window.innerHeight,
           parent: 'game-container',
+          mode: Phaser.Scale.RESIZE,
         },
         physics: {
           default: 'arcade',

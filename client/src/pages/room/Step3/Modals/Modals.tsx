@@ -19,7 +19,7 @@ function Modals() {
     gameScene.events.on('openMenualModal', () => addModal(<ManualCard />))
     gameScene.events.on('openSurveyModal', () => addModal(<SurveyCard />))
     gameScene.events.on('openCreatorModal', () => addModal(<CreatorCard />))
-    // gameScene.events.on('openVideoModal', () => addModal(<VideoCard />))
+    gameScene.events.on('openVideoModal', () => addModal(<VideoCard />))
   }, [])
 
   if (modals.length === 0) return null
