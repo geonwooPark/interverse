@@ -31,7 +31,7 @@ function CreatorCard() {
         </Button>
 
         <Button size="lg" variant="ghost" fullWidth onClick={handleClick}>
-          이력서
+          RESUME
         </Button>
       </div>
     </div>

@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { MyStreamSlice } from './features/myStreamSlice'
-import { AvatarSlice } from './features/avatarSlice'
+import { UserSlice } from './features/userSlice'
 
 export const store = configureStore({
   reducer: {
-    avartar: AvatarSlice.reducer,
-    myStream: MyStreamSlice.reducer,
+    avartar: UserSlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>

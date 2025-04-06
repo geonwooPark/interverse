@@ -4,11 +4,11 @@ import Chat from './Chat'
 import { useScene } from '@providers/SceneProvider'
 
 function Controller() {
-  const [showChat, setShowChat] = useState(true)
-
   const gameScene = useScene()
 
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const [showChat, setShowChat] = useState(true)
 
   useEffect(() => {
     const onFocusChat = () => {

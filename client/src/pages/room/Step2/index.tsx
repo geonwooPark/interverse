@@ -5,8 +5,8 @@ import { MAX_NICKNAME_LENGTH, TEXTURE_MAP } from '@constants/index'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useAppDispatch } from '@store/store'
-import { setAvatar } from '@store/features/avatarSlice'
 import GameManager from '@managers/GameManager'
+import { setUser } from '@store/features/userSlice'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
@@ -33,9 +33,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
   const onEnter = () => {
     // 아바타 전역 상태에 등록
-    dispatch(
-      setAvatar({ texture: Object.keys(TEXTURE_MAP)[texture], nickname }),
-    )
+    dispatch(setUser({ texture: Object.keys(TEXTURE_MAP)[texture], nickname }))
 
     // 게임 실행
     game.scene.start('game')

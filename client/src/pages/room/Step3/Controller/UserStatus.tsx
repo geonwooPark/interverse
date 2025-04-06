@@ -1,12 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@store/store'
-import {
-  controlVideoStream,
-  controlAudioStream,
-  handleAudio,
-  handleVideo,
-} from '@store/features/myStreamSlice'
 import { IconCam, IconChat, IconMic } from '@assets/svgs'
 import { useAuthCookie } from '@providers/AuthProvider'
+import { toggleAudio, toggleVideo } from '@store/features/userSlice'
 
 interface UserStatusProps {
   showChat: boolean
@@ -22,26 +17,16 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
 
   const role = authCookie?.role === 'host' ? '호스트' : '게스트'
 
-  const { myStream, controller } = useAppSelector((state) => state.myStream)
-
   const onChatClick = () => {
     setShowChat((prev) => !prev)
   }
 
   const onCamClick = () => {
-    dispatch(controlVideoStream())
-    dispatch(handleVideo())
-
-    const isVideoEnabled = controller.video ? false : true
-    if (!authCookie) return
-    if (myStream.stream) {
-      // ws.sendCameraStatus({ isVideoEnabled, roomNum: authCookie.roomNum })
-    }
+    dispatch(toggleVideo())
   }
 
   const onMicClick = () => {
-    dispatch(controlAudioStream())
-    dispatch(handleAudio())
+    dispatch(toggleAudio())
   }
 
   return (
@@ -61,14 +46,14 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
 
         <div
           onClick={onCamClick}
-          className={`${controller.video ? 'text-green-500' : 'text-red-500'} flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60`}
+          className={`${user.isVideoEnabled ? 'text-green-500' : 'text-red-500'} flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60`}
         >
           <IconCam className="size-4" />
         </div>
 
         <div
           onClick={onMicClick}
-          className={`${controller.audio ? 'text-green-500' : 'text-red-500'} flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60`}
+          className={`${user.isAudioEnabled ? 'text-green-500' : 'text-red-500'} flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60`}
         >
           <IconMic className="size-4" />
         </div>

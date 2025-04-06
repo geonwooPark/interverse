@@ -1,9 +1,16 @@
-export const requestMediaPermissions = async () => {
-  try {
-    // 카메라와 마이크 권한을 요청
-    await navigator.permissions.query({ name: 'camera' })
-    await navigator.permissions.query({ name: 'microphone' })
-  } catch (error) {
-    console.error('권한 요청 실패:', error)
+export const requestMediaPermissions =
+  async (): Promise<MediaStream | null> => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      })
+
+      stream.getTracks().forEach((track) => track.stop())
+
+      return stream
+    } catch (error) {
+      console.error('미디어 권한 요청 실패:', error)
+      return null
+    }
   }
-}
