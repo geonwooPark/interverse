@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react'
 import { _createContext } from '../utils/_createContext'
 import { getCookie, setCookie } from '../utils/cookie'
-import { CookieType } from '../../../types/client'
+import { CookieType } from 'src/types'
 
 type ContextState = CookieType[]
 

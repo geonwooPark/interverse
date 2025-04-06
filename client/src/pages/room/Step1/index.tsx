@@ -5,7 +5,7 @@ import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useSearchParams } from 'react-router-dom'
 import { useRoomsAction, useRoomsState } from '@providers/RoomsProvider'
-import { CookieType } from '../../../../../types/client'
+import { CookieType } from 'src/types'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 

@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useRoomsState } from './RoomsProvider'
 import { _createContext } from '../utils/_createContext'
-import { CookieType } from '../../../types/client'
+import { CookieType } from 'src/types'
 
 type ContextState = CookieType | undefined
 

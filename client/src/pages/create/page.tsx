@@ -5,9 +5,9 @@ import { encrypt } from '../../utils/crypto'
 import Characters from './Characters'
 import TextField from '../../components/TextField'
 import Button from '../../components/Button'
-import { CookieType } from '../../../../types/client'
 import { useRoomsAction, useRoomsState } from '../../providers/RoomsProvider'
 import { paths } from '../../routes/paths'
+import { CookieType } from 'src/types'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
