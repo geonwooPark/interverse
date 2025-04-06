@@ -1,9 +1,12 @@
-import { requestMediaPermissions } from '@utils/requestMediaPermissions'
 import React, { useEffect, useState } from 'react'
 
 type PermissionState = 'granted' | 'denied' | 'prompt'
 
-export default function useMediaPermissions() {
+type IParams = {
+  fallback?: () => void
+}
+
+export default function useMediaPermissions({ fallback }: IParams) {
   const [permissions, setPermissions] = useState<{
     camera: PermissionState
     microphone: PermissionState
@@ -36,6 +39,23 @@ export default function useMediaPermissions() {
   }, [])
 
   useEffect(() => {
+    const requestMediaPermissions = async (): Promise<MediaStream | null> => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        })
+
+        stream.getTracks().forEach((track) => track.stop())
+
+        return stream
+      } catch (error) {
+        fallback && fallback()
+
+        return null
+      }
+    }
+
     requestMediaPermissions()
   }, [])
 

@@ -26,14 +26,14 @@ function ConfirmModal({
 
       {/* Modal */}
       <div
-        className={`absolute left-[50%] top-[50%] size-full h-fit w-[320px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-4`}
+        className={`absolute left-[50%] top-[50%] size-full h-fit w-[360px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-4`}
       >
         <div>
           <p className="text-lg">{title}</p>
         </div>
 
-        <div className="py-5">
-          <p className="whitespace-pre-line text-sm leading-none">
+        <div className="py-6">
+          <p className="whitespace-pre-line text-sm leading-[1.5]">
             {description}
           </p>
         </div>
