@@ -16,7 +16,7 @@ export const roomHandler = (
     if (!room[roomNum]) {
       room[roomNum] = {
         users: {},
-        video: null,
+        video: new Map(),
         chair: new Set(),
       }
     }

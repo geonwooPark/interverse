@@ -81,6 +81,8 @@ export default class Chair extends ObjectItem {
       this.scene.events.emit('closeModal')
     } else if (this.interaction === 'interview') {
       this.scene.events.emit('closeModal')
+
+      game.video.leaveVideoRoom()
     }
 
     this.scene.events.emit('changeContent', '')

@@ -13,7 +13,7 @@ import {
   IRoomUser,
   ServerToClientEvents,
 } from '../types/socket'
-import { WebRtcTransport } from 'mediasoup/node/lib/WebRtcTransportTypes'
+import * as mediasoup from 'mediasoup'
 
 const app = express()
 
@@ -23,7 +23,11 @@ const server = http.createServer(app)
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: ['http://localhost:5173', 'https://www.interverse.kr'],
+    origin: [
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      'https://www.interverse.kr',
+    ],
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -33,7 +37,15 @@ export const room: Record<
   string,
   {
     users: IRoomUser
-    video: Map<string, WebRtcTransport>
+    video: Map<
+      string,
+      {
+        transport: mediasoup.types.WebRtcTransport
+        producers?: mediasoup.types.Producer[]
+        consumers?: mediasoup.types.Consumer[]
+      }
+    >
+
     chair: Set<string>
   }
 > = {}

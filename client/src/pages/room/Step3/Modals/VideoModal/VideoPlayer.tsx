@@ -1,32 +1,28 @@
 import { useEffect, useRef } from 'react'
-import { PeerStreamType } from '../../../../../../../types/client'
-import { TEXTURE_MAP } from '@constants/index'
 
 interface VideoPlayerProps {
-  videoStream: PeerStreamType
+  track: MediaStreamTrack
 }
 
-function VideoPlayer({ videoStream }: VideoPlayerProps) {
-  const { stream, isVideoEnabled, sound, texture } = videoStream
+function VideoPlayer({ track }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    if (!videoRef.current || !stream) return
+    if (!videoRef.current || !track) return
+
+    const stream = new MediaStream([track])
     videoRef.current.srcObject = stream
-    videoRef.current.muted = !sound
-  }, [stream, sound])
+    videoRef.current.muted = false
+    videoRef.current.autoplay = true
+    videoRef.current.playsInline = true
+  }, [track])
 
   return (
-    <div className="relative size-full">
-      {isVideoEnabled || (
-        <div className="absolute left-[50%] top-[50%] flex size-full translate-x-[-50%] translate-y-[-50%] items-center justify-center bg-white">
-          <div
-            className={`scale-120 h-[48px] w-[32px] bg-[64px] ${TEXTURE_MAP[texture]}`}
-          />
-        </div>
-      )}
-      <video ref={videoRef} autoPlay className="size-full object-cover" />
-    </div>
+    <video
+      ref={videoRef}
+      autoPlay
+      className="h-[240px] w-[360px] bg-black object-cover"
+    />
   )
 }
 
