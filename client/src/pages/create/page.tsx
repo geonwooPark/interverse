@@ -5,16 +5,14 @@ import { encrypt } from '../../utils/crypto'
 import Characters from './Characters'
 import TextField from '../../components/TextField'
 import Button from '../../components/Button'
-import { useRoomsAction, useRoomsState } from '../../providers/RoomsProvider'
+import { useRoomsAction } from '../../providers/RoomsProvider'
 import { paths } from '../../routes/paths'
-import { CookieType } from 'src/types'
+import { IRoom } from 'src/types'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
 
-  const rooms = useRoomsState()
-
-  const updateRooms = useRoomsAction()
+  const addRoom = useRoomsAction()
 
   const [values, setValues] = useState({
     title: '',
@@ -39,14 +37,14 @@ function CreateRoomPage() {
 
     const hashedPassword = encodeURIComponent(encrypt(password))
 
-    const cookie: CookieType = {
+    const newRoom: IRoom = {
       roomNum,
       role: 'host',
       title,
-      createAt: new Date(),
+      createAt: Date.now(),
     }
 
-    updateRooms([...rooms, cookie])
+    addRoom(newRoom)
 
     navigate(
       `${paths.room}?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,

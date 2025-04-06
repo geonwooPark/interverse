@@ -2,9 +2,9 @@ import React, { PropsWithChildren } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useRoomsState } from './RoomsProvider'
 import { _createContext } from '../utils/_createContext'
-import { CookieType } from 'src/types'
+import { IRoom } from 'src/types'
 
-type ContextState = CookieType | undefined
+type ContextState = IRoom | undefined
 
 export const [useAuthCookie, Provider] = _createContext<ContextState>()
 

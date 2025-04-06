@@ -4,15 +4,13 @@ import TextField from '@components/TextField'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useSearchParams } from 'react-router-dom'
-import { useRoomsAction, useRoomsState } from '@providers/RoomsProvider'
-import { CookieType } from 'src/types'
+import { useRoomsAction } from '@providers/RoomsProvider'
+import { IRoom } from 'src/types'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
 function Step1({ activeStep, onNext }: Step1Props) {
-  const rooms = useRoomsState()
-
-  const updateRooms = useRoomsAction()
+  const addRoom = useRoomsAction()
 
   const [searchParams] = useSearchParams()
 
@@ -39,14 +37,14 @@ function Step1({ activeStep, onNext }: Step1Props) {
       return setTimeout(() => setError(''), 3000)
     }
 
-    const cookie: CookieType = {
+    const newRoom: IRoom = {
       roomNum,
       role: 'guest',
       title,
-      createAt: new Date(),
+      createAt: Date.now(),
     }
 
-    updateRooms([...rooms, cookie])
+    addRoom(newRoom)
 
     onNext && onNext()
   }

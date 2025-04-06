@@ -15,8 +15,6 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
 
   const user = useAppSelector((state) => state.avartar)
 
-  const role = authCookie?.role === 'host' ? '호스트' : '게스트'
-
   const onChatClick = () => {
     setShowChat((prev) => !prev)
   }
@@ -31,9 +29,11 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
 
   return (
     <div className="fixed bottom-5 left-[50%] flex h-[64px] w-[380px] translate-x-[-50%] items-center justify-between rounded-md bg-white/30 px-4 py-2 font-neodgm text-sm shadow-md">
-      <div>
+      <div className="select-none">
         <p className="text-lg">{user.nickname}</p>
-        <p className="text-sm">{role}</p>
+        <p className="text-sm">
+          {authCookie?.role === 'host' ? '호스트' : '게스트'}
+        </p>
       </div>
 
       <div className="flex gap-2">

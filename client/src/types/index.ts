@@ -1,6 +1,6 @@
-export interface CookieType {
+export interface IRoom {
   roomNum: string
   role: 'host' | 'guest'
   title: string
-  createAt: Date
+  createAt: number
 }
