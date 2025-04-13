@@ -53,7 +53,7 @@ function RightSide() {
           </button>
         </ToolTip.Trigger>
         <ToolTip.Content>
-          <div className="rounded bg-white px-2 py-1 text-xs">공유하기</div>
+          <div className="rounded bg-white px-2 py-1 text-xs">공유</div>
           <ToolTip.Triangle className="size-2.5 bg-white" />
         </ToolTip.Content>
       </ToolTip>
@@ -69,7 +69,7 @@ function RightSide() {
           </button>
         </ToolTip.Trigger>
         <ToolTip.Content>
-          <div className="rounded bg-white px-2 py-1 text-xs">전원</div>
+          <div className="rounded bg-white px-2 py-1 text-xs">종료</div>
           <ToolTip.Triangle className="size-2.5 bg-white" />
         </ToolTip.Content>
       </ToolTip>
