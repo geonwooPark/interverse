@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import { encrypt } from '../../utils/crypto'
 import Characters from './Characters'
-import TextField from '../../components/TextField'
 import Button from '../../components/Button'
 import { useRoomsAction } from '../../providers/RoomsProvider'
 import { paths } from '../../routes/paths'
 import { IRoom } from 'src/types'
+import TextField from '@components/TextField'
+import Counter from '@components/Counter'
 
 function CreateRoomPage() {
   const navigate = useNavigate()
@@ -17,9 +18,10 @@ function CreateRoomPage() {
   const [values, setValues] = useState({
     title: '',
     password: '',
+    headCount: 4,
   })
 
-  const { title, password } = values
+  const { title, password, headCount } = values
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -41,11 +43,15 @@ function CreateRoomPage() {
       roomNum,
       role: 'host',
       title,
+      headCount,
       createAt: Date.now(),
     }
 
     addRoom(newRoom)
 
+    // 방 생성 HTTP 요청
+
+    // 방 생성 성공 시 리다이렉트
     navigate(
       `${paths.room}?roomNum=${roomNum}&title=${encodedTitle}&hp=${hashedPassword}`,
     )
@@ -75,6 +81,15 @@ function CreateRoomPage() {
             onChange={handleChange}
             maxLength={4}
           />
+          <div className="flex items-center justify-end gap-4">
+            <p className="text-sm">참여인원 </p>
+            <Counter
+              value={headCount}
+              onChange={(value) =>
+                setValues((prev) => ({ ...prev, headCount: value }))
+              }
+            />
+          </div>
         </form>
 
         <Button

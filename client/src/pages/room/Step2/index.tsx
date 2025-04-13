@@ -4,20 +4,34 @@ import TextField from '@components/TextField'
 import { MAX_NICKNAME_LENGTH, TEXTURE_MAP } from '@constants/index'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
-import { useAppDispatch } from '@store/store'
 import GameManager from '@managers/GameManager'
-import { setUser } from '@store/features/userSlice'
+import { useAuthCookie } from '@providers/AuthProvider'
+import { useScene } from '@providers/SceneProvider'
+import { IRoom } from 'src/types'
+import { useRoomsAction } from '@providers/RoomsProvider'
+import { useSearchParams } from 'react-router-dom'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
+// 방 입장
 export default function Step2({ activeStep, onNext }: Step2Props) {
   const game = GameManager.getInstance()
 
-  const dispatch = useAppDispatch()
+  const addRoom = useRoomsAction()
+
+  const authCookie = useAuthCookie()
+
+  const gameScene = useScene()
+
+  const [searchParams] = useSearchParams()
 
   const [texture, setTexture] = useState(0)
 
   const [nickname, setNickname] = useState('')
+
+  const roomNum = searchParams.get('roomNum') as string
+
+  const title = searchParams.get('title') as string
 
   const onNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > MAX_NICKNAME_LENGTH) {
@@ -32,13 +46,28 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
   }
 
   const onEnter = () => {
-    // 아바타 전역 상태에 등록
-    dispatch(setUser({ texture: Object.keys(TEXTURE_MAP)[texture], nickname }))
+    if (!authCookie) return
 
-    // 게임 실행
+    const newRoom: IRoom = {
+      roomNum,
+      role: 'guest',
+      title,
+      createAt: Date.now(),
+    }
+
+    addRoom(newRoom)
+
+    // 게임씬 실행
     game.scene.start('game')
     ;(document.getElementById('game-container') as HTMLElement).style.display =
       'block'
+
+    // 방에 입장
+    gameScene.joinRoom({
+      roomNum,
+      nickname,
+      texture: Object.keys(TEXTURE_MAP)[texture],
+    })
 
     onNext && onNext()
   }
@@ -55,6 +84,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
             placeholder="닉네임"
             maxLength={MAX_NICKNAME_LENGTH}
           />
+
           <p className="ml-2 mt-1 text-xs text-gray-700">
             닉네임은 최대 {MAX_NICKNAME_LENGTH}글자까지 가능합니다.
           </p>

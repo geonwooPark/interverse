@@ -3,4 +3,5 @@ export interface IRoom {
   role: 'host' | 'guest'
   title: string
   createAt: number
+  headCount?: number
 }

@@ -1,30 +1,17 @@
-import { useLayoutEffect } from 'react'
 import Alert from './Alert'
 import Controller from './Controller'
 import MenuBar from './MenuBar'
-import { useAuthCookie } from '@providers/AuthProvider'
 import Modals from './Modals/Modals'
-import { useScene } from '@providers/SceneProvider'
 import DMList from './DirectMessage/DMList'
 import useMediaPermissions from '@hooks/useMediaPermissions'
 import useModals from '@hooks/useModals'
 import ConfirmModal from '@components/ConfirmModal'
+import { useBlockGoBack } from '@hooks/useBlockGoBack'
 
 export default function Step3() {
-  const authCookie = useAuthCookie()
-
-  const gameScene = useScene()
-
   const { modals, addModal, removeModal } = useModals()
 
-  // 게임 입장
-  useLayoutEffect(() => {
-    if (!authCookie) return
-
-    gameScene.joinRoom(authCookie.roomNum)
-  }, [])
-
-  // 권한
+  // 권한 받기
   useMediaPermissions({
     fallback: () =>
       addModal(
@@ -37,6 +24,19 @@ export default function Step3() {
         />,
       ),
   })
+
+  // 뒤로가기 막기
+  useBlockGoBack(() =>
+    addModal(
+      <ConfirmModal
+        title="나가기"
+        description="정말 종료하시겠습니까?"
+        actionLabel="종료"
+        onClose={removeModal}
+        onSubmit={() => window.location.replace('/')}
+      />,
+    ),
+  )
 
   return (
     <>

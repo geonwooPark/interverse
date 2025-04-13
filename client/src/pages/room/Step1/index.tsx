@@ -4,19 +4,12 @@ import TextField from '@components/TextField'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useSearchParams } from 'react-router-dom'
-import { useRoomsAction } from '@providers/RoomsProvider'
-import { IRoom } from 'src/types'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
+// 스텝1 - 방 입장 전 비밀번호 체크 + 인원 제한 체크
 function Step1({ activeStep, onNext }: Step1Props) {
-  const addRoom = useRoomsAction()
-
   const [searchParams] = useSearchParams()
-
-  const roomNum = searchParams.get('roomNum') as string
-
-  const title = searchParams.get('title') as string
 
   const hp = searchParams.get('hp') as string
 
@@ -37,15 +30,6 @@ function Step1({ activeStep, onNext }: Step1Props) {
       return setTimeout(() => setError(''), 3000)
     }
 
-    const newRoom: IRoom = {
-      roomNum,
-      role: 'guest',
-      title,
-      createAt: Date.now(),
-    }
-
-    addRoom(newRoom)
-
     onNext && onNext()
   }
 
@@ -60,7 +44,6 @@ function Step1({ activeStep, onNext }: Step1Props) {
             placeholder="비밀번호"
             onChange={handleChange}
             maxLength={4}
-            error={error}
           />
         </div>
 

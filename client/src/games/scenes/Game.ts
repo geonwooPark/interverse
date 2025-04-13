@@ -181,12 +181,28 @@ export default class Game extends Phaser.Scene {
   }
 
   /** 방에 입장 */
-  joinRoom(roomNum: string) {
+  joinRoom({
+    roomNum,
+    nickname,
+    texture,
+  }: {
+    roomNum: string
+    nickname: string
+    texture: string
+  }) {
+    this.setUpKeys()
+
     this.roomNum = roomNum
 
-    this.player.initialize(roomNum)
+    this.room.joinRoom({
+      roomNum,
+      nickname,
+      texture,
+      x: INIT_POSITION[0],
+      y: INIT_POSITION[1],
+    })
 
-    this.setUpKeys()
+    this.player.initialize({ nickname, texture })
   }
 
   /** 플레이어와 오브젝트가 충돌했을 때 발생하는 콜백 함수. Player와 Object를 인수로 받음 */

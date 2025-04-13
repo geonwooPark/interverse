@@ -38,6 +38,7 @@ export interface IJoinRoom {
   texture: string
   x: number
   y: number
+  headCount?: number
 }
 
 export interface IAvatarPosition {
@@ -108,6 +109,7 @@ export interface ServerToClientEvents {
     kind: 'audio' | 'video'
     rtpParameters: mediasoupClient.types.RtpParameters
   }) => void
+  serverExceedHeadCount: ({ message }: { message: string }) => void
 }
 
 export interface ClientToServerEvents {
