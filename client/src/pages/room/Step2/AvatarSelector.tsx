@@ -1,3 +1,4 @@
+import { IconChevronLeft, IconChevronRight } from '@assets/svgs'
 import { TEXTURE_MAP } from '@constants/index'
 
 interface AvatarSelectorProps {
@@ -29,9 +30,7 @@ function AvatarSelector({ texture, onChange }: AvatarSelectorProps) {
   return (
     <div className="relative w-full rounded-md bg-gray-100 py-14">
       <div className="flex items-center justify-center gap-10">
-        <div className="cursor-pointer" onClick={onLeftArrowClick}>
-          〈
-        </div>
+        <IconChevronLeft className="size-6" onClick={onLeftArrowClick} />
 
         <div className="flex">
           <div
@@ -39,9 +38,7 @@ function AvatarSelector({ texture, onChange }: AvatarSelectorProps) {
           />
         </div>
 
-        <div className="cursor-pointer" onClick={onRightArrowClick}>
-          〉
-        </div>
+        <IconChevronRight className="size-6" onClick={onRightArrowClick} />
       </div>
     </div>
   )

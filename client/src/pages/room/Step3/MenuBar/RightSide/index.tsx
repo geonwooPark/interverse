@@ -2,6 +2,7 @@ import { IconLink, IconOff } from '@assets/svgs'
 import ConfirmModal from '@components/ConfirmModal'
 import useModals from '@hooks/useModals'
 import UserList from './UserList'
+import { ToolTip } from 'ventileco-ui'
 
 function RightSide() {
   const { modals, addModal, removeModal } = useModals()
@@ -41,21 +42,37 @@ function RightSide() {
     <div className="flex items-center gap-3">
       <UserList />
 
-      <button
-        tabIndex={-1}
-        onClick={onLinkClick}
-        className="flex size-[40px] items-center justify-center rounded-full bg-cyan-500 text-white duration-200 hover:bg-cyan-600"
-      >
-        <IconLink className="size-5" />
-      </button>
+      <ToolTip direction="bottom" enterDelay={1000}>
+        <ToolTip.Trigger>
+          <button
+            tabIndex={-1}
+            onClick={onLinkClick}
+            className="flex size-[40px] items-center justify-center rounded-full bg-cyan-500 text-white duration-200 hover:bg-cyan-600"
+          >
+            <IconLink className="size-5" />
+          </button>
+        </ToolTip.Trigger>
+        <ToolTip.Content>
+          <div className="rounded bg-white px-2 py-1 text-xs">공유하기</div>
+          <ToolTip.Triangle className="size-2.5 bg-white" />
+        </ToolTip.Content>
+      </ToolTip>
 
-      <button
-        tabIndex={-1}
-        onClick={onOffClick}
-        className="flex size-[40px] items-center justify-center rounded-full bg-white text-red-600"
-      >
-        <IconOff className="size-5" />
-      </button>
+      <ToolTip direction="bottom" enterDelay={1000}>
+        <ToolTip.Trigger>
+          <button
+            tabIndex={-1}
+            onClick={onOffClick}
+            className="flex size-[40px] items-center justify-center rounded-full bg-white text-red-600"
+          >
+            <IconOff className="size-5" />
+          </button>
+        </ToolTip.Trigger>
+        <ToolTip.Content>
+          <div className="rounded bg-white px-2 py-1 text-xs">전원</div>
+          <ToolTip.Triangle className="size-2.5 bg-white" />
+        </ToolTip.Content>
+      </ToolTip>
 
       {modals}
     </div>

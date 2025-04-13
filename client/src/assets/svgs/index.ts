@@ -7,6 +7,8 @@ import IconMessage from './IconMessage.svg?react'
 import IconOff from './IconOff.svg?react'
 import IconSound from './IconSound.svg?react'
 import IconUsers from './IconUsers.svg?react'
+import IconChevronLeft from './IconChevronLeft.svg?react'
+import IconChevronRight from './IconChevronRight.svg?react'
 
 export {
   IconCam,
@@ -18,4 +20,6 @@ export {
   IconOff,
   IconSound,
   IconUsers,
+  IconChevronLeft,
+  IconChevronRight,
 }

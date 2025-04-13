@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Button from './Button'
 import { useScene } from '@providers/SceneProvider'
 import { useAuthCookie } from '@providers/AuthProvider'
-import { useAppSelector } from '@store/store'
 
 interface DMCreateModalProps {
   onClose: () => void
@@ -17,7 +16,7 @@ export default function DMCreateModal({
 
   const gameScene = useScene()
 
-  const { nickname } = useAppSelector((state) => state.avartar)
+  const player = gameScene.player
 
   const DMManager = gameScene.dm
 
@@ -32,7 +31,7 @@ export default function DMCreateModal({
       id,
       message: text,
       roomNum: authCookie.roomNum,
-      sender: nickname,
+      sender: player.nickname.text,
       receiverId,
     })
 

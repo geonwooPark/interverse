@@ -5,6 +5,7 @@ import { useScene } from '@providers/SceneProvider'
 import { TEXTURE_MAP } from '@constants/index'
 import useModals from '@hooks/useModals'
 import DMCreateModal from '@components/DMCreateModal'
+import { ToolTip } from 'ventileco-ui'
 
 function UserList() {
   const { modals, addModal, removeModal } = useModals()
@@ -30,14 +31,22 @@ function UserList() {
 
   return (
     <div className="relative">
-      <button
-        tabIndex={-1}
-        onClick={toogleUserList}
-        className="flex items-center justify-center rounded-md bg-black/70 px-3 py-2 text-white duration-200 hover:bg-black/90"
-      >
-        <IconUsers className="mr-1 size-5" />
-        <span>{userlist.size + 1}</span>
-      </button>
+      <ToolTip direction="bottom" enterDelay={1000}>
+        <ToolTip.Trigger>
+          <button
+            tabIndex={-1}
+            onClick={toogleUserList}
+            className="flex items-center justify-center rounded-md bg-black/70 px-3 py-2 text-white duration-200 hover:bg-black/90"
+          >
+            <IconUsers className="mr-1 size-5" />
+            <span>{userlist.size + 1}</span>
+          </button>
+        </ToolTip.Trigger>
+        <ToolTip.Content>
+          <div className="rounded bg-white px-2 py-1 text-xs">참여인원</div>
+          <ToolTip.Triangle className="size-2.5 bg-white" />
+        </ToolTip.Content>
+      </ToolTip>
 
       {isShow && (
         <div className="absolute left-[50%] mt-4 translate-x-[-50%]">
