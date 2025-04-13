@@ -2,7 +2,6 @@ import Button from '@components/Button'
 import { IDirectMessage } from '../../../../../../types/socket'
 import { useAuthCookie } from '@providers/AuthProvider'
 import { useScene } from '@providers/SceneProvider'
-import { useAppSelector } from '@store/store'
 import { useState } from 'react'
 
 interface DMProps {
@@ -14,7 +13,7 @@ function DM({ dm }: DMProps) {
 
   const gameScene = useScene()
 
-  const { nickname } = useAppSelector((state) => state.avartar)
+  const player = gameScene.player
 
   const DMManager = gameScene.dm
 
@@ -32,7 +31,7 @@ function DM({ dm }: DMProps) {
       id: Math.random().toString(),
       message: text,
       roomNum: authCookie.roomNum,
-      sender: nickname,
+      sender: player.nickname.text,
       receiverId: dm.socketId,
     })
 

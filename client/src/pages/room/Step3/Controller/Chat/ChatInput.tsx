@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useAuthCookie } from '@providers/AuthProvider'
-import { useAppSelector } from '@store/store'
 import { useScene } from '@providers/SceneProvider'
 
 interface ChatInputProps {
@@ -12,9 +11,9 @@ function ChatInput({ inputRef }: ChatInputProps) {
 
   const gameScene = useScene()
 
-  const ChatManager = gameScene.chat
+  const player = gameScene.player
 
-  const { nickname } = useAppSelector((state) => state.avartar)
+  const ChatManager = gameScene.chat
 
   const [inputValue, setInputValue] = useState('')
 
@@ -38,7 +37,7 @@ function ChatInput({ inputRef }: ChatInputProps) {
         id,
         message: inputValue,
         roomNum: authCookie.roomNum,
-        sender: nickname,
+        sender: player.nickname.text,
       })
 
       inputRef.current?.blur()
