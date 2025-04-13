@@ -1,5 +1,3 @@
-import { INIT_POSITION } from '@constants/index'
-import { store } from '../../store/store'
 import Avatar from './Avatar'
 import GameScene from '@games/scenes/Game'
 
@@ -10,6 +8,11 @@ export default class Player extends Avatar {
   private moveDirection: 'down' | 'up' | 'left' | 'right' = 'down'
   private isInteracting = false
   private stopTimeout: NodeJS.Timeout | null = null
+  isEnabled: { video: boolean; audio: boolean } = {
+    video: false,
+    audio: false,
+  }
+  private _listeners = new Set<() => void>()
 
   constructor(
     scene: Phaser.Scene,
@@ -21,19 +24,25 @@ export default class Player extends Avatar {
     super(scene, x, y, texture, frame)
   }
 
-  // 방 참여
-  initialize(roomNum: string) {
-    const avatar = store.getState().avartar
+  initialize({ nickname, texture }: { nickname: string; texture: string }) {
+    this.setNickname(nickname)
+    this.setAvatarTexture(texture)
+  }
 
-    this.setNickname(avatar.nickname)
-    this.setAvatarTexture(avatar.texture)
-    ;(this.scene as GameScene).room.joinRoom({
-      roomNum,
-      nickname: avatar.nickname,
-      texture: avatar.texture,
-      x: INIT_POSITION[0],
-      y: INIT_POSITION[1],
-    })
+  subscribe(callback: () => void) {
+    this._listeners.add(callback)
+
+    return () => this._listeners.delete(callback)
+  }
+
+  toggleVideo() {
+    this.isEnabled = { ...this.isEnabled, video: !this.isEnabled.video }
+    this._listeners.forEach((cb) => cb())
+  }
+
+  toggleAudio() {
+    this.isEnabled = { ...this.isEnabled, audio: !this.isEnabled.audio }
+    this._listeners.forEach((cb) => cb())
   }
 
   // 인터렉션
@@ -57,7 +66,7 @@ export default class Player extends Avatar {
   }
 
   // 플레이어,닉네임, 채팅 이동
-  update(cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys, roomNum: string) {
+  update(cursorsKeys: Phaser.Types.Input.Keyboard.CursorKeys) {
     if (this.isInteracting) return this.setVelocity(0, 0)
 
     let vx = 0
