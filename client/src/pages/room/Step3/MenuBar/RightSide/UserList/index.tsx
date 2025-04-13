@@ -3,12 +3,12 @@ import { IconUsers } from '@assets/svgs'
 import UserListItem from './UserListItem'
 import { useScene } from '@providers/SceneProvider'
 import { TEXTURE_MAP } from '@constants/index'
-import useModals from '@hooks/useModals'
 import DMCreateModal from '@components/DMCreateModal'
 import { ToolTip } from 'ventileco-ui'
+import { useModal } from '@providers/ModalProvider'
 
 function UserList() {
-  const { modals, addModal, removeModal } = useModals()
+  const { addModal, removeModal } = useModal()
 
   const gameScene = useScene()
 
@@ -70,8 +70,6 @@ function UserList() {
           </ul>
         </div>
       )}
-
-      {modals}
     </div>
   )
 }

@@ -6,6 +6,7 @@ import Step3 from './Step3'
 import GameManager from '@managers/GameManager'
 import SceneProvider from '@providers/SceneProvider'
 import GameScene from '@games/scenes/Game'
+import ModalProvider from '@providers/ModalProvider'
 
 /**
  * 룸 화면
@@ -30,11 +31,13 @@ function RoomPage() {
 
   return (
     <SceneProvider scene={gameScene}>
-      <StepFlow activeStep={step} onNext={onNext}>
-        <Step1 />
-        <Step2 />
-        <Step3 />
-      </StepFlow>
+      <ModalProvider>
+        <StepFlow activeStep={step} onNext={onNext}>
+          <Step1 />
+          <Step2 />
+          <Step3 />
+        </StepFlow>
+      </ModalProvider>
     </SceneProvider>
   )
 }

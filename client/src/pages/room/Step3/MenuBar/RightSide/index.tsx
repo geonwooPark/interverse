@@ -1,11 +1,11 @@
 import { IconLink, IconOff } from '@assets/svgs'
 import ConfirmModal from '@components/ConfirmModal'
-import useModals from '@hooks/useModals'
 import UserList from './UserList'
 import { ToolTip } from 'ventileco-ui'
+import { useModal } from '@providers/ModalProvider'
 
 function RightSide() {
-  const { modals, addModal, removeModal } = useModals()
+  const { addModal, removeModal } = useModal()
 
   const onLinkClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -73,8 +73,6 @@ function RightSide() {
           <ToolTip.Triangle className="size-2.5 bg-white" />
         </ToolTip.Content>
       </ToolTip>
-
-      {modals}
     </div>
   )
 }

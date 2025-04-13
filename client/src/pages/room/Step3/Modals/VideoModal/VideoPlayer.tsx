@@ -21,7 +21,7 @@ function VideoPlayer({ track }: VideoPlayerProps) {
     <video
       ref={videoRef}
       autoPlay
-      className="h-[240px] w-[360px] bg-black object-cover"
+      className="aspect-[3/2] w-full bg-black object-cover"
     />
   )
 }

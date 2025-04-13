@@ -1,15 +1,15 @@
 import Alert from './Alert'
 import Controller from './Controller'
 import MenuBar from './MenuBar'
-import Modals from './Modals/Modals'
+import Modals from './Modals'
 import DMList from './DirectMessage/DMList'
 import useMediaPermissions from '@hooks/useMediaPermissions'
-import useModals from '@hooks/useModals'
 import ConfirmModal from '@components/ConfirmModal'
 import { useBlockGoBack } from '@hooks/useBlockGoBack'
+import { useModal } from '@providers/ModalProvider'
 
 export default function Step3() {
-  const { modals, addModal, removeModal } = useModals()
+  const { addModal, removeModal } = useModal()
 
   // 권한 받기
   useMediaPermissions({
@@ -45,7 +45,6 @@ export default function Step3() {
       <Alert />
       <DMList />
       <Modals />
-      {modals}
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom'
 import { useSyncExternalStore } from 'react'
 import { useScene } from '@providers/SceneProvider'
-import DM from './DM'
+import DirectMessage from './index'
 
 function DMList() {
   const gameScene = useScene()
@@ -14,7 +14,7 @@ function DMList() {
   )
 
   return createPortal(
-    dmList?.map((dm) => <DM key={dm.id} dm={dm} />),
+    dmList?.map((dm) => <DirectMessage key={dm.id} dm={dm} />),
     document.getElementById('dm') as HTMLElement,
   )
 }

@@ -8,7 +8,7 @@ interface DMProps {
   dm: IDirectMessage
 }
 
-function DM({ dm }: DMProps) {
+function DirectMessage({ dm }: DMProps) {
   const authCookie = useAuthCookie()
 
   const gameScene = useScene()
@@ -74,4 +74,4 @@ function DM({ dm }: DMProps) {
   )
 }
 
-export default DM
+export default DirectMessage
