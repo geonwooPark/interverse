@@ -4,6 +4,10 @@ import TextField from '@components/TextField'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useSearchParams } from 'react-router-dom'
+import withCaption from '@hocs/withCaption'
+import { IconExclamation } from '@assets/svgs'
+
+const TextFieldWithCaption = withCaption(TextField)
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
@@ -38,12 +42,20 @@ function Step1({ activeStep, onNext }: Step1Props) {
       <div className="w-[360px] rounded-3xl p-8 shadow-level1">
         <div className="mb-4 text-xl">비밀번호를 입력해주세요</div>
         <div className="mb-6">
-          <TextField
+          <TextFieldWithCaption
             type="password"
             value={value}
             placeholder="비밀번호"
             onChange={handleChange}
             maxLength={4}
+            caption={
+              error && (
+                <div className="ml-2 mt-1 flex items-center gap-1 text-red-600">
+                  <IconExclamation className="size-4" />
+                  <p className="text-xs">{error}</p>
+                </div>
+              )
+            }
           />
         </div>
 

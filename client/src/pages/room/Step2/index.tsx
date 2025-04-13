@@ -9,6 +9,9 @@ import { useScene } from '@providers/SceneProvider'
 import { IRoom } from 'src/types'
 import { useRoomsAction } from '@providers/RoomsProvider'
 import { useSearchParams } from 'react-router-dom'
+import withCaption from '@hocs/withCaption'
+
+const TextFieldWithCaption = withCaption(TextField)
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
@@ -75,16 +78,17 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
         <AvatarSelector texture={texture} onChange={onTextureChange} />
 
         <div className="mb-6 mt-3">
-          <TextField
+          <TextFieldWithCaption
             value={nickname}
             onChange={onNicknameChange}
             placeholder="닉네임"
             maxLength={MAX_NICKNAME_LENGTH}
+            caption={
+              <p className="ml-2 mt-1 text-xs text-gray-700">
+                닉네임은 최대 {MAX_NICKNAME_LENGTH}글자까지 가능합니다.
+              </p>
+            }
           />
-
-          <p className="ml-2 mt-1 text-xs text-gray-700">
-            닉네임은 최대 {MAX_NICKNAME_LENGTH}글자까지 가능합니다.
-          </p>
         </div>
 
         <Button
