@@ -13,7 +13,7 @@ interface ButtonProps
 }
 
 const ButtonVariants = cva(
-  `disabled:bg-grey flex w-full items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed`,
+  `flex w-full items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none`,
   {
     variants: {
       size: {
@@ -55,7 +55,7 @@ function Button({
       className={cn(ButtonVariants({ size, variant, fullWidth }))}
     >
       {leftIcon}
-      <span>{children}</span>
+      <span className="pointer-events-none">{children}</span>
       {rightIcon}
     </button>
   )

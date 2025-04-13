@@ -47,7 +47,13 @@ function Step1({ activeStep, onNext }: Step1Props) {
           />
         </div>
 
-        <Button size="lg" variant="contained" fullWidth onClick={onClick}>
+        <Button
+          size="lg"
+          variant="contained"
+          fullWidth
+          disabled={value.length === 0}
+          onClick={onClick}
+        >
           다음
         </Button>
       </div>

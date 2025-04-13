@@ -5,7 +5,6 @@ import { MAX_NICKNAME_LENGTH, TEXTURE_MAP } from '@constants/index'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import GameManager from '@managers/GameManager'
-import { useAuthCookie } from '@providers/AuthProvider'
 import { useScene } from '@providers/SceneProvider'
 import { IRoom } from 'src/types'
 import { useRoomsAction } from '@providers/RoomsProvider'
@@ -18,8 +17,6 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
   const game = GameManager.getInstance()
 
   const addRoom = useRoomsAction()
-
-  const authCookie = useAuthCookie()
 
   const gameScene = useScene()
 
@@ -46,7 +43,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
   }
 
   const onEnter = () => {
-    if (!authCookie) return
+    if (!nickname) return
 
     const newRoom: IRoom = {
       roomNum,
@@ -90,7 +87,13 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
           </p>
         </div>
 
-        <Button size="lg" variant="contained" fullWidth onClick={onEnter}>
+        <Button
+          size="lg"
+          variant="contained"
+          fullWidth
+          disabled={nickname.length === 0}
+          onClick={onEnter}
+        >
           입장하기
         </Button>
       </div>
