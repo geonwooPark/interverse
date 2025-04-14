@@ -47,7 +47,7 @@ const createWorkerAndRouter = async () => {
   await createWorkerAndRouter()
 })()
 
-export const videoRoomHandler = (
+export const videoHandler = (
   socket: Socket<ClientToServerEvents, ServerToClientEvents>,
   io: any,
 ) => {

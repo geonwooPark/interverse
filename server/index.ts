@@ -2,12 +2,12 @@ import express from 'express'
 import http from 'http'
 import { Server, Socket } from 'socket.io'
 import cors from 'cors'
-import { videoRoomHandler } from './handler/videoRoom'
 import { roomHandler } from './handler/room'
 import { chairHandler } from './handler/chair'
 import { chatHandler } from './handler/chat'
 import { playHandler } from './handler/play'
 import { dmHandler } from './handler/dm'
+import { videoHandler } from './handler/video'
 import {
   ClientToServerEvents,
   IRoomUser,
@@ -45,7 +45,6 @@ export const room: Record<
         consumers?: mediasoup.types.Consumer[]
       }
     >
-
     chair: Set<string>
   }
 > = {}
@@ -58,7 +57,7 @@ io.on(
     chatHandler(socket, io)
     chairHandler(socket, io)
     dmHandler(socket, io)
-    videoRoomHandler(socket, io)
+    videoHandler(socket, io)
 
     socket.on('disconnecting', () => {
       console.log('유저 연결 끊김..')
