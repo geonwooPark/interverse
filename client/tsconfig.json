@@ -33,6 +33,7 @@
       "@managers/*": ["src/managers/*"],
       "@pages/*": ["src/pages/*"],
       "@providers/*": ["src/providers/*"],
+      "@services/*": ["src/services/*"],
       "@routes/*": ["src/routes/*"],
       "@hocs/*": ["src/hocs/*"],
       "@utils/*": ["src/utils/*"]

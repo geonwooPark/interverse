@@ -4,7 +4,7 @@ import {
   ServerToClientEvents,
 } from '../../../types/socket'
 
-export class SocketManager {
+class SocketService {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
 
   constructor() {
@@ -31,3 +31,5 @@ export class SocketManager {
     this.socket.disconnect()
   }
 }
+
+export const socketService = new SocketService()

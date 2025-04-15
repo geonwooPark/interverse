@@ -17,6 +17,7 @@ export default defineConfig({
       { find: '@managers', replacement: '/src/managers' },
       { find: '@pages', replacement: '/src/pages' },
       { find: '@providers', replacement: '/src/providers' },
+      { find: '@services', replacement: '/src/services' },
       { find: '@routes', replacement: '/src/routes' },
       { find: '@hocs', replacement: '/src/hocs' },
       { find: '@utils', replacement: '/src/utils' },

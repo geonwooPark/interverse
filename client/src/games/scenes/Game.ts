@@ -11,9 +11,9 @@ import { ChatManager } from '@managers/ChatManager'
 import { ChairManager } from '@managers/ChairManager'
 import { PlayManager } from '@managers/PlayManager'
 import { VideoManager } from '@managers/VideoManager'
-import { SocketManager } from '@managers/SocketManager'
 import { INIT_POSITION } from '@constants/index'
 import { DMManager } from '@managers/DMManager'
+import { socketService } from '@services/socketService'
 
 export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap
@@ -21,10 +21,10 @@ export default class Game extends Phaser.Scene {
   private overlap?: Phaser.Physics.Arcade.StaticGroup
   private keySpace?: Phaser.Input.Keyboard.Key
   private keyEscape?: Phaser.Input.Keyboard.Key
+  readonly ws = socketService
   roomNum!: string
   player!: Player
   otherPlayers!: Phaser.Physics.Arcade.Group
-  ws: SocketManager
   room: RoomManager
   chat: ChatManager
   chair: ChairManager
@@ -36,7 +36,6 @@ export default class Game extends Phaser.Scene {
     // Scene Key
     super('game')
 
-    this.ws = new SocketManager()
     this.room = new RoomManager(this)
     this.chat = new ChatManager(this)
     this.chair = new ChairManager(this)
@@ -252,8 +251,8 @@ export default class Game extends Phaser.Scene {
   // 주로 게임 상태를 업데이트하고 게임 객체들의 상태를 조작하는 데 사용. 게임이 실행되는 동안 지속적으로 호출됨
   update() {
     // 플레이어 이동
-    if (this.player && this.cursur && this.roomNum) {
-      this.player.update(this.cursur, this.roomNum)
+    if (this.player && this.cursur) {
+      this.player.update(this.cursur)
     }
 
     // 플레이어 인터렉션
