@@ -29,11 +29,11 @@ function ConfirmModal({
         className={`absolute left-[50%] top-[50%] size-full h-fit w-[360px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white p-4`}
       >
         <div>
-          <p className="text-lg">{title}</p>
+          <p className="body1">{title}</p>
         </div>
 
         <div className="py-6">
-          <p className="whitespace-pre-line text-sm leading-[1.5]">
+          <p className="whitespace-pre-line text-body2 leading-[1.5]">
             {description}
           </p>
         </div>

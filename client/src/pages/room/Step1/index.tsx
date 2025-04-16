@@ -40,7 +40,7 @@ function Step1({ activeStep, onNext }: Step1Props) {
   return (
     <div className="flex size-full items-center justify-center">
       <div className="w-[360px] rounded-3xl p-8 shadow-level1">
-        <div className="mb-4 text-xl">비밀번호를 입력해주세요</div>
+        <div className="mb-4 text-subtitle1">비밀번호를 입력해주세요</div>
         <div className="mb-6">
           <TextFieldWithCaption
             type="password"
@@ -52,7 +52,7 @@ function Step1({ activeStep, onNext }: Step1Props) {
               error && (
                 <div className="ml-2 mt-1 flex items-center gap-1 text-red-600">
                   <IconExclamation className="size-4" />
-                  <p className="text-xs">{error}</p>
+                  <p className="text-caption">{error}</p>
                 </div>
               )
             }

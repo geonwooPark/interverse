@@ -26,10 +26,10 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
   }
 
   return (
-    <div className="fixed bottom-5 left-[50%] flex h-[64px] w-[380px] translate-x-[-50%] items-center justify-between rounded-md bg-white/30 px-4 py-2 font-neodgm text-sm shadow-md">
+    <div className="fixed bottom-5 left-[50%] flex h-[64px] w-[380px] translate-x-[-50%] items-center justify-between rounded-md bg-white/30 px-4 py-2 font-neodgm text-body2 shadow-md">
       <div className="select-none">
-        <p className="text-lg">{player.nickname.text}</p>
-        <p className="text-sm">
+        <p className="body1">{player.nickname.text}</p>
+        <p className="text-body2">
           {authCookie?.role === 'host' ? '호스트' : '게스트'}
         </p>
       </div>
@@ -45,7 +45,7 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
             </button>
           </ToolTip.Trigger>
           <ToolTip.Content>
-            <div className="rounded bg-white px-2 py-1 text-xs">채팅</div>
+            <div className="rounded bg-white px-2 py-1 text-caption">채팅</div>
             <ToolTip.Triangle className="size-2.5 bg-white" />
           </ToolTip.Content>
         </ToolTip>
@@ -60,7 +60,9 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
             </button>
           </ToolTip.Trigger>
           <ToolTip.Content>
-            <div className="rounded bg-white px-2 py-1 text-xs">카메라</div>
+            <div className="rounded bg-white px-2 py-1 text-caption">
+              카메라
+            </div>
             <ToolTip.Triangle className="size-2.5 bg-white" />
           </ToolTip.Content>
         </ToolTip>
@@ -75,7 +77,9 @@ function UserStatus({ showChat, setShowChat }: UserStatusProps) {
             </button>
           </ToolTip.Trigger>
           <ToolTip.Content>
-            <div className="rounded bg-white px-2 py-1 text-xs">마이크</div>
+            <div className="rounded bg-white px-2 py-1 text-caption">
+              마이크
+            </div>
             <ToolTip.Triangle className="size-2.5 bg-white" />
           </ToolTip.Content>
         </ToolTip>

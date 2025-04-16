@@ -43,14 +43,16 @@ function UserList() {
           </button>
         </ToolTip.Trigger>
         <ToolTip.Content>
-          <div className="rounded bg-white px-2 py-1 text-xs">참여인원</div>
+          <div className="rounded bg-white px-2 py-1 text-caption">
+            참여인원
+          </div>
           <ToolTip.Triangle className="size-2.5 bg-white" />
         </ToolTip.Content>
       </ToolTip>
 
       {isShow && (
         <div className="absolute left-[50%] mt-4 translate-x-[-50%]">
-          <ul className="hide-scroll max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white/30 text-sm shadow-md">
+          <ul className="hide-scroll max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white/30 text-body2 shadow-md">
             <li className="flex items-center justify-between p-2">
               <div className="flex items-center">
                 <div

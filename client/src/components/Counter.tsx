@@ -22,7 +22,7 @@ export default function Counter({ value, onChange }: CounterProps) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
           </svg>
         </VCounter.Down>
-        <VCounter.Number className="h-8 w-10 rounded-md text-center text-xl outline-none" />
+        <VCounter.Number className="h-8 w-10 rounded-md text-center text-subtitle1 outline-none" />
         <VCounter.Up>
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -43,11 +43,11 @@ function DirectMessage({ dm }: DMProps) {
       className={`absolute left-[50%] top-[50%] z-[500] h-auto w-[480px] translate-x-[-50%] translate-y-[-50%] rounded-md border-2 bg-white`}
     >
       {/* 헤더 */}
-      <div className="px-4 py-3 text-lg">{dm.sender}님의 메시지</div>
+      <div className="px-4 py-3 body1">{dm.sender}님의 메시지</div>
 
       {/* 바디 */}
       <div className="px-4">
-        <p className="mb-4 h-[160px] overflow-y-scroll break-all rounded-md border p-2 text-sm">
+        <p className="mb-4 h-[160px] overflow-y-scroll break-all rounded-md border p-2 text-body2">
           {dm.message}
         </p>
 

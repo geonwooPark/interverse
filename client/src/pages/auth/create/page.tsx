@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { nanoid } from 'nanoid'
-import { encrypt } from '../../utils/crypto'
+import { encrypt } from '@utils/crypto'
 import Characters from './Characters'
-import Button from '../../components/Button'
-import { useRoomsAction } from '../../providers/RoomsProvider'
-import { paths } from '../../routes/paths'
+import Button from '@components/Button'
+import { useRoomsAction } from '@providers/RoomsProvider'
+import { paths } from '@routes/paths'
 import { IRoom } from 'src/types'
 import TextField from '@components/TextField'
 import Counter from '@components/Counter'
@@ -61,7 +61,7 @@ function CreateRoomPage() {
     <>
       {/* 생성 폼 */}
       <div className="relative z-10 w-[520px] rounded-3xl p-8 shadow-level1">
-        <div className="mb-6 text-lg">
+        <div className="mb-6 body1">
           방을 만들고 팀원이나 참여자를 초대해 함께하세요!
         </div>
 
@@ -82,7 +82,7 @@ function CreateRoomPage() {
             maxLength={4}
           />
           <div className="flex items-center justify-end gap-4">
-            <p className="text-sm">참여인원 </p>
+            <p className="text-body2">참여인원 </p>
             <Counter
               value={headCount}
               onChange={(value) =>

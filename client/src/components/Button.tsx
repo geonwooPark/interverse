@@ -17,8 +17,8 @@ const ButtonVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-[36px] px-4 text-xs font-medium',
-        md: 'h-[40px] px-6 text-sm font-medium',
+        sm: 'h-[36px] px-4 text-caption font-medium',
+        md: 'h-[40px] px-6 text-body2 font-medium',
         lg: 'h-[50px] px-8 text-base font-bold',
       },
       variant: {

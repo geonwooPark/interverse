@@ -28,11 +28,11 @@ function CreatorModal({ onClose, hasDim }: CreatorModalProps) {
 
         <div className="flex flex-col self-start px-2">
           <div className="flex items-end gap-1">
-            <span className="text-2xl">박건우</span>
-            <span className="text-sm opacity-30">|</span>
-            <span className="text-sm opacity-30">프론트엔드</span>
+            <span className="text-h6">박건우</span>
+            <span className="text-body2 opacity-30">|</span>
+            <span className="text-body2 opacity-30">프론트엔드</span>
           </div>
-          <span className="text-lg">white0581@naver.com</span>
+          <span className="body1">white0581@naver.com</span>
         </div>
 
         <div className="flex w-full flex-col gap-2">

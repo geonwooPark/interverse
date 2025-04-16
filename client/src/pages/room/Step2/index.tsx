@@ -84,7 +84,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
             placeholder="닉네임"
             maxLength={MAX_NICKNAME_LENGTH}
             caption={
-              <p className="ml-2 mt-1 text-xs text-gray-700">
+              <p className="ml-2 mt-1 text-caption text-gray-700">
                 닉네임은 최대 {MAX_NICKNAME_LENGTH}글자까지 가능합니다.
               </p>
             }

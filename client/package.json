@@ -23,7 +23,8 @@
     "react-router-dom": "^6.22.1",
     "socket.io-client": "^4.7.4",
     "tailwind-merge": "^3.0.1",
-    "ventileco-ui": "^0.6.6"
+    "ventileco-ui": "^0.6.6",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
