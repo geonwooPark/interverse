@@ -1,4 +1,9 @@
 @font-face {
+  font-family: 'Pretendard';
+  src: url('./assets/fonts/PretendardVariable.woff2');
+}
+
+@font-face {
   font-family: 'neodgm';
   src: url('./assets/fonts/neodgm.woff2');
 }
@@ -9,7 +14,7 @@
 
 @layer base {
   body {
-    font-family: 'neodgm';
+    @apply font-pretendard;
   }
 
   *,
