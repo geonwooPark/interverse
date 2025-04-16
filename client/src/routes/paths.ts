@@ -1,11 +1,13 @@
 const ROOTS = {
-  LANDING: '/landing',
-  CREATE: '/create',
+  LOGIN: '/login',
+  SIGNUP: '/sign-up',
+  CREATE_ROOM: '/create-room',
   ROOM: '/room',
 }
 
 export const paths = {
-  landing: ROOTS.LANDING,
-  create: ROOTS.CREATE,
+  login: ROOTS.LOGIN,
+  signUp: ROOTS.SIGNUP,
+  createRoom: ROOTS.CREATE_ROOM,
   room: ROOTS.ROOM,
 }
