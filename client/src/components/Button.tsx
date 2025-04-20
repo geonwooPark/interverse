@@ -10,16 +10,17 @@ interface ButtonProps
   fullWidth?: boolean
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
+  className?: string
 }
 
 const ButtonVariants = cva(
-  `flex w-full items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:shadow-none`,
+  `flex w-full items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed disabled:border-none disabled:bg-gray-300 disabled:text-gray-400 disabled:shadow-none`,
   {
     variants: {
       size: {
         sm: 'h-[36px] px-4 text-caption font-medium',
         md: 'h-[40px] px-6 text-body2 font-medium',
-        lg: 'h-[50px] px-8 text-base font-bold',
+        lg: 'h-[48px] px-8 text-base font-bold',
       },
       variant: {
         contained:
@@ -46,13 +47,14 @@ function Button({
   leftIcon,
   rightIcon,
   type = 'button',
+  className,
   ...props
 }: PropsWithChildren<ButtonProps>) {
   return (
     <button
       type={type}
       {...props}
-      className={cn(ButtonVariants({ size, variant, fullWidth }))}
+      className={cn(ButtonVariants({ size, variant, fullWidth }), className)}
     >
       {leftIcon}
       <span className="pointer-events-none">{children}</span>
