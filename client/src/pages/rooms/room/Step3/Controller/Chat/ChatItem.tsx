@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { IChat } from '../../../../../../../types/socket'
+import { IChat } from '../../../../../../../../types/socket'
 
 interface ChatItemProps {
   chatItem: IChat

@@ -1,5 +1,5 @@
 import Button from '@components/Button'
-import { IDirectMessage } from '../../../../../../types/socket'
+import { IDirectMessage } from '../../../../../../../types/socket'
 import { useAuthCookie } from '@providers/AuthProvider'
 import { useScene } from '@providers/SceneProvider'
 import { useState } from 'react'
@@ -43,7 +43,7 @@ function DirectMessage({ dm }: DMProps) {
       className={`absolute left-[50%] top-[50%] z-[500] h-auto w-[480px] translate-x-[-50%] translate-y-[-50%] rounded-md border-2 bg-white`}
     >
       {/* 헤더 */}
-      <div className="px-4 py-3 body1">{dm.sender}님의 메시지</div>
+      <div className="body1 px-4 py-3">{dm.sender}님의 메시지</div>
 
       {/* 바디 */}
       <div className="px-4">

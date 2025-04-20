@@ -1,13 +1,16 @@
-const ROOTS = {
-  LOGIN: '/login',
-  SIGNUP: '/sign-up',
-  CREATE_ROOM: '/create-room',
-  ROOM: '/room',
+const BASE = {
+  AUTH: '/auth',
+  ROOMS: '/rooms',
 }
 
 export const paths = {
-  login: ROOTS.LOGIN,
-  signUp: ROOTS.SIGNUP,
-  createRoom: ROOTS.CREATE_ROOM,
-  room: ROOTS.ROOM,
+  auth: {
+    login: `${BASE.AUTH}/login`,
+    signUp: `${BASE.AUTH}/signup`,
+  },
+  rooms: {
+    root: `${BASE.ROOMS}`,
+    new: `${BASE.ROOMS}/new`,
+    room: (id: string) => `${BASE.ROOMS}/${id}`,
+  },
 }

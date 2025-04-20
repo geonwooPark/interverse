@@ -76,7 +76,7 @@ function LoginPage() {
               <span className="mr-1">비밀번호를 잊어버리셨나요?</span>
               <button
                 className="font-semibold text-cyan-600"
-                onClick={() => navigate(paths.signUp)}
+                onClick={() => navigate(paths.auth.signUp)}
               >
                 비밀번호 찾기
               </button>
@@ -84,12 +84,7 @@ function LoginPage() {
           </div>
 
           <div className="w-full space-y-4">
-            <Button
-              size="md"
-              variant="contained"
-              fullWidth
-              onClick={() => navigate(paths.createRoom)}
-            >
+            <Button size="md" variant="contained" fullWidth onClick={() => {}}>
               로그인
             </Button>
 
@@ -99,7 +94,7 @@ function LoginPage() {
               처음 방문하셨나요?{' '}
               <button
                 className="text-caption font-semibold text-cyan-600"
-                onClick={() => navigate(paths.signUp)}
+                onClick={() => navigate(paths.auth.signUp)}
               >
                 회원가입
               </button>
