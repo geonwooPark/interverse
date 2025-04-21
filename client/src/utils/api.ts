@@ -22,9 +22,17 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (res) => {
-    return res
+    const {
+      data: { data },
+    } = res
+
+    return data
   },
   (err) => {
+    if (axios.isAxiosError(err) && err.response) {
+      err.message = err.response.data.message
+    }
+
     return Promise.reject(err)
   },
 )

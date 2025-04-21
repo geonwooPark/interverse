@@ -20,11 +20,11 @@ export const mainRoutes = [
         </MainLayout>
       </AuthGuard>
     ),
-    path: paths.rooms.root,
+    path: 'rooms',
     children: [
       { element: <Navigate to={paths.rooms.root} replace />, index: true },
       { path: ':id', element: <RoomPage /> },
-      { path: paths.rooms.new, element: <CreateRoomPage /> },
+      { path: 'new', element: <CreateRoomPage /> },
     ],
   },
 ]

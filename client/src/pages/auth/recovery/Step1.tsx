@@ -47,14 +47,6 @@ export default function Step1({ onNext }: StepProps) {
       const email = getValues('email')
 
       try {
-        await authService.checkId(email)
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          console.log(error.message)
-        }
-      }
-
-      try {
         const result = await authService.sendVerificationEmail(email)
 
         if (result) {

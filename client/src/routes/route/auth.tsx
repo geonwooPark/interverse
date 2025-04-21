@@ -9,6 +9,9 @@ const LoginPage = withSuspense(
 const SignUpPage = withSuspense(
   lazy(() => import('../../pages/auth/sign-up/page')),
 )
+const RecoveryPage = withSuspense(
+  lazy(() => import('../../pages/auth/recovery/page')),
+)
 
 // ----------------------------------------------------------------------
 
@@ -23,6 +26,7 @@ export const authRoutes = [
       { element: <Navigate to="login" replace />, index: true },
       { path: 'login', element: <LoginPage /> },
       { path: 'sign-up', element: <SignUpPage /> },
+      { path: 'recovery', element: <RecoveryPage /> },
     ],
   },
 ]

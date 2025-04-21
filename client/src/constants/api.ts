@@ -1,10 +1,12 @@
 export const API_ENDPOINTS = {
   USER: {
     LOGIN: '/user/login',
-    SIGNUP: '/user/signup',
+    SIGN_UP: '/user/signup',
     ME: '/user/me',
-    SENDEMAIL: 'user/send-verification-email',
-    CHECKCODE: 'user/check-verification-code',
+    SEND_EMAIL: '/user/send-verification-email',
+    CHECK_CODE: '/user/check-verification-code',
+    CHANGE_PASSWORD: '/user/change-password',
+    CHECK_ID: '/user/check-id',
   },
   ROOM: '/rooms',
 } as const

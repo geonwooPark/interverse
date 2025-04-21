@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { schema } from './schema'
 import FormProvider from '@components/Rhf/FormProvider'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import StepFlow from '@components/StepFlow'
-import Step1 from './Step1'
-import Step2 from './Step2'
-import { authService } from '@services/authService'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '@routes/paths'
+import Step1 from './Step1'
+import { schema } from './schema'
+import Step2 from './Step2'
+import { authService } from '@services/authService'
 import { AxiosError } from 'axios'
 
-function SignUpPage() {
+function RecoveryPage() {
   const navigate = useNavigate()
 
   const methods = useForm({
@@ -21,7 +21,6 @@ function SignUpPage() {
       email: '',
       password: '',
       confirmPassword: '',
-      nickname: '',
     },
   })
 
@@ -31,7 +30,10 @@ function SignUpPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const result = await authService.signup(data)
+      const result = await authService.changePassword({
+        email: data.email,
+        newPassword: data.password,
+      })
 
       if (result) {
         navigate(paths.login)
@@ -48,7 +50,7 @@ function SignUpPage() {
   }
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-      <h4 className="mb-4 text-center text-h4">회원가입</h4>
+      <h4 className="mb-4 text-center text-h4">비밀번호 재설정</h4>
 
       <StepFlow activeStep={activeStep} onNext={onNext}>
         <Step1 />
@@ -58,4 +60,4 @@ function SignUpPage() {
   )
 }
 
-export default SignUpPage
+export default RecoveryPage

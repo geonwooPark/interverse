@@ -11,6 +11,7 @@ import { useReducer } from 'react'
 import IconButton from '@components/IconButton'
 import { authService } from '@services/authService'
 import { setLocalStorageItem } from '@utils/localStorage'
+import { AxiosError } from 'axios'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -28,22 +29,18 @@ function LoginPage() {
 
   const [showPassword, setShowPassword] = useReducer((prev) => !prev, false)
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (loginData) => {
     try {
-      const result = await authService.login(data)
-
-      const { token } = result
+      const { token } = await authService.login(loginData)
 
       if (token) {
         setLocalStorageItem('interverse_token', token)
         navigate('/rooms')
       }
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof AxiosError) {
         console.log(error.message)
       }
-
-      //
     } finally {
       reset()
     }
@@ -76,7 +73,7 @@ function LoginPage() {
               <span className="mr-1">비밀번호를 잊어버리셨나요?</span>
               <button
                 className="font-semibold text-cyan-600"
-                onClick={() => navigate(paths.auth.signUp)}
+                onClick={() => navigate(paths.recovery)}
               >
                 비밀번호 찾기
               </button>
@@ -84,7 +81,7 @@ function LoginPage() {
           </div>
 
           <div className="w-full space-y-4">
-            <Button size="md" variant="contained" fullWidth onClick={() => {}}>
+            <Button type="submit" size="md" variant="contained" fullWidth>
               로그인
             </Button>
 
@@ -94,7 +91,7 @@ function LoginPage() {
               처음 방문하셨나요?{' '}
               <button
                 className="text-caption font-semibold text-cyan-600"
-                onClick={() => navigate(paths.auth.signUp)}
+                onClick={() => navigate(paths.signup)}
               >
                 회원가입
               </button>

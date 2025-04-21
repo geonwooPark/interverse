@@ -1,13 +1,14 @@
 const BASE = {
-  AUTH: '/auth',
+  LOGIN: '/login',
+  SIGNUP: '/sign-up',
+  RECOVERY: '/recovery',
   ROOMS: '/rooms',
 }
 
 export const paths = {
-  auth: {
-    login: `${BASE.AUTH}/login`,
-    signUp: `${BASE.AUTH}/signup`,
-  },
+  login: BASE.LOGIN,
+  signup: BASE.SIGNUP,
+  recovery: BASE.RECOVERY,
   rooms: {
     root: `${BASE.ROOMS}`,
     new: `${BASE.ROOMS}/new`,
