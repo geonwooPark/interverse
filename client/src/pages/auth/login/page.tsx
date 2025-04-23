@@ -91,7 +91,7 @@ function LoginPage() {
               처음 방문하셨나요?{' '}
               <button
                 className="text-caption font-semibold text-cyan-600"
-                onClick={() => navigate(paths.signup)}
+                onClick={() => navigate(paths.sign_up)}
               >
                 회원가입
               </button>
