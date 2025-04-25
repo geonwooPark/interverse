@@ -9,7 +9,7 @@ class AuthService {
     email: string
     password: string
   }): Promise<any> {
-    return await api.post(API_ENDPOINTS.USER.LOGIN, {
+    return await api.post(API_ENDPOINTS.USER.LOGIN(), {
       email,
       password,
     })
@@ -24,7 +24,7 @@ class AuthService {
     nickname: string
     password: string
   }): Promise<any> {
-    return await api.post(API_ENDPOINTS.USER.SIGN_UP, {
+    return await api.post(API_ENDPOINTS.USER.SIGN_UP(), {
       nickname,
       email,
       password,
@@ -32,11 +32,11 @@ class AuthService {
   }
 
   async me(): Promise<any> {
-    return await api.get(API_ENDPOINTS.USER.ME)
+    return await api.get(API_ENDPOINTS.USER.ME())
   }
 
   async sendVerificationEmail(email: string): Promise<any> {
-    return await api.post(API_ENDPOINTS.USER.SEND_EMAIL, {
+    return await api.post(API_ENDPOINTS.USER.SEND_EMAIL(), {
       email,
     })
   }
@@ -48,7 +48,7 @@ class AuthService {
     email: string
     code: number
   }): Promise<any> {
-    return await api.post(API_ENDPOINTS.USER.CHECK_CODE, {
+    return await api.post(API_ENDPOINTS.USER.CHECK_CODE(), {
       email,
       code,
     })
@@ -61,14 +61,14 @@ class AuthService {
     email: string
     newPassword: string
   }) {
-    return await api.patch(API_ENDPOINTS.USER.CHANGE_PASSWORD, {
+    return await api.patch(API_ENDPOINTS.USER.CHANGE_PASSWORD(), {
       email,
       newPassword,
     })
   }
 
   async checkId(email: string): Promise<any> {
-    return await api.post(API_ENDPOINTS.USER.CHECK_ID, {
+    return await api.post(API_ENDPOINTS.USER.CHECK_ID(), {
       email,
     })
   }
