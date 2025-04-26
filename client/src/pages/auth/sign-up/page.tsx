@@ -6,13 +6,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import StepFlow from '@components/StepFlow'
 import Step1 from './Step1'
 import Step2 from './Step2'
-import { authService } from '@services/authService'
 import { useNavigate } from 'react-router-dom'
 import { paths } from '@routes/paths'
-import { AxiosError } from 'axios'
+import { useSignUpMutation } from '@hooks/mutations/authMutations'
 
 function SignUpPage() {
   const navigate = useNavigate()
+
+  const { mutate } = useSignUpMutation()
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -30,17 +31,11 @@ function SignUpPage() {
   const { handleSubmit } = methods
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const result = await authService.signup(data)
+    const { confirmPassword, ...rest } = data
 
-      if (result) {
-        navigate(paths.login)
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.message)
-      }
-    }
+    mutate(rest, {
+      onSuccess: () => navigate(paths.login),
+    })
   })
 
   const onNext = () => {

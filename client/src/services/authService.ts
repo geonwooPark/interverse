@@ -60,7 +60,7 @@ class AuthService {
   }: {
     email: string
     newPassword: string
-  }) {
+  }): Promise<any> {
     return await api.patch(API_ENDPOINTS.USER.CHANGE_PASSWORD(), {
       email,
       newPassword,

@@ -8,11 +8,12 @@ import { paths } from '@routes/paths'
 import Step1 from './Step1'
 import { schema } from './schema'
 import Step2 from './Step2'
-import { authService } from '@services/authService'
-import { AxiosError } from 'axios'
+import { useChangePasswordMutation } from '@hooks/mutations/authMutations'
 
 function RecoveryPage() {
   const navigate = useNavigate()
+
+  const { mutate: changePasswordMutate } = useChangePasswordMutation()
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -29,20 +30,17 @@ function RecoveryPage() {
   const { handleSubmit } = methods
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const result = await authService.changePassword({
+    changePasswordMutate(
+      {
         email: data.email,
         newPassword: data.password,
-      })
-
-      if (result) {
-        navigate(paths.login)
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.message)
-      }
-    }
+      },
+      {
+        onSuccess: () => {
+          navigate(paths.login)
+        },
+      },
+    )
   })
 
   const onNext = () => {

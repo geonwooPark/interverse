@@ -1,13 +1,13 @@
 export const API_ENDPOINTS = {
   USER: {
-    ROOT: '/user',
-    LOGIN: () => `/user/login`,
-    SIGN_UP: () => `/user/signup`,
-    ME: () => `/user/me`,
-    SEND_EMAIL: () => `/user/send-verification-email`,
-    CHECK_CODE: () => `/user/check-verification-code`,
-    CHANGE_PASSWORD: () => `/user/change-password`,
-    CHECK_ID: () => `/user/check-id`,
+    ROOT: '/auth',
+    LOGIN: () => `/auth/login`,
+    SIGN_UP: () => `/auth/signup`,
+    ME: () => `/auth/me`,
+    SEND_EMAIL: () => `/auth/send-verification-email`,
+    CHECK_CODE: () => `/auth/check-verification-code`,
+    CHANGE_PASSWORD: () => `/auth/change-password`,
+    CHECK_ID: () => `/auth/check-id`,
   },
   ROOMS: {
     ROOT: '/rooms',

@@ -8,8 +8,11 @@ import { Link } from 'react-router-dom'
 import RhfTextField from '@components/Rhf/RhfTextField'
 import Icon from '@components/Icon'
 import { StepProps } from '@components/StepFlow/types'
-import { authService } from '@services/authService'
-import { AxiosError } from 'axios'
+import {
+  useCheckIdMutation,
+  useCheckVerificationCode,
+  useSendVerificationEmailMutation,
+} from '@hooks/mutations/authMutations'
 
 export default function Step1({ onNext }: StepProps) {
   const {
@@ -17,6 +20,13 @@ export default function Step1({ onNext }: StepProps) {
     getValues,
     formState: { errors },
   } = useFormContext()
+
+  const { mutate: checkIdMutate } = useCheckIdMutation()
+
+  const { mutate: sendVerificationEmailMutate } =
+    useSendVerificationEmailMutation()
+
+  const { mutate: checkVerificationCodeMutate } = useCheckVerificationCode()
 
   const { timer, isTimerActive, canResend, activeTimer } = useTimer()
 
@@ -29,14 +39,17 @@ export default function Step1({ onNext }: StepProps) {
     if (isEmailValid) {
       const email = getValues('email')
 
-      const isVerified = await authService.checkVerificationCode({
-        email,
-        code: Number(code),
-      })
-
-      if (isVerified) {
-        onNext()
-      }
+      checkVerificationCodeMutate(
+        {
+          email,
+          code: Number(code),
+        },
+        {
+          onSuccess() {
+            onNext()
+          },
+        },
+      )
     }
   }
 
@@ -46,25 +59,13 @@ export default function Step1({ onNext }: StepProps) {
     if (isEmailValid) {
       const email = getValues('email')
 
-      try {
-        await authService.checkId(email)
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          console.log(error.message)
-        }
-      }
-
-      try {
-        const result = await authService.sendVerificationEmail(email)
-
-        if (result) {
-          activeTimer()
-        }
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          console.log(error.message)
-        }
-      }
+      checkIdMutate(email, {
+        onSuccess: () => {
+          sendVerificationEmailMutate(email, {
+            onSuccess: () => activeTimer(),
+          })
+        },
+      })
     }
   }
 

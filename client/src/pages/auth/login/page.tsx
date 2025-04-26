@@ -9,12 +9,12 @@ import RhfTextField from '@components/Rhf/RhfTextField'
 import FormProvider from '@components/Rhf/FormProvider'
 import { useReducer } from 'react'
 import IconButton from '@components/IconButton'
-import { authService } from '@services/authService'
-import { setLocalStorageItem } from '@utils/localStorage'
-import { AxiosError } from 'axios'
+import { useLoginMutation } from '@hooks/mutations/authMutations'
 
 function LoginPage() {
   const navigate = useNavigate()
+
+  const { mutate } = useLoginMutation()
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -30,20 +30,12 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useReducer((prev) => !prev, false)
 
   const onSubmit = handleSubmit(async (loginData) => {
-    try {
-      const { token } = await authService.login(loginData)
-
-      if (token) {
-        setLocalStorageItem('interverse_token', token)
+    mutate(loginData, {
+      onSuccess: () => {
         navigate('/rooms')
-      }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.message)
-      }
-    } finally {
-      reset()
-    }
+        reset()
+      },
+    })
   })
 
   return (
