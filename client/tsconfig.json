@@ -36,7 +36,8 @@
       "@services/*": ["src/services/*"],
       "@routes/*": ["src/routes/*"],
       "@hocs/*": ["src/hocs/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@store/*": ["src/store/*"]
     }
   },
   "include": ["src", "svg.d.ts", "../vite-env.d.ts"]

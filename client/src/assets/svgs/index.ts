@@ -12,6 +12,8 @@ import IconChevronRight from './IconChevronRight.svg?react'
 import IconExclamation from './IconExclamation.svg?react'
 import IconEyeSlash from './IconEyeSlash.svg?react'
 import IconEye from './IconEye.svg?react'
+import IconPlus from './IconPlus.svg?react'
+import IconEvelope from './IconEvelope.svg?react'
 
 export {
   IconCam,
@@ -28,4 +30,6 @@ export {
   IconExclamation,
   IconEyeSlash,
   IconEye,
+  IconPlus,
+  IconEvelope,
 }
