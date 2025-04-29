@@ -1,3 +1,5 @@
+export const TOKEN = 'interverse_token'
+
 export const INIT_POSITION = [120, 180]
 
 export const TEXTURE_MAP: Record<string, string> = {

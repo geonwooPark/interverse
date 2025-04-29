@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "mediasoup-client": "^3.9.5",
     "motion": "^12.7.4",
     "nanoid": "^5.0.6",
@@ -28,6 +29,7 @@
     "react-router-dom": "^6.22.1",
     "socket.io-client": "^4.7.4",
     "tailwind-merge": "^3.0.1",
+    "ventileco-store": "^1.0.1",
     "ventileco-ui": "^0.6.6",
     "yup": "^1.6.1"
   },

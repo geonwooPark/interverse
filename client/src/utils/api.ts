@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getLocalStorageItem } from './localStorage'
+import { TOKEN } from '@constants/index'
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_V1,
@@ -7,7 +8,7 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = getLocalStorageItem('interverse_token') || ''
+    const token = getLocalStorageItem(TOKEN) || ''
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`

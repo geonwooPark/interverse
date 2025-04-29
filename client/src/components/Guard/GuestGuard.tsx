@@ -3,8 +3,8 @@ import React, { PropsWithChildren } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useStore } from 'ventileco-store'
 
-export default function AuthGuard({ children }: PropsWithChildren) {
+export default function GuestGuard({ children }: PropsWithChildren) {
   const [isLoggedIn] = useStore(isLoggedInStore, (state) => state)
 
-  return isLoggedIn ? children : <Navigate to="/login" />
+  return isLoggedIn ? <Navigate to="/rooms/list" /> : children
 }

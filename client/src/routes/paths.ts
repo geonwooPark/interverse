@@ -11,7 +11,7 @@ export const paths = {
   recovery: BASE.RECOVERY,
   rooms: {
     root: `${BASE.ROOMS}`,
-    new: `${BASE.ROOMS}/new`,
+    create: `${BASE.ROOMS}/create`,
     room: (id: string) => `${BASE.ROOMS}/${id}`,
   },
 }

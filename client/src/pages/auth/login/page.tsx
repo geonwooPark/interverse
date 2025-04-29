@@ -10,11 +10,15 @@ import FormProvider from '@components/Rhf/FormProvider'
 import { useReducer } from 'react'
 import IconButton from '@components/IconButton'
 import { useLoginMutation } from '@hooks/mutations/authMutations'
+import { useStore } from 'ventileco-store'
+import { isLoggedInStore } from '@store/index'
 
 function LoginPage() {
   const navigate = useNavigate()
 
   const { mutate } = useLoginMutation()
+
+  const [, setIsLoggedIn] = useStore(isLoggedInStore, (state) => state)
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -32,6 +36,7 @@ function LoginPage() {
   const onSubmit = handleSubmit(async (loginData) => {
     mutate(loginData, {
       onSuccess: () => {
+        setIsLoggedIn(true)
         navigate('/rooms')
         reset()
       },
