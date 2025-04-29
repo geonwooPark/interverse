@@ -14,7 +14,7 @@ interface ButtonProps
 }
 
 const ButtonVariants = cva(
-  `flex w-full items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed disabled:border-none disabled:bg-gray-300 disabled:text-gray-400 disabled:shadow-none`,
+  `flex w-auto items-center justify-center rounded-[8px] transition-all duration-200 disabled:cursor-not-allowed disabled:border-none disabled:bg-gray-300 disabled:text-gray-400 disabled:shadow-none`,
   {
     variants: {
       size: {

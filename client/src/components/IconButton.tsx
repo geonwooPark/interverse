@@ -1,5 +1,6 @@
 import React from 'react'
 import Icon, { IconProps } from './Icon'
+import { cn } from '@utils/cn'
 
 interface IconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -12,10 +13,10 @@ export default function IconButton({
 }: IconButtonProps) {
   return (
     <button
-      className={`flex size-5 items-center justify-center ${className ?? ''}`}
+      className={`flex size-12 items-center justify-center rounded-md duration-200 hover:bg-gray-100`}
       {...props}
     >
-      <Icon iconName={iconName} />
+      <Icon iconName={iconName} className={cn('size-6', className)} />
     </button>
   )
 }
