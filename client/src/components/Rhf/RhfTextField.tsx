@@ -1,10 +1,7 @@
 import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import TextField, { TextFieldProps } from '@components/TextField'
-import withCaption from '@hocs/withCaption'
+import { TextFieldProps, TextFieldWithCaption } from '@components/TextField'
 import Icon from '@components/Icon'
-
-const TextFieldWithCaption = withCaption(TextField)
 
 interface RhfInputProps extends TextFieldProps {
   name: string

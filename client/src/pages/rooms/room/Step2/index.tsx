@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import AvatarSelector from './AvatarSelector'
-import TextField from '@components/TextField'
 import { MAX_NICKNAME_LENGTH, TEXTURE_MAP } from '@constants/index'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
@@ -9,9 +8,7 @@ import { useScene } from '@providers/SceneProvider'
 import { IRoom } from 'src/types'
 import { useRoomsAction } from '@providers/RoomsProvider'
 import { useSearchParams } from 'react-router-dom'
-import withCaption from '@hocs/withCaption'
-
-const TextFieldWithCaption = withCaption(TextField)
+import { TextFieldWithCaption } from '@components/TextField'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 

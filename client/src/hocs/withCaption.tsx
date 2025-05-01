@@ -1,20 +1,31 @@
-import React, { ComponentType, ReactNode } from 'react'
+import React, {
+  ComponentType,
+  ForwardedRef,
+  ReactNode,
+  forwardRef,
+} from 'react'
 
 interface CaptionProps {
-  caption: ReactNode
+  caption?: ReactNode
 }
 
 export default function withCaption<T extends object>(
   Component: ComponentType<T>,
 ) {
-  return function EnhancedComponent(props: T & CaptionProps) {
-    const { caption, ...rest } = props
+  const EnhancedComponent = forwardRef(
+    (props: T & CaptionProps, ref: ForwardedRef<any>) => {
+      const { caption, ...rest } = props
 
-    return (
-      <>
-        <Component {...(rest as T)} />
-        {caption}
-      </>
-    )
-  }
+      return (
+        <>
+          <Component {...(rest as T)} ref={ref} />
+          {caption}
+        </>
+      )
+    },
+  )
+
+  EnhancedComponent.displayName = `WithCaption(${Component.displayName || Component.name || 'Component'})`
+
+  return EnhancedComponent
 }

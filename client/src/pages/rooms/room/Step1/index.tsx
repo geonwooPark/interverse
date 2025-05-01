@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { decrypt } from '@utils/crypto'
-import TextField from '@components/TextField'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import { useSearchParams } from 'react-router-dom'
-import withCaption from '@hocs/withCaption'
 import { IconExclamation } from '@assets/svgs'
-
-const TextFieldWithCaption = withCaption(TextField)
+import { TextFieldWithCaption } from '@components/TextField'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
