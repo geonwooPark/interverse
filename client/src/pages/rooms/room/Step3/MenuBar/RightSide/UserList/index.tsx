@@ -1,11 +1,13 @@
 import { useState, useSyncExternalStore } from 'react'
-import { IconUsers } from '@assets/svgs'
 import UserListItem from './UserListItem'
+import { AnimatePresence, motion as m } from 'motion/react'
 import { useScene } from '@providers/SceneProvider'
 import { TEXTURE_MAP } from '@constants/index'
 import DMCreateModal from '@components/DMCreateModal'
 import { ToolTip } from 'ventileco-ui'
 import { useModal } from '@providers/ModalProvider'
+import Icon from '@components/Icon'
+import slideIn from '@components/Animation/motions/slideIn'
 
 function UserList() {
   const { addModal, removeModal } = useModal()
@@ -19,10 +21,10 @@ function UserList() {
     () => roomManager.getState(),
   )
 
-  const [isShow, setIsShow] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const toogleUserList = () => {
-    setIsShow((prev) => !prev)
+    setIsOpen((prev) => !prev)
   }
 
   const handleDMModal = (id: string) => {
@@ -38,8 +40,11 @@ function UserList() {
             onClick={toogleUserList}
             className="flex items-center justify-center rounded-md bg-black/70 px-3 py-2 text-white duration-200 hover:bg-black/90"
           >
-            <IconUsers className="mr-1 size-5" />
-            <span>{userlist.size + 1}</span>
+            <Icon
+              iconName="IconUsers"
+              className="pointer-events-none mr-1 size-5"
+            />
+            <span className="pointer-events-none">{userlist.size + 1}</span>
           </button>
         </ToolTip.Trigger>
         <ToolTip.Content>
@@ -50,9 +55,12 @@ function UserList() {
         </ToolTip.Content>
       </ToolTip>
 
-      {isShow && (
-        <div className="absolute left-[50%] mt-4 translate-x-[-50%]">
-          <ul className="hide-scroll max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white/30 text-body2 shadow-md">
+      <AnimatePresence>
+        {isOpen && (
+          <m.ul
+            {...slideIn({ distance: -20, isFade: true }).inY}
+            className="hide-scroll absolute right-0 mt-4 max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white text-body2 shadow-md"
+          >
             <li className="flex items-center justify-between p-2">
               <div className="flex items-center">
                 <div
@@ -69,9 +77,9 @@ function UserList() {
                 handleDMModal={handleDMModal}
               />
             ))}
-          </ul>
-        </div>
-      )}
+          </m.ul>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -10,7 +10,6 @@ import { AxiosError } from 'axios'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
-// 스텝1 - 방 입장 전 비밀번호 체크 + 인원 제한 체크
 function Step1({ activeStep, onNext }: Step1Props) {
   const { id: roomId } = useParams()
 
@@ -44,7 +43,6 @@ function Step1({ activeStep, onNext }: Step1Props) {
             value={password}
             placeholder="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
-            maxLength={4}
             caption={
               error && (
                 <div className="ml-2 mt-1 flex items-center gap-1 text-red-600">

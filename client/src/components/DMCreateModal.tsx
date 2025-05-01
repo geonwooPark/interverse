@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Button from './Button'
 import { useScene } from '@providers/SceneProvider'
-import { useAuthCookie } from '@providers/AuthProvider'
+import { useMeQuery } from '@hooks/queries/authQueries'
+import { useParams } from 'react-router-dom'
 
 interface DMCreateModalProps {
   onClose: () => void
@@ -12,7 +13,9 @@ export default function DMCreateModal({
   onClose,
   id: receiverId,
 }: DMCreateModalProps) {
-  const authCookie = useAuthCookie()
+  const { data: me } = useMeQuery()
+
+  const { id: roomId } = useParams()
 
   const gameScene = useScene()
 
@@ -23,14 +26,15 @@ export default function DMCreateModal({
   const [text, setText] = useState('')
 
   const onSubmit = () => {
-    if (!authCookie) return
+    if (!me?.user) return
+    if (!roomId) return
 
     const id = Math.random().toString()
 
     DMManager.sendDM({
       id,
       message: text,
-      roomNum: authCookie.roomNum,
+      roomNum: roomId,
       sender: player.nickname.text,
       receiverId,
     })

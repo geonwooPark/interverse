@@ -1,7 +1,10 @@
 import UserStatus from './UserStatus'
 import { useEffect, useRef, useState } from 'react'
-import Chat from './Chat'
 import { useScene } from '@providers/SceneProvider'
+import { AnimatePresence, motion as m } from 'motion/react'
+import slideIn from '@components/Animation/motions/slideIn'
+import ChatList from './Chat/ChatList'
+import ChatInput from './Chat/ChatInput'
 
 function Controller() {
   const gameScene = useScene()
@@ -26,9 +29,23 @@ function Controller() {
   }, [])
 
   return (
-    <div className="fixed bottom-24 flex w-full items-center justify-center">
-      {showChat && <Chat inputRef={inputRef} />}
-      <UserStatus showChat={showChat} setShowChat={setShowChat} />
+    <div className="fixed bottom-24 z-[30] flex w-full items-center justify-center">
+      <AnimatePresence>
+        {showChat && (
+          <m.div
+            {...slideIn({ distance: 20, isFade: true }).inY}
+            className="flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-white/30 text-body2 shadow-md"
+          >
+            <ChatList />
+            <ChatInput inputRef={inputRef} />
+          </m.div>
+        )}
+      </AnimatePresence>
+
+      <UserStatus
+        showChat={showChat}
+        handleChatBox={() => setShowChat((prev) => !prev)}
+      />
     </div>
   )
 }

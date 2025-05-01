@@ -3,11 +3,10 @@ import { useSyncExternalStore } from 'react'
 import VideoPlayer from './VideoPlayer'
 
 interface VideoModalProps {
-  onClose: () => void
   hasDim?: boolean
 }
 
-function VideoModal({ onClose, hasDim }: VideoModalProps) {
+function VideoModal({ hasDim }: VideoModalProps) {
   const gameScene = useScene()
 
   const VideoManager = gameScene.video
@@ -18,9 +17,9 @@ function VideoModal({ onClose, hasDim }: VideoModalProps) {
   )
 
   return (
-    <div className="fixed inset-0 h-screen w-screen">
+    <div className="fixed inset-0 z-[100] h-screen w-screen">
       {/* Dim */}
-      {hasDim && <div onClick={onClose} className="size-full bg-black/70" />}
+      {hasDim && <div className="size-full bg-black/30" />}
 
       {/* Modal */}
       <div className="absolute left-[50%] top-[50%] size-[80%] w-[90%] translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-xl bg-black">

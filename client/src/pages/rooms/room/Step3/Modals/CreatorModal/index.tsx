@@ -2,11 +2,10 @@ import React from 'react'
 import Button from '@components/Button'
 
 interface CreatorModalProps {
-  onClose: () => void
   hasDim?: boolean
 }
 
-function CreatorModal({ onClose, hasDim }: CreatorModalProps) {
+function CreatorModal({ hasDim }: CreatorModalProps) {
   const handleClick = () => {
     window.open(
       'https://github.com/geonwooPark',
@@ -16,9 +15,9 @@ function CreatorModal({ onClose, hasDim }: CreatorModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 h-screen w-screen">
+    <div className="fixed inset-0 z-[100] h-screen w-screen">
       {/* Dim */}
-      {hasDim && <div onClick={onClose} className="size-full bg-black/70" />}
+      {hasDim && <div className="size-full bg-black/30" />}
 
       {/* Modal */}
       <div className="absolute left-[50%] top-[50%] flex w-[320px] translate-x-[-50%] translate-y-[-50%] flex-col items-center justify-between gap-4 rounded-md bg-white p-6">

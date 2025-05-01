@@ -27,6 +27,6 @@ export default class Printer extends ObjectItem {
   }
 
   onInteractionBox() {
-    this.setInteractionBox('스페이스키를 눌러 Interverse를 평가해주세요!')
+    this.setInteractionBox('스페이스키를 눌러 INTERVERSE를 평가해주세요!')
   }
 }

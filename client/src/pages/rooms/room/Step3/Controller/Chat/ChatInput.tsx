@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { useAuthCookie } from '@providers/AuthProvider'
 import { useScene } from '@providers/SceneProvider'
+import { useMeQuery } from '@hooks/queries/authQueries'
+import { useParams } from 'react-router-dom'
 
 interface ChatInputProps {
   inputRef: React.RefObject<HTMLInputElement>
 }
 
 function ChatInput({ inputRef }: ChatInputProps) {
-  const authCookie = useAuthCookie()
+  const { data: me } = useMeQuery()
+
+  const { id: roomId } = useParams()
 
   const gameScene = useScene()
 
@@ -26,7 +29,8 @@ function ChatInput({ inputRef }: ChatInputProps) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!authCookie) return
+    if (!me?.user) return
+    if (!roomId) return
     if (!inputValue) {
       inputRef.current?.blur()
       gameScene.enableKeys()
@@ -36,7 +40,7 @@ function ChatInput({ inputRef }: ChatInputProps) {
       ChatManager.sendChat({
         id,
         message: inputValue,
-        roomNum: authCookie.roomNum,
+        roomNum: roomId,
         sender: player.nickname.text,
       })
 

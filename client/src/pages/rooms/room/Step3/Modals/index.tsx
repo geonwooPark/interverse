@@ -15,17 +15,15 @@ function Modals() {
   useEffect(() => {
     gameScene.events.on('closeModal', removeModal)
     gameScene.events.on('openMenualModal', () =>
-      addModal(<ManualModal hasDim onClose={removeModal} />),
+      addModal(<ManualModal hasDim />),
     )
     gameScene.events.on('openSurveyModal', () =>
-      addModal(<SurveyModal hasDim onClose={removeModal} />),
+      addModal(<SurveyModal hasDim />),
     )
     gameScene.events.on('openCreatorModal', () =>
-      addModal(<CreatorModal hasDim onClose={removeModal} />),
+      addModal(<CreatorModal hasDim />),
     )
-    gameScene.events.on('openVideoModal', () =>
-      addModal(<VideoModal hasDim onClose={removeModal} />),
-    )
+    gameScene.events.on('openVideoModal', () => addModal(<VideoModal hasDim />))
   }, [])
 
   return null

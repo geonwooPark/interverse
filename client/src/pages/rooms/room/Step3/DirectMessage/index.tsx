@@ -1,15 +1,18 @@
 import Button from '@components/Button'
 import { IDirectMessage } from '../../../../../../../types/socket'
-import { useAuthCookie } from '@providers/AuthProvider'
 import { useScene } from '@providers/SceneProvider'
 import { useState } from 'react'
+import { useMeQuery } from '@hooks/queries/authQueries'
+import { useParams } from 'react-router-dom'
 
 interface DMProps {
   dm: IDirectMessage
 }
 
 function DirectMessage({ dm }: DMProps) {
-  const authCookie = useAuthCookie()
+  const { data: me } = useMeQuery()
+
+  const { id: roomId } = useParams()
 
   const gameScene = useScene()
 
@@ -24,13 +27,14 @@ function DirectMessage({ dm }: DMProps) {
   }
 
   const onSubmit = (dm: IDirectMessage) => {
-    if (!authCookie) return
+    if (!me?.user) return
+    if (!roomId) return
     if (!dm.socketId) return
 
     DMManager.sendDM({
       id: Math.random().toString(),
       message: text,
-      roomNum: authCookie.roomNum,
+      roomNum: roomId,
       sender: player.nickname.text,
       receiverId: dm.socketId,
     })

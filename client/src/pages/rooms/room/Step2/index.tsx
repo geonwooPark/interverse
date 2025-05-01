@@ -7,11 +7,14 @@ import GameManager from '@managers/GameManager'
 import { useScene } from '@providers/SceneProvider'
 import { TextFieldWithCaption } from '@components/TextField'
 import Container from '@components/Container'
+import { useParams } from 'react-router-dom'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
 // 방 입장
 export default function Step2({ activeStep, onNext }: Step2Props) {
+  const { id: roomId } = useParams()
+
   const game = GameManager.getInstance()
 
   const gameScene = useScene()
@@ -34,6 +37,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
   const onEnter = () => {
     if (!nickname) return
+    if (!roomId) return
 
     // 게임씬 실행
     game.scene.start('game')
@@ -42,7 +46,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
     // 방에 입장
     gameScene.joinRoom({
-      roomNum: 'sdsds',
+      roomNum: roomId,
       nickname,
       texture: Object.keys(TEXTURE_MAP)[texture],
     })

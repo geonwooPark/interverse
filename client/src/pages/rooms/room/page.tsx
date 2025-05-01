@@ -35,7 +35,7 @@ function RoomPage() {
         <StepFlow activeStep={step} onNext={onNext}>
           <Step1 />
           <Step2 />
-          {/* <Step3 /> */}
+          <Step3 />
         </StepFlow>
       </ModalProvider>
     </SceneProvider>

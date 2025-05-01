@@ -1,11 +1,10 @@
 import Button from '@components/Button'
 
 interface SurveyModalProps {
-  onClose: () => void
   hasDim?: boolean
 }
 
-function SurveyModal({ onClose, hasDim = false }: SurveyModalProps) {
+function SurveyModal({ hasDim = false }: SurveyModalProps) {
   const handleClick = () => {
     window.open(
       'https://forms.gle/4eHQ4eCEokt2EgfQ6',
@@ -15,9 +14,9 @@ function SurveyModal({ onClose, hasDim = false }: SurveyModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 h-screen w-screen">
+    <div className="fixed inset-0 z-[100] h-screen w-screen">
       {/* Dim */}
-      {hasDim && <div onClick={onClose} className="size-full bg-black/70" />}
+      {hasDim && <div className="size-full bg-black/30" />}
 
       {/* Modal */}
       <div className="absolute left-[50%] top-[50%] w-[480px] translate-x-[-50%] translate-y-[-50%] space-y-6 rounded-md bg-white p-6">

@@ -5,7 +5,6 @@ import Modals from './Modals'
 import DMList from './DirectMessage/DMList'
 import useMediaPermissions from '@hooks/useMediaPermissions'
 import ConfirmModal from '@components/ConfirmModal'
-import { useBlockGoBack } from '@hooks/useBlockGoBack'
 import { useModal } from '@providers/ModalProvider'
 
 export default function Step3() {
@@ -24,19 +23,6 @@ export default function Step3() {
         />,
       ),
   })
-
-  // 뒤로가기 막기
-  useBlockGoBack(() =>
-    addModal(
-      <ConfirmModal
-        title="나가기"
-        description="정말 종료하시겠습니까?"
-        actionLabel="종료"
-        onClose={removeModal}
-        onSubmit={() => window.location.replace('/')}
-      />,
-    ),
-  )
 
   return (
     <>
