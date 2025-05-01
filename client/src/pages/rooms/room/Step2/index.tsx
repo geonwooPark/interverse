@@ -5,10 +5,8 @@ import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
 import GameManager from '@managers/GameManager'
 import { useScene } from '@providers/SceneProvider'
-import { IRoom } from 'src/types'
-import { useRoomsAction } from '@providers/RoomsProvider'
-import { useSearchParams } from 'react-router-dom'
 import { TextFieldWithCaption } from '@components/TextField'
+import Container from '@components/Container'
 
 interface Step2Props extends Partial<StepFlowProps> {}
 
@@ -16,19 +14,11 @@ interface Step2Props extends Partial<StepFlowProps> {}
 export default function Step2({ activeStep, onNext }: Step2Props) {
   const game = GameManager.getInstance()
 
-  const addRoom = useRoomsAction()
-
   const gameScene = useScene()
-
-  const [searchParams] = useSearchParams()
 
   const [texture, setTexture] = useState(0)
 
   const [nickname, setNickname] = useState('')
-
-  const roomNum = searchParams.get('roomNum') as string
-
-  const title = searchParams.get('title') as string
 
   const onNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > MAX_NICKNAME_LENGTH) {
@@ -45,15 +35,6 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
   const onEnter = () => {
     if (!nickname) return
 
-    const newRoom: IRoom = {
-      roomNum,
-      role: 'guest',
-      title,
-      createAt: Date.now(),
-    }
-
-    addRoom(newRoom)
-
     // 게임씬 실행
     game.scene.start('game')
     ;(document.getElementById('game-container') as HTMLElement).style.display =
@@ -61,7 +42,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
     // 방에 입장
     gameScene.joinRoom({
-      roomNum,
+      roomNum: 'sdsds',
       nickname,
       texture: Object.keys(TEXTURE_MAP)[texture],
     })
@@ -71,7 +52,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
 
   return (
     <div className="flex size-full items-center justify-center">
-      <div className="w-[360px] rounded-3xl p-8 shadow-level1">
+      <Container className="max-w-[360px]">
         <AvatarSelector texture={texture} onChange={onTextureChange} />
 
         <div className="mb-6 mt-3">
@@ -97,7 +78,7 @@ export default function Step2({ activeStep, onNext }: Step2Props) {
         >
           입장하기
         </Button>
-      </div>
+      </Container>
     </div>
   )
 }

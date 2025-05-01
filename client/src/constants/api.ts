@@ -15,5 +15,6 @@ export const API_ENDPOINTS = {
     CREATE: () => `/rooms`,
     JOIN: (roomId: string) => `/rooms/${roomId}/join`,
     DELETE: (roomId: string) => `/rooms/${roomId}`,
+    CHECK_PASSWORD: (roomId: string) => `/rooms/${roomId}/check-password`,
   },
 } as const

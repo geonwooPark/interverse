@@ -1,49 +1,49 @@
 import { useState } from 'react'
-import { decrypt } from '@utils/crypto'
 import { StepFlowProps } from '@components/StepFlow/types'
 import Button from '@components/Button'
-import { useSearchParams } from 'react-router-dom'
 import { IconExclamation } from '@assets/svgs'
 import { TextFieldWithCaption } from '@components/TextField'
+import Container from '@components/Container'
+import { roomsService } from '@services/roomsService'
+import { useParams } from 'react-router-dom'
+import { AxiosError } from 'axios'
 
 interface Step1Props extends Partial<StepFlowProps> {}
 
 // 스텝1 - 방 입장 전 비밀번호 체크 + 인원 제한 체크
 function Step1({ activeStep, onNext }: Step1Props) {
-  const [searchParams] = useSearchParams()
+  const { id: roomId } = useParams()
 
-  const hp = searchParams.get('hp') as string
-
-  const decryptedPassword = decrypt(hp)
-
-  const [value, setValue] = useState('')
+  const [password, setPassword] = useState('')
 
   const [error, setError] = useState('')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }
+  const checkPassword = async () => {
+    if (!roomId) return
 
-  const onClick = () => {
-    if (!value || decryptedPassword !== value) {
-      setError('비밀번호를 확인해주세요')
+    try {
+      const res = await roomsService.checkPassword({ roomId, password })
 
-      return setTimeout(() => setError(''), 3000)
+      if (res) {
+        onNext && onNext()
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        setError(error.message)
+      }
     }
-
-    onNext && onNext()
   }
 
   return (
     <div className="flex size-full items-center justify-center">
-      <div className="w-[360px] rounded-3xl p-8 shadow-level1">
+      <Container className="max-w-[360px]">
         <div className="mb-4 text-subtitle1">비밀번호를 입력해주세요</div>
         <div className="mb-6">
           <TextFieldWithCaption
             type="password"
-            value={value}
+            value={password}
             placeholder="비밀번호"
-            onChange={handleChange}
+            onChange={(e) => setPassword(e.target.value)}
             maxLength={4}
             caption={
               error && (
@@ -60,12 +60,12 @@ function Step1({ activeStep, onNext }: Step1Props) {
           size="lg"
           variant="contained"
           fullWidth
-          disabled={value.length === 0}
-          onClick={onClick}
+          disabled={password.length === 0}
+          onClick={checkPassword}
         >
           다음
         </Button>
-      </div>
+      </Container>
     </div>
   )
 }

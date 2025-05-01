@@ -27,7 +27,19 @@ class RoomsService {
   }
 
   async deleteRoom(roomId: string) {
-    return await api.post(API_ENDPOINTS.ROOMS.DELETE(roomId))
+    return await api.post(`${API_ENDPOINTS.ROOMS.DELETE(roomId)}`)
+  }
+
+  async checkPassword({
+    roomId,
+    password,
+  }: {
+    roomId: string
+    password: string
+  }) {
+    return await api.post(API_ENDPOINTS.ROOMS.CHECK_PASSWORD(roomId), {
+      password,
+    })
   }
 }
 
