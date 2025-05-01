@@ -7,14 +7,11 @@ import GameManager from '@managers/GameManager'
 import SceneProvider from '@providers/SceneProvider'
 import GameScene from '@games/scenes/Game'
 import ModalProvider from '@providers/ModalProvider'
-import { useAuthCookie } from '@providers/AuthProvider'
 
 /**
  * 룸 화면
  */
 function RoomPage() {
-  const authCookie = useAuthCookie()
-
   const game = GameManager.getInstance()
 
   const gameScene = game.scene.getScene('game') as GameScene
@@ -36,9 +33,9 @@ function RoomPage() {
     <SceneProvider scene={gameScene}>
       <ModalProvider>
         <StepFlow activeStep={step} onNext={onNext}>
-          {authCookie?.role !== 'host' && <Step1 />}
+          <Step1 />
           <Step2 />
-          <Step3 />
+          {/* <Step3 /> */}
         </StepFlow>
       </ModalProvider>
     </SceneProvider>

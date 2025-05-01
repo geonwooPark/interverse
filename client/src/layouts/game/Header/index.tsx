@@ -1,5 +1,6 @@
 import Logo from '@components/Logo'
 import UserProfile from './UserProfile'
+import DirectMessages from './DirectMessages'
 import { Link } from 'react-router-dom'
 
 export default function Header() {
@@ -11,6 +12,7 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
+          <DirectMessages />
           <UserProfile />
         </div>
       </div>
