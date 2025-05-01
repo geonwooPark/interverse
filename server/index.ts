@@ -65,6 +65,6 @@ io.on(
   },
 )
 
-server.listen(8000, () => {
+server.listen(8001, () => {
   console.log('서버 실행중...')
 })

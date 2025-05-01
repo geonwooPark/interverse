@@ -3,7 +3,7 @@ import { getLocalStorageItem } from './localStorage'
 import { TOKEN } from '@constants/index'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_V1,
+  baseURL: import.meta.env.VITE_API_V1_SERVER,
 })
 
 api.interceptors.request.use(

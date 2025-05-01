@@ -8,7 +8,7 @@ class SocketService {
   socket: Socket<ServerToClientEvents, ClientToServerEvents>
 
   constructor() {
-    this.socket = io(import.meta.env.VITE_BACKEND, {
+    this.socket = io(import.meta.env.VITE_SOCKET_SERVER, {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,

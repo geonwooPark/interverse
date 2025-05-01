@@ -12,7 +12,7 @@ export const chatHandler = (
   const socketId = socket.id
 
   const sendChat = (chat: IChat) => {
-    if (chat.roomNum === '') return
+    if (!chat.roomNum) return
 
     io.to(chat.roomNum).emit('serverChat', {
       ...chat,
