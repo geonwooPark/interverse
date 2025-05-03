@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
-import Button from './Button'
 import { useScene } from '@providers/SceneProvider'
 import { useMeQuery } from '@hooks/queries/authQueries'
 import { useParams } from 'react-router-dom'
+import Button from '@components/Button'
+import fade from '@components/Animation/motions/fade'
+import { motion as m } from 'motion/react'
 
-interface DMCreateModalProps {
+interface MessageModalProps {
   onClose: () => void
   id: string
 }
 
-export default function DMCreateModal({
+export default function MessageModal({
   onClose,
   id: receiverId,
-}: DMCreateModalProps) {
+}: MessageModalProps) {
   const { data: me } = useMeQuery()
 
   const { id: roomId } = useParams()
@@ -46,13 +48,13 @@ export default function DMCreateModal({
     <div className="fixed inset-0 z-[500] h-screen w-screen">
       {/* Dim */}
       <div onClick={onClose} className="size-full bg-black/70" />
-
       {/* Modal */}
-      <div
+      <m.div
+        {...fade().fadeIn}
         className={`absolute left-[50%] top-[50%] size-full h-fit w-[480px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white`}
       >
         {/* 헤더 */}
-        <div className="body1 px-4 py-3">다이렉트 메시지</div>
+        <div className="body1 px-4 py-3">메시지</div>
 
         {/* 바디 */}
         <div className="h-[160px] px-4">
@@ -73,7 +75,7 @@ export default function DMCreateModal({
             전송
           </Button>
         </div>
-      </div>
+      </m.div>
     </div>
   )
 }

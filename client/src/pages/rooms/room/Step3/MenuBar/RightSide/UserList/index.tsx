@@ -3,10 +3,10 @@ import UserItem from './UserItem'
 import { AnimatePresence, motion as m } from 'motion/react'
 import { useScene } from '@providers/SceneProvider'
 import { TEXTURE_MAP } from '@constants/index'
-import DMCreateModal from '@components/DMCreateModal'
 import { useModal } from '@providers/ModalProvider'
-import slideIn from '@components/Animation/motions/slideIn'
 import Trigger from './Trigger'
+import MessageModal from './MessageModal'
+import slide from '@components/Animation/motions/slide'
 
 function UserList() {
   const { addModal, removeModal } = useModal()
@@ -26,8 +26,8 @@ function UserList() {
     setIsOpen((prev) => !prev)
   }
 
-  const handleDMModal = (id: string) => {
-    addModal(<DMCreateModal id={id} onClose={removeModal} />)
+  const handleMessageModal = (id: string) => {
+    addModal(<MessageModal id={id} onClose={removeModal} />)
   }
 
   return (
@@ -37,7 +37,7 @@ function UserList() {
       <AnimatePresence>
         {isOpen && (
           <m.ul
-            {...slideIn({ distance: -20, isFade: true }).inY}
+            {...slide({ distance: -20, isFade: true }).inY}
             className="hide-scroll absolute right-0 mt-4 max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white text-body2 shadow-md"
           >
             {/* 플레이어 */}
@@ -55,7 +55,7 @@ function UserList() {
               <UserItem
                 key={user[0]}
                 user={user[1]}
-                handleDMModal={handleDMModal}
+                handleMessageModal={handleMessageModal}
               />
             ))}
           </m.ul>

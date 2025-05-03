@@ -4,10 +4,10 @@ import OtherPlayer from '@games/avatars/OtherPlayer'
 
 interface UserItemProps {
   user: OtherPlayer
-  handleDMModal: (id: string) => void
+  handleMessageModal: (id: string) => void
 }
 
-function UserItem({ user, handleDMModal }: UserItemProps) {
+function UserItem({ user, handleMessageModal }: UserItemProps) {
   return (
     <li key={user.socketId} className="flex items-center justify-between p-2">
       <div className="flex items-center">
@@ -22,7 +22,7 @@ function UserItem({ user, handleDMModal }: UserItemProps) {
       <IconButton
         iconName="IconMessage"
         className="size-5 text-gray-600"
-        onClick={() => handleDMModal(user.socketId as string)}
+        onClick={() => handleMessageModal(user.socketId as string)}
       />
     </li>
   )
