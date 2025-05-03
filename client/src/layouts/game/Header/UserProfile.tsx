@@ -1,6 +1,5 @@
 import placeholder from '@assets/images/placeholder.jpg'
 import { AnimatePresence, motion as m } from 'motion/react'
-import slideIn from '@components/Animation/motions/slideIn'
 import { useMeQuery } from '@hooks/queries/authQueries'
 import { useState } from 'react'
 import { removeLocalStorageItem } from '@utils/localStorage'
@@ -8,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { TOKEN } from '@constants/index'
 import { useStore } from 'ventileco-store'
 import { isLoggedInStore } from '@store/index'
+import slide from '@components/Animation/motions/slide'
 
 export default function UserProfile() {
   const queryClient = useQueryClient()
@@ -39,7 +39,7 @@ export default function UserProfile() {
       <AnimatePresence>
         {isMenuOpen && (
           <m.ul
-            {...slideIn({ distance: -20, isFade: true }).inY}
+            {...slide({ distance: -20, isFade: true }).inY}
             className="absolute -bottom-12 w-full overflow-hidden rounded-md bg-white shadow-level2"
           >
             <li>

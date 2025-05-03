@@ -1,7 +1,4 @@
-export default function slideIn(props?: {
-  distance?: number
-  isFade?: boolean
-}) {
+export default function slide(props?: { distance?: number; isFade?: boolean }) {
   const distance = props?.distance || 30
   const initOpacity = props?.isFade ? { opacity: 0 } : {}
   const lastOpacity = props?.isFade ? { opacity: 1 } : {}

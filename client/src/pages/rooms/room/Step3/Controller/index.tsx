@@ -7,7 +7,7 @@ import { useSingleRoomQuery } from '@hooks/queries/roomsQueries'
 import { AnimatePresence, motion as m } from 'motion/react'
 import ChatList from './Chat/ChatList'
 import ChatInput from './Chat/ChatInput'
-import slideIn from '@components/Animation/motions/slideIn'
+import slide from '@components/Animation/motions/slide'
 
 function Controller() {
   const { id: roomId } = useParams()
@@ -47,7 +47,7 @@ function Controller() {
       <AnimatePresence>
         {showChat && (
           <m.div
-            {...slideIn({ distance: 20, isFade: true }).inY}
+            {...slide({ distance: 20, isFade: true }).inY}
             className="absolute top-[-158px] flex h-[150px] w-[380px] flex-col justify-between rounded-md bg-white/30 text-body2 shadow-md"
           >
             <ChatList />
