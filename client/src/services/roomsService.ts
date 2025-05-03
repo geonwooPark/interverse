@@ -6,6 +6,10 @@ class RoomsService {
     return await api.get(API_ENDPOINTS.ROOMS.LIST())
   }
 
+  async getSingleRoom(roomId: string): Promise<any> {
+    return await api.get(API_ENDPOINTS.ROOMS.SINGLE_ROOM(roomId))
+  }
+
   async joinRoom(roomId: string) {
     return await api.post(API_ENDPOINTS.ROOMS.JOIN(roomId))
   }

@@ -1,9 +1,12 @@
 import { roomsService } from '@services/roomsService'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 
 // 쿼리키
 export const roomsKeys = {
   base: ['rooms'],
+  single_room(id: string) {
+    return [...this.base, id]
+  },
 }
 
 // ----------------------------------------------------------------------
@@ -14,5 +17,12 @@ export const useRoomsQuery = () => {
     queryFn: () => roomsService.getRooms(),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 3,
+  })
+}
+
+export const useSingleRoomQuery = (id: string) => {
+  return useQuery({
+    queryKey: roomsKeys.single_room(id),
+    queryFn: () => roomsService.getSingleRoom(id),
   })
 }

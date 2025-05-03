@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
   ROOMS: {
     ROOT: '/rooms',
     LIST: () => `/rooms`,
+    SINGLE_ROOM: (roomId: string) => `/rooms/${roomId}`,
     CREATE: () => `/rooms`,
     JOIN: (roomId: string) => `/rooms/${roomId}/join`,
     DELETE: (roomId: string) => `/rooms/${roomId}`,
