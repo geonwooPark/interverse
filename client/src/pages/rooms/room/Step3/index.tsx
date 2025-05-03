@@ -1,11 +1,10 @@
 import Alert from './Alert'
-import Controller from './Controller'
 import MenuBar from './MenuBar'
 import Modals from './Modals'
-import DMList from './DirectMessage/DMList'
 import useMediaPermissions from '@hooks/useMediaPermissions'
 import ConfirmModal from '@components/ConfirmModal'
 import { useModal } from '@providers/ModalProvider'
+import Controller from './Controller'
 
 export default function Step3() {
   const { addModal, removeModal } = useModal()
@@ -29,7 +28,6 @@ export default function Step3() {
       <MenuBar />
       <Controller />
       <Alert />
-      <DMList />
       <Modals />
     </>
   )

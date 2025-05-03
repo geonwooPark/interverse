@@ -13,7 +13,7 @@ export default function IconButton({
 }: IconButtonProps) {
   return (
     <button
-      className={`flex size-12 items-center justify-center rounded-md duration-200 hover:bg-gray-100`}
+      className={`flex size-10 items-center justify-center rounded-md duration-200 hover:bg-gray-100`}
       {...props}
     >
       <Icon iconName={iconName} className={cn('size-6', className)} />
