@@ -22,7 +22,7 @@ function UserList() {
 
   const [isOpen, setIsOpen] = useState(false)
 
-  const onClick = () => {
+  const onClose = () => {
     setIsOpen((prev) => !prev)
   }
 
@@ -32,13 +32,17 @@ function UserList() {
 
   return (
     <div className="relative">
-      <Trigger headCount={userlist.size + 1} onClick={onClick} />
+      {isOpen && (
+        <div onClick={onClose} className="fixed inset-0 z-[5] size-full" />
+      )}
+
+      <Trigger headCount={userlist.size + 1} onClick={onClose} />
 
       <AnimatePresence>
         {isOpen && (
           <m.ul
             {...slide({ distance: -20, isFade: true }).inY}
-            className="hide-scroll absolute right-0 mt-4 max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white text-body2 shadow-md"
+            className="hide-scroll absolute right-0 z-[6] mt-4 max-h-[180px] w-[200px] overflow-x-auto overflow-y-scroll rounded-md bg-white text-body2 shadow-md"
           >
             {/* 플레이어 */}
             <li className="flex items-center justify-between p-2">

@@ -23,7 +23,7 @@ export default function MessageList() {
 
   const hasNewAlarm = messagelist?.some((r) => !r.isRead)
 
-  const onClick = () => {
+  const onClose = () => {
     setIsOpen((prev) => !prev)
   }
 
@@ -38,13 +38,17 @@ export default function MessageList() {
 
   return (
     <div className="relative">
-      <Trigger onClick={onClick} hasNewAlarm={hasNewAlarm} />
+      {isOpen && (
+        <div onClick={onClose} className="fixed inset-0 z-[5] size-full" />
+      )}
+
+      <Trigger onClick={onClose} hasNewAlarm={hasNewAlarm} />
 
       <AnimatePresence>
         {isOpen && (
           <m.div
             {...slide({ distance: -20, isFade: true }).inY}
-            className="absolute right-0 mt-4 flex h-[400px] w-[320px] flex-col overflow-hidden rounded-md bg-white shadow-level2"
+            className="absolute right-0 z-[6] mt-4 flex h-[400px] w-[320px] flex-col overflow-hidden rounded-md bg-white shadow-level2"
           >
             <div className="flex h-12 justify-end border-b px-3">
               <button
