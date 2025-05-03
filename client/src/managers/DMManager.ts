@@ -5,7 +5,7 @@ import GameScene from '@games/scenes/Game'
 
 export class DMManager extends Observable<IDirectMessage[]> {
   private game: GameScene
-  private list: IDirectMessage[] = []
+  private list: (IDirectMessage & { isRead: boolean })[] = []
 
   constructor(game: Game) {
     super()
@@ -22,13 +22,13 @@ export class DMManager extends Observable<IDirectMessage[]> {
     })
   }
 
-  getState(): IDirectMessage[] {
+  getState() {
     return this.list
   }
 
   // DM 수신
   receiveDM(dm: IDirectMessage): void {
-    this.list = [...this.list, dm]
+    this.list = [...this.list, { ...dm, isRead: false }]
 
     this.notify(this.list)
   }
@@ -41,6 +41,23 @@ export class DMManager extends Observable<IDirectMessage[]> {
   // DM 제거
   removeDM(id: string) {
     this.list = this.list.filter((r) => r.id !== id)
+
+    this.notify(this.list)
+  }
+
+  readDM(id: string) {
+    this.list = this.list.map((r) => {
+      if (r.id === id) {
+        return { ...r, isRead: true }
+      }
+      return r
+    })
+
+    this.notify(this.list)
+  }
+
+  readAllDM() {
+    this.list = this.list.map((r) => ({ ...r, isRead: true }))
 
     this.notify(this.list)
   }
